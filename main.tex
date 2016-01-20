@@ -1,0 +1,154 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+% customize the headers with fancyhdr package
+\usepackage{fancyhdr}
+\fancyhf{}
+\fancyhead[LE]{\leftmark}
+\fancyhead[RO]{\nouppercase{\rightmark}}
+\fancyfoot[LE,RO]{\thepage}
+\pagestyle{fancy}
+
+\usepackage{makeidx}
+\makeindex
+
+% load hyperref to use hyperlinks
+\usepackage[colorlinks=true,linkcolor=blue]{hyperref}
+\usepackage[all]{hypcap}  % Be sure to call this package after loading hyperref.
+
+% load tocbibind to add contents,list of figures, list of tables and
+% bibliography into the toc
+\usepackage{tocbibind}
+
+% Needed to load images
+\usepackage{graphicx}
+\graphicspath{ {images/} }   % where to look for images
+
+\usepackage{color}
+\usepackage{tabularx}
+\usepackage{multirow}
+
+\usepackage{framed}
+
+% for code example
+\usepackage{listings}
+
+\definecolor{syntax_comment}{rgb}{0.72,0.14,0.15}	% red
+\definecolor{syntax_key}{rgb}{0.05,0.5,0.07}
+\definecolor{syntax_gray}{rgb}{0.5,0.5,0.5}
+\definecolor{syntax_string}{rgb}{0.58,0,0.82}	% mauve
+\definecolor{background}{rgb}{0.975,0.975,0.975}
+
+\lstset{ %
+  backgroundcolor=\color{background},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\scriptsize\ttfamily, % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\itshape\color{syntax_comment},    % comment style
+%  deletekeywords={...},            % if you want to delete keywords from the given language
+%  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+%  frame=single,                    % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{syntax_key},       % keyword style
+%  language=Octave,                 % the language of the code
+%  otherkeywords={*,...},           % if you want to add more keywords to the set
+  numbers=none,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{syntax_gray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{syntax_string},     % string literal style
+  tabsize=2                        % sets default tabsize to 2 spaces
+%  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
+% this macro used in listings parameter to syntax highlight for python
+\newcommand{\pythonsyntax}[0]{
+  
+}
+
+% for long and nice table
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{ltxtable}
+
+% for compact item list
+\usepackage{paralist}
+
+% load cjkfonts and set Source Han Sans SC as the default CJK fonts:
+\usepackage[default,mdseries=Light,bfseries=Medium]{cjkfonts}
+% Set Roboto and Source Code Pro, which are installed with TexLive,
+% for western fonts:
+\input{localization.tex}
+
+\usepackage{setspace}
+\onehalfspacing{}
+
+\usepackage{amsmath}
+
+\usepackage{tikz} % load TikZ/PGF
+\usetikzlibrary{circuits.logic.US,positioning,decorations.pathreplacing,mindmap,backgrounds,math}
+\usepackage{pgfplots} % load PDFPlots
+%\pgfplotsset{compat=yourversion}
+
+\input{plots}
+
+\begin{document}
+
+\input{title}
+
+\frontmatter
+
+%\maketitle
+\input{copyright}
+
+\tableofcontents
+%\listoffigures
+%\listoftables
+
+\pagebreak
+
+\input{author}
+
+\input{translation}
+
+\input{preface}
+
+\input{about}
+
+\input{exercises_and_problems}
+
+\mainmatter{}
+
+\input{chap1}
+
+\input{chap2}
+
+\input{chap3}
+
+%\input{chap4}
+
+%\input{chap5}
+
+%\input{chap6}
+
+\appendix
+
+%\input{sai}
+
+%\input{acknowledgements}
+
+%\input{faq}
+
+%\input{history}
+
+\backmatter{}
+
+\printindex
+
+\end{document}

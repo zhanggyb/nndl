@@ -1,0 +1,218 @@
+% file: chap3.tex
+
+\chapter{改进神经网络的学习方法}
+\label{ch:ImprovingTheWayNeuralNetworksLearn}
+
+当一个高尔夫球员刚开始学习打高尔夫时，他们通常会在挥杆的练习上花费大多数时间。慢
+慢地他们才会在基本的挥杆上通过变化发展其他的击球方式，学习低飞球、左曲球和右曲球。
+类似的，我们现在仍然聚焦在反向传播算法的理解上。这就是我们的``基本挥杆''，神经网
+络中大部分工作学习和研究的基础。本章，我会解释若干技术能够用来提升我们关于反向传
+播的初级的实现，最终改进网络学习的方式。
+
+本章涉及的技术包括：更好的代价函数的选择 ——
+\hyperref[sec:the_cross-entropy_cost_function]{交叉熵}代价函数；四种称
+为\hyperref[sec:overfitting_and_regularization]{``规范化''的方法}（L1 和 L2 规范
+化，dropout 和训练数据的人工扩展），这会让我们的网络在训练集之外的数据上更好地泛
+化；\hyperref[sec:weight_initialization]{更好的权重初始化方法}；还
+有\hyperref[sec:how_to_choose_a_neural_network's_hyper-parameters]{帮助选择好的超
+  参数的启发式想法}。同样我也会再给出一些简要的\hyperref[sec:other_techniques]{其
+  他技术介绍}。这些讨论之间的独立性比较大，所有你们可以随自己的意愿挑着看。另外我
+还会在代码中\hyperref[sec:handwriting_recognition_revisited_the_code]{实现}这些技
+术，使用他们来提高在\hyperref[ch:UsingNeuralNetsToRecognizeHandwrittenDigits]{第
+  一章}中的分类问题上的性能。
+
+当然，我们仅仅覆盖了大量已经在神经网络中研究发展出的技术的一点点内容。此处我们学
+习深度学习的观点是想要在一些已有的技术上入门的最佳策略其实是深入研究一小部分最重
+要那些的技术点。掌握了这些关键技术不仅仅对这些技术本身的理解很有用，而且会深化你
+对使用神经网络时会遇到哪些问题的理解。这会让你们做好在需要时快速掌握其他技术的充
+分准备。
+
+\section{交叉熵代价函数}
+\label{sec:the_cross-entropy_cost_function}
+
+我们大多数人不喜欢被指出错误。在开始学习弹奏钢琴不久后，我在一个听众前做了处女秀。
+我很紧张，开始时将八度音阶的曲段演奏得很低。我很困惑，因为不能继续演奏下去了，直
+到有个人指出了其中的错误。当时，我非常尴尬。不过，尽管不开心，我们却能够因为明显
+的犯错快速地学习到正确的东西。你应该相信下次我再演奏肯定会是正确的！相反，在我们
+的错误不是很好地定义的时候，学习的过程会变得更加缓慢。
+
+理想地，我们希望和期待神经网络可以从错误中快速地学习。在实践中，这种情况经常出现
+吗？为了回答这个问题，让我们看看一个小例子。这个例子包含一个只有一个输入的神经
+元：
+
+\begin{center}
+  \begin{tikzpicture}[inner sep=0pt,minimum size=10mm]
+    \node (neuron) [circle,draw] {};
+    \node (input) [left=2 of neuron] {};
+    \node (output) [right=1.5 of neuron] {};
+
+    \node [above] at (neuron.north) {\footnotesize bias $b$};
+
+    \draw[->] (input) to node [above] {\footnotesize weight $w$} (neuron);
+    \draw[->] (neuron) to (output);
+
+  \end{tikzpicture}
+\end{center}
+
+我们会训练这个神经元来做一件非常简单的事：让输入 $1$ 转化为
+$0$。当然，这很简单了，手工找到合适的权重和偏差就可以了，不需要什么学习算法。然而，
+看起来使用梯度下降的方式来学习权重和偏差是很有启发的。所以，我们来看看神经元如何
+学习。
+
+为了让这个例子更明确，我会首先将权重和偏差初始化为 $0.6$ 和 $0.9$。这些就是一般的
+开始学习的选择，并没有任何刻意的想法。一开始的神经元的输出是 $0.82$，所以这离我们
+的目标输出 $0.0$ 还差得很远。点击%
+\href{http://neuralnetworksanddeeplearning.com/chap3.html#the_cross-entropy_cost_function}{
+  网页上右下角的``运行''按钮}来看看神经元如何学习到让输出接近 $0.0$ 的。注意这并
+不是一个已经录好的动画，你的浏览器实际上是正在进行梯度的计算，然后使用梯度更新来
+对权重和偏差进行更新，并且展示结果。设置学习率 $\eta=0.15$ 进行学习一方面足够慢的
+让我们跟随学习的过程，另一方面也保证了学习的时间不会太久，几秒钟应该就足够了。代
+价函数是我们在第 1 章用到的二次函数，$C$。这里我也会给出准确的形式，所以不需要翻
+到前面查看定义了。
+
+% checkout https://github.com/mnielsen/nnadl_site/tree/gh-pages/js/saturation1.js to get the JS code
+% The macro \singlelearning is defined in plots.tex
+
+\begin{center}
+  \singlelearning{0.6}{0.9}{0.15}{0}
+\end{center}
+
+注意，你可以通过点击%
+\href{http://neuralnetworksanddeeplearning.com/chap3.html#the_cross-entropy_cost_function}{
+  网页上的``Run''按钮}执行训练若干次。
+
+\begin{center}
+  \begin{tabular}{ll}
+    \singlelearning{0.6}{0.9}{0.15}{50} &  \singlelearning{0.6}{0.9}{0.15}{100}\\
+  \end{tabular}
+  \begin{tabular}{ll}
+    \singlelearning{0.6}{0.9}{0.15}{150} & \singlelearning{0.6}{0.9}{0.15}{200}\\
+  \end{tabular}
+  \begin{tabular}{ll}
+    \singlelearning{0.6}{0.9}{0.15}{250} & \singlelearning{0.6}{0.9}{0.15}{300}
+  \end{tabular}
+\end{center}
+
+正如你所见，神经元快速地学到了使得代价函数下降的权重和偏差，给出了最终的输出
+为 $0.09$。这虽然不是我们的目标输出 $0.0$，但是已经挺好了。假设我们现在将初始权重
+和偏差都设置为 $2.0$。此时初始输出为 $0.98$，这是和目标值的差距相当大的。现在看看
+神经元学习的过程。
+
+\begin{center}
+  \singlelearning{2.0}{2.0}{0.15}{0}
+\end{center}
+
+点击%
+\href{http://neuralnetworksanddeeplearning.com/chap3.html#the_cross-entropy_cost_function}{
+  网页上的``Run''按钮}：
+
+\begin{center}
+  \begin{tabular}{ll}
+    \singlelearning{2.0}{2.0}{0.15}{50} &  \singlelearning{2.0}{2.0}{0.15}{100}\\
+  \end{tabular}
+  \begin{tabular}{ll}
+    \singlelearning{2.0}{2.0}{0.15}{150} & \singlelearning{2.0}{2.0}{0.15}{200}\\
+  \end{tabular}
+  \begin{tabular}{ll}
+    \singlelearning{2.0}{2.0}{0.15}{250} & \singlelearning{2.0}{2.0}{0.15}{300}
+  \end{tabular}
+\end{center}
+
+虽然这个例子使用的了同样的学习速率（$\eta=0.15$），我们可以看到刚开始的学习速度是
+比较缓慢的。对前 $150$ 左右的学习次数，权重和偏差并没有发生太大的变化。随后学习速
+度加快，与上一个例子中类似了，神经网络的输出也迅速接近 $0.0$。
+
+这种行为看起来和人类学习行为差异很大。正如我在此节开头所说，我们通常是在犯错比较
+明显的时候学习的速度最快。但是我们已经看到了人工神经元在其犯错较大的情况下其实学
+习很有难度。而且，这种现象不仅仅是在这个小例子中出现，也会再更加一般的神经网络中
+出现。为何学习如此缓慢？我们能够找到缓解这种情况的方法么？
+
+为了理解这个问题的源头，想想神经元是按照偏导数（ $\partial C/\partial
+w$ 和$\partial C/\partial b$ ）和学习速率（ $\eta$ ）的乘积来改变权重和偏差的。所
+以，我们在说``学习缓慢''时，实际上就是说这些偏导数很小。理解他们为何这么小就是我
+们面临的挑战。为了理解这些，让我们计算偏导数看看。我们一直在用的是二次代价函数，
+定义如下
+
+\begin{equation}
+  C = \frac{(y-a)^2}{2}
+\label{eq:54}\tag{54}
+\end{equation}
+
+其中 $a$ 是神经元的输出，训练输入为 $x=1$，$y=0$ 则是目标输出。显式地使用权重和偏
+差来表达这个，我们有 $a=\sigma(z)$，其中 $z=wx+b$。使用链式法则来求偏导数就有：
+
+\begin{align} 
+  \frac{\partial C}{\partial w} = & (a-y)\sigma'(z) x = a \sigma'(z)\label{eq:55}\tag{55}\\  
+  \frac{\partial C}{\partial b} = & (a-y)\sigma'(z) = a \sigma'(z)\label{eq:56}\tag{56}
+\end{align}
+
+其中我已经将 $x=1$ 和 $y=0$ 代入了。为了理解这些表达式的行为，让我们仔细
+看 $\sigma'(z)$ 这一项。首先回忆一下 $\sigma$ 函数图像：
+\begin{center}
+  \begin{tikzpicture}
+
+    \draw (-5,0) -- (5,0);
+    \foreach \x in {-4, -3, -2, -1, 0, 1, 2, 3, 4}
+    \draw (\x, 0) -- (\x, -0.1) node[below]{$\x$};
+    \draw (-5, 0) -- (-5, -0.1);
+    \draw (5, 0) -- (5, -0.1);
+
+    \draw (-5,0) -- (-5,5);
+    \foreach \y in {0.0, 0.2, 0.4, 0.6, 0.8, 1.0}
+    \draw (-5, \y * 5) -- (-5-0.1, \y * 5) node[left]{$\y$};
+
+    \draw (0, -0.5) node[below] {Z};
+    \draw (0, 5) node[above] {S型函数};
+
+    \draw[blue,thick,domain=-5:5] plot (\x, {5 * (1/(1 + exp(-\x)))});
+    \label{fig:sigmoid_graph2}
+  \end{tikzpicture}
+\end{center}
+
+我们可以从这幅图看出，当神经元的输出接近 $1$ 的时候，曲线变得相当平，所
+以 $\sigma'(z)$ 就很小了。方程~\eqref{eq:55} 和~\eqref{eq:56} 也告诉我
+们 $\partial C/\partial w$ 和 $\partial C/\partial b$ 会非常小。这其实就是学习缓
+慢的原因所在。而且，我们后面也会提到，这种学习速度下降的原因实际上也是更加一般的
+神经网络学习缓慢的原因，并不仅仅是在这个特例中特有的。
+
+\section{引入交叉熵代价函数}
+\label{sec:introducing_the_cross-entropy_cost_function}
+
+那么我们如何解决这个问题呢？研究表明，我们可以通过使用交叉熵代价函数来替换二次代
+价函数。为了理解什么是交叉熵，我们稍微改变一下之前的简单例子。假设，我们现在要训
+练一个包含若干输入变量的的神经元，$x_1, x_2, \ldots$ 对应的权重为 $w_1, w_2,
+\ldots$ 和偏差，$b$：
+
+\begin{center}
+  \begin{tikzpicture}[inner sep=0pt,minimum size=10mm]
+    \node (neuron) [circle,draw] {\footnotesize $b$};
+    \node (x2) [left=1.5 of neuron] {\footnotesize $x_2$};
+    \node (x1) [left=1.5 of neuron,yshift=1cm] {\footnotesize $x_1$};
+    \node (x3) [left=1.5 of neuron,yshift=-1cm] {\footnotesize $x_3$};
+    \node (output) [right=of neuron] {\footnotesize $a = \sigma(z)$};
+
+    \draw[->] (x1) to node [above,yshift=-3.5mm] {\footnotesize $w_1$} (neuron);
+    \draw[->] (x2) to node [above,yshift=-3.5mm] {\footnotesize $w_2$} (neuron);
+    \draw[->] (x3) to node [above,yshift=-3.5mm] {\footnotesize $w_3$} (neuron);
+    \draw[->] (neuron) to (output);
+
+  \end{tikzpicture}
+\end{center}
+
+待续...
+
+%\section{过匹配和规范化}
+%\label{sec:overfitting_and_regularization}
+
+
+%\section{权重初始化}
+%\label{sec:weight_initialization}
+
+%\section{再看手写识别问题：代码}
+%\label{sec:handwriting_recognition_revisited_the_code}
+
+%\section{如何选择神经网络的超参数}
+%\label{sec:how_to_choose_a_neural_network's_hyper-parameters}
+
+%\section{其它技术}
+%\label{sec:other_techniques}

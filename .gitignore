@@ -1,0 +1,12 @@
+/*.pdf
+.texpadtmp
+/fonts/
+/*.log
+/*.aux
+/*.out
+/*.toc
+/auto/
+*.lb
+*.idx
+*.ind
+*.ilg

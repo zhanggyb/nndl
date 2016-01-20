@@ -1,0 +1,21 @@
+% file: faq.tex
+
+\chapter{Frequently Asked Questions}
+
+\begin{center}
+  \begin{tikzpicture}[
+    inner sep=0pt,
+    minimum size=10mm,
+    background rectangle/.style={
+      draw=gray!25,
+      fill=gray!10,
+      rounded corners
+    },
+    show background rectangle]
+  
+  %\pgfkeys{/pgf/number format/showpos,precision=2,use period}
+  
+  \node(o) {\footnotesize Number: $\pgfmathprintnumber{0.012345}$};
+    
+  \end{tikzpicture}
+\end{center}
