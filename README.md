@@ -3,8 +3,8 @@ Another Chinese Translation of Neural Networks and Deep Learning
 
 This is another (work in progress) Chinese translation of Michael Nielsen's
 [Neural Networks and Deep Learning](http://neuralnetworksanddeeplearning.com/),
-which is originally my learning notes of this free online book. It's written in
-LaTeX for better look and cross-reference of math equations and plots. And I
+originally my learning notes of this free online book. It's written in
+LaTeX for better look and cross-referencing of math equations and plots. And I
 borrowed some finished work from
 https://github.com/tigerneil/neural-networks-and-deep-learning-zh-cn.
 
@@ -15,8 +15,8 @@ system installed. You can download and install a TeX distribution for your
 platform from http://tug.org.
 
 It's recommended to install
-- [Tex Live 2015](http://tug.org/texlive/) or later for Linux
-- [MacTex 2015](http://tug.org/mactex/) or later for Mac OS X
+- [Tex Live](http://tug.org/texlive/) 2015 or later for Linux
+- [MacTex](http://tug.org/mactex/) 2015 or later for Mac OS X
 
 Also, please make sure you have these font packages installed: roboto,
 sourcecodepro, as these fonts are required in typesetting. You can install them

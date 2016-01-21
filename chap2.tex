@@ -151,10 +151,9 @@
   \end{tikzpicture}
 \end{center}
 
-有了这些表示， $l^{\rm th}$ 层的 $j^{\rm th}$ 个神经元的激活
+有了这些表示，$l^{\rm th}$ 层的 $j^{\rm th}$ 个神经元的激活
 值 $a^{l}_j$ 就和 $(l-1)^{\rm th}$ 层关联起来了（对比公式~\eqref{eq:4} 和上一章的
-讨论）。
-
+讨论）：
 \begin{equation}
   a^{l}_j = \sigma\left( \sum_k w^{l}_{jk} a^{l-1}_k + b^l_j \right)
   \label{eq:23}\tag{23}
@@ -173,7 +172,6 @@ $l$，定义一个偏差向量，$b^l$。你已经猜到这些如何工作了 �
 每个元素。我们使用 $\sigma(v)$ 表示这种按元素进行的函数作用。所以，$\sigma(v)$ 的
 每个元素其实满足 $\sigma(v)_j = \sigma(v_j)$。给个例子，如果我们的作用函数
 是 $f(x) = x^2$，那么向量化的 $f$ 的函数作用就起到下面的效果：
-
 \begin{equation}
   f\left(\left[ \begin{array}{c} 2 \\ 3 \end{array} \right] \right)
   = \left[ \begin{array}{c} f(2) \\ f(3) \end{array} \right]
@@ -184,7 +182,6 @@ $l$，定义一个偏差向量，$b^l$。你已经猜到这些如何工作了 �
 也就是说，向量化的 $f$ 仅仅是对向量的每个元素进行了平方运算。
 
 了解了这些表示，方程~\eqref{eq:23} 就可以写成下面的这种美妙而简洁的向量形式了：
-
 \begin{equation}
   a^{l} = \sigma(w^l a^{l-1}+b^l)
   \label{eq:25}\tag{25}
@@ -218,7 +215,6 @@ $\partial C / \partial b$。为了让反向传播可行，我们需要做出关�
 假设。在给出这两个假设之前，我们先看看具体的一个代价函数。我们会使用上一章使用的
 二次代价函数（参见方程~\eqref{eq:6}）。按照上一节给出的表示，二次代价函数有下列形
 式：
-
 \begin{equation}
   C = \frac{1}{2n} \sum_x \|y(x)-a^L(x)\|^2
   \label{eq:26}\tag{26}
@@ -291,7 +287,6 @@ C_x/\partial w$ 和 $\partial C_x/\partial b$。然后我们通过在所有训�
 
 例如，二次代价函数满足这个要求，因为对于一个单独的训练样本 $x$ 其二次代价函数可以
 写作：
-
 \begin{equation}
   C = \frac{1}{2} \|y-a^L\|^2 = \frac{1}{2} \sum_j (y_j-a^L_j)^2
   \label{eq:27}\tag{27}
@@ -485,7 +480,6 @@ z_j^l$ 的改变。
 \\
 \\
 \textbf{使用下一层的误差 $\delta^{l+1}$ 来表示当前层的误差 $\delta^l$：} 特别地，
-
 \begin{equation}
   \delta^l = ((w^{l+1})^T \delta^{l+1}) \odot \sigma'(z^l)
   \label{eq:bp2}\tag{BP2}
@@ -506,7 +500,6 @@ $\delta^{l+1}$。当我们应用转置的权重矩阵$(w^{l+1})^T$，我们可�
 \\
 \\
 \textbf{代价函数关于网络中任意偏差的改变率：} 就是
-
 \begin{equation}
   \frac{\partial C}{\partial b^l_j} = \delta^l_j
   \label{eq:bp3}\tag{BP3}
@@ -515,7 +508,6 @@ $\delta^{l+1}$。当我们应用转置的权重矩阵$(w^{l+1})^T$，我们可�
 这其实是，误差 $\delta^l_j$ 和偏导数值 $\partial C / \partial b^l_j$ \emph{完全一
   致}。这是很好的性质，因为 \eqref{eq:bp1} 和 \eqref{eq:bp2} 已经告诉我们如何计
 算 $\delta^l_j$。所以就可以将 \eqref{eq:bp3} 简记为
-
 \begin{equation}
   \frac{\partial C}{\partial b} = \delta
   \label{eq:31}\tag{31}
@@ -525,7 +517,6 @@ $\delta^{l+1}$。当我们应用转置的权重矩阵$(w^{l+1})^T$，我们可�
 \\
 \\
 \textbf{代价函数关于任何一个权重的改变率：} 特别地，
-
 \begin{equation}  
   \frac{\partial C}{\partial w^l_{jk}} = a^{l-1}_k \delta^l_j
   \label{eq:bp4}\tag{BP4}
@@ -534,7 +525,6 @@ $\delta^{l+1}$。当我们应用转置的权重矩阵$(w^{l+1})^T$，我们可�
 这告诉我们如何计算偏导数 $\partial C/\partial w_{jk}^l$，其
 中 $\delta^l$ 和 $a^{l-1}$ 这些量我们都已经知道如何计算了。方程也可以写成下面用更
 少下标的表示：
-
 \begin{equation}
   \frac{\partial
     C}{\partial w} = a_{\rm in} \delta_{\rm out}
@@ -645,14 +635,12 @@ $\delta^{l+1}$。当我们应用转置的权重矩阵$(w^{l+1})^T$，我们可�
 
 让我们从方程~\eqref{eq:bp1} 开始，它给出了输出误差 $\delta^L$ 的表达式。为了证明
 这个方程，回忆下定义：
-
 \begin{equation}
   \delta^L_j = \frac{\partial C}{\partial z^L_j}
 \label{eq:36}\tag{36}
 \end{equation}
 
 应用链式法则，我们可以就输出激活值的偏导数的形式重新表示上面的偏导数：
-
 \begin{equation}
   \delta^L_j = \sum_k \frac{\partial C}{\partial a^L_k} \frac{\partial a^L_k}{\partial z^L_j}
 \label{eq:37}\tag{37}
@@ -662,14 +650,12 @@ $\delta^{l+1}$。当我们应用转置的权重矩阵$(w^{l+1})^T$，我们可�
 激活值 $a^L_k$ 只依赖于当 $k=j$ 时第 $j^{\rm th}$ 个神经元的输入权重 $z^L_j$。所
 以当 $k \neq j$ 时 $\partial a^L_k / \partial z^L_j$ 消失了。结果我们可以简化上一
 个方程为：
-
 \begin{equation}
   \delta^L_j = \frac{\partial C}{\partial a^L_j} \frac{\partial a^L_j}{\partial z^L_j}
 \label{eq:38}\tag{38}
 \end{equation}
 
 回想下 $a^L_j = \sigma(z^L_j)$，右边的第二项可以写为 $\sigma'(z^L_j)$，方程变成：
-
 \begin{equation}
   \delta^L_j = \frac{\partial C}{\partial a^L_j} \sigma'(z^L_j)
 \label{eq:39}\tag{39}
@@ -681,7 +667,6 @@ $\delta^{l+1}$。当我们应用转置的权重矩阵$(w^{l+1})^T$，我们可�
 误差 $\delta^l$。为此，我们想要以 $\delta^{l+1}_k = \partial C / \partial
 z^{l+1}_k$ 的形式重写 $\delta^l_j = \partial C / \partial z^l_j$。我们可以用链式
 法则：
-
 \begin{align}
   \delta^l_j &= \frac{\partial C}{\partial z^l_j} \label{eq:40}\tag{40}\\
              &= \sum_k \frac{\partial C}{\partial z^{l+1}_k} \frac{\partial z^{l+1}_k}{\partial z^l_j} \label{eq:41}\tag{41}\\ 
@@ -690,21 +675,18 @@ z^{l+1}_k$ 的形式重写 $\delta^l_j = \partial C / \partial z^l_j$。我们�
 
 这里最后一行我们交换了右边的两项，并用 $\delta^{l+1}_k$ 的定义代入。为了对最后一
 行的第一项求值，注意：
-
 \begin{equation}
   z^{l+1}_k = \sum_j w^{l+1}_{kj} a^l_j +b^{l+1}_k = \sum_j w^{l+1}_{kj} \sigma(z^l_j) +b^{l+1}_k
 \label{eq:43}\tag{43}
 \end{equation}
 
 做微分，我们得到
-
 \begin{equation}
   \frac{\partial z^{l+1}_k}{\partial z^l_j} = w^{l+1}_{kj} \sigma'(z^l_j)
 \label{eq:44}\tag{44}
 \end{equation}
 
 把它代入~\eqref{eq:42} 我们得到
-
 \begin{equation}
   \delta^l_j = \sum_k w^{l+1}_{kj}  \delta^{l+1}_k \sigma'(z^l_j)
 \label{eq:45}\tag{45}
@@ -1188,7 +1170,6 @@ $\partial C/\partial w_j$，仅仅使用一次前向传播，加上一次后向�
 \end{center}
 
 所以代价函数 $\Delta C$ 改变和 $\Delta w_{jk}^l$ 就按照下面的公式关联起来了：
-
 \begin{equation}
   \Delta C \approx \frac{\partial C}{\partial w^l_{jk}} \Delta w^l_{jk}
   \label{eq:47}\tag{47}
@@ -1201,7 +1182,6 @@ w^l_{jk}$ 了。
 
 我们尝试一下这个方法。$\Delta w_{jk}^l$ 导致了在 $l^{th}$ 层 $j^{th}$ 神经元的激
 活值的变化 $\Delta a_j^l$。这个变化由下面的公式给出：
-
 \begin{equation} 
   \Delta a^l_j \approx \frac{\partial a^l_j}{\partial w^l_{jk}} \Delta w^l_{jk}
   \label{eq:48}\tag{48}
@@ -1240,7 +1220,7 @@ $\Delta a_j^l$ 的变化将会导致下一层 $(l+1)^{\rm th}$ 的\emph{所有}�
 
     \node (n0) [circle,draw,right=5 of m1] {};
     \node (n1) [circle,draw,right=5 of m2] {};
-	\coordinate (nc) at ($(n0)!0.5!(n1)$);
+	  \coordinate (nc) at ($(n0)!0.5!(n1)$);
     \node (c) [right=1.5 of nc] {$C$};
     \node(tn0) [left=0.1 of n0] {\footnotesize $\ldots$};
     \node(tn1) [left=0.1 of n1] {\footnotesize $\ldots$};
@@ -1267,7 +1247,6 @@ $\Delta a_j^l$ 的变化将会导致下一层 $(l+1)^{\rm th}$ 的\emph{所有}�
 \end{center}
 
 实际上，这会导致下面的变化：
-
 \begin{equation}
   \Delta a^{l+1}_q \approx \frac{\partial a^{l+1}_q}{\partial a^l_j} \Delta
   a^l_j
@@ -1275,7 +1254,6 @@ $\Delta a_j^l$ 的变化将会导致下一层 $(l+1)^{\rm th}$ 的\emph{所有}�
 \end{equation}
 
 将其代入方程~\eqref{eq:48}，我们得到：
-
 \begin{equation}
   \Delta a^{l+1}_q \approx \frac{\partial a^{l+1}_q}{\partial a^l_j}
   \frac{\partial a^l_j}{\partial w^l_{jk}} \Delta w^l_{jk}
@@ -1286,7 +1264,6 @@ $\Delta a_j^l$ 的变化将会导致下一层 $(l+1)^{\rm th}$ 的\emph{所有}�
 条从 $w_{jk}^l$ 到 $C$ 的路径，然后每个激活值的变化会导致下一层的激活值的变化，最
 终是输出层的代价的变化。假设激活值的序列如下 $a_j^l, a_q^{l+1},
 ...,a_n^{L-1},a_m^{L}$，那么结果的表达式就是
-
 \begin{equation}
   \Delta C \approx \frac{\partial C}{\partial a^L_m} 
   \frac{\partial a^L_m}{\partial a^{L-1}_n}
@@ -1301,7 +1278,6 @@ $\Delta a_j^l$ 的变化将会导致下一层 $(l+1)^{\rm th}$ 的\emph{所有}�
 值的变化。当然，整个网络中存在很多 $w_{jk}^l$ 可以传播而影响代价函数的路径，这里
 我们就看其中一条。为了计算 $C$ 的全部改变，我们就需要对所有可能的路径进行求和，
 即，
-
 \begin{equation} 
   \Delta C \approx \sum_{mnp\ldots q} \frac{\partial C}{\partial a^L_m}
   \frac{\partial a^L_m}{\partial a^{L-1}_n} \frac{\partial a^{L-1}_n}{\partial
@@ -1311,7 +1287,6 @@ $\Delta a_j^l$ 的变化将会导致下一层 $(l+1)^{\rm th}$ 的\emph{所有}�
 \end{equation}
 
 这里我们对路径中所有可能的中间神经元选择进行求和。对比 \eqref{eq:47} 我们有
-
 \begin{equation} 
   \frac{\partial C}{\partial w^l_{jk}} = \sum_{mnp\ldots q} \frac{\partial
     C}{\partial a^L_m} \frac{\partial a^L_m}{\partial a^{L-1}_n} \frac{\partial

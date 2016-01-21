@@ -24,7 +24,7 @@
 当然，我们仅仅覆盖了大量已经在神经网络中研究发展出的技术的一点点内容。此处我们学
 习深度学习的观点是想要在一些已有的技术上入门的最佳策略其实是深入研究一小部分最重
 要那些的技术点。掌握了这些关键技术不仅仅对这些技术本身的理解很有用，而且会深化你
-对使用神经网络时会遇到哪些问题的理解。这会让你们做好在需要时快速掌握其他技术的充
+对使用神经网络时会遇到哪些问题的理解。这会让你做好在需要时快速掌握其他技术的充
 分准备。
 
 \section{交叉熵代价函数}
@@ -60,27 +60,21 @@ $0$。当然，这很简单了，手工找到合适的权重和偏差就可以�
 学习。
 
 为了让这个例子更明确，我会首先将权重和偏差初始化为 $0.6$ 和 $0.9$。这些就是一般的
-开始学习的选择，并没有任何刻意的想法。一开始的神经元的输出是 $0.82$，所以这离我们
-的目标输出 $0.0$ 还差得很远。点击%
+开始学习的选择，并没有任何刻意的想法。一开始的神经元的输出是 $0.82$，所以这离我们的目标输出 $0.0$ 还差得很远。点击%
 \href{http://neuralnetworksanddeeplearning.com/chap3.html#the_cross-entropy_cost_function}{
   网页上右下角的``运行''按钮}来看看神经元如何学习到让输出接近 $0.0$ 的。注意这并
 不是一个已经录好的动画，你的浏览器实际上是正在进行梯度的计算，然后使用梯度更新来
 对权重和偏差进行更新，并且展示结果。设置学习率 $\eta=0.15$ 进行学习一方面足够慢的
 让我们跟随学习的过程，另一方面也保证了学习的时间不会太久，几秒钟应该就足够了。代
-价函数是我们在第 1 章用到的二次函数，$C$。这里我也会给出准确的形式，所以不需要翻
-到前面查看定义了。
-
+价函数是我们在第 1 章用到的二次函数，$C$。这里我也会给出准确的形式，所以不需要翻到前面查看定义了。注意，你可以通过点击%
+\href{http://neuralnetworksanddeeplearning.com/chap3.html#the_cross-entropy_cost_function}{
+  网页上的``Run''按钮}重复运行动画多次。
 % checkout https://github.com/mnielsen/nnadl_site/tree/gh-pages/js/saturation1.js to get the JS code
 % The macro \quadraticCostLearning is defined in plots.tex
-
 \begin{center}
   \quadraticCostLearning{0.6}{0.9}{0.15}{0}
 \end{center}
-
-注意，你可以通过点击%
-\href{http://neuralnetworksanddeeplearning.com/chap3.html#the_cross-entropy_cost_function}{
-  网页上的``Run''按钮}执行训练若干次。
-
+随着训练周期的增加，神经元的输出、权重、偏差和代价的变化如下面一系列图形所示：
 \begin{center}
   \begin{tabular}{ll}
     \quadraticCostLearning{0.6}{0.9}{0.15}{50} &  \quadraticCostLearning{0.6}{0.9}{0.15}{100}\\
@@ -97,15 +91,12 @@ $0$。当然，这很简单了，手工找到合适的权重和偏差就可以�
 为 $0.09$。这虽然不是我们的目标输出 $0.0$，但是已经挺好了。假设我们现在将初始权重
 和偏差都设置为 $2.0$。此时初始输出为 $0.98$，这是和目标值的差距相当大的。现在看看
 神经元学习的过程。
-
 \begin{center}
   \quadraticCostLearning{2.0}{2.0}{0.15}{0}
 \end{center}
-
 点击%
 \href{http://neuralnetworksanddeeplearning.com/chap3.html#the_cross-entropy_cost_function}{
-  网页上的``Run''按钮}：
-
+  网页上的``Run''按钮}，你将看到如下的一系列变化：
 \begin{center}
   \begin{tabular}{ll}
     \quadraticCostLearning{2.0}{2.0}{0.15}{50} &  \quadraticCostLearning{2.0}{2.0}{0.15}{100}\\
@@ -127,24 +118,25 @@ $0$。当然，这很简单了，手工找到合适的权重和偏差就可以�
 习很有难度。而且，这种现象不仅仅是在这个小例子中出现，也会在更加一般的神经网络中
 出现。为何学习如此缓慢？我们能够找到避免这种情况的方法吗？
 
-为了理解这个问题的源头，想想神经元是按照偏导数（ $\partial C/\partial
-w$ 和$\partial C/\partial b$ ）和学习速率（ $\eta$ ）的乘积来改变权重和偏差的。所
-以，我们在说``学习缓慢''时，实际上就是说这些偏导数很小。理解他们为何这么小就是我
-们面临的挑战。为了理解这些，让我们计算偏导数看看。我们一直在用的是二次代价函数，
-定义如下
+为了理解这个问题的源头，想想我们的神经元是通过改变权重和偏差，并以一个代价函数的
+偏导数（$\partial C/\partial w$ 和
+$\partial C/\partial b$）决定的速度学习。所以，我们在说``学习缓慢''时，实际上就是
+说这些偏导数很小。理解他们为何这么小就是我们面临的挑战。为了理解这些，让我们计算
+偏导数看看。我们一直在用的是方程~\eqref{eq:6} 表示的二次代价函数，定义如下
 \begin{equation}
   C = \frac{(y-a)^2}{2}
 \label{eq:54}\tag{54}
 \end{equation}
 
 其中 $a$ 是神经元的输出，训练输入为 $x=1$，$y=0$ 则是目标输出。显式地使用权重和偏
-差来表达这个，我们有 $a=\sigma(z)$，其中 $z=wx+b$。使用链式法则来求偏导数就有：
+差来表达这个，我们有 $a = \sigma(z)$，其中 $z = wx+b$。使用链式法则来求偏导数就
+有：
 \begin{align} 
   \frac{\partial C}{\partial w} &= (a-y)\sigma'(z) x = a \sigma'(z)\label{eq:55}\tag{55}\\  
   \frac{\partial C}{\partial b} &= (a-y)\sigma'(z) = a \sigma'(z)\label{eq:56}\tag{56}
 \end{align}
 
-其中我已经将 $x=1$ 和 $y=0$ 代入了。为了理解这些表达式的行为，让我们仔细
+其中我已经将 $x = 1$ 和 $y = 0$ 代入了。为了理解这些表达式的行为，让我们仔细
 看 $\sigma'(z)$ 这一项。首先回忆一下 $\sigma$ 函数图像：
 \begin{center}
   \begin{tikzpicture}
@@ -282,27 +274,39 @@ analogous equation for the quadratic cost, Equation~\eqref{eq:56}.
 
 让我们重回最原初的例子，来看看换成了交叉熵之后的学习过程。现在仍然按照前面的参数
 配置来初始化网络，开始权重为 $0.6$，而偏差为 $0.9$。
-
 \begin{center}
-  \crossEntropyCostLearning{0.6}{0.9}{0.15}{0}
+  \crossEntropyCostLearning{0.6}{0.9}{0.005}{0}
 \end{center}
-
 点击“Run”按钮看看在换成交叉熵之后网络的学习情况，你将看到如下变化的曲线：
-
-%\begin{center}
-%  \begin{tabular}{ll}
-%    \crossEntropyCostLearning{0.6}{0.9}{0.15}{50} &  \crossEntropyCostLearning{0.6}{0.9}{0.15}{100}\\
-%  \end{tabular}
-%  \begin{tabular}{ll}
-%    \crossEntropyCostLearning{0.6}{0.9}{0.15}{150} & \crossEntropyCostLearning{0.6}{0.9}{0.15}{200}\\
-%  \end{tabular}
-%  \begin{tabular}{ll}
-%    \crossEntropyCostLearning{0.6}{0.9}{0.15}{250} & \crossEntropyCostLearning{0.6}{0.9}{0.15}{300}
-%  \end{tabular}
-%\end{center}
+\begin{center}
+  \begin{tabular}{ll}
+    \crossEntropyCostLearning{0.6}{0.9}{0.005}{50} &  \crossEntropyCostLearning{0.6}{0.9}{0.005}{100}\\
+  \end{tabular}
+  \begin{tabular}{ll}
+    \crossEntropyCostLearning{0.6}{0.9}{0.005}{150} & \crossEntropyCostLearning{0.6}{0.9}{0.005}{200}\\
+  \end{tabular}
+  \begin{tabular}{ll}
+    \crossEntropyCostLearning{0.6}{0.9}{0.005}{250} & \crossEntropyCostLearning{0.6}{0.9}{0.005}{300}
+  \end{tabular}
+\end{center}
 
 毫不奇怪，在这个例子中，神经元学习得相当出色，跟之前差不多。现在我们再看看之前出
 问题的那个例子，权重和偏差都初始化为 $2.0$：
+\begin{center}
+  \crossEntropyCostLearning{2.0}{2.0}{0.005}{0}
+\end{center}
+点击“Run”按钮，你将看到如下变化的曲线：
+\begin{center}
+  \begin{tabular}{ll}
+    \crossEntropyCostLearning{2.0}{2.0}{0.005}{50} &  \crossEntropyCostLearning{2.0}{2.0}{0.005}{100}\\
+  \end{tabular}
+  \begin{tabular}{ll}
+    \crossEntropyCostLearning{2.0}{2.0}{0.005}{150} & \crossEntropyCostLearning{2.0}{2.0}{0.005}{200}\\
+  \end{tabular}
+  \begin{tabular}{ll}
+    \crossEntropyCostLearning{2.0}{0.9}{0.005}{250} & \crossEntropyCostLearning{2.0}{2.0}{0.005}{300}
+  \end{tabular}
+\end{center}
 
 成功了！这次神经元的学习速度相当快，跟我们预期的那样。如果你观测的足够仔细，你可
 以发现代价函数曲线要比二次代价函数训练前面部分要陡很多。正是交叉熵带来的快速下降

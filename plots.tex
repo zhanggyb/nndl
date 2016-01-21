@@ -56,7 +56,7 @@
           \w = \w - \e * \dt;
           \b = \b - \e * \dt;
           \y = quad_cost(\a);
-          {\draw[blue,thick] (\xo/100,\yo*5) -- (\x/100,\y*5);};
+          {\draw[blue,thick] (\xo/100,\yo*5) -- (\x/100,\y*5);}; % scale y with 5 times
           \xo = \xo + 1;
           \yo = \y;
         };
@@ -140,7 +140,7 @@
           \w = \w - \e * \dt;
           \b = \b - \e * \dt;
           \y = cross_entropy_cost(\a);
-          {\draw[blue,thick] (\xo/100,\yo*5) -- (\x/100,\y*5);};
+          {\draw[blue,thick] (\xo/100,\yo/2) -- (\x/100,\y/2);}; % scale y to 1/2
           \xo = \xo + 1;
           \yo = \y;
         };
