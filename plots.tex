@@ -1,7 +1,8 @@
 % file: plots.tex
 % used for plotting learning curve in chapter 3
 
-\newcommand{\singlelearning}[4]{
+% learn cost curve of a single sigmoid neutron with quadratic cost function
+\newcommand{\quadraticCostLearning}[4]{
   \begin{tikzpicture}[
     inner sep=0pt,
     minimum size=10mm,
@@ -55,6 +56,90 @@
           \w = \w - \e * \dt;
           \b = \b - \e * \dt;
           \y = quad_cost(\a);
+          {\draw[blue,thick] (\xo/100,\yo*5) -- (\x/100,\y*5);};
+          \xo = \xo + 1;
+          \yo = \y;
+        };
+        {\draw (\x/100,0) -- node[below] {\footnotesize $\x$} (\x/100,-0.1);};
+      };
+      {
+        \draw[->] (i) to node (w) [below] {
+          \scriptsize
+          \pgfkeys{/pgf/number format/.cd,showpos,fixed,fixed zerofill,precision=2,use period}
+          $w = \pgfmathprintnumber{\w}$
+        } (n);
+        \node(b) [below,xshift=5mm] at (n.south) {
+          \scriptsize
+          \pgfkeys{/pgf/number format/.cd,showpos,fixed,fixed zerofill,precision=2,use period}
+          $b = \pgfmathprintnumber{\b}$
+        };
+        \node(o) [right=of n] {
+          \footnotesize
+          \pgfkeys{/pgf/number format/.cd,fixed,fixed zerofill,precision=2,use period}
+          Output: $\pgfmathprintnumber{\a}$
+        };
+        \draw[->] (n) to (o);
+      };
+    }
+
+  \end{tikzpicture}%
+}
+
+% learn cost curve of a single sigmoid neutron with cross entropy cost function
+\newcommand{\crossEntropyCostLearning}[4]{
+  \begin{tikzpicture}[
+    inner sep=0pt,
+    minimum size=10mm,
+    background rectangle/.style={
+      draw=gray!25,
+      fill=gray!10,
+      rounded corners
+    },
+    show background rectangle]
+
+    \coordinate (origin) at (0,0);
+    \coordinate(x) at (3.5,0);
+    \coordinate(y) at (0,2.5);
+
+    \node(i) [above=4 of origin,xshift=-5mm] {\footnotesize Input: $1.0$};
+    \node(n) [right=2 of i,circle,draw] {};
+    \node(epoch) [right=of x,xshift=-1cm] {\footnotesize Epoch};
+    \node(cost) [left=of y,xshift=1cm] {\footnotesize Cost};
+
+    \draw[->] (origin) to (x);
+    \draw[->] (origin) to (y);
+
+    %\draw[blue,thick,domain=0:2] plot (\x, {(\x*\x / 2)});
+
+    \tikzmath{                  % Do not contain blank line
+      function sigmoid(\z) {
+        return 1/(1 + exp(- \z));
+      };
+      function sigmoid_neutron(\w,\b) {
+        return sigmoid(\w + \b);
+      };
+      function cross_entropy_cost(\a) {         % the quadratic cost function
+        return -ln(1 - \a);
+      };
+      function cross_entropy_cost_derivative(\a) {
+        return 1/(1 - \a);
+      };
+      \w = #1;                % start weight
+      \b = #2;                % start bias
+      \e = #3;                % eta, learning rate
+      \y = 0;
+      \a = sigmoid_neutron(\w,\b);
+      \dt = cross_entropy_cost_derivative(\a);
+      \xo = 0;
+      \yo = cross_entropy_cost(\a);
+      integer \x;
+      if #4 > 0 then {
+        for \x in {1,...,#4}{  % epoches
+          \a = sigmoid_neutron(\w,\b);
+          \dt = cross_entropy_cost_derivative(\a);
+          \w = \w - \e * \dt;
+          \b = \b - \e * \dt;
+          \y = cross_entropy_cost(\a);
           {\draw[blue,thick] (\xo/100,\yo*5) -- (\x/100,\y*5);};
           \xo = \xo + 1;
           \yo = \y;

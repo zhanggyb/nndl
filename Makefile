@@ -10,7 +10,7 @@ RM = rm -rf
 all: ebook
 
 ebook: nndl-ebook.tex
-	$(MKIDX) $(basename $<)
+	$(MKIDX) $<
 	$(TEX) $<
 	$(TEX) $<
 

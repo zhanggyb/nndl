@@ -683,9 +683,9 @@ z^{l+1}_k$ 的形式重写 $\delta^l_j = \partial C / \partial z^l_j$。我们�
 法则：
 
 \begin{align}
-  \label{eq:40}\delta^l_j = & \frac{\partial C}{\partial z^l_j} \tag{40}\\
-  \label{eq:41}           = & \sum_k \frac{\partial C}{\partial z^{l+1}_k} \frac{\partial z^{l+1}_k}{\partial z^l_j} \tag{41}\\ 
-  \label{eq:42}           = & \sum_k \frac{\partial z^{l+1}_k}{\partial z^l_j} \delta^{l+1}_k\tag{42}
+  \delta^l_j &= \frac{\partial C}{\partial z^l_j} \label{eq:40}\tag{40}\\
+             &= \sum_k \frac{\partial C}{\partial z^{l+1}_k} \frac{\partial z^{l+1}_k}{\partial z^l_j} \label{eq:41}\tag{41}\\ 
+             &= \sum_k \frac{\partial z^{l+1}_k}{\partial z^l_j} \delta^{l+1}_k \label{eq:42}\tag{42}
 \end{align}
 
 这里最后一行我们交换了右边的两项，并用 $\delta^{l+1}_k$ 的定义代入。为了对最后一
@@ -1424,8 +1424,8 @@ $\partial a_j^l/\partial w_{jk}^l$。路径的变化率因子其实就是这条�
 方。然后你进行一些简化，得到稍微简短的证明，写下来。然后又能发现一些更加明显的简
 化。进过几次迭代证明改进后，你会发现最终的简单却看起来奇特的证明\footnote{需要一
   个巧妙的步骤。在方程~\eqref{eq:53} 中的中间变量是类似 $a_q^{l+1}$ 的激活值。巧
-  妙之处是改用加权的输入，例如
-  $z^{l+1}_q$，作为中间变量。如果你想不到这个主意，而是继续使用激活值$a_q^{l+1}$，
-  你得到的证明最后会会比本章前面给出的证明稍微复杂些。}，因为你移除了很多构造的细
-节了！老实告诉你，其实最早的证明的出现也不是太过神秘的事情。因为那只是很多对简化
-证明的艰辛工作的积累。
+  妙之处是改用加权的输入，例如 $z^{l+1}_q$，作为中间变量。如果你想不到这个主意，
+  而是继续使用激活值
+  $a_q^{l+1}$，你得到的证明最后会比本章前面给出的证明稍微复杂些。}，因为你移除了
+很多构造的细节了！老实告诉你，其实最早的证明的出现也不是太过神秘的事情。因为那只
+是很多对简化证明的艰辛工作的积累。
