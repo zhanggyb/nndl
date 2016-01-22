@@ -10,9 +10,9 @@ RM = rm -rf
 all: ebook
 
 ebook: nndl-ebook.tex
-	$(MKIDX) $<
-	$(TEX) $<
-	$(TEX) $<
+	$(TEX) $(basename $<)
+	$(MKIDX) $(basename $<)
+	$(TEX) $(basename $<)
 
 clean:
 	$(RM) *.pdf
@@ -20,3 +20,6 @@ clean:
 	$(RM) *.log
 	$(RM) *.out
 	$(RM) *.toc
+	$(RM) *.idx
+	$(RM) *.ilg
+	$(RM) *.ind
