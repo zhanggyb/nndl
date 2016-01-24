@@ -37,15 +37,14 @@
 \section{热身：神经网络中使用矩阵快速计算输出的方法}
 \label{sec:warm_up}
 
-在讨论反向传播前，我们先熟悉一下基于矩阵的算法来计算网络的输出。事实上，我们
-在\hyperref[sec:implementing_our_network_to_classify_digits]{上一章的最后}已经能
-够看到这个算法了，但是我在那里很快地略过了，所以现在让我们仔细讨论一下。特别地，
-这样能够用相似的场景帮助我们熟悉在反向传播中使用的矩阵表示。
+在讨论反向传播前，我们先熟悉一下基于矩阵的算法来计算网络的输出。事实上，我们在%
+\hyperref[sec:implementing_our_network_to_classify_digits]{上一章的最后}已经能够
+看到这个算法了，但是我在那里很快地略过了，所以现在让我们仔细讨论一下。特别地，这
+样能够用相似的场景帮助我们熟悉在反向传播中使用的矩阵表示。
 
 我们首先给出网络中权重的清晰定义。我们使用 $w^l_{jk}$ 表示从 $(l-1)^{\rm th}$ 层
 的 $k^{\rm th}$ 个神经元到 $l^{\rm th}$ 层的 $j^{\rm th}$ 个神经元的链接上的权重。
-例如，下图给出了第二隐藏层的第四个神经元到第三隐藏层的第二个神经元的链接上的权
-重：
+例如，下图给出了网络中第二层的第四个神经元到第三层的第二个神经元的链接上的权重：
 
 \begin{center}
   \begin{tikzpicture}
@@ -80,8 +79,8 @@
     
     \node(desc) [right=0.5 of rc] {
       \begin{tabular}{l}
-        {\footnotesize $w^l_{jk}$ 是从 $(l - 1)^{\rm th}$ 层的 $k^{\rm th}$ 个神经元}\\
-        {\footnotesize 到 $l^{\rm th}$ 层的 $j^{\rm th}$ 个神经元的链接上的权重}\\
+        {\footnotesize $w^l_{jk}$ 是从 $(l - 1)^{\rm th}$ 层的第 $k^{\rm th}$ 个神经元}\\
+        {\footnotesize 到 $l^{\rm th}$ 层的第 $j^{\rm th}$ 个神经元的链接上的权重}\\
       \end{tabular}
     };
     
@@ -106,9 +105,9 @@
 便也很自然。奇怪的一点其实是下标 $j$ 和 $k$ 的顺序。你可能觉得反过来更加合理。但
 我接下来会告诉你为什么要这样做。
 
-我们对网络的偏差和激活值也会使用类似的表示。显式地，我们使用 $b^l_j$ 表示
-在 $l^{\rm th}$ 层 $j^{\rm th}$ 个神经元的偏差，使用 $a^l_j$ 表示 $l^{\rm
-  th}$ 层 $j^{\rm th}$ 个神经元的激活值。下面的图清楚地解释了这样表示的含义：
+我们对网络的偏差和激活值也会使用类似的表示。显式地，我们使用 $b^l_j$ 表示在
+$l^{\rm th}$ 层第 $j^{\rm th}$ 个神经元的偏差，使用 $a^l_j$ 表示 $l^{\rm th}$ 层
+第 $j^{\rm th}$ 个神经元的激活值。下面的图清楚地解释了这样表示的含义：
 
 \begin{center}
   \begin{tikzpicture}
@@ -151,53 +150,52 @@
   \end{tikzpicture}
 \end{center}
 
-有了这些表示，$l^{\rm th}$ 层的 $j^{\rm th}$ 个神经元的激活
-值 $a^{l}_j$ 就和 $(l-1)^{\rm th}$ 层关联起来了（对比公式~\eqref{eq:4} 和上一章的
-讨论）：
+有了这些表示，$l^{\rm th}$ 层的第 $j^{\rm th}$ 个神经元的激活值 $a^{l}_j$ 就和
+$(l-1)^{\rm th}$ 层的激活值通过方程关联起来了（对比公式~\eqref{eq:4} 和上一章的
+  讨论）：
 \begin{equation}
   a^{l}_j = \sigma\left( \sum_k w^{l}_{jk} a^{l-1}_k + b^l_j \right)
   \label{eq:23}\tag{23}
 \end{equation}
 
-其中求和是在 $(l-1)^{\rm th}$ 层的所有 $k$ 个神经元上进行的。为了用矩阵的形式重写
-这个表达式，我们对每一层 $l$ 都定义一个\emph{权重矩阵} $w^l$ \index{权重矩阵}。权
-重矩阵 $w^l$ 的元素正是连接到 $l^{\rm th}$ 层神经元的权重，更确切地说，
-在 $j^{\rm th}$ 行第 $k^{\rm th}$ 列的元素是 $w^l_{jk}$。类似的，对每一层
-$l$，定义一个偏差向量，$b^l$。你已经猜到这些如何工作了 —— 偏差向量的每个元素其实
-就是前面给出的 $b^l_j$，每个元素对应于 $l^{\rm th}$ 层的每个神经元。最后，我们定
-义激活向量 $a^l$，其元素是那些激活值 $a^l_j$。
+其中求和是在 $(l-1)^{\rm th}$ 层的所有 $k$ 个神经元上进行的。为了用矩阵的形式重
+写这个表达式，我们对每一层 $l$ 都定义一个\emph{权重矩阵} $w^l$ \index{权重矩阵}。
+权重矩阵 $w^l$ 的元素正是连接到 $l^{\rm th}$ 层神经元的权重，更确切地说，在第
+$j^{\rm th}$ 行第 $k^{\rm th}$ 列的元素是 $w^l_{jk}$。类似的，对每一层$l$，定义
+一个\emph{偏差向量}\index{偏差向量}，$b^l$。你已经猜到这些如何工作了 —— 偏差向量
+的每个元素其实就是前面给出的 $b^l_j$，每个元素对应于 $l^{\rm th}$ 层的每个神经元。
+最后，我们定义激活向量 $a^l$，其元素是那些激活值 $a^l_j$。
 
-最后我们需要引入向量化函数（如 $\sigma$）来按照矩阵形式重写公式~\eqref{eq:23}。在
-上一章，我们其实已经碰到向量化了，其含义就是作用函数（如 $\sigma$）到向量 $v$中的
-每个元素。我们使用 $\sigma(v)$ 表示这种按元素进行的函数作用。所以，$\sigma(v)$ 的
-每个元素其实满足 $\sigma(v)_j = \sigma(v_j)$。给个例子，如果我们的作用函数
-是 $f(x) = x^2$，那么向量化的 $f$ 的函数作用就起到下面的效果：
+最后我们需要引入向量化函数（如 $\sigma$）来按照矩阵形式重写公式~\eqref{eq:23}。
+在上一章，我们其实已经碰到向量化了，其含义就是作用函数（如 $\sigma$）到向量 $v$
+中的每个元素。我们使用 $\sigma(v)$ 表示这种按元素进行的函数作用。所以，
+$\sigma(v)$ 的每个元素其实满足 $\sigma(v)_j = \sigma(v_j)$。给个例子，如果我们的
+作用函数是 $f(x) = x^2$，那么向量化的 $f$ 的函数作用就起到下面的效果：
 \begin{equation}
   f\left(\left[ \begin{array}{c} 2 \\ 3 \end{array} \right] \right)
   = \left[ \begin{array}{c} f(2) \\ f(3) \end{array} \right]
   = \left[ \begin{array}{c} 4 \\ 9 \end{array} \right]
 \label{eq:24}\tag{24}
 \end{equation}
-
 也就是说，向量化的 $f$ 仅仅是对向量的每个元素进行了平方运算。
 
-了解了这些表示，方程~\eqref{eq:23} 就可以写成下面的这种美妙而简洁的向量形式了：
+了解了这些表示，方程~\eqref{eq:23} 就可以写成下面这种美妙而简洁的向量形式了：
 \begin{equation}
   a^{l} = \sigma(w^l a^{l-1}+b^l)
   \label{eq:25}\tag{25}
 \end{equation}
 
-这个表达式给出了一种更加全局的思考每层的激活值和前一层的关联方式：我们仅仅用权重
-矩阵作用在激活值上，然后加上一个偏差向量，最后作用 $\sigma$ 函数\footnote{其实，
-  这就是让我们使用之前的矩阵下标 $w_{jk}^l$ 表示的初因。如果我们使用 $j$ 来索引输
-  入神经元，$k$ 索引输出神经元，那么在方程~\eqref{eq:25} 中我们需要将这里的矩阵换
-  做其转置。这是一个小的改变，但是令人困惑，这会使得我们无法自然地讲出（思
-  考）``应用权重矩阵到激活值上''这样的简单的表达。}。这种全局的观点相比神经元层面
-的观点常常更加简明（没有更多的索引下标了！）。把它看做是在保留清晰认识的前提下逃
-离下标困境的方法。在实践中，表达式同样很有用，因为大多数矩阵库提供了实现矩阵乘法、
-向量加法和向量化的快速方法。实际上，上一章
-的\hyperref[sec:implementing_our_network_to_classify_digits]{代码}其实已经隐式使
-用了这种表达式来计算网络行为。
+这个表达式给出了一种更加全局的思考每层的激活值和前一层激活值的关联方式：我们仅仅
+用权重矩阵作用在激活值上，然后加上一个偏差向量，最后作用 $\sigma$ 函数
+\footnote{其实，这就是让我们使用之前的矩阵下标 $w_{jk}^l$ 表示的初因。如果我们使
+  用 $j$ 来索引输入神经元，$k$ 索引输出神经元，那么在方程~\eqref{eq:25} 中我们需
+  要将这里的矩阵换做其转置。这是一个小的改变，但是令人困惑，这会使得我们无法自然
+  地讲出（思考）``应用权重矩阵到激活值上''这样的简单的表达。}。这种全局的观点相
+比神经元层面的观点常常更加简明（没有更多的索引下标了！）。把它看做是在保留清晰认
+识的前提下逃离下标困境的方法。在实践中，表达式同样很有用，因为大多数矩阵库提供了
+实现矩阵乘法、向量加法和向量化的快速方法。实际上，上一章的%
+\hyperref[sec:implementing_our_network_to_classify_digits]{代码}其实已经隐式使用
+了这种表达式来计算网络行为。
 
 在使用方程~\eqref{eq:25} 计算 $a^l$ 的过程中，我们计算了中间量
 $z^l \equiv w^l a^{l-1}+b^l$。这个量其实是非常有用的：我们称 $z^l$ 为 $l$ 层神经
@@ -210,25 +208,23 @@ $z^l \equiv w^l a^{l-1}+b^l$。这个量其实是非常有用的：我们称 $z^
 \label{sec:TwoAssumptionsWeNeedAboutTheCostFunction}
 
 反向传播的目标是计算代价函数 $C$ 分别关于 $w$ 和 $b$ 的偏导数 $\partial
-C/\partial w$ 和
-$\partial C / \partial b$。为了让反向传播可行，我们需要做出关于代价函数的两个主要
-假设。在给出这两个假设之前，我们先看看具体的一个代价函数。我们会使用上一章使用的
-二次代价函数（参见方程~\eqref{eq:6}）。按照上一节给出的表示，二次代价函数有下列形
-式：
+C/\partial w$ 和 $\partial C / \partial b$。为了让反向传播可行，我们需要做出关于
+代价函数的两个主要假设。在给出这两个假设之前，我们先看看具体的一个代价函数。我们
+会使用上一章使用的二次代价函数（参见方程~\eqref{eq:6}）。按照上一节给出的表示，
+二次代价函数有下列形式：
 \begin{equation}
   C = \frac{1}{2n} \sum_x \|y(x)-a^L(x)\|^2
   \label{eq:26}\tag{26}
 \end{equation}
+其中 $n$ 是训练样本的总数；求和运算遍历了每个训练样本 $x$；$y = y(x)$ 是对应的目
+标输出；$L$ 表示网络的层数；$a^L = a^L(x)$ 是当输入是 $x$ 时的网络输出的激活值向
+量。
 
-其中 $n$ 是训练样本的总数；求和是在所有的训练样本 $x$ 上进行的；$y = y(x)$ 是对应
-的目标输出；$L$ 表示网络的层数；$a^L = a^L(x)$ 是当输入是 $x$ 时的网络输出的激活
-值向量。
-
-好了，为了应用反向传播，我们需要对代价函数做出什么样的前提假设呢？第一个假设就是
-代价函数可以被写成一个在每个训练样本 $x$ 上的代价函数 $C_x$ 的均
-值 $C=\frac{1}{n} \sum_x C_x$。这是关于二次代价函数的例子，其中对每个独立的训练样
-本其代价是 $C_x = \frac{1}{2} ||y-a^L||^2$。这个假设对书中提到的其他任何一个代价
-函数也都是必须满足的。
+好了，为了应用反向传播，我们需要对代价函数 $C$ 做出什么样的前提假设呢？第一个假
+设就是代价函数可以被写成一个在每个训练样本 $x$ 上的代价函数 $C_x$ 的均值
+$C=\frac{1}{n} \sum_x C_x$。这是关于二次代价函数的例子，其中对每个独立的训练样本
+其代价是 $C_x = \frac{1}{2} ||y-a^L||^2$。这个假设对书中提到的其他任何一个代价函
+数也都是必须满足的。
 
 需要这个假设的原因是反向传播实际上是对一个独立的训练样本计算了 $\partial
 C_x/\partial w$ 和 $\partial C_x/\partial b$。然后我们通过在所有训练样本上进行平
@@ -245,28 +241,18 @@ C_x/\partial w$ 和 $\partial C_x/\partial b$。然后我们通过在所有训�
     \node(l0) [circle,draw] {};
     
     \node(m0) [circle,draw,right=1.5 of l0] {};
-    \node(m1) [circle,draw,above=0.6 of m0] {\footnotesize $b_3^2$};
+    \node(m1) [circle,draw,above=0.6 of m0] {};
     \node(m2) [circle,draw,above=0.6 of m1] {};
     \node(m3) [circle,draw,above=0.6 of m2] {};
     
     \node(l2) [circle,draw,left=1.5 of m3] {};
     
     \node(r0) [circle,draw,right=1.5 of m1] {};
-    \node(r1) [circle,draw,right=1.5 of m2] {\footnotesize $a_1^3$};
+    \node(r1) [circle,draw,right=1.5 of m2] {};
     
     \coordinate (lc) at ($(l0)!0.5!(l2)$);
     \node(l1) at (lc) [circle,draw] {};
     
-    \node(tl) [above=0.1 of l2] {\footnotesize layer 1};
-    \node(tm) [above=0.1 of m3] {\footnotesize layer 2};
-
-    % calculate the right position to put the second equation label.
-    \newdimen\posx
-    \newdimen\posy
-    \pgfextractx{\posx}{\pgfpointanchor{r1}{center}}
-    \pgfextracty{\posy}{\pgfpointanchor{tm}{center}}
-    \node(tr) at (\posx,\posy) {\footnotesize layer 3};
-
     \coordinate (rc) at ($(r0)!0.5!(r1)$);
     \node(eq) [right=1.5 of rc] {\footnotesize cost $C = C(a^L)$};
     
@@ -279,32 +265,31 @@ C_x/\partial w$ 和 $\partial C_x/\partial b$。然后我们通过在所有训�
     \foreach \y in {0,1}
     \draw[->] (m\x) to (r\y);
 
-    \draw[->] (r0) to (eq);
-    \draw[->] (r1) to (eq);
+    \draw[->] (r0) to node [above,yshift=-1mm] {\footnotesize $a^L_2$} (eq);
+    \draw[->] (r1) to node [above,yshift=-1mm] {\footnotesize $a^L_1$} (eq);
     
   \end{tikzpicture}
 \end{center}
 
-例如，二次代价函数满足这个要求，因为对于一个单独的训练样本 $x$ 其二次代价函数可以
-写作：
+例如，二次代价函数满足这个要求，因为对于一个单独的训练样本 $x$ 其二次代价函数可
+以写作：
 \begin{equation}
   C = \frac{1}{2} \|y-a^L\|^2 = \frac{1}{2} \sum_j (y_j-a^L_j)^2
   \label{eq:27}\tag{27}
 \end{equation}
-
 这是输出的激活值的函数。当然，这个代价函数同样还依赖于目标输出 $y$，你可能奇怪为
 什么我们不把代价也看作一个 $y$ 的函数。记住，输入的训练样本 $x$ 是固定的，所以输
-出 $y$ 同样是一个固定的参数。尤其是它并不是可以随意通过改变权重和偏差来改变的，也
-就是说，这不是神经网络学习的对象。所以，将 $C$ 看成仅有输出激活值 $a^L$ 的函数才
-是合理的，而 $y$ 仅仅是帮助定义函数的参数而已。
+出 $y$ 同样是一个固定的参数。尤其是它并不是可以随意通过改变权重和偏差来改变的，
+也就是说，这不是神经网络学习的对象。所以，将 $C$ 看成仅有输出激活值 $a^L$ 的函数
+才是合理的，而 $y$ 仅仅是帮助定义函数的参数而已。
 
 \section{Hadamard 乘积，$s \odot t$}
 \label{sec:the_hadamard_product}
 
 反向传播算法基于常规的线性代数运算 —— 诸如向量加法，向量矩阵乘法等。但是有一个运
 算不大常见。特别地，假设 $s$ 和 $t$ 是两个同样维度的向量。那么我们使用 $s\odot
-t$ 来表示按元素的乘积。所以 $s\odot t$ 的元素就是 $(s\odot t)_j = s_j t_j$。给个
-例子，
+t$ 来表示\emph{按元素}的乘积。所以 $s\odot t$ 的元素就是 $(s\odot t)_j = s_j
+t_j$。给个例子，
 \begin{equation}
   \left[\begin{array}{c} 1 \\ 2 \end{array}\right] 
   \odot \left[\begin{array}{c} 3 \\ 4\end{array} \right]
@@ -387,21 +372,20 @@ C/\partial w_{jk}^l$ 和 $\partial C/\partial b_j^l$ 上。
   \end{tikzpicture}
 \end{center}
 
-这个调皮鬼在 $l$ 层的第 $j^{th}$ 个神经元上。当输入进来时，调皮鬼对神经元的操作进
-行搅局。他会增加很小的变化 $\Delta z_j^l$ 在神经元的带权输入上，使得神经元输出
-由 $\sigma(z_j^l)$ 变成$\sigma(z_j^l + \Delta z_j^l)$。这个变化会向网络后面的层进
-行传播，最终导致整个代价函数产生 $\frac{\partial C}{\partial z_j^l} \Delta
-z_j^l$ 的改变。
+这个调皮鬼在 $l$ 层的第 $j^{th}$ 个神经元上。当输入进来时，调皮鬼对神经元的操作
+进行搅局。他会增加很小的变化 $\Delta z_j^l$ 在神经元的带权输入上，使得神经元输出
+由 $\sigma(z_j^l)$ 变成 $\sigma(z_j^l + \Delta z_j^l)$。这个变化会向网络后面的层
+进行传播，最终导致整个代价产生 $\frac{\partial C}{\partial z_j^l} \Delta z_j^l$
+的改变。
 
-现在，这个调皮鬼变好了，试着帮助你来优化代价函数，他们试着找到可以让代价更小
-的 $\Delta z_j^l$。假设 $\frac{\partial C}{\partial z_j^l}$ 有一个很大的值（或正
-或负）。那么这个调皮鬼可以通过选择与 $\frac{\partial C}{\partial z_j^l}$ 相反符号
-的 $\Delta z_j^l$ 来降低代价。相反，如果 $\frac{\partial C}{\partial
-  z_j^l}$ 接近 $0$，那么调皮鬼并不能通过扰动带权输入 $z_j^l$ 来改变太多代价函数。
-在调皮鬼看来，这时候神经元已经很接近最优了\footnote{这里需要注意的是，只有
-  在 $\Delta z_j^l$ 很小的时候才能够满足。我们需要假设调皮鬼只能进行微小的调整。}。
-所以这里有一种启发式的认识，$\frac{\partial C}{\partial z_j^l}$ 是神经元的误差的
-度量。
+现在，这个调皮鬼变好了，试着帮助你来优化代价，他们试着找到可以让代价更小的
+$\Delta z_j^l$。假设 $\frac{\partial C}{\partial z_j^l}$ 有一个很大的值（或正或
+  负）。那么这个调皮鬼可以通过选择与 $\frac{\partial C}{\partial z_j^l}$ 相反符
+号的 $\Delta z_j^l$ 来降低代价。相反，如果 $\frac{\partial C}{\partial z_j^l}$
+接近 $0$，那么调皮鬼并不能通过扰动带权输入 $z_j^l$ 来改善太多代价。在调皮鬼看来，
+这时候神经元已经很接近最优了\footnote{这里需要注意的是，只有在 $\Delta z_j^l$ 很
+  小的时候才能够满足。我们需要假设调皮鬼只能进行微小的调整。}。所以这里有一种启
+发式的认识，$\frac{\partial C}{\partial z_j^l}$ 是神经元的误差的度量。
 
 按照上面的描述，我们定义 $l$ 层的第 $j^{th}$ 个神经元上的误差 $\delta_j^l$ 为：
 \begin{equation}
@@ -409,24 +393,24 @@ z_j^l$ 的改变。
   \label{eq:29}\tag{29}
 \end{equation}
 
-按照我们通常的惯例，我们使用 $\delta^l$ 表示关联于 $l$ 层的误差向量。反向传播会提
-供给我们一种计算每层的 $\delta^l$ 的方法，然后将这些误差和最终我们需要的
-量 $\partial C/\partial w_{jk}^l$ 和 $\partial C/\partial b_j^l$ 联系起来。
+按照我们通常的惯例，我们使用 $\delta^l$ 表示关联于 $l$ 层的误差向量。反向传播会
+提供给我们一种计算每层的 $\delta^l$ 的方法，然后将这些误差和最终我们需要的量
+$\partial C/\partial w_{jk}^l$ 和 $\partial C/\partial b_j^l$ 联系起来。
 
-你可能会想知道为何这个调皮鬼在改变带权输入 $z_j^l$。把它想象成改变输出激
-活 $a_j^l$ 肯定会更加自然，然后就使用 $\frac{\partial C}{\partial a_j^l}$ 作为度
-量误差的方法了。实际上，如果你这样做的话，其实和下面要讨论的差不多。但是看起来，
-前面的方法会让反向传播在代数运算上变得比较复杂。所以我们坚持使用 $\delta_j^l
-= \partial C / \partial z_j^l$ 作为误差的度量\footnote{在分类问题中，误差有时候会
+你可能会想知道为何这个调皮鬼在改变带权输入 $z_j^l$。把它想象成改变输出激活值
+$a_j^l$ 肯定会更加自然，然后就使用 $\frac{\partial C}{\partial a_j^l}$ 作为度量
+误差的方法了。实际上，如果你这样做的话，其实和下面要讨论的差不多。但是看起来，前
+面的方法会让反向传播在代数运算上变得比较复杂。所以我们坚持使用 $\delta_j^l =
+\partial C / \partial z_j^l$ 作为误差的度量\footnote{在分类问题中，误差有时候会
   用作分类的错误率。如果神经网络正确分类了 96.0\% 的数字，那么其误差是 4.0\%。很
   明显，这和我们上面提及的误差的差别非常大了。在实际应用中，区分这两种含义是非常
   容易的。}。
 
-\textbf{解决方案：} 反向传播基于四个基本方程。这些方程给我们一种计算误
-差 $\delta^l$ 和代价函数梯度的方法。我列出这四个方程。但是需要注意：你不需要一下
-子能够同时理解这些公式。希望越大失望越大。实际上，反向传播方程内容很多，完全理解
-这些需要花费充分的时间和耐心，需要一步一步地深入理解。而好的消息是，这样的付出回
-报巨大。所以本节对这些内容的讨论仅仅是一个帮助你正确掌握这些方程的起步。
+\textbf{解决方案：} 反向传播基于四个基本方程。这些方程给我们一种计算误差
+$\delta^l$ 和代价函数梯度的方法。我列出这四个方程。但是需要注意：你不需要一下子
+能够同时理解这些公式。希望越大失望越大。实际上，反向传播方程内容很多，完全理解这
+些需要花费充分的时间和耐心，需要一步一步地深入理解。而好的消息是，这样的付出回报
+巨大。所以本节对这些内容的讨论仅仅是一个帮助你正确掌握这些方程的起步。
 
 下面简要介绍我们的探讨这些公式的计划：首先%
 \hyperref[sec:proof_of_the_four_fundamental_equations]{给出这些公式的简短证明}以
@@ -437,103 +421,93 @@ z_j^l$ 的改变。
 们会发展出一个关于反向传播方程含义的直觉画面，以及人们如何能够从零开始发现这个规
 律。按照此法，我们会不断地提及这四个基本方程，随着你对这些方程理解的加深，他们会
 看起来更加舒服，甚至是美妙和自然的。
-\\
-\\
+
 \textbf{输出层误差的方程，$\delta^L$：} 每个元素定义如下：
 \begin{equation} 
   \delta^L_j = \frac{\partial C}{\partial a^L_j} \sigma'(z^L_j)
   \label{eq:bp1}\tag{BP1}
 \end{equation}
 
-这是一个非常自然的表达式。右式第一个项 $\partial C/\partial a_j^L$ 表示代价随
-着 $j^{th}$ 输出激活值的变化而变化的速度。假如 $C$ 不太依赖一个特定的输出神经
-元 $j$，那么 $\delta_j^L$ 就会很小，这也是我们想要的效果。右式第二
-项 $\sigma'(z_j^L)$ 刻画了在 $z_j^L$ 处激活函数 $\sigma$ 变化的速度。
+这是一个非常自然的表达式。右式第一个项 $\partial C/\partial a_j^L$ 表示代价随着
+$j^{th}$ 输出激活值的变化而变化的速度。假如 $C$ 不太依赖一个特定的输出神经元 $j$，
+那么 $\delta_j^L$ 就会很小，这也是我们想要的效果。右式第二项 $\sigma'(z_j^L)$ 刻
+画了在 $z_j^L$ 处激活函数 $\sigma$ 变化的速度。
 
 注意到在 \eqref{eq:bp1} 中的每个部分都是很好计算的。特别地，我们在计算网络行为时
-计算 $z_j^L$，这仅仅需要一点点额外工作就可以计算 $\sigma'(z_j^L)$。当
-然 $\partial C/\partial a_j^L$ 依赖于代价函数的形式。然而，给定了代价函数，计
-算 $\partial C/\partial a_j^L$ 就没有什么大问题了。例如，如果我们使用二次函数，那
-么 $C = \frac{1}{2}
-\sum_j(y_j-a_j)^2$，所以$\partial C/\partial a_j^L = (a_j - y_j)$，这其实很容易计
-算。
+计算 $z_j^L$，这仅仅需要一点点额外工作就可以计算 $\sigma'(z_j^L)$。当然
+$\partial C/\partial a_j^L$ 依赖于代价函数的形式。然而，给定了代价函数，计算
+$\partial C/\partial a_j^L$ 就没有什么大问题了。例如，如果我们使用二次函数，那么
+$C = \frac{1}{2} \sum_j(y_j-a_j)^2$，所以 $\partial C/\partial a_j^L = (a_j -
+y_j)$，这其实很容易计算。
 
 方程~\eqref{eq:bp1} 对 $\delta^L$ 来说是个按分量构成的表达式。这是一个非常好的表
-达式，但不是我们期望的用矩阵表示的形式。但是，重写方程其实很简单，
+达式，但不是我们期望的用矩阵表示的形式。但是，以矩阵形式重写方程其实很简单，
 \begin{equation} 
   \delta^L = \nabla_a C \odot \sigma'(z^L)
   \label{eq:bp1a}\tag{BP1a}
 \end{equation}
 
 这里 $\nabla_a C$ 被定义成一个向量，其元素是偏导数 $\partial C/\partial a_j^L$。
-你可以将 $\nabla_a C$ 看成是 $C$ 关于输出激活值的改变速度。方程~\eqref{eq:bp1} 和
-方程~\eqref{eq:bp1a} 的等价也是显而易见的，所以现在开始，我们会用 \eqref{eq:bp1}
-表示这两个方程。举个例子，在二次代价函数时，我们有 $\nabla_a C = (a^L - y)$，所
-以 \eqref{eq:bp1} 的整个矩阵形式就变成
+你可以将 $\nabla_a C$ 看成是 $C$ 关于输出激活值的改变速度。方程~\eqref{eq:bp1}
+和方程~\eqref{eq:bp1a} 的等价也是显而易见的，所以现在开始，我们会用
+\eqref{eq:bp1}表示这两个方程。举个例子，在二次代价函数时，我们有 $\nabla_a C =
+(a^L - y)$，所以 \eqref{eq:bp1} 的整个矩阵形式就变成
 \begin{equation} 
   \delta^L = (a^L-y) \odot \sigma'(z^L)
   \label{eq:30}\tag{30}
 \end{equation}
 
-如你所见，这个方程中的每个项都有一个很好的向量形式，所以也可以很方便地使用
-像 Numpy 这样的矩阵库进行计算了。
-\\
-\\
+如你所见，这个方程中的每个项都有一个很好的向量形式，所以也可以很方便地使用像
+Numpy 这样的矩阵库进行计算了。
+
 \textbf{使用下一层的误差 $\delta^{l+1}$ 来表示当前层的误差 $\delta^l$：} 特别地，
 \begin{equation}
   \delta^l = ((w^{l+1})^T \delta^{l+1}) \odot \sigma'(z^l)
   \label{eq:bp2}\tag{BP2}
 \end{equation}
-
 其中 $(w^{l+1})^T$ 是 $(l+1)^{\rm th}$ 层权重矩阵 $w^{l+1}$ 的转置。这个公式看上
-去有些复杂，但每一个元素有很好的解释。假设我们知道 $l+1^{\rm th}$ 层的误
-差
-$\delta^{l+1}$。当我们应用转置的权重矩阵$(w^{l+1})^T$，我们可以凭直觉地把它看作是
-在沿着网络\emph{反向}移动误差，给了我们度量在 $l^{\rm th}$ 层输出的误差方法。然后，
-我们进行 Hadamard 乘积运算 $\odot \sigma'(z^l)$。这会让误差通过 $l$ 层的激活函数
-反向传递回来并给出在第 $l$ 层的带权输入的误差 $\delta$。
+去有些复杂，但每一个元素有很好的解释。假设我们知道 $l+1^{\rm th}$ 层的误差
+$\delta^{l+1}$。当我们应用转置的权重矩阵$(w^{l+1})^T$，我们可以凭直觉地把它看作
+是在沿着网络\emph{反向}移动误差，给了我们度量在 $l^{\rm th}$ 层输出的误差方法。
+然后，我们进行 Hadamard 乘积运算 $\odot \sigma'(z^l)$。这会让误差通过 $l$ 层的激
+活函数反向传递回来并给出在第 $l$ 层的带权输入的误差 $\delta$。
 
 通过组合 \eqref{eq:bp1} 和 \eqref{eq:bp2}，我们可以计算任何层的误差 $\delta^l$。
-首先使用 \eqref{eq:bp1} 计算 $\delta^L$，然后应用方程~\eqref{eq:bp2} 来计
-算 $\delta^{L-1}$，然后再次用方程~\eqref{eq:bp2} 来计算 $\delta^{L-2}$，如此一步
-一步地反向传播完整个网络。
-\\
-\\
+首先使用 \eqref{eq:bp1} 计算 $\delta^L$，然后应用方程~\eqref{eq:bp2} 来计算
+$\delta^{L-1}$，然后再次用方程~\eqref{eq:bp2} 来计算 $\delta^{L-2}$，如此一步一
+步地反向传播完整个网络。
+
 \textbf{代价函数关于网络中任意偏差的改变率：} 就是
 \begin{equation}
   \frac{\partial C}{\partial b^l_j} = \delta^l_j
   \label{eq:bp3}\tag{BP3}
 \end{equation}
 
-这其实是，误差 $\delta^l_j$ 和偏导数值 $\partial C / \partial b^l_j$ \emph{完全一
-  致}。这是很好的性质，因为 \eqref{eq:bp1} 和 \eqref{eq:bp2} 已经告诉我们如何计
-算 $\delta^l_j$。所以就可以将 \eqref{eq:bp3} 简记为
+这其实是，误差 $\delta^l_j$ 和偏导数值 $\partial C / \partial b^l_j$ \emph{完全
+  一致}。这是很好的性质，因为 \eqref{eq:bp1} 和 \eqref{eq:bp2} 已经告诉我们如何
+计算 $\delta^l_j$。所以就可以将 \eqref{eq:bp3} 简记为
 \begin{equation}
   \frac{\partial C}{\partial b} = \delta
   \label{eq:31}\tag{31}
 \end{equation}
-
 其中 $\delta$ 和偏差 $b$ 都是针对同一个神经元。
-\\
-\\
+
 \textbf{代价函数关于任何一个权重的改变率：} 特别地，
 \begin{equation}  
   \frac{\partial C}{\partial w^l_{jk}} = a^{l-1}_k \delta^l_j
   \label{eq:bp4}\tag{BP4}
 \end{equation}
 
-这告诉我们如何计算偏导数 $\partial C/\partial w_{jk}^l$，其
-中 $\delta^l$ 和 $a^{l-1}$ 这些量我们都已经知道如何计算了。方程也可以写成下面用更
-少下标的表示：
+这告诉我们如何计算偏导数 $\partial C/\partial w_{jk}^l$，其中 $\delta^l$ 和
+$a^{l-1}$ 这些量我们都已经知道如何计算了。方程也可以写成下面用更少下标的表示：
 \begin{equation}
   \frac{\partial
     C}{\partial w} = a_{\rm in} \delta_{\rm out}
   \label{eq:32}\tag{32}
 \end{equation}
-
 其中 $a_{\rm in}$ 是输入给权重 $w$ 的神经元的激活值，$\delta_{\rm out}$ 是输出自
-权重 $w$ 的神经元的误差。放大看看权重 $w$，还有两个由这个权重相连的神经元，我们给
-出一幅图如下：
+权重 $w$ 的神经元的误差。放大看看权重 $w$，还有两个由这个权重相连的神经元，我们
+给出一幅图如下：
 
 \begin{center}
   \begin{tikzpicture}
@@ -550,51 +524,51 @@ $\delta^{l+1}$。当我们应用转置的权重矩阵$(w^{l+1})^T$，我们可�
 \end{center}
 
 方程~\eqref{eq:32} 的一个好的结果就是当激活值 $a_{\rm in}$ 很小，$a_{\rm in}
-\approx 0$，梯度 $\partial C/\partial w$ 也会趋向很小。这样，我们就说权重\emph{缓
-  慢学习}，表示在梯度下降的时候，这个权重不会改变太多。换言之，\eqref{eq:bp4} 的
-结果就是来自很低的激活值神经元的权重学习会非常缓慢。
+\approx 0$，梯度 $\partial C/\partial w$ 也会趋向很小。这样，我们就说权重%
+\emph{缓慢学习}，表示在梯度下降的时候，这个权重不会改变太多。换言之，
+\eqref{eq:bp4} 的一个结果就是来自低激活值神经元的权重学习会非常缓慢。
 
 这四个公式 \eqref{eq:bp1}--\eqref{eq:bp4} 同样还有其它可以理解的方面。让我们从输
-出层开始，先看看~\eqref{eq:bp1}
-中的项$\sigma'(z_k^l)$。回忆一下\hyperref[fig:sigmoid_graph]{上一章中S型函数的图
-  形}，当 $\sigma(z^L_j)$ 近似为 $0$ 或者 $1$ 的时候 $\sigma$ 函数变得非常平。这
-时 $\sigma'(z^L_j) \approx 0$。所以如果输出神经元处于或者低激活值（$\approx 0$）
-或者高激活值（$\approx 1$）时，最终层的权重学习缓慢。这样的情形，我们常常称输出神
-经元已经\emph{饱和}\index{饱和}了，并且，权重学习也会终止（或者学习非常缓慢）。类
-似的结果对于输出神经元的偏差也是成立的。
+出层开始，先看看~\eqref{eq:bp1}中的项$\sigma'(z_k^l)$。回忆一下%
+\hyperref[fig:sigmoid_graph]{上一章中S型函数的图形}，当 $\sigma(z^L_j)$ 近似为
+$0$ 或者 $1$ 的时候 $\sigma$ 函数变得非常平。这时 $\sigma'(z^L_j) \approx 0$。所
+以如果输出神经元处于或者低激活值（$\approx 0$）或者高激活值（$\approx 1$）时，最
+终层的权重学习缓慢。这样的情形，我们常常称输出神经元已经\emph{饱和}\index{饱和}
+了，并且，权重学习也会终止（或者学习非常缓慢）。类似的结果对于输出神经元的偏差也
+是成立的。
 
-针对前面的层，我们也有类似的观点。特别地，注意在 \eqref{eq:bp2} 中的
-项 $\sigma'(z^l)$。这表示如果神经元已经接近饱和，$\delta_j^l$ 很可能变小。这就导
-致任何输入进一个饱和的神经元的权重学习缓慢\footnote{如果 ${w^{l+1}}^T
+针对前面的层，我们也有类似的观点。特别地，注意在 \eqref{eq:bp2} 中的项
+$\sigma'(z^l)$。这表示如果神经元已经接近饱和，$\delta_j^l$ 很可能变小。这就导致
+任何输入进一个饱和的神经元的权重学习缓慢\footnote{如果 ${w^{l+1}}^T
   \delta^{l+1}$ 拥有足够大的量能够补偿 $\sigma'(z_k^l)$ 的话，这里的推导就不能成
   立了。但是我们上面是常见的情形。}。
 
-总结一下，我们已经学习到，如果输入神经元激活值很低，或者输出神经元已经
-饱和了（过高或者过低的激活值），权重会学习缓慢。
+总结一下，我们已经学习到，如果输入神经元激活值很低，或者输出神经元已经饱和了（过
+  高或者过低的激活值），权重会学习缓慢。
 
 这些观测其实也不是非常出于意料的。不过，他们帮助我们完善了关于神经网络学习的背后
 的思维模型。而且，我们可以将这种推断方式进行推广。四个基本方程也其实对任何的激活
 函数都是成立的（证明中也可以看到，其实推断本身不依赖于任何具体的代价函数）所以，
-我们可以使用这些方程来\emph{设计}有特定学习属性的激活函数。我们这里给个例子，假设
-我们准备选择一个（非S型）的激活函数 $\sigma$ 使得 $\sigma'$ 总是正数。这会防止在
-原始的S型神经元饱和时学习速度下降的情况出现。在本书的后面，我们会见到这种类型的对
-激活函数的改变。时时回顾这四个方程 \eqref{eq:bp1}--\eqref{eq:bp4} 可以帮助解释为
-何需要有这些尝试，以及尝试带来的影响。
+我们可以使用这些方程来\emph{设计}有特定学习属性的激活函数。我们这里给个例子，假
+设我们准备选择一个（非S型）激活函数 $\sigma$ 使得 $\sigma'$ 总是正数，并且不会趋
+近 $0$。这会防止在原始的S型神经元饱和时学习速度下降的情况出现。在本书的后面，我
+们会见到这种类型的对激活函数的改变。时时回顾这四个方程
+\eqref{eq:bp1}--\eqref{eq:bp4} 可以帮助解释为何需要有这些尝试，以及尝试带来的影
+响。
 
 \begin{center}
   \begin{minipage}{0.7\textwidth}
-    \begin{center}
-      \begin{framed}
-        \textbf{总结：反向传播的四个方程式}\index{反向传播的四个方程式}\\
-        \vspace{1.5ex}
-        \begin{tabular}{ll}
-          $\delta^L = \nabla_a C \odot \sigma'(z^L)$                  & \eqref{eq:bp1} \\[1.5ex]
-          $\delta^l = ((w^{l+1})^T \delta^{l+1}) \odot \sigma'(z^l)$    & \eqref{eq:bp2} \\[1.5ex]
-          $\frac{\partial C}{\partial b^l_j} = \delta^l_j$            & \eqref{eq:bp3} \\[1.5ex]
-          $\frac{\partial C}{\partial w^l_{jk}} = a^{l-1}_k \delta^l_j$ & \eqref{eq:bp4}
-        \end{tabular}
-      \end{framed}
-    \end{center}
+    \begin{framed}
+      \centering
+      \textbf{总结：反向传播的四个方程式}\index{反向传播的四个方程式}\\
+      \vspace{1.5ex}
+      \begin{tabular}{ll}
+        $\delta^L = \nabla_a C \odot \sigma'(z^L)$            & \hspace{2cm}\eqref{eq:bp1} \\[1.5ex]
+        $\delta^l = ((w^{l+1})^T \delta^{l+1}) \odot \sigma'(z^l)$ & \hspace{2cm}\eqref{eq:bp2} \\[1.5ex]
+        $\frac{\partial C}{\partial b^l_j} = \delta^l_j$       & \hspace{2cm}\eqref{eq:bp3} \\[1.5ex]
+        $\frac{\partial C}{\partial w^l_{jk}} = a^{l-1}_k \delta^l_j$ & \hspace{2cm}\eqref{eq:bp4}
+      \end{tabular}
+    \end{framed}
   \end{minipage}
 \end{center}
 
@@ -602,16 +576,16 @@ $\delta^{l+1}$。当我们应用转置的权重矩阵$(w^{l+1})^T$，我们可�
 
 \begin{itemize}
 \item \textbf{另一种反向传播方程的表示方式：} 我已经给出了使用 Hadamard 乘积的反
-  向传播的公式（尤其是 \eqref{eq:bp1} 和 \eqref{eq:bp2}）。如果你对这种特殊的乘积
-  不熟悉，可能会有一些困惑。下面还有一种表示方式，那就是基于传统的矩阵乘法，某些
-  读者可能会觉得很有启发。（1）证明 \eqref{eq:bp1} 可以写成
+  向传播的公式（尤其是 \eqref{eq:bp1} 和 \eqref{eq:bp2}）。如果你对这种特殊的乘
+  积不熟悉，可能会有一些困惑。下面还有一种表示方式，那就是基于传统的矩阵乘法，某
+  些读者可能会觉得很有启发。（1）证明 \eqref{eq:bp1} 可以写成
   \begin{equation}
     \delta^L = \Sigma'(z^L) \nabla_a C
     \label{eq:33}\tag{33}
   \end{equation}
-  其中 $\Sigma'(z^L)$ 是一个方阵，其对角线的元素是 $\sigma'(z_j^L)$，其他的元素均
-  是 $0$。注意，这个矩阵通过一般的矩阵乘法作用在 $\nabla_a C$ 上。（2）证明 \eqref{eq:bp2} 可
-  以写成
+  其中 $\Sigma'(z^L)$ 是一个方阵，其对角线的元素是 $\sigma'(z_j^L)$，其他的元素
+  均是 $0$。注意，这个矩阵通过一般的矩阵乘法作用在 $\nabla_a C$ 上。（2）证明
+  \eqref{eq:bp2} 可以写成
   \begin{equation}
     \delta^l = \Sigma'(z^l) (w^{l+1})^T \delta^{l+1}
     \label{eq:34}\tag{34}
@@ -629,9 +603,9 @@ $\delta^{l+1}$。当我们应用转置的权重矩阵$(w^{l+1})^T$，我们可�
 \section{四个基本方程的证明（可选）}
 \label{sec:proof_of_the_four_fundamental_equations}
 
-我们现在证明这四个基本的方程 \eqref{eq:bp1}--\eqref{eq:bp4}。所有这些都是多元微积
-分的\href{https://en.wikipedia.org/wiki/Chain_rule}{链式法则}\index{链式法则}的推
-论。如果你熟悉链式法则，那么我鼓励你在读之前尝试自己推导。
+我们现在证明这四个基本的方程 \eqref{eq:bp1}--\eqref{eq:bp4}。所有这些都是多元微
+积分的\href{https://en.wikipedia.org/wiki/Chain_rule}{链式法则}\index{链式法则}%
+的推论。如果你熟悉链式法则，那么我鼓励你在读之前尝试自己推导。
 
 让我们从方程~\eqref{eq:bp1} 开始，它给出了输出误差 $\delta^L$ 的表达式。为了证明
 这个方程，回忆下定义：
@@ -645,11 +619,10 @@ $\delta^{l+1}$。当我们应用转置的权重矩阵$(w^{l+1})^T$，我们可�
   \delta^L_j = \sum_k \frac{\partial C}{\partial a^L_k} \frac{\partial a^L_k}{\partial z^L_j}
 \label{eq:37}\tag{37}
 \end{equation}
-
-这里求和是在输出层的所有神经元 $k$ 上运行的。当然，第 $k^{\rm th}$ 个神经元的输出
-激活值 $a^L_k$ 只依赖于当 $k=j$ 时第 $j^{\rm th}$ 个神经元的输入权重 $z^L_j$。所
-以当 $k \neq j$ 时 $\partial a^L_k / \partial z^L_j$ 消失了。结果我们可以简化上一
-个方程为：
+这里求和是在输出层的所有神经元 $k$ 上运行的。当然，第 $k^{\rm th}$ 个神经元的输
+出激活值 $a^L_k$ 只依赖于当 $k=j$ 时第 $j^{\rm th}$ 个神经元的输入权重 $z^L_j$。
+所以当 $k \neq j$ 时 $\partial a^L_k / \partial z^L_j$ 消失了。结果我们可以简化
+上一个方程为：
 \begin{equation}
   \delta^L_j = \frac{\partial C}{\partial a^L_j} \frac{\partial a^L_j}{\partial z^L_j}
 \label{eq:38}\tag{38}
@@ -660,11 +633,10 @@ $\delta^{l+1}$。当我们应用转置的权重矩阵$(w^{l+1})^T$，我们可�
   \delta^L_j = \frac{\partial C}{\partial a^L_j} \sigma'(z^L_j)
 \label{eq:39}\tag{39}
 \end{equation}
-
 这正是分量形式的~\eqref{eq:bp1}。
 
-下一步，我们将证明~\eqref{eq:bp2}，它给出了以下一层误差 $\delta^{l+1}$ 的形式表示
-误差 $\delta^l$。为此，我们想要以 $\delta^{l+1}_k = \partial C / \partial
+下一步，我们将证明~\eqref{eq:bp2}，它给出了以下一层误差 $\delta^{l+1}$ 的形式表
+示误差 $\delta^l$。为此，我们想要以 $\delta^{l+1}_k = \partial C / \partial
 z^{l+1}_k$ 的形式重写 $\delta^l_j = \partial C / \partial z^l_j$。我们可以用链式
 法则：
 \begin{align}
@@ -672,7 +644,6 @@ z^{l+1}_k$ 的形式重写 $\delta^l_j = \partial C / \partial z^l_j$。我们�
              &= \sum_k \frac{\partial C}{\partial z^{l+1}_k} \frac{\partial z^{l+1}_k}{\partial z^l_j} \label{eq:41}\tag{41}\\ 
              &= \sum_k \frac{\partial z^{l+1}_k}{\partial z^l_j} \delta^{l+1}_k \label{eq:42}\tag{42}
 \end{align}
-
 这里最后一行我们交换了右边的两项，并用 $\delta^{l+1}_k$ 的定义代入。为了对最后一
 行的第一项求值，注意：
 \begin{equation}
@@ -694,8 +665,8 @@ z^{l+1}_k$ 的形式重写 $\delta^l_j = \partial C / \partial z^l_j$。我们�
 
 这正是以分量形式写的~\eqref{eq:bp2}。
 
-我们想证明的最后两个方程是~\eqref{eq:bp3} 和~\eqref{eq:bp4}。它们同样遵循链式法则，
-和前面两个方程的证明相似。我把它们留给你做为练习。
+我们想证明的最后两个方程是~\eqref{eq:bp3} 和~\eqref{eq:bp4}。它们同样遵循链式法
+则，和前面两个方程的证明相似。我把它们留给你做为练习。
 
 \subsection*{练习}
 
@@ -723,25 +694,25 @@ z^{l+1}_k$ 的形式重写 $\delta^l_j = \partial C / \partial z^l_j$。我们�
 \item \textbf{输出：} 代价函数的梯度由 $\frac{\partial C}{\partial w^l_{jk}} = a^{l-1}_k \delta^l_j$ 和 $\frac{\partial C}{\partial b_j^l} = \delta_j^l$ 得出
 \end{enumerate}
 
-检视这个算法，你可以看到为何它被称作\emph{反向传播}。我们从最后一层开始向后计算误
-差向量 $\delta^l$。这看起来有点奇怪，为何要从后面开始。但是如果你认真思考反向传
-播的证明，这种反向移动其实是代价函数是网络输出的函数的结果。为了理解代价随前面层
-的权重和偏差变化的规律，我们需要重复作用链式法则，反向地获得需要的表达式。
+检视这个算法，你可以看到为何它被称作\emph{反向}传播。我们从最后一层开始向后计算
+误差向量 $\delta^l$。这看起来有点奇怪，为何要从后面开始。但是如果你认真思考反向
+传播的证明，这种反向移动其实是代价函数是网络输出的函数的结果。为了理解代价随前面
+层的权重和偏差变化的规律，我们需要重复作用链式法则，反向地获得需要的表达式。
 
 \subsection*{练习}
 
 \begin{itemize}
-\item \textbf{使用单个修正的神经元的反向传播}\quad 假设我们改变一个前向传播网络中
-  的单个神经元，使得那个神经元的输出是 $f(\sum_j w_jx_j + b)$，其
-  中 $f$ 是和 sigmoid函数不同的某一函数。我们如何调整反向传播算法？
-\item \textbf{线性神经元上的反向传播}\quad 假设我们将非线性神经元替换
-  为 $\sigma(z) = z$。重写反向传播算法。
+\item \textbf{使用单个修正的神经元的反向传播}\quad 假设我们改变一个前馈网络中的
+  单个神经元，使得那个神经元的输出是 $f(\sum_j w_jx_j + b)$，其中 $f$ 是和 S 型
+  函数不同的某一函数。我们如何调整反向传播算法？
+\item \textbf{线性神经元上的反向传播}\quad 假设我们将非线性神经元的 $\sigma$ 函
+  数替换为 $\sigma(z) = z$。重写反向传播算法。
 \end{itemize}
 
-正如我们上面所讲的，反向传播算法对一个训练样本计算代价函数的梯度，$C=C_x$。在实践
-中，通常将反向传播算法和诸如随机梯度下降这样的学习算法进行组合使用，我们会对许多
-训练样本计算对应的梯度。特别地，给定一个大小为 $m$ 的小批量输入，下面的算法在这个
-小批量输入的基础上应用一步梯度下降学习算法：
+正如我们上面所讲的，反向传播算法对一个训练样本计算代价函数的梯度，$C=C_x$。在实
+践中，通常将反向传播算法和诸如随机梯度下降这样的学习算法进行组合使用，我们会对许
+多训练样本计算对应的梯度。特别地，给定一个大小为 $m$ 的小批量输入，下面的算法在
+这个小批量输入的基础上应用一步梯度下降学习算法：
 
 \begin{enumerate}
 \item \textbf{输入训练样本的集合}
@@ -768,11 +739,10 @@ z^{l+1}_k$ 的形式重写 $\delta^l_j = \partial C / \partial z^l_j$。我们�
 
 理解了抽象的反向传播的理论知识，我们现在就可以学习上一章中使用的实现反向传播的代
 码了。回想\hyperref[sec:implementing_our_network_to_classify_digits]{上一章}的代
-码，需要研究的是在 \lstinline!Network! 类中
-的 \lstinline!update_mini_batch! 和 \lstinline!backprop! 方法。这些方法的代码其实
-是我们上面的算法描述的直接翻版。特别地，\lstinline!update_mini_batch! 方法通过计
-算当前 \lstinline!mini_batch! 中的训练样本对 \lstinline!Network! 的权重和偏差进行
-了更新：
+码，需要研究的是在 \lstinline!Network! 类中的 \lstinline!update_mini_batch! 和
+\lstinline!backprop! 方法。这些方法的代码其实是我们上面的算法描述的直接翻版。特
+别地，\lstinline!update_mini_batch! 方法通过计算当前 \lstinline!mini_batch! 中的
+训练样本对 \lstinline!Network! 的权重和偏差进行了更新：
 
 \begin{lstlisting}[language=Python]
 class Network(object):
@@ -795,16 +765,17 @@ class Network(object):
 \end{lstlisting}
         
 主要工作其实是在 \lstinline!delta_nabla_b!，%
-\lstinline!delta_nabla_w = self.backprop(x, y)! 这里完成的，调用
-了 \lstinline!backprop! 方法计算出了偏导数，$\partial C_x/\partial
-b_j^l$ 和 $\partial C_x/\partial w_{jk}^l$。\lstinline!backprop! 方法跟上一节的算
-法基本一致。这里只有个小小的差异 —— 我们使用一个略微不同的方式来索引神经网络的层。
-这个改变其实是为了 Python 的特性 —— 负值索引的使用能够让我们从列表的最后往前遍历，
-如 \lstinline!l[-3]!  其实是列表中的倒数第三个元素。下面 \lstinline!backprop! 的
-代码，和一些帮助函数一起，被用于计算 $\sigma$、导数 $\sigma'$ 及代价函数的导数。
-所以理解了这些，我们就完全可以掌握所有的代码了。如果某些东西让你困惑，你可能需要参考%
-\hyperref[sec:implementing_our_network_to_classify_digits]{代码的原始描述（以及完
-  整清单）}。
+\lstinline!delta_nabla_w = self.backprop(x, y)! 这里完成的，调用了
+\lstinline!backprop! 方法计算出了偏导数，
+$\partial C_x/\partial b_j^l$ 和 $\partial C_x/\partial w_{jk}^l$。
+\lstinline!backprop! 方法跟上一节的算法基本一致。这里只有个小小的差异 —— 我们使
+用一个略微不同的方式来索引神经网络的层。这个改变其实是为了 Python 的特性 —— 负值
+索引的使用能够让我们从列表的最后往前遍历，如 \lstinline!l[-3]!  其实是列表中的倒
+数第三个元素。下面 \lstinline!backprop! 的代码，和一些帮助函数一起，被用于计算
+$\sigma$、导数 $\sigma'$ 及代价函数的导数。所以理解了这些，我们就完全可以掌握所
+有的代码了。如果某些东西让你困惑，你可能需要参考%
+\hyperref[sec:implementing_our_network_to_classify_digits]{代码的原始描述（以及
+    完整清单）}。
 
 \begin{lstlisting}[language=Python]
 class Network(object):
@@ -863,16 +834,15 @@ def sigmoid_prime(z):
 \subsection*{问题}
 
 \begin{itemize}
-\item \textbf{在一个小批量输入上的反向传播的全矩阵方法}\quad 我们对于随机梯度下降
-  的实现是对一个小批量输入中的训练样本进行遍历。所以也可以更改反向传播算法使得它
-  同时对一个小批量输入中的所有样本进行梯度计算。这个想法其实就是我们可以用一个矩
-  阵
-  $X=[x_1, x_2, ..., x_m]$，其中每列就是在小批量输入中的向量，而不是单个的输入向
-  量，$x$。我们通过乘权重矩阵，加上对应的偏差进行前向传播，在所有地方应用S型函数。
-  然后按照类似的过程进行反向传播。请显式写出这种方法下的伪代码。更
-  改 \lstinline!network.py! 来实现这个方案。这样做的好处其实利用到了现代的线性代
-  数库。所以，这会比在小批量输入上进行遍历要运行得更快（在我的笔记本电脑上，
-  在MNIST 分类问题上，我相较于上一章的实现获得了 2 倍的速度提升）。在实际应用中，
+\item \textbf{在一个小批量输入上的反向传播的全矩阵方法}\quad 我们对于随机梯度下
+  降的实现是对一个小批量输入中的训练样本进行遍历。所以也可以更改反向传播算法使得
+  它同时对一个小批量输入中的所有样本进行梯度计算。这个想法其实就是我们可以用一个
+  矩阵 $X=[x_1, x_2, ..., x_m]$，其中每列就是在小批量输入中的向量，而不是单个的
+  输入向量，$x$。我们通过乘权重矩阵，加上对应的偏差进行前向传播，在所有地方应用S
+  型函数。然后按照类似的过程进行反向传播。请显式写出这种方法下的伪代码。更改
+  \lstinline!network.py! 来实现这个方案。这样做的好处其实利用到了现代的线性代数
+  库。所以，这会比在小批量输入上进行遍历要运行得更快（在我的笔记本电脑上，在
+    MNIST 分类问题上，我相较于上一章的实现获得了 2 倍的速度提升）。在实际应用中，
   所有靠谱的反向传播的库都是用了类似的基于矩阵或者其变化形式来实现的。
 \end{itemize}
 
@@ -883,9 +853,9 @@ def sigmoid_prime(z):
 降方法学习的那位！为了让自己的想法可行，就必须找出计算代价函数梯度的方法。想想自
 己学到的微积分，决定试试看链式法则来计算梯度。但玩了一会后，就发现代数式看起来非
 常复杂，然后就退缩了。所以就试着找另外的方式。你决定仅仅把代价看做权重的函数 $C
-= C(w)$（我们马上会回到偏差）。你给这些权重 $w_1, w_2, \ldots$ 进行编号，期望计算
-某些权重 $w_j$ 的偏导数 $\partial C / \partial w_j$。而一种近似的方法就是下面这
-种：
+= C(w)$（我们马上会回到偏差）。你给这些权重 $w_1, w_2, \ldots$ 进行编号，期望计
+算某些权重 $w_j$ 的偏导数 $\partial C / \partial w_j$。而一种近似的方法就是下面
+这种：
 \begin{equation}  
   \frac{\partial
     C}{\partial w_{j}} \approx \frac{C(w+\epsilon
@@ -894,26 +864,26 @@ def sigmoid_prime(z):
 \end{equation}
 
 其中 $\epsilon > 0$ 是一个很小的正数，而 $e_j$ 是在第 $j$ 个方向上的单位向量。换
-句话说，我们可以通过计算两个接近相同的 $w_j$ 值的代价 $C$ 来估计
-$\partial C/\partial w_j$，然后应用公式~\eqref{eq:46}。同样方法也可以用来计
-算 $\partial C/\partial b$。
+句话说，我们可以通过计算两个接近相同的 $w_j$ 值的代价 $C$ 来估计 $\partial
+C/\partial w_j$，然后应用公式~\eqref{eq:46}。同样方法也可以用来计算 $\partial
+C/\partial b$。
 
 这个方法看起来非常有希望。概念上易懂，容易实现，使用几行代码就可以搞定。看起来，
 这样的方法要比使用链式法则来计算梯度还要有效。
 
 然后，遗憾的是，当你实现了之后，运行起来这样的方法非常缓慢。为了理解原因，想象我
 们的网络中有 $1,000,000$ 权重。对每个不同的权重 $w_j$ 我们需要计算 $C(w+\epsilon
-e_j)$来计算 $\partial C/\partial w_j$。这意味着为了计算梯度，我们需要计算代价函
-数 $1, 000, 000 $次，需要 $1, 000, 000$ 前向传播（对每个样本）。我们同样需要计
+e_j)$ 来计算 $\partial C/\partial w_j$。这意味着为了计算梯度，我们需要计算代价函
+数 $1, 000, 000 $ 次，需要 $1, 000, 000$ 前向传播（对每个样本）。我们同样需要计
 算 $C(w)$，总共是一次网络传播需要 $1,000,001$ 次。
 
-反向传播聪明的地方就是它确保我们可以同时计算\emph{所有的}偏导数
-$\partial C/\partial w_j$，仅仅使用一次前向传播，加上一次后向传播。粗略地说，后向
-传播的计算代价和前向的一样\footnote{这个说法是合理的，但需要额外的说明来澄清这一
-  事实。在前向传播过程中主要的计算代价消耗在权重矩阵的乘法上，而反向传播则是计算
-  权重矩阵的转置矩阵。这些操作显然有着类似的计算代价。}。所以反向传播总的计算代价
-大概是两倍的前向传播。比起直接计算导数，显然反向传播有着更大的优势。所以即使反向
-传播看起来要比 \eqref{eq:46} 更加复杂，但实际上要更快。
+反向传播聪明的地方就是它确保我们可以同时计算\emph{所有的}偏导数 $\partial
+C/\partial w_j$，仅仅使用一次前向传播，加上一次后向传播。粗略地说，后向传播的计
+算代价和前向的一样\footnote{这个说法是合理的，但需要额外的说明来澄清这一事实。在
+  前向传播过程中主要的计算代价消耗在权重矩阵的乘法上，而反向传播则是计算权重矩阵
+  的转置矩阵。这些操作显然有着类似的计算代价。}。所以反向传播总的计算代价大概是
+两倍的前向传播。比起直接计算导数，显然反向传播有着更大的优势。所以即使反向传播看
+起来要比 \eqref{eq:46} 更加复杂，但实际上要更快。
 
 这个加速算法在 1986 年首次被众人接受，并直接导致神经网络可以处理的问题的扩展。这
 也导致了大量的研究者涌向了神经网络方向。当然，反向传播并不是万能钥匙。在 1980 年
