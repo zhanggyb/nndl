@@ -816,7 +816,7 @@ $0.5$ 的输出为表示 ``不是一个9''。当我们正在使用这样的约�
 % tikz12
 \begin{center}
   \begin{tikzpicture}
-    [inner sep=0pt,minimum size=5mm]
+    [inner sep=0pt,minimum size=5mm,font=\footnotesize]
 
     % leftmost layer:
     \foreach \y in {1,...,8}
@@ -831,25 +831,25 @@ $0.5$ 的输出为表示 ``不是一个9''。当我们正在使用这样的约�
     \node (r\y) at (4, 7.5 / 1.25 - 5 / 1.25 + \y / 1.25) [circle,draw] {};
 
     \foreach \y in {1,...,10}
-    \node (o\y) [right=of r\y] {\footnotesize $\number \numexpr 10 -\y \relax$};
+    \node (o\y) [right=of r\y] {$\number \numexpr 10 -\y \relax$};
 
     \begin{scope}[node distance=2mm]
       \node (text1) [above=of m15] {
         \begin{tabular}{c}
-          \footnotesize hidden layer \\
-          \footnotesize ($n = 15$ neurons)
+          hidden layer \\
+          ($n = 15$ neurons)
     	\end{tabular}
       };
       \node (text2) [above=of r10] {
-        \footnotesize output layer
+        output layer
       };
     \end{scope}
 
     % draw brace:
     \draw[decorate,decoration={brace,mirror}] ([xshift=-5mm]l8.west) -- ([xshift=-5mm]l1.west) node [midway,xshift=-12.5mm] {
       \begin{tabular}{c}
-        \footnotesize input layer \\
-        \footnotesize ($784$ neurons)
+        input layer \\
+        ($784$ neurons)
       \end{tabular}
     };
 
@@ -938,7 +938,7 @@ $1$~。四个神经元足够编码这个问题了，因为 $2^4 = 16$ 大于 $10
   少是 $0.99$，得到错误的输出的激活值至多是 $0.01$。
   \begin{center}
     \begin{tikzpicture}  %tikz13
-      [inner sep=0pt,minimum size=5mm]
+      [inner sep=0pt,minimum size=5mm,font=\footnotesize]
 
       % leftmost layer, 10 nodes:
       \foreach \y in {0,...,9}
@@ -962,25 +962,25 @@ $1$~。四个神经元足够编码这个问题了，因为 $2^4 = 16$ 大于 $10
       \node (a\y) [right=of o\y] {};
 
       \begin{scope}[node distance=3mm]
-	\node (text2) [above=of r9] {
-          \footnotesize old output layer
-	};
+	      \node (text2) [above=of r9] {
+          old output layer
+	       };
       \end{scope}
 
       \begin{scope}[node distance=6mm]
-	\node (text1) [above=of m4] {
-          \footnotesize hidden layer
-	};
-	\node (text3) [above=of o3] {
-          \footnotesize new output layer
-	};
+        \node (text1) [above=of m4] {
+          hidden layer
+        };
+        \node (text3) [above=of o3] {
+          new output layer
+        };
       \end{scope}
 
       % draw brace:
       \draw[decorate,decoration={brace,mirror}] ([xshift=-5mm]l9.west) -- ([xshift=-5mm]l0.west) node [midway,xshift=-12.5mm] {
         \begin{tabular}{c}
-          \footnotesize input layer \\
-          \footnotesize ($784$ neurons)
+          input layer \\
+          ($784$ neurons)
     	\end{tabular}
       };
 
@@ -2122,36 +2122,36 @@ SVM。现在（2013）的纪录是从 $10,000$ 图像中正确分类 $9,979$ 个
 % tikz14.png
 \begin{center}
   \begin{tikzpicture}
-    [question/.style={rectangle,draw,minimum width=5cm,minimum height=1.5cm}]
+    [question/.style={rectangle,draw,minimum width=5cm,minimum height=1.5cm},font=\footnotesize]
 
     \foreach \y in {0,...,9}
       \node(i\y) at (-5, -3.6 + \y / 1.25) [circle,draw,minimum size=6mm] {};
 
     \node(q0) [question] {
-      \footnotesize 中间有一个鼻子吗？
+      中间有一个鼻子吗？
     };
     \node(q1) [question,above=5mm of q0] {
-      \footnotesize 右上角有一个眼睛吗？
+      右上角有一个眼睛吗？
     };
     \node(q2) [question,above=5mm of q1] {
-      \footnotesize 左上角有一个眼睛吗？
+      左上角有一个眼睛吗？
     };    
     \node(q3) [question,below=5mm of q0] {
-      \footnotesize 下面有一个嘴吗？
+      下面有一个嘴吗？
     };
     \node(q4) [question,below=5mm of q3] {
-      \footnotesize 上面有头发吗？
+      上面有头发吗？
     };
 
     \node(n) [circle,draw,right=2cm of q0,minimum size=6mm] {};
     \node(o) [right=of n] {
-      \footnotesize 这是张人脸吗？
+      这是张人脸吗？
     };
     
-    \node(text) [above=5mm of i9] {
+    \node(text) [above] at (i9.north) {
       \begin{tabular}{c}
-        {\footnotesize input layer}\\
-        {\footnotesize (image pixels)}\\
+        input layer\\
+        (image pixels)\\
       \end{tabular}
     };
 
@@ -2178,20 +2178,21 @@ SVM。现在（2013）的纪录是从 $10,000$ 图像中正确分类 $9,979$ 个
 \begin{center}
   \begin{tikzpicture}
     [subquestion/.style={rectangle,draw,minimum width=4cm,minimum height=1.5cm},
-     mainquestion/.style={rectangle,draw,minimum width=5cm,minimum height=1.5cm}]
+     mainquestion/.style={rectangle,draw,minimum width=5cm,minimum height=1.5cm},
+     font=\footnotesize]
 
     \node(t1) [subquestion] {
-      \footnotesize 有一个眉毛吗？
+      有一个眉毛吗？
     };
     \node(t2) [subquestion,above=5mm of t1] {
-      \footnotesize 有睫毛吗？
+      有睫毛吗？
     };
     \node(t3) [subquestion,below=5mm of t1] {
-      \footnotesize 有一个虹膜吗？
+      有一个虹膜吗？
     };
     \node(equal) [left=5mm of t1] {$=$};
     \node(t4) [mainquestion,left=5mm of equal] {
-      \footnotesize 左上角有一个眼睛吗？
+      左上角有一个眼睛吗？
     };
 
     \node(n) [circle,draw,right=of t1,minimum size=6mm] {};

@@ -6,6 +6,7 @@
   \begin{tikzpicture}[
     inner sep=0pt,
     minimum size=10mm,
+    font=\footnotesize,
     background rectangle/.style={
       draw=gray!25,
       fill=gray!10,
@@ -17,10 +18,10 @@
     \coordinate(x) at (3.5,0);
     \coordinate(y) at (0,2.5);
 
-    \node(i) [above=4 of origin,xshift=-5mm] {\footnotesize Input: $1.0$};
+    \node(i) [above=4 of origin,xshift=-5mm] {Input: $1.0$};
     \node(n) [right=2 of i,circle,draw] {};
-    \node(epoch) [right=of x,xshift=-1cm] {\footnotesize Epoch};
-    \node(cost) [left=of y,xshift=1cm] {\footnotesize Cost};
+    \node(epoch) [right=of x,xshift=-1cm] {Epoch};
+    \node(cost) [left=of y,xshift=1cm] {Cost};
 
     \draw[->] (origin) to (x);
     \draw[->] (origin) to (y);
@@ -60,7 +61,7 @@
           \xo = \xo + 1;
           \yo = \y;
         };
-        {\draw (\x/100,0) -- node[below] {\footnotesize $\x$} (\x/100,-0.1);};
+        {\draw (\x/100,0) -- node[below] {$\x$} (\x/100,-0.1);};
       };
       {
         \draw[->] (i) to node (w) [below] {
@@ -74,7 +75,6 @@
           $b = \pgfmathprintnumber{\b}$
         };
         \node(o) [right=of n] {
-          \footnotesize
           \pgfkeys{/pgf/number format/.cd,fixed,fixed zerofill,precision=2,use period}
           Output: $\pgfmathprintnumber{\a}$
         };
@@ -90,6 +90,7 @@
   \begin{tikzpicture}[
     inner sep=0pt,
     minimum size=10mm,
+    font=\footnotesize,
     background rectangle/.style={
       draw=gray!25,
       fill=gray!10,
@@ -101,10 +102,10 @@
     \coordinate(x) at (3.5,0);
     \coordinate(y) at (0,2.5);
 
-    \node(i) [above=4 of origin,xshift=-5mm] {\footnotesize Input: $1.0$};
+    \node(i) [above=4 of origin,xshift=-5mm] {Input: $1.0$};
     \node(n) [right=2 of i,circle,draw] {};
-    \node(epoch) [right=of x,xshift=-1cm] {\footnotesize Epoch};
-    \node(cost) [left=of y,xshift=1cm] {\footnotesize Cost};
+    \node(epoch) [right=of x,xshift=-1cm] {Epoch};
+    \node(cost) [left=of y,xshift=1cm] {Cost};
 
     \draw[->] (origin) to (x);
     \draw[->] (origin) to (y);
@@ -158,7 +159,6 @@
           $b = \pgfmathprintnumber{\b}$
         };
         \node(o) [right=of n] {
-          \footnotesize
           \pgfkeys{/pgf/number format/.cd,fixed,fixed zerofill,precision=2,use period}
           Output: $\pgfmathprintnumber{\a}$
         };

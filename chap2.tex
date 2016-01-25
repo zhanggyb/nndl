@@ -48,7 +48,7 @@
 
 \begin{center}
   \begin{tikzpicture}
-    [inner sep=0pt,minimum size=8mm]
+    [inner sep=0pt,minimum size=8mm,font=\footnotesize]
     
     \node(l0) [circle,draw] {};
     
@@ -65,28 +65,28 @@
     \coordinate (lc) at ($(l0)!0.5!(l2)$);
     \node(l1) at (lc) [circle,draw] {};
     
-    \node(tl) [above=0.1 of l2] {\footnotesize layer 1};
-    \node(tm) [above=0.1 of m3] {\footnotesize layer 2};
+    \node(tl) [above=0.1 of l2] {layer 1};
+    \node(tm) [above=0.1 of m3] {layer 2};
 
     % calculate the right position to put the second equation label.
     \newdimen\posx
     \newdimen\posy
     \pgfextractx{\posx}{\pgfpointanchor{r1}{center}}
     \pgfextracty{\posy}{\pgfpointanchor{tm}{center}}
-    \node(tr) at (\posx,\posy) {\footnotesize layer 3};
+    \node(tr) at (\posx,\posy) {layer 3};
     
     \coordinate (rc) at ($(r0)!0.5!(r1)$);
     
     \node(desc) [right=0.5 of rc] {
       \begin{tabular}{l}
-        {\footnotesize $w^l_{jk}$ 是从 $(l - 1)^{\rm th}$ 层的第 $k^{\rm th}$ 个神经元}\\
-        {\footnotesize 到 $l^{\rm th}$ 层的第 $j^{\rm th}$ 个神经元的链接上的权重}\\
+        {$w^l_{jk}$ 是从 $(l - 1)^{\rm th}$ 层的第 $k^{\rm th}$ 个神经元}\\
+        {到 $l^{\rm th}$ 层的第 $j^{\rm th}$ 个神经元的链接上的权重}\\
       \end{tabular}
     };
     
     \coordinate (bc) at ($(m0)!0.5!(r0)$);
     
-    \node(tw) at (3.8,4.2) [blue] {\footnotesize $w_{24}^3$};
+    \node(tw) at (3.8,4.2) [blue] {$w_{24}^3$};
     \draw[->,thick,blue] (tw) to (bc);
     
     % connections:
@@ -111,32 +111,32 @@ $l^{\rm th}$ 层第 $j^{\rm th}$ 个神经元的偏差，使用 $a^l_j$ 表示 $
 
 \begin{center}
   \begin{tikzpicture}
-    [inner sep=0pt,minimum size=8mm]
+    [inner sep=0pt,minimum size=8mm,font=\footnotesize]
     
     \node(l0) [circle,draw] {};
     
     \node(m0) [circle,draw,right=1.5 of l0] {};
-    \node(m1) [circle,draw,above=0.6 of m0] {\footnotesize $b_3^2$};
+    \node(m1) [circle,draw,above=0.6 of m0] {$b_3^2$};
     \node(m2) [circle,draw,above=0.6 of m1] {};
     \node(m3) [circle,draw,above=0.6 of m2] {};
     
     \node(l2) [circle,draw,left=1.5 of m3] {};
     
     \node(r0) [circle,draw,right=1.5 of m1] {};
-    \node(r1) [circle,draw,right=1.5 of m2] {\footnotesize $a_1^3$};
+    \node(r1) [circle,draw,right=1.5 of m2] {$a_1^3$};
     
     \coordinate (lc) at ($(l0)!0.5!(l2)$);
     \node(l1) at (lc) [circle,draw] {};
     
-    \node(tl) [above=0.1 of l2] {\footnotesize layer 1};
-    \node(tm) [above=0.1 of m3] {\footnotesize layer 2};
+    \node(tl) [above=0.1 of l2] {layer 1};
+    \node(tm) [above=0.1 of m3] {layer 2};
     
     % calculate the right position to put the second equation label.
     \newdimen\posx
     \newdimen\posy
     \pgfextractx{\posx}{\pgfpointanchor{r1}{center}}
     \pgfextracty{\posy}{\pgfpointanchor{tm}{center}}
-    \node(tr) at (\posx,\posy) {\footnotesize layer 3};
+    \node(tr) at (\posx,\posy) {layer 3};
 
     % connections:
     \foreach \x in {0, 1, 2}
@@ -236,7 +236,7 @@ C_x/\partial w$ 和 $\partial C_x/\partial b$。然后我们通过在所有训�
 
 \begin{center}
   \begin{tikzpicture}
-    [inner sep=0pt,minimum size=8mm]
+    [inner sep=0pt,minimum size=8mm,font=\footnotesize]
     
     \node(l0) [circle,draw] {};
     
@@ -254,7 +254,7 @@ C_x/\partial w$ 和 $\partial C_x/\partial b$。然后我们通过在所有训�
     \node(l1) at (lc) [circle,draw] {};
     
     \coordinate (rc) at ($(r0)!0.5!(r1)$);
-    \node(eq) [right=1.5 of rc] {\footnotesize cost $C = C(a^L)$};
+    \node(eq) [right=1.5 of rc] {cost $C = C(a^L)$};
     
     % connections:
     \foreach \x in {0, 1, 2}
@@ -265,8 +265,8 @@ C_x/\partial w$ 和 $\partial C_x/\partial b$。然后我们通过在所有训�
     \foreach \y in {0,1}
     \draw[->] (m\x) to (r\y);
 
-    \draw[->] (r0) to node [above,yshift=-1mm] {\footnotesize $a^L_2$} (eq);
-    \draw[->] (r1) to node [above,yshift=-1mm] {\footnotesize $a^L_1$} (eq);
+    \draw[->] (r0) to node [above,yshift=-1mm] {$a^L_2$} (eq);
+    \draw[->] (r1) to node [above,yshift=-1mm] {$a^L_1$} (eq);
     
   \end{tikzpicture}
 \end{center}
@@ -318,7 +318,7 @@ C/\partial w_{jk}^l$ 和 $\partial C/\partial b_j^l$ 上。
 
 \begin{center}
   \begin{tikzpicture}
-    [inner sep=0pt,minimum size=8mm]
+    [inner sep=0pt,minimum size=8mm,font=\footnotesize]
     
     \node(l0) [circle,draw] {};
     
@@ -338,21 +338,21 @@ C/\partial w_{jk}^l$ 和 $\partial C/\partial b_j^l$ 上。
     \coordinate (rc) at ($(r0)!0.5!(r2)$);
     \node(r1) at (rc) [circle,draw] {};
     
-    \node(t) at (3.8,5) [blue] {\footnotesize neutron $j$, layer $l$};
+    \node(t) at (3.8,5) [blue] {neutron $j$, layer $l$};
     \draw[->,thick,blue] (t) to (m1);
     
     \foreach \x in {0,1,2}
-    \node(tl\x) [left=0.1 of l\x] {\footnotesize $\ldots$};
+    \node(tl\x) [left=0.1 of l\x] {$\ldots$};
     
     \foreach \x in {0,1,2}
-    \node(tr\x) [right=0.1 of r\x] {\footnotesize $\ldots$};
+    \node(tr\x) [right=0.1 of r\x] {$\ldots$};
     
     \node (n0) [circle,draw,right=5 of m1] {};
     \node (n1) [circle,draw,right=5 of m2] {};
     \coordinate (nc) at ($(n0)!0.5!(n1)$);
     \node (c) [right=1.5 of nc] {$C$};
-    \node(tn0) [left=0.1 of n0] {\footnotesize $\ldots$};
-    \node(tn1) [left=0.1 of n1] {\footnotesize $\ldots$};
+    \node(tn0) [left=0.1 of n0] {$\ldots$};
+    \node(tn1) [left=0.1 of n1] {$\ldots$};
     
     % connections:
     \foreach \x in {0,1,2}
@@ -511,13 +511,13 @@ $a^{l-1}$ 这些量我们都已经知道如何计算了。方程也可以写成�
 
 \begin{center}
   \begin{tikzpicture}
-    [inner sep=0pt,minimum size=10mm]
+    [inner sep=0pt,minimum size=10mm,font=\footnotesize]
     
     \node(i) [circle,draw] {};
     \node(o) [circle,draw,right=2 of i] {};
     
     \draw[->] (i) -- node [above] {
-      \footnotesize $\frac{\partial C}{\partial w} = a_{\rm in} \delta_{\rm out}$
+      $\frac{\partial C}{\partial w} = a_{\rm in} \delta_{\rm out}$
     } (o);
 
   \end{tikzpicture}
@@ -905,7 +905,7 @@ C/\partial w_j$，仅仅使用一次前向传播，加上一次后向传播。�
 
 \begin{center}
   \begin{tikzpicture}
-    [inner sep=0pt,minimum size=8mm]
+    [inner sep=0pt,minimum size=8mm,font=\footnotesize]
     
     \node(l0) [circle,draw] {};
     
@@ -926,17 +926,17 @@ C/\partial w_j$，仅仅使用一次前向传播，加上一次后向传播。�
     \node(r1) at (rc) [circle,draw] {};
     
     \foreach \x in {0,1,2}
-      \node(tl\x) [left=0.1 of l\x] {\footnotesize $\ldots$};
+      \node(tl\x) [left=0.1 of l\x] {$\ldots$};
 
     \foreach \x in {0,1,2}
-      \node(tr\x) [right=0.1 of r\x] {\footnotesize $\ldots$};
+      \node(tr\x) [right=0.1 of r\x] {$\ldots$};
 
     \node (n0) [circle,draw,right=5 of m1] {};
     \node (n1) [circle,draw,right=5 of m2] {};
     \coordinate (nc) at ($(n0)!0.5!(n1)$);
     \node (c) [right=1.5 of nc] {$C$};
-    \node(tn0) [left=0.1 of n0] {\footnotesize $\ldots$};
-    \node(tn1) [left=0.1 of n1] {\footnotesize $\ldots$};
+    \node(tn0) [left=0.1 of n0] {$\ldots$};
+    \node(tn1) [left=0.1 of n1] {$\ldots$};
   
     % connections:
     \foreach \x in {0,1,2}
@@ -953,7 +953,7 @@ C/\partial w_j$，仅仅使用一次前向传播，加上一次后向传播。�
     % mark:
     
     \coordinate (p) at ($(l1)!0.5!(m3)$);
-    \node(t) [blue,above=1.5 of p] {\footnotesize $\Delta w^l_{jk}$};
+    \node(t) [blue,above=1.5 of p] {$\Delta w^l_{jk}$};
     \draw[->,very thick,blue] (t) to (p);
     
   \end{tikzpicture}
@@ -963,7 +963,7 @@ C/\partial w_j$，仅仅使用一次前向传播，加上一次后向传播。�
 
 \begin{center}
   \begin{tikzpicture}
-    [inner sep=0pt,minimum size=8mm]
+    [inner sep=0pt,minimum size=8mm,font=\footnotesize]
 
     \node(l0) [circle,draw] {};
 
@@ -984,17 +984,17 @@ C/\partial w_j$，仅仅使用一次前向传播，加上一次后向传播。�
     \node(r1) at (rc) [circle,draw] {};
 
     \foreach \x in {0,1,2}
-      \node(tl\x) [left=0.1 of l\x] {\footnotesize $\ldots$};
+      \node(tl\x) [left=0.1 of l\x] {$\ldots$};
 
     \foreach \x in {0,1,2}
-      \node(tr\x) [right=0.1 of r\x] {\footnotesize $\ldots$};
+      \node(tr\x) [right=0.1 of r\x] {$\ldots$};
 
     \node (n0) [circle,draw,right=5 of m1] {};
     \node (n1) [circle,draw,right=5 of m2] {};
     \coordinate (nc) at ($(n0)!0.5!(n1)$);
     \node (c) [right=1.5 of nc] {$C$};
-    \node(tn0) [left=0.1 of n0] {\footnotesize $\ldots$};
-    \node(tn1) [left=0.1 of n1] {\footnotesize $\ldots$};
+    \node(tn0) [left=0.1 of n0] {$\ldots$};
+    \node(tn1) [left=0.1 of n1] {$\ldots$};
   
 	% connections:
 	\foreach \x in {0,1,2}
@@ -1012,7 +1012,7 @@ C/\partial w_j$，仅仅使用一次前向传播，加上一次后向传播。�
     
     \coordinate (p) at ($(l1)!0.5!(m3)$);
     \draw[->,very thick,blue] (p) to (m3);
-    \node(t) [blue,above=0.1 of m3] {\footnotesize $\Delta a^l_j$};
+    \node(t) [blue,above=0.1 of m3] {$\Delta a^l_j$};
 
   \end{tikzpicture}
 \end{center}
@@ -1021,7 +1021,7 @@ C/\partial w_j$，仅仅使用一次前向传播，加上一次后向传播。�
 
 \begin{center}
   \begin{tikzpicture}
-    [inner sep=0pt,minimum size=8mm]
+    [inner sep=0pt,minimum size=8mm,font=\footnotesize]
 
     \node(l0) [circle,draw] {};
     
@@ -1042,17 +1042,17 @@ C/\partial w_j$，仅仅使用一次前向传播，加上一次后向传播。�
     \node(r1) at (rc) [circle,draw] {};
 
     \foreach \x in {0,1,2}
-      \node(tl\x) [left=0.1 of l\x] {\footnotesize $\ldots$};
+      \node(tl\x) [left=0.1 of l\x] {$\ldots$};
 
     \foreach \x in {0,1,2}
-      \node(tr\x) [right=0.1 of r\x] {\footnotesize $\ldots$};
+      \node(tr\x) [right=0.1 of r\x] {$\ldots$};
 
     \node (n0) [circle,draw,right=5 of m1] {};
     \node (n1) [circle,draw,right=5 of m2] {};
     \coordinate (nc) at ($(n0)!0.5!(n1)$);
     \node (c) [right=1.5 of nc] {$C$};
-    \node(tn0) [left=0.1 of n0] {\footnotesize $\ldots$};
-    \node(tn1) [left=0.1 of n1] {\footnotesize $\ldots$};
+    \node(tn0) [left=0.1 of n0] {$\ldots$};
+    \node(tn1) [left=0.1 of n1] {$\ldots$};
   
 	% connections:
 	\foreach \x in {0,1,2}
@@ -1081,7 +1081,7 @@ C/\partial w_j$，仅仅使用一次前向传播，加上一次后向传播。�
 
 \begin{center}
   \begin{tikzpicture}
-    [inner sep=0pt,minimum size=8mm]
+    [inner sep=0pt,minimum size=8mm,font=\footnotesize]
     
     \node(l0) [circle,draw] {};
     
@@ -1102,17 +1102,17 @@ C/\partial w_j$，仅仅使用一次前向传播，加上一次后向传播。�
     \node(r1) at (rc) [circle,draw] {};
     
     \foreach \x in {0,1,2}
-    \node(tl\x) [left=0.1 of l\x] {\footnotesize $\ldots$};
+    \node(tl\x) [left=0.1 of l\x] {$\ldots$};
 
     \foreach \x in {0,1,2}
-      \node(tr\x) [right=0.1 of r\x] {\footnotesize $\ldots$};
+      \node(tr\x) [right=0.1 of r\x] {$\ldots$};
 
     \node (n0) [circle,draw,right=5 of m1] {};
     \node (n1) [circle,draw,right=5 of m2] {};
 	\coordinate (nc) at ($(n0)!0.5!(n1)$);
     \node (c) [right=1.5 of nc] {$C$};
-    \node(tn0) [left=0.1 of n0] {\footnotesize $\ldots$};
-    \node(tn1) [left=0.1 of n1] {\footnotesize $\ldots$};
+    \node(tn0) [left=0.1 of n0] {$\ldots$};
+    \node(tn1) [left=0.1 of n1] {$\ldots$};
   
 	% connections:
 	\foreach \x in {0,1,2}
@@ -1162,7 +1162,7 @@ $\Delta a_j^l$ 的变化将会导致下一层 $(l+1)^{\rm th}$ 的\emph{所有}�
 
 \begin{center}
   \begin{tikzpicture}
-    [inner sep=0pt,minimum size=8mm]
+    [inner sep=0pt,minimum size=8mm,font=\footnotesize]
     
     \node(l0) [circle,draw] {};
     
@@ -1173,7 +1173,7 @@ $\Delta a_j^l$ 的变化将会导致下一层 $(l+1)^{\rm th}$ 的\emph{所有}�
     
     \node(l2) [circle,draw,left=1.5 of m3] {};
     
-    \node(r0) [circle,draw,right=1.5 of m0] {\footnotesize $a^{l+1}_q$};
+    \node(r0) [circle,draw,right=1.5 of m0] {$a^{l+1}_q$};
     \node(r2) [circle,draw,right=1.5 of m3] {};
     
     \coordinate (lc) at ($(l0)!0.5!(l2)$);
@@ -1183,17 +1183,17 @@ $\Delta a_j^l$ 的变化将会导致下一层 $(l+1)^{\rm th}$ 的\emph{所有}�
     \node(r1) at (rc) [circle,draw] {};
     
     \foreach \x in {0,1,2}
-      \node(tl\x) [left=0.1 of l\x] {\footnotesize $\ldots$};
+      \node(tl\x) [left=0.1 of l\x] {$\ldots$};
 
     \foreach \x in {0,1,2}
-      \node(tr\x) [right=0.1 of r\x] {\footnotesize $\ldots$};
+      \node(tr\x) [right=0.1 of r\x] {$\ldots$};
 
     \node (n0) [circle,draw,right=5 of m1] {};
     \node (n1) [circle,draw,right=5 of m2] {};
 	  \coordinate (nc) at ($(n0)!0.5!(n1)$);
     \node (c) [right=1.5 of nc] {$C$};
-    \node(tn0) [left=0.1 of n0] {\footnotesize $\ldots$};
-    \node(tn1) [left=0.1 of n1] {\footnotesize $\ldots$};
+    \node(tn0) [left=0.1 of n0] {$\ldots$};
+    \node(tn1) [left=0.1 of n1] {$\ldots$};
   
     % connections:
     \foreach \x in {0,1,2}
@@ -1275,7 +1275,7 @@ $\partial a_j^l/\partial w_{jk}^l$。路径的变化率因子其实就是这条�
 
 \begin{center}
   \begin{tikzpicture}
-    [inner sep=0pt,minimum size=8mm]
+    [inner sep=0pt,minimum size=8mm,font=\footnotesize]
     
     \node(l0) [circle,draw] {};
     
@@ -1296,17 +1296,17 @@ $\partial a_j^l/\partial w_{jk}^l$。路径的变化率因子其实就是这条�
     \node(r1) at (rc) [circle,draw] {};
     
     \foreach \x in {0,1,2}
-      \node(tl\x) [left=0.1 of l\x] {\footnotesize $\ldots$};
+      \node(tl\x) [left=0.1 of l\x] {$\ldots$};
 
     \foreach \x in {0,1,2}
-      \node(tr\x) [right=0.1 of r\x] {\footnotesize $\ldots$};
+      \node(tr\x) [right=0.1 of r\x] {$\ldots$};
 
     \node (n0) [circle,draw,right=5 of m1] {};
     \node (n1) [circle,draw,right=5 of m2] {};
     \coordinate (nc) at ($(n0)!0.5!(n1)$);
     \node (c) [right=1.5 of nc] {$C$};
-    \node(tn0) [left=0.1 of n0] {\footnotesize $\ldots$};
-    \node(tn1) [left=0.1 of n1] {\footnotesize $\ldots$};
+    \node(tn0) [left=0.1 of n0] {$\ldots$};
+    \node(tn1) [left=0.1 of n1] {$\ldots$};
   
     % connections:
     \foreach \x in {0,1,2}
@@ -1333,9 +1333,9 @@ $\partial a_j^l/\partial w_{jk}^l$。路径的变化率因子其实就是这条�
     \pgfextracty{\posy}{\pgfpointanchor{p0}{center}}
     \coordinate (p3) at (\posx,\posy);
     
-    \node(q0) [above=1.5 of p0,blue] {\footnotesize $\frac{\partial a^l_j}{\partial w^l_{jk}}$};
-    \node(q1) [above=1.5 of p3,blue] {\footnotesize $\frac{\partial a^{(l+1)}_q}{\partial a^l_j}$};
-    \node(q2) [above=of p2,blue] {\footnotesize $\frac{\partial C}{\partial a^L_m}$};
+    \node(q0) [above=1.5 of p0,blue] {$\frac{\partial a^l_j}{\partial w^l_{jk}}$};
+    \node(q1) [above=1.5 of p3,blue] {$\frac{\partial a^{(l+1)}_q}{\partial a^l_j}$};
+    \node(q2) [above=of p2,blue] {$\frac{\partial C}{\partial a^L_m}$};
 
     \draw[->,very thick,blue] (p) to (m3);
     \draw[->,very thick,blue] (m3) to (r0);    
