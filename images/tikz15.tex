@@ -1,0 +1,37 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[tikz]{standalone}
+\usepackage[default,mdseries=Light,bfseries=Medium,path=../fonts]{cjkfonts}
+\usetikzlibrary{positioning}
+
+\begin{document}
+  \begin{tikzpicture}
+    [subquestion/.style={rectangle,draw,minimum width=4cm,minimum height=1.5cm},
+     mainquestion/.style={rectangle,draw,minimum width=5cm,minimum height=1.5cm},
+     font=\footnotesize]
+
+    \node(t1) [subquestion] {
+      有一个眉毛吗？
+    };
+    \node(t2) [subquestion,above=5mm of t1] {
+      有睫毛吗？
+    };
+    \node(t3) [subquestion,below=5mm of t1] {
+      有一个虹膜吗？
+    };
+    \node(equal) [left=5mm of t1] {$=$};
+    \node(t4) [mainquestion,left=5mm of equal] {
+      左上角有一个眼睛吗？
+    };
+
+    \node(n) [circle,draw,right=of t1,minimum size=6mm] {};
+    \node(o) [right=of n] {};
+
+    \draw[->] (t1.east) to (n);
+    \draw[->] (t2.east) to (n);
+    \draw[->] (t3.east) to (n);
+    \draw[->] (n) to (o);
+
+  \end{tikzpicture}
+\end{document}

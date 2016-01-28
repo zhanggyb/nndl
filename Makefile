@@ -4,17 +4,24 @@
 TEX = xelatex
 MKIDX = makeindex
 RM = rm -rf
+MAKE = make
+TARGET = nndl-ebook.pdf
+SOURCES := $(filter-out nndl-ebook.tex,$(wildcard *.tex))
 
-.PHONY: all ebook
+.PHONY: all graphics
 
-all: ebook
+all: graphics $(TARGET)
 
-ebook: nndl-ebook.tex
+%.pdf: %.tex $(SOURCES)
 	$(TEX) $(basename $<)
 	$(MKIDX) $(basename $<)
 	$(TEX) $(basename $<)
 
+graphics:
+	$(MAKE) -C images
+
 clean:
+	$(MAKE) -C images clean
 	$(RM) *.pdf
 	$(RM) *.aux
 	$(RM) *.log

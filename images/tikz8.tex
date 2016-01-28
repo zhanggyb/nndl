@@ -1,0 +1,61 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[tikz]{standalone}
+
+\begin{document}
+  \begin{tikzpicture}[
+    neuron/.style={circle,draw,inner sep=0pt,minimum size=8mm}
+    ]
+
+    % leftmost perceptrons:
+    \node (pl1) at (-2.25, 1.25) [neuron] {};
+    \node (pl2) at (-2.25, 0) [neuron] {};
+    \node (pl3) at (-2.25, -1.25) [neuron] {};
+
+    % middle perceptrons:
+    \node (pm1) at (0, 1.875) [neuron] {};
+    \node (pm2) at (0, 0.625) [neuron] {};
+    \node (pm3) at (0, -0.625) [neuron] {};
+    \node (pm4) at (0, -1.875) [neuron] {};
+
+    % rightmost perceptron:
+    \node (pr) at (2.25, 0) [neuron] {};
+
+    % output:
+    \node (output) at (5.5, 0) {\ $output + \Delta output$};
+
+    \node (weight) at (-1.125, 2.5) {$w + \Delta w$};
+
+    % connect nodes:
+
+    \draw [->] (pl1) to (pm1);
+    \draw [->] (pl1) to (pm2);
+    \draw [->] (pl1) to (pm3);
+    \draw [->] (pl1) to (pm4);
+    \draw [->] (pl2) to (pm1);
+    \draw [->] (pl2) to (pm2);
+    \draw [->] (pl2) to (pm3);
+    \draw [->] (pl2) to (pm4);
+    \draw [->] (pl3) to (pm1);
+    \draw [->] (pl3) to (pm2);
+    \draw [->] (pl3) to (pm3);
+    \draw [->] (pl3) to (pm4);
+    \draw [->] (pm1) to (pr);
+    \draw [->] (pm2) to (pr);
+    \draw [->] (pm3) to (pr);
+    \draw [->] (pm4) to (pr);
+    \draw [->] (pr) to (output);
+
+    \draw (weight) -- node [above] {
+      \begin{tabular}{c}
+        \footnotesize small change in any weight (or bias) \\
+        \footnotesize causes a small change in the output
+      \end{tabular}
+    } (6.35, 2.5);
+    \draw [->] (6.35, 2.5) -- (6.35, 0.25);
+
+    % \draw [->] (weight) -- node (5.5, 2.5) to (output);
+
+  \end{tikzpicture} 
+\end{document}

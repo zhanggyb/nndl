@@ -47,58 +47,7 @@
 例如，下图给出了网络中第二层的第四个神经元到第三层的第二个神经元的链接上的权重：
 
 \begin{center}
-  \begin{tikzpicture}
-    [inner sep=0pt,minimum size=8mm,font=\footnotesize]
-    
-    \node(l0) [circle,draw] {};
-    
-    \node(m0) [circle,draw,right=1.5 of l0] {};
-    \node(m1) [circle,draw,above=0.6 of m0] {};
-    \node(m2) [circle,draw,above=0.6 of m1] {};
-    \node(m3) [circle,draw,above=0.6 of m2] {};
-    
-    \node(l2) [circle,draw,left=1.5 of m3] {};
-    
-    \node(r0) [circle,draw,right=1.5 of m1] {};
-    \node(r1) [circle,draw,right=1.5 of m2] {};
-    
-    \coordinate (lc) at ($(l0)!0.5!(l2)$);
-    \node(l1) at (lc) [circle,draw] {};
-    
-    \node(tl) [above=0.1 of l2] {layer 1};
-    \node(tm) [above=0.1 of m3] {layer 2};
-
-    % calculate the right position to put the second equation label.
-    \newdimen\posx
-    \newdimen\posy
-    \pgfextractx{\posx}{\pgfpointanchor{r1}{center}}
-    \pgfextracty{\posy}{\pgfpointanchor{tm}{center}}
-    \node(tr) at (\posx,\posy) {layer 3};
-    
-    \coordinate (rc) at ($(r0)!0.5!(r1)$);
-    
-    \node(desc) [right=0.5 of rc] {
-      \begin{tabular}{l}
-        {$w^l_{jk}$ 是从 $(l - 1)^{\rm th}$ 层的第 $k^{\rm th}$ 个神经元}\\
-        {到 $l^{\rm th}$ 层的第 $j^{\rm th}$ 个神经元的链接上的权重}\\
-      \end{tabular}
-    };
-    
-    \coordinate (bc) at ($(m0)!0.5!(r0)$);
-    
-    \node(tw) at (3.8,4.2) [blue] {$w_{24}^3$};
-    \draw[->,thick,blue] (tw) to (bc);
-    
-    % connections:
-    \foreach \x in {0, 1, 2}
-    \foreach \y in {0,...,3}
-    \draw[->] (l\x) to (m\y);
-    
-    \foreach \x in {0,...,3}
-    \foreach \y in {0,1}
-    \draw[->] (m\x) to (r\y);
-    
-  \end{tikzpicture}
+  \includegraphics{tikz16}
 \end{center}
 
 这样的表示粗看比较奇怪，需要花一点时间消化。但是，后面你会发现这样的表示会比较方
@@ -110,44 +59,7 @@ $l^{\rm th}$ 层第 $j^{\rm th}$ 个神经元的偏差，使用 $a^l_j$ 表示 $
 第 $j^{\rm th}$ 个神经元的激活值。下面的图清楚地解释了这样表示的含义：
 
 \begin{center}
-  \begin{tikzpicture}
-    [inner sep=0pt,minimum size=8mm,font=\footnotesize]
-    
-    \node(l0) [circle,draw] {};
-    
-    \node(m0) [circle,draw,right=1.5 of l0] {};
-    \node(m1) [circle,draw,above=0.6 of m0] {$b_3^2$};
-    \node(m2) [circle,draw,above=0.6 of m1] {};
-    \node(m3) [circle,draw,above=0.6 of m2] {};
-    
-    \node(l2) [circle,draw,left=1.5 of m3] {};
-    
-    \node(r0) [circle,draw,right=1.5 of m1] {};
-    \node(r1) [circle,draw,right=1.5 of m2] {$a_1^3$};
-    
-    \coordinate (lc) at ($(l0)!0.5!(l2)$);
-    \node(l1) at (lc) [circle,draw] {};
-    
-    \node(tl) [above=0.1 of l2] {layer 1};
-    \node(tm) [above=0.1 of m3] {layer 2};
-    
-    % calculate the right position to put the second equation label.
-    \newdimen\posx
-    \newdimen\posy
-    \pgfextractx{\posx}{\pgfpointanchor{r1}{center}}
-    \pgfextracty{\posy}{\pgfpointanchor{tm}{center}}
-    \node(tr) at (\posx,\posy) {layer 3};
-
-    % connections:
-    \foreach \x in {0, 1, 2}
-    \foreach \y in {0,...,3}
-    \draw[->] (l\x) to (m\y);
-    
-    \foreach \x in {0,...,3}
-    \foreach \y in {0,1}
-    \draw[->] (m\x) to (r\y);
-    
-  \end{tikzpicture}
+  \includegraphics{tikz17}
 \end{center}
 
 有了这些表示，$l^{\rm th}$ 层的第 $j^{\rm th}$ 个神经元的激活值 $a^{l}_j$ 就和
@@ -235,40 +147,7 @@ C_x/\partial w$ 和 $\partial C_x/\partial b$。然后我们通过在所有训�
 第二个假设就是代价可以写成神经网络输出的函数：
 
 \begin{center}
-  \begin{tikzpicture}
-    [inner sep=0pt,minimum size=8mm,font=\footnotesize]
-    
-    \node(l0) [circle,draw] {};
-    
-    \node(m0) [circle,draw,right=1.5 of l0] {};
-    \node(m1) [circle,draw,above=0.6 of m0] {};
-    \node(m2) [circle,draw,above=0.6 of m1] {};
-    \node(m3) [circle,draw,above=0.6 of m2] {};
-    
-    \node(l2) [circle,draw,left=1.5 of m3] {};
-    
-    \node(r0) [circle,draw,right=1.5 of m1] {};
-    \node(r1) [circle,draw,right=1.5 of m2] {};
-    
-    \coordinate (lc) at ($(l0)!0.5!(l2)$);
-    \node(l1) at (lc) [circle,draw] {};
-    
-    \coordinate (rc) at ($(r0)!0.5!(r1)$);
-    \node(eq) [right=1.5 of rc] {cost $C = C(a^L)$};
-    
-    % connections:
-    \foreach \x in {0, 1, 2}
-    \foreach \y in {0,...,3}
-    \draw[->] (l\x) to (m\y);
-    
-    \foreach \x in {0,...,3}
-    \foreach \y in {0,1}
-    \draw[->] (m\x) to (r\y);
-
-    \draw[->] (r0) to node [above,yshift=-1mm] {$a^L_2$} (eq);
-    \draw[->] (r1) to node [above,yshift=-1mm] {$a^L_1$} (eq);
-    
-  \end{tikzpicture}
+  \includegraphics{tikz18}
 \end{center}
 
 例如，二次代价函数满足这个要求，因为对于一个单独的训练样本 $x$ 其二次代价函数可
@@ -530,7 +409,7 @@ $a^{l-1}$ 这些量我们都已经知道如何计算了。方程也可以写成�
 
 这四个公式 \eqref{eq:bp1}--\eqref{eq:bp4} 同样还有其它可以理解的方面。让我们从输
 出层开始，先看看~\eqref{eq:bp1}中的项$\sigma'(z_k^l)$。回忆一下%
-\hyperref[fig:sigmoid_graph]{上一章中S型函数的图形}，当 $\sigma(z^L_j)$ 近似为
+\hyperref[fig:StepFunction]{上一章中S型函数的图形}，当 $\sigma(z^L_j)$ 近似为
 $0$ 或者 $1$ 的时候 $\sigma$ 函数变得非常平。这时 $\sigma'(z^L_j) \approx 0$。所
 以如果输出神经元处于或者低激活值（$\approx 0$）或者高激活值（$\approx 1$）时，最
 终层的权重学习缓慢。这样的情形，我们常常称输出神经元已经\emph{饱和}\index{饱和}

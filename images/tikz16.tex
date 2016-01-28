@@ -1,0 +1,63 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[tikz]{standalone}
+\usepackage[default,mdseries=Light,bfseries=Medium,path=../fonts]{cjkfonts}
+\usetikzlibrary{calc,positioning}
+
+\begin{document}
+  \begin{tikzpicture}[
+    neuron/.style={circle,draw,inner sep=0pt,minimum size=8mm},
+    font=\footnotesize
+    ]
+    
+    \node(l0) [neuron] {};
+    
+    \node(m0) [neuron,right=1.5 of l0] {};
+    \node(m1) [neuron,above=0.6 of m0] {};
+    \node(m2) [neuron,above=0.6 of m1] {};
+    \node(m3) [neuron,above=0.6 of m2] {};
+    
+    \node(l2) [neuron,left=1.5 of m3] {};
+    
+    \node(r0) [neuron,right=1.5 of m1] {};
+    \node(r1) [neuron,right=1.5 of m2] {};
+    
+    \coordinate (lc) at ($(l0)!0.5!(l2)$);
+    \node(l1) at (lc) [neuron] {};
+    
+    \node(tl) [above=0.1 of l2] {layer 1};
+    \node(tm) [above=0.1 of m3] {layer 2};
+
+    % calculate the right position to put the second equation label.
+    \newdimen\posx
+    \newdimen\posy
+    \pgfextractx{\posx}{\pgfpointanchor{r1}{center}}
+    \pgfextracty{\posy}{\pgfpointanchor{tm}{center}}
+    \node(tr) at (\posx,\posy) {layer 3};
+    
+    \coordinate (rc) at ($(r0)!0.5!(r1)$);
+    
+    \node(desc) [right=0.5 of rc] {
+      \begin{tabular}{l}
+        {$w^l_{jk}$ 是从 $(l - 1)^{\rm th}$ 层的第 $k^{\rm th}$ 个神经元}\\
+        {到 $l^{\rm th}$ 层的第 $j^{\rm th}$ 个神经元的链接上的权重}\\
+      \end{tabular}
+    };
+    
+    \coordinate (bc) at ($(m0)!0.5!(r0)$);
+    
+    \node(tw) at (3.8,4.2) [blue] {$w_{24}^3$};
+    \draw[->,thick,blue] (tw) to (bc);
+    
+    % connections:
+    \foreach \x in {0, 1, 2}
+    \foreach \y in {0,...,3}
+    \draw[->] (l\x) to (m\y);
+    
+    \foreach \x in {0,...,3}
+    \foreach \y in {0,1}
+    \draw[->] (m\x) to (r\y);
+
+  \end{tikzpicture}
+\end{document}

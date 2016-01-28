@@ -1,0 +1,18 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[tikz]{standalone}
+
+\begin{document}
+  \begin{tikzpicture}[
+    neuron/.style={circle,draw,inner sep=0pt,minimum size=12mm}
+    ]
+    \node (perceptron) at (0, 0) [neuron] {$3$};
+    \node (output) at (2.65, 0) {};
+    \node (x1) at (-2.65, 1) {$x_1$};
+    \node (x2) at (-2.65, -1) {$x_2$};
+    \draw [->] (x1) to node [above=-3mm] {$-2$} (perceptron);
+    \draw [->] (x2) to node [above=-3mm] {$-2$} (perceptron);
+    \draw [->] (perceptron) to (output);
+  \end{tikzpicture}
+\end{document}
