@@ -170,7 +170,7 @@ C_x/\partial w$ 和 $\partial C_x/\partial b$。然后我们通过在所有训�
 t$ 来表示\emph{按元素}的乘积。所以 $s\odot t$ 的元素就是 $(s\odot t)_j = s_j
 t_j$。给个例子，
 \begin{equation}
-  \left[\begin{array}{c} 1 \\ 2 \end{array}\right] 
+  \left[\begin{array}{c} 1 \\ 2 \end{array}\right]
   \odot \left[\begin{array}{c} 3 \\ 4\end{array} \right]
   = \left[ \begin{array}{c} 1 * 3 \\ 2 * 4 \end{array} \right]
   = \left[ \begin{array}{c} 3 \\ 8 \end{array} \right]
@@ -196,59 +196,7 @@ C/\partial w_{jk}^l$ 和 $\partial C/\partial b_j^l$ 上。
 为了理解误差是如何定义的，假设在神经网络上有一个调皮鬼：
 
 \begin{center}
-  \begin{tikzpicture}
-    [inner sep=0pt,minimum size=8mm,font=\footnotesize]
-    
-    \node(l0) [circle,draw] {};
-    
-    \node(m0) [circle,draw,right=1.5 of l0] {};
-    \node(m1) [circle,draw,above=0.6 of m0] {};
-    \node(m2) [circle,draw,above=0.6 of m1] {};
-    \node(m3) [circle,draw,above=0.6 of m2] {};
-
-    \node(l2) [circle,draw,left=1.5 of m3] {};
-
-    \node(r0) [circle,draw,right=1.5 of m0] {};
-    \node(r2) [circle,draw,right=1.5 of m3] {};
-    
-    \coordinate (lc) at ($(l0)!0.5!(l2)$);
-    \node(l1) at (lc) [circle,draw] {};
-    
-    \coordinate (rc) at ($(r0)!0.5!(r2)$);
-    \node(r1) at (rc) [circle,draw] {};
-    
-    \node(t) at (3.8,5) [blue] {neutron $j$, layer $l$};
-    \draw[->,thick,blue] (t) to (m1);
-    
-    \foreach \x in {0,1,2}
-    \node(tl\x) [left=0.1 of l\x] {$\ldots$};
-    
-    \foreach \x in {0,1,2}
-    \node(tr\x) [right=0.1 of r\x] {$\ldots$};
-    
-    \node (n0) [circle,draw,right=5 of m1] {};
-    \node (n1) [circle,draw,right=5 of m2] {};
-    \coordinate (nc) at ($(n0)!0.5!(n1)$);
-    \node (c) [right=1.5 of nc] {$C$};
-    \node(tn0) [left=0.1 of n0] {$\ldots$};
-    \node(tn1) [left=0.1 of n1] {$\ldots$};
-    
-    % connections:
-    \foreach \x in {0,1,2}
-    \foreach \y in {0,...,3}
-    \draw[->] (l\x) to (m\y);
-    
-    \foreach \x in {0,...,3}
-    \foreach \y in {0,1,2}
-    \draw[->] (m\x) to (r\y);
-    
-    \draw[->] (n0) to (c);
-    \draw[->] (n1) to (c);
-
-    % load a daemon image:
-    \node(daemon) at (m1.west) [xshift=-4pt] {\includegraphics[width=0.05\textwidth]{daemon}};
-    
-  \end{tikzpicture}
+  \includegraphics{tikz19}
 \end{center}
 
 这个调皮鬼在 $l$ 层的第 $j^{th}$ 个神经元上。当输入进来时，调皮鬼对神经元的操作
@@ -302,7 +250,7 @@ $\delta^l$ 和代价函数梯度的方法。我列出这四个方程。但是需
 看起来更加舒服，甚至是美妙和自然的。
 
 \textbf{输出层误差的方程，$\delta^L$：} 每个元素定义如下：
-\begin{equation} 
+\begin{equation}
   \delta^L_j = \frac{\partial C}{\partial a^L_j} \sigma'(z^L_j)
   \label{eq:bp1}\tag{BP1}
 \end{equation}
@@ -321,7 +269,7 @@ y_j)$，这其实很容易计算。
 
 方程~\eqref{eq:bp1} 对 $\delta^L$ 来说是个按分量构成的表达式。这是一个非常好的表
 达式，但不是我们期望的用矩阵表示的形式。但是，以矩阵形式重写方程其实很简单，
-\begin{equation} 
+\begin{equation}
   \delta^L = \nabla_a C \odot \sigma'(z^L)
   \label{eq:bp1a}\tag{BP1a}
 \end{equation}
@@ -331,7 +279,7 @@ y_j)$，这其实很容易计算。
 和方程~\eqref{eq:bp1a} 的等价也是显而易见的，所以现在开始，我们会用
 \eqref{eq:bp1}表示这两个方程。举个例子，在二次代价函数时，我们有 $\nabla_a C =
 (a^L - y)$，所以 \eqref{eq:bp1} 的整个矩阵形式就变成
-\begin{equation} 
+\begin{equation}
   \delta^L = (a^L-y) \odot \sigma'(z^L)
   \label{eq:30}\tag{30}
 \end{equation}
@@ -372,7 +320,7 @@ $\delta^{L-1}$，然后再次用方程~\eqref{eq:bp2} 来计算 $\delta^{L-2}$�
 其中 $\delta$ 和偏差 $b$ 都是针对同一个神经元。
 
 \textbf{代价函数关于任何一个权重的改变率：} 特别地，
-\begin{equation}  
+\begin{equation}
   \frac{\partial C}{\partial w^l_{jk}} = a^{l-1}_k \delta^l_j
   \label{eq:bp4}\tag{BP4}
 \end{equation}
@@ -389,17 +337,7 @@ $a^{l-1}$ 这些量我们都已经知道如何计算了。方程也可以写成�
 给出一幅图如下：
 
 \begin{center}
-  \begin{tikzpicture}
-    [inner sep=0pt,minimum size=10mm,font=\footnotesize]
-    
-    \node(i) [circle,draw] {};
-    \node(o) [circle,draw,right=2 of i] {};
-    
-    \draw[->] (i) -- node [above] {
-      $\frac{\partial C}{\partial w} = a_{\rm in} \delta_{\rm out}$
-    } (o);
-
-  \end{tikzpicture}
+  \includegraphics{tikz20}
 \end{center}
 
 方程~\eqref{eq:32} 的一个好的结果就是当激活值 $a_{\rm in}$ 很小，$a_{\rm in}
@@ -471,7 +409,7 @@ $\sigma'(z^l)$。这表示如果神经元已经接近饱和，$\delta_j^l$ 很�
   \end{equation}
   （3）结合（1）和（2）证明
   \begin{equation}
-    \delta^l = \Sigma'(z^l) (w^{l+1})^T \ldots \Sigma'(z^{L-1}) (w^L)^T 
+    \delta^l = \Sigma'(z^l) (w^{l+1})^T \ldots \Sigma'(z^{L-1}) (w^L)^T
     \Sigma'(z^L) \nabla_a C
     \label{eq:35}\tag{35}
   \end{equation}
@@ -520,7 +458,7 @@ z^{l+1}_k$ 的形式重写 $\delta^l_j = \partial C / \partial z^l_j$。我们�
 法则：
 \begin{align}
   \delta^l_j &= \frac{\partial C}{\partial z^l_j} \label{eq:40}\tag{40}\\
-             &= \sum_k \frac{\partial C}{\partial z^{l+1}_k} \frac{\partial z^{l+1}_k}{\partial z^l_j} \label{eq:41}\tag{41}\\ 
+             &= \sum_k \frac{\partial C}{\partial z^{l+1}_k} \frac{\partial z^{l+1}_k}{\partial z^l_j} \label{eq:41}\tag{41}\\
              &= \sum_k \frac{\partial z^{l+1}_k}{\partial z^l_j} \delta^{l+1}_k \label{eq:42}\tag{42}
 \end{align}
 这里最后一行我们交换了右边的两项，并用 $\delta^{l+1}_k$ 的定义代入。为了对最后一
@@ -637,12 +575,12 @@ class Network(object):
             delta_nabla_b, delta_nabla_w = self.backprop(x, y)
             nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
             nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
-        self.weights = [w-(eta/len(mini_batch))*nw 
+        self.weights = [w-(eta/len(mini_batch))*nw
                         for w, nw in zip(self.weights, nabla_w)]
-        self.biases = [b-(eta/len(mini_batch))*nb 
+        self.biases = [b-(eta/len(mini_batch))*nb
                        for b, nb in zip(self.biases, nabla_b)]
 \end{lstlisting}
-        
+
 主要工作其实是在 \lstinline!delta_nabla_b!，%
 \lstinline!delta_nabla_w = self.backprop(x, y)! 这里完成的，调用了
 \lstinline!backprop! 方法计算出了偏导数，
@@ -699,7 +637,7 @@ class Network(object):
     def cost_derivative(self, output_activations, y):
         """Return the vector of partial derivatives \partial C_x /
         \partial a for the output activations."""
-        return (output_activations-y) 
+        return (output_activations-y)
 
 def sigmoid(z):
     """The sigmoid function."""
@@ -735,7 +673,7 @@ def sigmoid_prime(z):
 = C(w)$（我们马上会回到偏差）。你给这些权重 $w_1, w_2, \ldots$ 进行编号，期望计
 算某些权重 $w_j$ 的偏导数 $\partial C / \partial w_j$。而一种近似的方法就是下面
 这种：
-\begin{equation}  
+\begin{equation}
   \frac{\partial
     C}{\partial w_{j}} \approx \frac{C(w+\epsilon
     e_j)-C(w)}{\epsilon}
@@ -783,239 +721,25 @@ C/\partial w_j$，仅仅使用一次前向传播，加上一次后向传播。�
 一点小小的变动 $\Delta w_{jk}^l$：
 
 \begin{center}
-  \begin{tikzpicture}
-    [inner sep=0pt,minimum size=8mm,font=\footnotesize]
-    
-    \node(l0) [circle,draw] {};
-    
-    \node(m0) [circle,draw,right=1.5 of l0] {};
-    \node(m1) [circle,draw,above=0.6 of m0] {};
-    \node(m2) [circle,draw,above=0.6 of m1] {};
-    \node(m3) [circle,draw,above=0.6 of m2] {};
-    
-    \node(l2) [circle,draw,left=1.5 of m3] {};
-    
-    \node(r0) [circle,draw,right=1.5 of m0] {};
-    \node(r2) [circle,draw,right=1.5 of m3] {};
-    
-    \coordinate (lc) at ($(l0)!0.5!(l2)$);
-    \node(l1) at (lc) [circle,draw] {};
-    
-    \coordinate (rc) at ($(r0)!0.5!(r2)$);
-    \node(r1) at (rc) [circle,draw] {};
-    
-    \foreach \x in {0,1,2}
-      \node(tl\x) [left=0.1 of l\x] {$\ldots$};
-
-    \foreach \x in {0,1,2}
-      \node(tr\x) [right=0.1 of r\x] {$\ldots$};
-
-    \node (n0) [circle,draw,right=5 of m1] {};
-    \node (n1) [circle,draw,right=5 of m2] {};
-    \coordinate (nc) at ($(n0)!0.5!(n1)$);
-    \node (c) [right=1.5 of nc] {$C$};
-    \node(tn0) [left=0.1 of n0] {$\ldots$};
-    \node(tn1) [left=0.1 of n1] {$\ldots$};
-  
-    % connections:
-    \foreach \x in {0,1,2}
-    \foreach \y in {0,...,3}
-    \draw[->] (l\x) to (m\y);
-    
-    \foreach \x in {0,...,3}
-    \foreach \y in {0,1,2}
-    \draw[->] (m\x) to (r\y);
-    
-    \draw[->] (n0) to (c);
-    \draw[->] (n1) to (c);
-
-    % mark:
-    
-    \coordinate (p) at ($(l1)!0.5!(m3)$);
-    \node(t) [blue,above=1.5 of p] {$\Delta w^l_{jk}$};
-    \draw[->,very thick,blue] (t) to (p);
-    
-  \end{tikzpicture}
+  \includegraphics{tikz22}
 \end{center}
 
 这个改变会导致在输出激活值上的相应改变：
 
 \begin{center}
-  \begin{tikzpicture}
-    [inner sep=0pt,minimum size=8mm,font=\footnotesize]
-
-    \node(l0) [circle,draw] {};
-
-    \node(m0) [circle,draw,right=1.5 of l0] {};
-    \node(m1) [circle,draw,above=0.6 of m0] {};
-    \node(m2) [circle,draw,above=0.6 of m1] {};
-    \node(m3) [circle,draw,above=0.6 of m2] {};
-    
-    \node(l2) [circle,draw,left=1.5 of m3] {};
-    
-    \node(r0) [circle,draw,right=1.5 of m0] {};
-    \node(r2) [circle,draw,right=1.5 of m3] {};
-    
-    \coordinate (lc) at ($(l0)!0.5!(l2)$);
-    \node(l1) at (lc) [circle,draw] {};
-    
-    \coordinate (rc) at ($(r0)!0.5!(r2)$);
-    \node(r1) at (rc) [circle,draw] {};
-
-    \foreach \x in {0,1,2}
-      \node(tl\x) [left=0.1 of l\x] {$\ldots$};
-
-    \foreach \x in {0,1,2}
-      \node(tr\x) [right=0.1 of r\x] {$\ldots$};
-
-    \node (n0) [circle,draw,right=5 of m1] {};
-    \node (n1) [circle,draw,right=5 of m2] {};
-    \coordinate (nc) at ($(n0)!0.5!(n1)$);
-    \node (c) [right=1.5 of nc] {$C$};
-    \node(tn0) [left=0.1 of n0] {$\ldots$};
-    \node(tn1) [left=0.1 of n1] {$\ldots$};
-  
-	% connections:
-	\foreach \x in {0,1,2}
-		\foreach \y in {0,...,3}
-			\draw[->] (l\x) to (m\y);
-
-	\foreach \x in {0,...,3}
-		\foreach \y in {0,1,2}
-			\draw[->] (m\x) to (r\y);
-
-    \draw[->] (n0) to (c);
-    \draw[->] (n1) to (c);
-
-    % mark:
-    
-    \coordinate (p) at ($(l1)!0.5!(m3)$);
-    \draw[->,very thick,blue] (p) to (m3);
-    \node(t) [blue,above=0.1 of m3] {$\Delta a^l_j$};
-
-  \end{tikzpicture}
+  \includegraphics{tikz23}
 \end{center}
 
 然后，会产生对下一层\emph{所有}激活值的改变：
 
 \begin{center}
-  \begin{tikzpicture}
-    [inner sep=0pt,minimum size=8mm,font=\footnotesize]
-
-    \node(l0) [circle,draw] {};
-    
-    \node(m0) [circle,draw,right=1.5 of l0] {};
-    \node(m1) [circle,draw,above=0.6 of m0] {};
-    \node(m2) [circle,draw,above=0.6 of m1] {};
-    \node(m3) [circle,draw,above=0.6 of m2] {};
-    
-    \node(l2) [circle,draw,left=1.5 of m3] {};
-    
-    \node(r0) [circle,draw,right=1.5 of m0] {};
-    \node(r2) [circle,draw,right=1.5 of m3] {};
-    
-    \coordinate (lc) at ($(l0)!0.5!(l2)$);
-    \node(l1) at (lc) [circle,draw] {};
-    
-    \coordinate (rc) at ($(r0)!0.5!(r2)$);
-    \node(r1) at (rc) [circle,draw] {};
-
-    \foreach \x in {0,1,2}
-      \node(tl\x) [left=0.1 of l\x] {$\ldots$};
-
-    \foreach \x in {0,1,2}
-      \node(tr\x) [right=0.1 of r\x] {$\ldots$};
-
-    \node (n0) [circle,draw,right=5 of m1] {};
-    \node (n1) [circle,draw,right=5 of m2] {};
-    \coordinate (nc) at ($(n0)!0.5!(n1)$);
-    \node (c) [right=1.5 of nc] {$C$};
-    \node(tn0) [left=0.1 of n0] {$\ldots$};
-    \node(tn1) [left=0.1 of n1] {$\ldots$};
-  
-	% connections:
-	\foreach \x in {0,1,2}
-		\foreach \y in {0,...,3}
-			\draw[->] (l\x) to (m\y);
-
-	\foreach \x in {0,...,3}
-		\foreach \y in {0,1,2}
-			\draw[->] (m\x) to (r\y);
-
-    \draw[->] (n0) to (c);
-    \draw[->] (n1) to (c);
-
-    % mark:
-    
-    \coordinate (p) at ($(l1)!0.5!(m3)$);
-    \draw[->,very thick,blue] (p) to (m3);
-    \draw[->,very thick,blue] (m3) to (r0);
-    \draw[->,very thick,blue] (m3) to (r1);
-    \draw[->,very thick,blue] (m3) to (r2);
-
-  \end{tikzpicture}
+  \includegraphics{tikz24}
 \end{center}
 
 接着，这些改变都将影响到一个个下一层，到达输出层，最终影响代价函数：
 
 \begin{center}
-  \begin{tikzpicture}
-    [inner sep=0pt,minimum size=8mm,font=\footnotesize]
-    
-    \node(l0) [circle,draw] {};
-    
-    \node(m0) [circle,draw,right=1.5 of l0] {};
-    \node(m1) [circle,draw,above=0.6 of m0] {};
-    \node(m2) [circle,draw,above=0.6 of m1] {};
-    \node(m3) [circle,draw,above=0.6 of m2] {};
-    
-    \node(l2) [circle,draw,left=1.5 of m3] {};
-    
-    \node(r0) [circle,draw,right=1.5 of m0] {};
-    \node(r2) [circle,draw,right=1.5 of m3] {};
-    
-    \coordinate (lc) at ($(l0)!0.5!(l2)$);
-    \node(l1) at (lc) [circle,draw] {};
-    
-    \coordinate (rc) at ($(r0)!0.5!(r2)$);
-    \node(r1) at (rc) [circle,draw] {};
-    
-    \foreach \x in {0,1,2}
-    \node(tl\x) [left=0.1 of l\x] {$\ldots$};
-
-    \foreach \x in {0,1,2}
-      \node(tr\x) [right=0.1 of r\x] {$\ldots$};
-
-    \node (n0) [circle,draw,right=5 of m1] {};
-    \node (n1) [circle,draw,right=5 of m2] {};
-	\coordinate (nc) at ($(n0)!0.5!(n1)$);
-    \node (c) [right=1.5 of nc] {$C$};
-    \node(tn0) [left=0.1 of n0] {$\ldots$};
-    \node(tn1) [left=0.1 of n1] {$\ldots$};
-  
-	% connections:
-	\foreach \x in {0,1,2}
-		\foreach \y in {0,...,3}
-			\draw[->] (l\x) to (m\y);
-
-	\foreach \x in {0,...,3}
-		\foreach \y in {0,1,2}
-			\draw[->] (m\x) to (r\y);
-
-    \draw[->] (n0) to (c);
-    \draw[->] (n1) to (c);
-
-    % mark:
-    
-    \coordinate (p) at ($(l1)!0.5!(m3)$);
-    \draw[->,very thick,blue] (p) to (m3);
-    \draw[->,very thick,blue] (m3) to (r0);
-    \draw[->,very thick,blue] (m3) to (r1);
-    \draw[->,very thick,blue] (m3) to (r2);
-    \draw[->,very thick,blue] (n0) to (c);
-    \draw[->,very thick,blue] (n1) to (c);
-
-  \end{tikzpicture}
+  \includegraphics{tikz25}
 \end{center}
 
 所以代价函数 $\Delta C$ 改变和 $\Delta w_{jk}^l$ 就按照下面的公式关联起来了：
@@ -1031,7 +755,7 @@ w^l_{jk}$ 了。
 
 我们尝试一下这个方法。$\Delta w_{jk}^l$ 导致了在 $l^{th}$ 层 $j^{th}$ 神经元的激
 活值的变化 $\Delta a_j^l$。这个变化由下面的公式给出：
-\begin{equation} 
+\begin{equation}
   \Delta a^l_j \approx \frac{\partial a^l_j}{\partial w^l_{jk}} \Delta w^l_{jk}
   \label{eq:48}\tag{48}
 \end{equation}
@@ -1040,59 +764,7 @@ $\Delta a_j^l$ 的变化将会导致下一层 $(l+1)^{\rm th}$ 的\emph{所有}�
 我们聚焦到其中一个激活值上看看影响的情况，不妨设 $a_q^{l+1}$，
 
 \begin{center}
-  \begin{tikzpicture}
-    [inner sep=0pt,minimum size=8mm,font=\footnotesize]
-    
-    \node(l0) [circle,draw] {};
-    
-    \node(m0) [circle,draw,right=1.5 of l0] {};
-    \node(m1) [circle,draw,above=0.6 of m0] {};
-    \node(m2) [circle,draw,above=0.6 of m1] {};
-    \node(m3) [circle,draw,above=0.6 of m2] {};
-    
-    \node(l2) [circle,draw,left=1.5 of m3] {};
-    
-    \node(r0) [circle,draw,right=1.5 of m0] {$a^{l+1}_q$};
-    \node(r2) [circle,draw,right=1.5 of m3] {};
-    
-    \coordinate (lc) at ($(l0)!0.5!(l2)$);
-    \node(l1) at (lc) [circle,draw] {};
-    
-    \coordinate (rc) at ($(r0)!0.5!(r2)$);
-    \node(r1) at (rc) [circle,draw] {};
-    
-    \foreach \x in {0,1,2}
-      \node(tl\x) [left=0.1 of l\x] {$\ldots$};
-
-    \foreach \x in {0,1,2}
-      \node(tr\x) [right=0.1 of r\x] {$\ldots$};
-
-    \node (n0) [circle,draw,right=5 of m1] {};
-    \node (n1) [circle,draw,right=5 of m2] {};
-	  \coordinate (nc) at ($(n0)!0.5!(n1)$);
-    \node (c) [right=1.5 of nc] {$C$};
-    \node(tn0) [left=0.1 of n0] {$\ldots$};
-    \node(tn1) [left=0.1 of n1] {$\ldots$};
-  
-    % connections:
-    \foreach \x in {0,1,2}
-    \foreach \y in {0,...,3}
-    \draw[->] (l\x) to (m\y);
-    
-    \foreach \x in {0,...,3}
-    \foreach \y in {0,1,2}
-    \draw[->] (m\x) to (r\y);
-    
-    \draw[->] (n0) to (c);
-    \draw[->] (n1) to (c);
-
-    % mark:
-    
-    \coordinate (p) at ($(l1)!0.5!(m3)$);
-    \draw[->,very thick,blue] (p) to (m3);
-    \draw[->,very thick,blue] (m3) to (r0);
-
-  \end{tikzpicture}
+  \includegraphics{tikz26}
 \end{center}
 
 实际上，这会导致下面的变化：
@@ -1114,7 +786,7 @@ $\Delta a_j^l$ 的变化将会导致下一层 $(l+1)^{\rm th}$ 的\emph{所有}�
 终是输出层的代价的变化。假设激活值的序列如下 $a_j^l, a_q^{l+1},
 ...,a_n^{L-1},a_m^{L}$，那么结果的表达式就是
 \begin{equation}
-  \Delta C \approx \frac{\partial C}{\partial a^L_m} 
+  \Delta C \approx \frac{\partial C}{\partial a^L_m}
   \frac{\partial a^L_m}{\partial a^{L-1}_n}
   \frac{\partial a^{L-1}_n}{\partial a^{L-2}_p} \ldots
   \frac{\partial a^{l+1}_q}{\partial a^l_j}
@@ -1127,7 +799,7 @@ $\Delta a_j^l$ 的变化将会导致下一层 $(l+1)^{\rm th}$ 的\emph{所有}�
 值的变化。当然，整个网络中存在很多 $w_{jk}^l$ 可以传播而影响代价函数的路径，这里
 我们就看其中一条。为了计算 $C$ 的全部改变，我们就需要对所有可能的路径进行求和，
 即，
-\begin{equation} 
+\begin{equation}
   \Delta C \approx \sum_{mnp\ldots q} \frac{\partial C}{\partial a^L_m}
   \frac{\partial a^L_m}{\partial a^{L-1}_n} \frac{\partial a^{L-1}_n}{\partial
     a^{L-2}_p} \ldots \frac{\partial a^{l+1}_q}{\partial a^l_j} \frac{\partial
@@ -1136,7 +808,7 @@ $\Delta a_j^l$ 的变化将会导致下一层 $(l+1)^{\rm th}$ 的\emph{所有}�
 \end{equation}
 
 这里我们对路径中所有可能的中间神经元选择进行求和。对比 \eqref{eq:47} 我们有
-\begin{equation} 
+\begin{equation}
   \frac{\partial C}{\partial w^l_{jk}} = \sum_{mnp\ldots q} \frac{\partial
     C}{\partial a^L_m} \frac{\partial a^L_m}{\partial a^{L-1}_n} \frac{\partial
     a^{L-1}_n}{\partial a^{L-2}_p} \ldots \frac{\partial a^{l+1}_q}{\partial
@@ -1153,80 +825,7 @@ $\partial a_j^l/\partial w_{jk}^l$。路径的变化率因子其实就是这条�
 到最终输出的代价函数的路径的变化率因子的和。针对某一个路径，这个过程解释如下，
 
 \begin{center}
-  \begin{tikzpicture}
-    [inner sep=0pt,minimum size=8mm,font=\footnotesize]
-    
-    \node(l0) [circle,draw] {};
-    
-    \node(m0) [circle,draw,right=1.5 of l0] {};
-    \node(m1) [circle,draw,above=0.6 of m0] {};
-    \node(m2) [circle,draw,above=0.6 of m1] {};
-    \node(m3) [circle,draw,above=0.6 of m2] {};
-    
-    \node(l2) [circle,draw,left=1.5 of m3] {};
-    
-    \node(r0) [circle,draw,right=1.5 of m0] {};
-    \node(r2) [circle,draw,right=1.5 of m3] {};
-    
-    \coordinate (lc) at ($(l0)!0.5!(l2)$);
-    \node(l1) at (lc) [circle,draw] {};
-    
-    \coordinate (rc) at ($(r0)!0.5!(r2)$);
-    \node(r1) at (rc) [circle,draw] {};
-    
-    \foreach \x in {0,1,2}
-      \node(tl\x) [left=0.1 of l\x] {$\ldots$};
-
-    \foreach \x in {0,1,2}
-      \node(tr\x) [right=0.1 of r\x] {$\ldots$};
-
-    \node (n0) [circle,draw,right=5 of m1] {};
-    \node (n1) [circle,draw,right=5 of m2] {};
-    \coordinate (nc) at ($(n0)!0.5!(n1)$);
-    \node (c) [right=1.5 of nc] {$C$};
-    \node(tn0) [left=0.1 of n0] {$\ldots$};
-    \node(tn1) [left=0.1 of n1] {$\ldots$};
-  
-    % connections:
-    \foreach \x in {0,1,2}
-    \foreach \y in {0,...,3}
-    \draw[->] (l\x) to (m\y);
-
-    \foreach \x in {0,...,3}
-    \foreach \y in {0,1,2}
-    \draw[->] (m\x) to (r\y);
-
-    \draw[->] (n0) to (c);
-    \draw[->] (n1) to (c);
-
-    % mark:
-    
-    \coordinate (p0) at ($(l1)!0.5!(m3)$);
-    \coordinate (p1) at ($(m3)!0.5!(r0)$);
-    \coordinate (p2) at ($(n1)!0.5!(c)$);
-
-    % calculate the right position to put the second equation label.
-    \newdimen\posx
-    \newdimen\posy
-    \pgfextractx{\posx}{\pgfpointanchor{p1}{center}}
-    \pgfextracty{\posy}{\pgfpointanchor{p0}{center}}
-    \coordinate (p3) at (\posx,\posy);
-    
-    \node(q0) [above=1.5 of p0,blue] {$\frac{\partial a^l_j}{\partial w^l_{jk}}$};
-    \node(q1) [above=1.5 of p3,blue] {$\frac{\partial a^{(l+1)}_q}{\partial a^l_j}$};
-    \node(q2) [above=of p2,blue] {$\frac{\partial C}{\partial a^L_m}$};
-
-    \draw[->,very thick,blue] (p) to (m3);
-    \draw[->,very thick,blue] (m3) to (r0);    
-    \draw[->,very thick,blue] (n1) to (c);    
-
-    \draw[->,thick,blue,dashed] (p0) to (q0);
-    \draw[->,thick,blue,dashed] (p1) to (q1);
-    \draw[->,thick,blue,dashed] (p2) to (q2);
-
-    % \draw[--] (q0) node (contact) {} -| (p1);
-
-  \end{tikzpicture}
+  \includegraphics{tikz27}
 \end{center}
 
 我们到现在所给出的东西其实是一种启发式的观点，一种思考权重变化对网络行为影响的方

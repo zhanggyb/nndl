@@ -39,17 +39,7 @@
 吗？为了回答这个问题，让我们看看一个小例子。这个例子包含一个只有一个输入的神经元：
 
 \begin{center}
-  \begin{tikzpicture}[inner sep=0pt,minimum size=10mm,font=\footnotesize]
-    \node (neuron) [circle,draw] {};
-    \node (input) [left=2 of neuron] {};
-    \node (output) [right=1.5 of neuron] {};
-
-    \node [above] at (neuron.north) {bias $b$};
-
-    \draw[->] (input) to node [above] {weight $w$} (neuron);
-    \draw[->] (neuron) to (output);
-
-  \end{tikzpicture}
+  \includegraphics{tikz28}
 \end{center}
 
 我们会训练这个神经元来做一件非常简单的事：让输入 $1$ 转化为$0$。当然，这很简单了，
@@ -69,18 +59,18 @@
 % checkout https://github.com/mnielsen/nnadl_site/tree/gh-pages/js/saturation1.js to get the JS code
 % The macro \quadraticCostLearning is defined in plots.tex
 \begin{center}
-  \quadraticCostLearning{0.6}{0.9}{0.15}{0}
+  \includegraphics{saturation1-0}
 \end{center}
 随着训练周期的增加，神经元的输出、权重、偏差和代价的变化如下面一系列图形所示：
 \begin{center}
   \begin{tabular}{ll}
-    \quadraticCostLearning{0.6}{0.9}{0.15}{50} &  \quadraticCostLearning{0.6}{0.9}{0.15}{100}\\
+    \includegraphics{saturation1-50} & \includegraphics{saturation1-100}\\
   \end{tabular}
   \begin{tabular}{ll}
-    \quadraticCostLearning{0.6}{0.9}{0.15}{150} & \quadraticCostLearning{0.6}{0.9}{0.15}{200}\\
+    \includegraphics{saturation1-150} & \includegraphics{saturation1-200}\\
   \end{tabular}
   \begin{tabular}{ll}
-    \quadraticCostLearning{0.6}{0.9}{0.15}{250} & \quadraticCostLearning{0.6}{0.9}{0.15}{300}
+    \includegraphics{saturation1-250} & \includegraphics{saturation1-300}
   \end{tabular}
 \end{center}
 
@@ -89,22 +79,22 @@ $0.09$。这虽然不是我们的目标输出 $0.0$，但是已经挺好了。�
 偏差都设置为 $2.0$。此时初始输出为 $0.98$，这是和目标值的差距相当大的。现在看看
 神经元学习的过程。
 \begin{center}
-  \quadraticCostLearning{2.0}{2.0}{0.15}{0}
+  \includegraphics{saturation2-0}
 \end{center}
 点击%
 \href{http://neuralnetworksanddeeplearning.com/chap3.html#the_cross-entropy_cost_function}{
   网页上的``Run''按钮}，你将看到如下的一系列变化：
-\begin{center}
-  \begin{tabular}{ll}
-    \quadraticCostLearning{2.0}{2.0}{0.15}{50} &  \quadraticCostLearning{2.0}{2.0}{0.15}{100}\\
-  \end{tabular}
-  \begin{tabular}{ll}
-    \quadraticCostLearning{2.0}{2.0}{0.15}{150} & \quadraticCostLearning{2.0}{2.0}{0.15}{200}\\
-  \end{tabular}
-  \begin{tabular}{ll}
-    \quadraticCostLearning{2.0}{2.0}{0.15}{250} & \quadraticCostLearning{2.0}{2.0}{0.15}{300}
-  \end{tabular}
-\end{center}
+  \begin{center}
+    \begin{tabular}{ll}
+      \includegraphics{saturation2-50} & \includegraphics{saturation2-100}\\
+    \end{tabular}
+    \begin{tabular}{ll}
+      \includegraphics{saturation2-150} & \includegraphics{saturation2-200}\\
+    \end{tabular}
+    \begin{tabular}{ll}
+      \includegraphics{saturation2-250} & \includegraphics{saturation2-300}
+    \end{tabular}
+  \end{center}
 
 虽然这个例子使用的了同样的学习速率（$\eta=0.15$），我们可以看到刚开始的学习速度是
 比较缓慢的。对前 $150$ 左右的学习次数，权重和偏差并没有发生太大的变化。随后学习速
@@ -128,15 +118,15 @@ $\partial C/\partial b$）决定的速度学习。所以，我们在说``学习�
 其中 $a$ 是神经元的输出，训练输入为 $x=1$，$y=0$ 则是目标输出。显式地使用权重和偏
 差来表达这个，我们有 $a = \sigma(z)$，其中 $z = wx+b$。使用链式法则来求权重和偏差
 的偏导数就有：
-\begin{align} 
-  \frac{\partial C}{\partial w} &= (a-y)\sigma'(z) x = a \sigma'(z)\label{eq:55}\tag{55}\\  
+\begin{align}
+  \frac{\partial C}{\partial w} &= (a-y)\sigma'(z) x = a \sigma'(z)\label{eq:55}\tag{55}\\
   \frac{\partial C}{\partial b} &= (a-y)\sigma'(z) = a \sigma'(z)\label{eq:56}\tag{56}
 \end{align}
 
 其中我已经将 $x = 1$ 和 $y = 0$ 代入了。为了理解这些表达式的行为，让我们仔细
 看 $\sigma'(z)$ 这一项。首先回忆一下 $\sigma$ 函数图像：
 \begin{center}
-  \includegraphics{step_function}
+  \includegraphics{sigmoid_function}
 \end{center}
 
 我们可以从这幅图看出，当神经元的输出接近 $1$ 的时候，曲线变得相当平，所
@@ -154,24 +144,12 @@ $\partial C/\partial b$）决定的速度学习。所以，我们在说``学习�
 \ldots$ 和偏差 $b$：
 
 \begin{center}
-  \begin{tikzpicture}[inner sep=0pt,minimum size=10mm,font=\footnotesize]
-    \node (neuron) [circle,draw] {$b$};
-    \node (x2) [left=1.5 of neuron] {$x_2$};
-    \node (x1) [left=1.5 of neuron,yshift=1cm] {$x_1$};
-    \node (x3) [left=1.5 of neuron,yshift=-1cm] {$x_3$};
-    \node (output) [right=of neuron] {$a = \sigma(z)$};
-
-    \draw[->] (x1) to node [above,yshift=-3.5mm] {$w_1$} (neuron);
-    \draw[->] (x2) to node [above,yshift=-3.5mm] {$w_2$} (neuron);
-    \draw[->] (x3) to node [above,yshift=-3.5mm] {$w_3$} (neuron);
-    \draw[->] (neuron) to (output);
-
-  \end{tikzpicture}
+  \includegraphics{tikz29}
 \end{center}
 
 神经元的输出就是 $a = \sigma(z)$，其中 $z = \sum_j w_j x_j+b$ 是输入的带权和。我
 们如下定义这个神经元的交叉熵代价函数：
-\begin{equation} 
+\begin{equation}
   C = -\frac{1}{n} \sum_x \left[y \ln a + (1-y ) \ln (1-a) \right]
 \label{eq:57}\tag{57}
 \end{equation}
@@ -205,8 +183,8 @@ $0$。这些其实就是我们想要的代价函数的特性。其实这些特�
   \frac{\partial C}{\partial w_j} &= -\frac{1}{n} \sum_x \left(
                                     \frac{y }{\sigma(z)} -\frac{(1-y)}{1-\sigma(z)} \right)
                                     \frac{\partial \sigma}{\partial w_j} \label{eq:58}\tag{58}\\
-                                  &= -\frac{1}{n} \sum_x \left( 
-                                    \frac{y}{\sigma(z)} 
+                                  &= -\frac{1}{n} \sum_x \left(
+                                    \frac{y}{\sigma(z)}
                                     -\frac{(1-y)}{1-\sigma(z)} \right)\sigma'(z) x_j \label{eq:59}\tag{59}
 \end{align}
 
@@ -237,7 +215,7 @@ $\sigma(z)-y$，也就是输出中的误差的控制。更大的误差，更快�
 
 根据类似的方法，我们可以计算出关于偏差的偏导数。我这里不再给出详细的过程，你可以
 轻易验证得到
-\begin{equation} 
+\begin{equation}
   \frac{\partial C}{\partial b} = \frac{1}{n} \sum_x (\sigma(z)-y)
 \label{eq:62}\tag{62}
 \end{equation}
@@ -254,18 +232,18 @@ $\sigma(z)-y$，也就是输出中的误差的控制。更大的误差，更快�
 让我们重回最原初的例子，来看看换成了交叉熵之后的学习过程。现在仍然按照前面的参数
 配置来初始化网络，开始权重为 $0.6$，而偏差为 $0.9$。
 \begin{center}
-  \crossEntropyCostLearning{0.6}{0.9}{0.005}{0}
+  \includegraphics{saturation3-0}
 \end{center}
 点击“Run”按钮看看在换成交叉熵之后网络的学习情况，你将看到如下变化的曲线：
 \begin{center}
   \begin{tabular}{ll}
-    \crossEntropyCostLearning{0.6}{0.9}{0.005}{50} &  \crossEntropyCostLearning{0.6}{0.9}{0.005}{100}\\
+    \includegraphics{saturation3-50} & \includegraphics{saturation3-100}\\
   \end{tabular}
   \begin{tabular}{ll}
-    \crossEntropyCostLearning{0.6}{0.9}{0.005}{150} & \crossEntropyCostLearning{0.6}{0.9}{0.005}{200}\\
+    \includegraphics{saturation3-150} & \includegraphics{saturation3-200}\\
   \end{tabular}
   \begin{tabular}{ll}
-    \crossEntropyCostLearning{0.6}{0.9}{0.005}{250} & \crossEntropyCostLearning{0.6}{0.9}{0.005}{300}
+    \includegraphics{saturation3-250} & \includegraphics{saturation3-300}
   \end{tabular}
 \end{center}
 
@@ -274,18 +252,18 @@ $\sigma(z)-y$，也就是输出中的误差的控制。更大的误差，更快�
 （\href{http://neuralnetworksanddeeplearning.com/chap3.html#saturation2_anchor}{
   链接}），权重和偏差都初始化为 $2.0$：
 \begin{center}
-  \crossEntropyCostLearning{2.0}{2.0}{0.005}{0}
+  \includegraphics{saturation4-0}
 \end{center}
 点击“Run”按钮，你将看到如下变化的曲线：
 \begin{center}
   \begin{tabular}{ll}
-    \crossEntropyCostLearning{2.0}{2.0}{0.005}{50} &  \crossEntropyCostLearning{2.0}{2.0}{0.005}{100}\\
+    \includegraphics{saturation4-50} & \includegraphics{saturation4-100}\\
   \end{tabular}
   \begin{tabular}{ll}
-    \crossEntropyCostLearning{2.0}{2.0}{0.005}{150} & \crossEntropyCostLearning{2.0}{2.0}{0.005}{200}\\
+    \includegraphics{saturation4-150} & \includegraphics{saturation4-200}\\
   \end{tabular}
   \begin{tabular}{ll}
-    \crossEntropyCostLearning{2.0}{0.9}{0.005}{250} & \crossEntropyCostLearning{2.0}{2.0}{0.005}{300}
+    \includegraphics{saturation4-250} & \includegraphics{saturation4-300}
   \end{tabular}
 \end{center}
 
@@ -364,13 +342,13 @@ $0$，或者完全反过来。如果我们使用二次代价函数，那么这�
   \end{equation}
   项 $\sigma'(z^L_j)$ 会在一个输出神经元困在错误值时导致学习速度的下降。证明对于
   交叉熵代价函数，针对一个训练样本 $x$ 的输出误差 $\delta^L$为
-  \begin{equation} 
+  \begin{equation}
     \delta^L = a^L-y
     \label{eq:66}\tag{66}
   \end{equation}
   使用这个表达式来证明关于输出层的权重的偏导数为
-  \begin{equation} 
-    \frac{\partial C}{\partial w^L_{jk}} = \frac{1}{n} \sum_x 
+  \begin{equation}
+    \frac{\partial C}{\partial w^L_{jk}} = \frac{1}{n} \sum_x
     a^{L-1}_k  (a^L_j-y_j)
     \label{eq:67}\tag{67}
   \end{equation}
@@ -387,9 +365,9 @@ $0$，或者完全反过来。如果我们使用二次代价函数，那么这�
   \end{equation}
   类似于前一个问题，使用这个表达式来证明关于输出层的权重和偏差的偏导数为
   \begin{align}
-    \frac{\partial C}{\partial w^L_{jk}} &= \frac{1}{n} \sum_x 
+    \frac{\partial C}{\partial w^L_{jk}} &= \frac{1}{n} \sum_x
                                            a^{L-1}_k  (a^L_j-y_j) \label{eq:69}\tag{69}\\
-    \frac{\partial C}{\partial b^L_{j}} &= \frac{1}{n} \sum_x 
+    \frac{\partial C}{\partial b^L_{j}} &= \frac{1}{n} \sum_x
                                           (a^L_j-y_j) \label{eq:70}\tag{70}
   \end{align}
   这表明如果输出神经元是线性的那么二次代价函数不再会导致学习速度下降的问题。在此
@@ -474,7 +452,7 @@ $0$，或者完全反过来。如果我们使用二次代价函数，那么这�
 降了，并理解其原因是因为在公式~\eqref{eq:55} 和~\eqref{eq:56} 中的 $\sigma'(z)$
 那一项。在研究了这些公式后，我们可能就会想到选择一个不包含 $\sigma'(z)$ 的代价函
 数。所以，这时候对一个训练样本 $x$，其代价 $C = C_x$ 满足：
-\begin{align} 
+\begin{align}
   \frac{\partial C}{\partial w_j} &= x_j(a-y) \label{eq:71}\tag{71}\\
   \frac{\partial C}{\partial b } &= (a-y) \label{eq:72}\tag{72}
 \end{align}
@@ -484,14 +462,14 @@ $0$，或者完全反过来。如果我们使用二次代价函数，那么这�
 始，现在我们就看看凭着我们数学的直觉推导出交叉熵的形式是可行的。我们来推一下，由
 链式法则，我们有
 \begin{equation}
-  \frac{\partial C}{\partial b} = \frac{\partial C}{\partial a} 
+  \frac{\partial C}{\partial b} = \frac{\partial C}{\partial a}
   \sigma'(z)
   \tag{73}
 \end{equation}
 
 使用 $\sigma'(z) = \sigma(z)(1-\sigma(z)) = a(1-a)$，上个等式就变成
 \begin{equation}
-  \frac{\partial C}{\partial b} = \frac{\partial C}{\partial a} 
+  \frac{\partial C}{\partial b} = \frac{\partial C}{\partial a}
   a(1-a)
   \label{eq:74}\tag{74}
 \end{equation}
@@ -502,7 +480,7 @@ $0$，或者完全反过来。如果我们使用二次代价函数，那么这�
   \label{eq:75}\tag{75}
 \end{equation}
 
-对此方程关于 $a$ 进行积分，得到 
+对此方程关于 $a$ 进行积分，得到
 \begin{equation}
   C = -[y \ln a + (1-y) \ln (1-a)]+ {\rm constant}
   \label{eq:76}\tag{76}
@@ -556,7 +534,7 @@ $0$，或者完全反过来。如果我们使用二次代价函数，那么这�
 $z^L_j = \sum_{k} w^L_{jk} a^{L-1}_k + b^L_j$。不过，这里我们不会使用 S 型函数来
 获得输出。而是，在会在这一层上应用一种叫做\emph{柔性最大值函数}在 $z^L_j$ 上。根
 据这个函数，第 $j$ 个神经元的激活值 $a^L_j$ 就是
-\begin{equation} 
+\begin{equation}
   a^L_j = \frac{e^{z^L_j}}{\sum_k e^{z^L_k}}
   \label{eq:78}\tag{78}
 \end{equation}
@@ -570,38 +548,7 @@ $z^L_4$。下面的例子中的可调整的滑块显示带权输入的可取值�
 要探索它，一个好的开始的地方是用底部的滑块来增加 $z^L_4$：
 
 \begin{center}
-  \begin{tikzpicture}[
-    font=\footnotesize,
-    base/.style={rectangle,draw,minimum width=100pt,minimum height=10pt},
-    slidebar/.style={base,rounded corners=2pt},
-    colorbar/.style={base}
-  ]
-  
-  \node(s1) [slidebar] {};
-  \node(z1) [below,anchor=north west] at (s1.south west) {$z^L_1 = 2.5$};
-  
-  \node(b1) [colorbar,right=of s1] {};
-  \node(a1) [below,anchor=north west] at (b1.south west) {$a^L_1 = 0.315$};
-  
-  \node(s2) [slidebar,below=of s1] {};
-  \node(z2) [below,anchor=north west] at (s2.south west) {$z^L_2 = -1$};
-  
-  \node(b2) [colorbar,right=of s2] {};
-  \node(a2) [below,anchor=north west] at (b2.south west) {$a^L_2 = 0.009$};
-
-  \node(s3) [slidebar,below=of s2] {};
-  \node(z3) [below,anchor=north west] at (s3.south west) {$z^L_3 = 3.2$};
-  
-  \node(b3) [colorbar,right=of s3] {};
-  \node(a3) [below,anchor=north west] at (b3.south west) {$a^L_3 = 0.633$};
-
-  \node(s4) [slidebar,below=of s3] {};
-  \node(z4) [below,anchor=north west] at (s4.south west) {$z^L_4 = 0.5$};
-  
-  \node(b4) [colorbar,right=of s4] {};
-  \node(a4) [below,anchor=north west] at (b4.south west) {$a^L_4 = 0.043$};
-  
-  \end{tikzpicture}
+  \includegraphics{softmax}
 \end{center}
 
 在\href{http://neuralnetworksanddeeplearning.com/chap3.html#softmax}{原文的网
@@ -763,11 +710,11 @@ $1$。所以这个特定的形式不再像之前那样难以理解了：反而�
 们现在使用 \lstinline!network2! 来研究代价函数改变的情况：
 
 \begin{lstlisting}[language=Python]
->>> import mnist_loader 
+>>> import mnist_loader
 >>> training_data, validation_data, test_data = \
 ... mnist_loader.load_data_wrapper()
->>> import network2 
->>> net = network2.Network([784, 30, 10], cost=network2.CrossEntropyCost) 
+>>> import network2
+>>> net = network2.Network([784, 30, 10], cost=network2.CrossEntropyCost)
 >>> net.large_weight_initializer()
 >>> net.SGD(training_data[:1000], 400, 10, 0.5, evaluation_data=test_data,
 ... monitor_evaluation_accuracy=True, monitor_training_cost=True)
@@ -823,8 +770,8 @@ $1$。所以这个特定的形式不再像之前那样难以理解了：反而�
 实际上，我们会使用这种方式变形来试验。记得之前我们载入 MNIST 数据的时候有：
 
 \begin{lstlisting}[language=Python]
-```python 
->>> import mnist_loader 
+```python
+>>> import mnist_loader
 >>> training_data, validation_data, test_data = \
 ... mnist_loader.load_data_wrapper()
 \end{lstlisting}
@@ -930,9 +877,9 @@ $1$。所以这个特定的形式不再像之前那样难以理解了：反而�
 为了构造这个例子，我们首先需要弄清楚如何将随机梯度下降算法应用在一个规范化的神经
 网络上。特别地，我们需要知道如何计算偏导数 $\partial C/\partial w$ 和
 $\partial C/\partial b$。对公式~\eqref{eq:87} 进行求偏导数得：
-\begin{align} 
-  \frac{\partial C}{\partial w} & = \frac{\partial C_0}{\partial w} + 
-                                  \frac{\lambda}{n} w \label{eq:88}\tag{88} \\ 
+\begin{align}
+  \frac{\partial C}{\partial w} & = \frac{\partial C_0}{\partial w} +
+                                  \frac{\lambda}{n} w \label{eq:88}\tag{88} \\
   \frac{\partial C}{\partial b} & = \frac{\partial C_0}{\partial b} \label{eq:89}\tag{89}
 \end{align}
 
@@ -946,9 +893,9 @@ $\partial C_0/\partial w$ 和 $\partial C_0/\partial b$ 可以通过反向传播
 \end{equation}
 
 权重的学习规则就变成：
-\begin{align} 
+\begin{align}
   w & \rightarrow w-\eta \frac{\partial C_0}{\partial
-      w}-\frac{\eta \lambda}{n} w \label{eq:91}\tag{91}\\ 
+      w}-\frac{\eta \lambda}{n} w \label{eq:91}\tag{91}\\
     & = \left(1-\frac{\eta \lambda}{n}\right) w -\eta \frac{\partial
       C_0}{\partial w} \label{eq:92}\tag{92}
 \end{align}
@@ -962,7 +909,7 @@ $0$。但是实际不是这样的，因为如果在原始代价函数中造成�
 降中，我们可以通过平均 minibatch 中 $m$ 个训练样本来估计
 $\partial C_0/\partial w$。因此，为了随机梯度下降的规范化学习规则就变成（参考方
 程~\eqref{eq:20}）
-\begin{equation} 
+\begin{equation}
   w \rightarrow \left(1-\frac{\eta \lambda}{n}\right) w -\frac{\eta}{m}
   \sum_x \frac{\partial C_x}{\partial w}
   \label{eq:93}\tag{93}
@@ -990,10 +937,10 @@ $1-\frac{\eta \lambda}{n}$。最后，为了完备性，我给出偏差的规范
 为 \lstinline!validation_data!，你会发现有相似的结果。
 
 \begin{lstlisting}[language=Python]
->>> import mnist_loader 
+>>> import mnist_loader
 >>> training_data, validation_data, test_data = \
-... mnist_loader.load_data_wrapper() 
->>> import network2 
+... mnist_loader.load_data_wrapper()
+>>> import network2
 >>> net = network2.Network([784, 30, 10], cost=network2.CrossEntropyCost)
 >>> net.large_weight_initializer()
 >>> net.SGD(training_data[:1000], 400, 10, 0.5,
@@ -1484,7 +1431,7 @@ b$ 仍然是一个均值为 $0$ 不过有很陡的峰顶的高斯分布。假设
 >>> net = network2.Network([784, 30, 10], cost=network2.CrossEntropyCost)
 >>> net.large_weight_initializer()
 >>> net.SGD(training_data, 30, 10, 0.1, lmbda = 5.0,
-... evaluation_data=validation_data, 
+... evaluation_data=validation_data,
 ... monitor_evaluation_accuracy=True)
 \end{lstlisting}
 
@@ -1493,7 +1440,7 @@ b$ 仍然是一个均值为 $0$ 不过有很陡的峰顶的高斯分布。假设
 \begin{lstlisting}[language=Python]
 >>> net = network2.Network([784, 30, 10], cost=network2.CrossEntropyCost)
 >>> net.SGD(training_data, 30, 10, 0.1, lmbda = 5.0,
-... evaluation_data=validation_data, 
+... evaluation_data=validation_data,
 ... monitor_evaluation_accuracy=True)
 \end{lstlisting}
 
