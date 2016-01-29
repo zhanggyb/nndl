@@ -4,19 +4,21 @@
 \documentclass[tikz]{standalone}
 
 \begin{document}
-  \begin{tikzpicture}
+  \begin{tikzpicture}[
+    axis/.style={font=\footnotesize}
+    ]
     
     \draw (-5,0) -- (5,0);
 
     \foreach \x in {-4, -3, -2, -1, 0, 1, 2, 3, 4}
-    \draw (\x, 0) -- (\x, -0.1) node[below]{$\x$};
+    \draw (\x, 0) -- (\x, -0.1) node[axis,below]{$\x$};
     \draw (-5, 0) -- (-5, -0.1);
     \draw (5, 0) -- (5, -0.1);
 
     \draw (-5,0) -- (-5,5);
 
     \foreach \y in {0.0, 0.2, 0.4, 0.6, 0.8, 1.0}
-    \draw (-5, \y * 5) -- (-5-0.1, \y * 5) node[left]{$\y$};
+    \draw (-5, \y * 5) -- (-5-0.1, \y * 5) node[axis,left]{$\y$};
 
     \draw (0, -0.5) node[below] {Z};
     \draw (0, 5) node[above] {step function};

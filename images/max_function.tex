@@ -1,0 +1,30 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[tikz]{standalone}
+
+\begin{document}
+  \begin{tikzpicture}[
+      axis/.style={font=\footnotesize}
+    ]
+    
+    \draw (-5,0) -- (5,0) node[right] {Z};
+
+    \foreach \x in {-4,...,5}
+      \draw (\x, 0) -- (\x, -0.15) node[axis,below]{$\x$};
+    
+    % \draw (-5, 0) -- (-5, -0.1);
+    \draw (5, 0) -- (5, -0.15);
+
+    \draw (-5,-4) -- (-5,4);
+
+    \foreach \y in {-4,...,5}
+      \draw (-5, \y * 4 / 5) -- (-5-0.15, \y * 4 / 5) node[axis,left]{$\y$};
+    \draw (-5,-4) -- (-5-0.15,-4);
+
+    \draw (0, 4) node[above] {max(o,z)};
+
+    \draw[blue,thick] (-5, 0) -- (0, 0) -- (5, 4);
+
+  \end{tikzpicture} 
+\end{document}
