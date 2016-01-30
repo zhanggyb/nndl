@@ -246,8 +246,8 @@ $3$，标记的单个权重为 $-4$：
 似，但是被修改为权重和偏差的微小改动只引起输出的微小变化。这对于让神经元网络学习
 起来是很关键的。
 
-好了, 让我来描述下S型神经元\index{S型神经元}。我们用描绘感知器的相同方式来描绘
-S型神经元：
+好了, 让我来描述下S型神经元。我们用描绘感知器的相同方式来描绘
+S型神经元\index{S型神经元}：
 \begin{center}
   \includegraphics{tikz9}
 \end{center}
@@ -658,7 +658,7 @@ $C$ 的变化，正如我们期望的用梯度来表示。但是这个方程真�
   \label{eq:10}\tag{10}
 \end{equation}
 
-这里的 $\eta$ 是个很小的正数（称为\emph{学习速率}）。方程~\eqref{eq:9} 告诉我们
+这里的 $\eta$ 是个很小的正数（称为\emph{\learningrate}\index{\learningrate}\index{learning rate}）。方程~\eqref{eq:9} 告诉我们
 $\Delta C \approx -\eta \nabla C \cdot \nabla C = -\eta \|\nabla C\|^2$。由于
 $\| \nabla C \|^2 \geq 0$，这保证了$\Delta C \leq 0$，即，如果我们按照方
 程~\eqref{eq:10} 的规则去改变 $v$，那么 $C$ 会一直减小，不会增加。（当然，要在方
@@ -684,7 +684,7 @@ $C$ 直到 —— 正如我们希望的 —— 获得一个全局的最小值。
 山谷。相比之下，我们选择 $\Delta v$ 规则只是说：``往下，现在''。这仍然是一个寻找
 最小值的非常好的规则！
 
-为了使梯度下降能够正确地运行，我们需要选择足够小的学习速率 $\eta$ 使得方
+为了使梯度下降能够正确地运行，我们需要选择足够小的\learningrate{} $\eta$ 使得方
 程~\eqref{eq:9} 能得到很好的近似。如果不这样，我们会以 $\Delta C > 0$ 结束，这显
 然不好。同时，我们也不想 $\eta$ 太小，因为这会使 $\Delta v$ 的变化极小，梯度下降
 算法就会运行得非常缓慢。在真正的实现中，$\eta$ 通常是变化的，以至方
@@ -781,11 +781,8 @@ C_x$，然后求平均值，$\nabla C = \frac{1}{n} \sum_x \nabla C_x$。不幸�
 加速学习过程。
 
 更准确地说，随机梯度下降通过随机选取小量的 $m$ 个训练输入来工作。我们将这些随机
-的训练输入标记为$X_1, X_2, \ldots, X_m$，并把它们称为一个\emph{小批量输入
-  （mini-batch）}\footnote{译注：学习算法通常都是一批一批选取输入，可以是一个
-  mini-batch, 也可以是一个 full-batch，重要的是权衡精度和时间选择合适的 batch
-  size。因此本文将 mini-batch 按照上下文翻译为小批量输入、小批量数据等，在后面的
-  代码中你也会看到 mini\_batch 变量，这些都是一个意思。}。假设样本数量 $m$ 足够
+的训练输入标记为$X_1, X_2, \ldots, X_m$，并把它们称为一个\emph{\minibatch{}\index{\minibatch}
+  （mini-batch\index{mini-batch}）}。假设样本数量 $m$ 足够
 大，我们期望 $\nabla C_{X_j}$ 的平均值大致相等于整个 $\nabla C_x$ 的平均值，即，
 \begin{equation}
   \frac{\sum_{j=1}^m \nabla C_{X_{j}}}{m} \approx \frac{\sum_x \nabla C_x}{n} = \nabla C
@@ -797,10 +794,10 @@ C_x$，然后求平均值，$\nabla C = \frac{1}{n} \sum_x \nabla C_x$。不幸�
   \nabla C \approx \frac{1}{m} \sum_{j=1}^m \nabla C_{X_{j}}
   \label{eq:19}\tag{19}
 \end{equation}
-证实了我们可以通过仅仅计算随机选取的小批量数据的梯度来估算整体的梯度。
+证实了我们可以通过仅仅计算随机选取的\minibatch{}的梯度来估算整体的梯度。
 
 为了将其明确地和神经网络的学习联系起来，假设 $w_k$ 和 $b_l$ 表示我们神经网络中权
-重和偏差。随即梯度下降通过随机地选取并训练小批量的输入来工作，
+重和偏差。随即梯度下降通过随机地选取并训练输入的\minibatch{}来工作，
 \begin{align}
   \label{eq:20}w_k \rightarrow w_k' &= w_k-\frac{\eta}{m}
                                       \sum_j \frac{\partial C_{X_j}}{\partial w_k}
@@ -809,44 +806,22 @@ C_x$，然后求平均值，$\nabla C = \frac{1}{n} \sum_x \nabla C_x$。不幸�
                                       \sum_j \frac{\partial C_{X_j}}{\partial b_l}
                                       \tag{21}
 \end{align}
-其中两个求和符号是在当前小批量输入中的所有训练样本 $X_j$ 上进行的。然后我们再挑选另一随机
-选定的小批量输入去训练。直到我们用完了所有的训练输入，这被称为完成了一个训练%
-\emph{周期（epoch）}\footnote{译注：英文为 epoch，本书中统一称之为``训练周期''，
-  因为它就是指训练程序的一次完整的迭代，即当所有的输入变量都在训练算法中用到时，
-  一个 epoch 就完成了。但请记住 epoch 这个单词，在一些神经网络分析软件（例如
-    MATLAB）中，你会经常看到用户可输入的 epoch 参数。
-% 参考 http://stackoverflow.com/questions/25887205/what-is-an-epoch-in-anns-and-how-does-it-translate-into-code-in-matlab
-}。然后我们就会开始一个新训练周期。
+其中两个求和符号是在当前\minibatch{}中的所有训练样本 $X_j$ 上进行的。然后我们再挑选另一随机
+选定的\minibatch{}去训练。直到我们用完了所有的训练输入，这被称为完成了一个训练%
+\emph{迭代期\index{迭代期}（epoch\index{epoch}）}。然后我们就会开始一个新的训练\epoch{}。
 
-% In the neural network terminology:
-%
-% one epoch = one forward pass and one backward pass of all the training
-% examples
-%
-% batch size = the number of training examples in one forward/backward pass. The
-% higher the batch size, the more memory space you'll need.
-%
-% number of iterations = number of passes, each pass using [batch size] number
-% of examples. To be clear, one pass = one forward pass + one backward pass (we
-% do not count the forward pass and backward pass as two different passes).
-%
-% Example: if you have 1000 training examples, and your batch size is 500, then
-% it will take 2 iterations to complete 1 epoch.
-%
-% and: http://stackoverflow.com/questions/25887205/what-is-an-epoch-in-anns-and-how-does-it-translate-into-code-in-matlab
-
-另外值得提一下，对于改变代价函数大小的参数，和用于计算权重和偏差的小批量输入的更
+另外值得提一下，对于改变代价函数大小的参数，和用于计算权重和偏差的\minibatch{}的更
 新规则，会有不同的约定。在方程~\eqref{eq:6} 中，我们通过因子$\frac{1}{n}$ 来改变
 整个代价函数的大小。人们有时候忽略
 $\frac{1}{n}$，直接取单个训练样本的代价总和，而不是取平均值。这对我们不能提前知道
 训练数据数量的情况下特别有效。例如，这可能发生在有更多的训练数据是实时产生的情况
-下。同样，小批量输入的更新规则~\eqref{eq:20} 和~\eqref{eq:21} 有时也会舍弃前面
-的 $\frac{1}{m}$。从概念上这会有一点区别，因为它等价于改变了学习速率 $\eta$ 的大
+下。同样，\minibatch{}的更新规则~\eqref{eq:20} 和~\eqref{eq:21} 有时也会舍弃前面
+的 $\frac{1}{m}$。从概念上这会有一点区别，因为它等价于改变了\learningrate{} $\eta$ 的大
 小。但在对不同工作进行详细对比时，需要对它警惕。
 
-我们可以把随机梯度下降想象成一次民意调查：在一个小批量上采样比对一个完整数据集进
+我们可以把随机梯度下降想象成一次民意调查：在一个\minibatch{}上采样比对一个完整数据集进
 行梯度下降分析要容易得多，正如进行一次民意调查比举行一次全民选举要更容易。例如，
-如果我们有一个规模为 $n = 60,000$ 的训练集，就像 MNIST，并选取小批量数据大小
+如果我们有一个规模为 $n = 60,000$ 的训练集，就像 MNIST，并选取\minibatch{}大小
 为 $m = 10$，这意味着在估算梯度过程中加速了 $6,000$ 倍！当然，这个估算并不是完美
 的 —— 存在统计波动 —— 但是没必要完美：我们实际关心的是在某个方向上移动来减少
 $C$，而这意味着我们不需要梯度的精确计算。在实践中，随机梯度下降是在神经网络的学习
@@ -855,7 +830,7 @@ $C$，而这意味着我们不需要梯度的精确计算。在实践中，随�
 \subsection*{练习}
 
 \begin{itemize}
-\item 梯度下降算法一个极端的版本是把小批量输入的大小设为 $1$。即，假设一个训练输
+\item 梯度下降算法一个极端的版本是把\minibatch{}的大小设为 $1$。即，假设一个训练输
   入 $x$，我们按照规则 $w_k \rightarrow w_k' = w_k - \eta \partial C_x /
   \partial w_k$和$b_l \rightarrow b_l' = b_l - \eta \partial C_x / \partial b_l$
   更新我们的权重和偏差。然后我们选取另一个训练输入，再一次更新权重和偏差。如此重
@@ -900,7 +875,7 @@ git clone https://github.com/mnielsen/neural-networks-and-deep-learning.git
 据进行划分。我们将测试集保持原样，但是将 60,000 个图像的 MNIST 训练集分成两个部分：
 一部分 50,000 个图像，我们将用来训练我们的神经网络，和一个单独的 10,000 个图像
 的\emph{验证集}。在本章中我们不使用验证数据，但是在本书的后面我们将会发现它对于解
-决如何去设置某些神经网络中的\emph{超参数}\index{超参数}是很有用的 —— 例如学习速率等，这些参数不
+决如何去设置某些神经网络中的\emph{超参数}\index{超参数}是很有用的 —— 例如\learningrate{}等，这些参数不
 被我们的学习算法直接选择。尽管验证数据不是原始 MNIST 规范的一部分，然而许多人以这
 种方式使用 MNIST，并且在神经网络中使用验证数据是很普遍的。从现在起当我提
 到``MNIST 训练数据''时，我指的是我们的 50,000 个图像数据集，而不是原始的 60,000
@@ -1026,12 +1001,12 @@ def SGD(self, training_data, epochs, mini_batch_size, eta,
 
 \lstinline!training_data! 是一个 \lstinline!(x, y)! 元组的列表，表示训练输入和其
 对应的期望输出。变量 \lstinline!epochs! 和 \lstinline!mini_batch_size! 正如你预
-料的 —— 训练周期数量，和采样时的小批量输入的大小。\lstinline!eta! 是学习速率，
+料的 —— \epochs{}数量，和采样时的\minibatch{}的大小。\lstinline!eta! 是\learningrate{}，
 $\eta$。如果给出了可选参数 \lstinline!test_data!，那么程序会在每个训练器后评估网
 络，并打印出部分进展。这对于追踪进度很有用，但相当拖慢执行速度。
 
-代码如下工作。在每个训练周期，它首先随机地将训练数据打乱，然后将它分成多个适当大
-小的小批量。这是一个简单的从训练数据的随机采样方法。然后对于每一个
+代码如下工作。在每个\epoch{}，它首先随机地将训练数据打乱，然后将它分成多个适当大
+小的\minibatch{}。这是一个简单的从训练数据的随机采样方法。然后对于每一个
 \lstinline!mini_batch! 我们应用一次梯度下降。这是通过代码
 \lstinline!self.update_mini_batch(mini_batch, eta)! 完成的，它仅仅使用
 \lstinline!mini_batch! 中的训练数据，根据单次梯度下降的迭代更新网络的权重和偏差。
@@ -1246,8 +1221,8 @@ Python shell 里执行也许是最方便的。
 >>> net = network.Network([784, 30, 10])
 \end{lstlisting}
 
-最后，我们将使用随机梯度下降来从 MNIST \lstinline!training_data! 学习超过 30 次
-训练周期，小批量输入大小为 10，学习率 $\eta = 3.0$，
+最后，我们将使用随机梯度下降来从 MNIST \lstinline!training_data! 学习超过 30 次%
+\epochs{}，\minibatch{}大小为 10，学习率 $\eta = 3.0$，
 
 \begin{lstlisting}[language=Python]
 >>> net.SGD(training_data, 30, 10, 3.0, test_data=test_data)
@@ -1255,14 +1230,14 @@ Python shell 里执行也许是最方便的。
 
 注意，如果当你读到这里并正在运行代码，执行将会花费一些时间 —— 对于一台典型的机器
 （截至2015年），它可能会花费几分钟来运行。我建议你让它运行着，继续阅读并时不时地
-检查一下代码的输出。如果你急于想看到结果，你可以通过减少训练周期数量，减少隐藏层
+检查一下代码的输出。如果你急于想看到结果，你可以通过减少\epochs{}数量，减少隐藏层
 神经元数量，或着只使用部分训练数据来提高速度。注意这样产生的代码将会特别快：这些
 Python 脚本只是为了帮助你理解神经网络是如何工作的，而不是高性能的代码！而且，当
 然，一旦我们已经训练一个网络，它能在几乎任何的计算平台上快速的运行。例如，一旦我
 们给一个网络学会了一组好的权重集和偏差集，它能很容易地被移植到网络浏览器中以
 Javascript 运行，或者如在移动设备上的本地应用。在任何情况下，这是一个神经网络训
 练运行时的部分打印输出。打印内容显示了在每轮训练期后神经网络能正确识别测试图像的
-数量。正如你所见到，在仅仅一次训练周期后，达到了 10,000 中选中的 9,129 个。而且
+数量。正如你所见到，在仅仅一次\epoch{}后，达到了 10,000 中选中的 9,129 个。而且
 数目还在持续增长，
 
 \begin{lstlisting}[language=sh]
@@ -1294,10 +1269,10 @@ Epoch 29: 9534 / 10000
   行给出的结果相当糟糕。使用第三章所介绍的技术将大大减少我们网络上这些不同训练运
   行性能的差别。}。
 
-当然，为了获得这些准确性，我不得不对训练的迭代次数，小批量输入大小和学习速率
+当然，为了获得这些准确性，我不得不对训练的迭代次数，\minibatch{}大小和\learningrate{}
 $\eta$ 做特别的选择。正如我上面所提到的，这些在我们的神经网络中被称为超参数，以
 区别于通过我们的学习算法所学到的参数（权重和偏差）。如果我们选择了糟糕的超参数，
-我们会得到较差的结果。假如我们选定学习速率为 $\eta = 0.001$,
+我们会得到较差的结果。假如我们选定\learningrate{}为 $\eta = 0.001$,
 
 \begin{lstlisting}[language=Python]
 >>> net = network.Network([784, 100, 10])
@@ -1316,10 +1291,10 @@ Epoch 28: 2123 / 10000
 Epoch 29: 2142 / 10000
 \end{lstlisting}
 
-然而，你可以看到网络的性能随着时间的推移慢慢地变好了。这表明应该增大学习速率，例
+然而，你可以看到网络的性能随着时间的推移慢慢地变好了。这表明应该增大\learningrate{}，例
 如$\eta = 0.01$。如果我们那样做了，我们会得到更好的结果，这表明我们应该再次增加
-学习速率。（如果改变能够改善一些事情，试着做更多！）如果我们这样做几次，我们最终
-会得到一个像 $\eta = 1.0$的学习速率（或者调整到$3.0$），这跟我们之前的实验很接近。
+\learningrate{}。（如果改变能够改善一些事情，试着做更多！）如果我们这样做几次，我们最终
+会得到一个像 $\eta = 1.0$的\learningrate{}（或者调整到$3.0$），这跟我们之前的实验很接近。
 因此即使我们最初选择了糟糕的超参数，我们至少获得了足够的信息来帮助我们改善对于超
 参数的选择。
 
@@ -1332,7 +1307,7 @@ Epoch 29: 2142 / 10000
 >>> net.SGD(training_data, 30, 10, 100.0, test_data=test_data)
 \end{lstlisting}
 
-在这点上，我们实际走的太远，学习速率太高了：
+在这点上，我们实际走的太远，\learningrate{}太高了：
 
 \begin{lstlisting}[language=sh]
 Epoch 0: 1009 / 10000
@@ -1346,11 +1321,11 @@ Epoch 29: 982 / 10000
 \end{lstlisting}
 
 现在想象一下，我们第一次遇到这样的问题。当然，我们从之前的实验中知道正确的做法是
-减小学习速率。但是如果我们第一次遇到这样的问题，那么输出的数据就不会有太多信息能
-指导我们怎么做。我们可能不仅关心学习速率，还要关心我们的神经网络中的其它每一个部
+减小\learningrate{}。但是如果我们第一次遇到这样的问题，那么输出的数据就不会有太多信息能
+指导我们怎么做。我们可能不仅关心\learningrate{}，还要关心我们的神经网络中的其它每一个部
 分。我们可能想知道是否用了让网络很难学习的初始权重和偏差？或者可能我们没有足够的
-训练数据来获得有意义的学习？或者我们没有进行足够的训练周期？或者可能对于具有这种
-结构的神经网络，学习识别手写数字是不可能的？可能学习速率太低？或者可能学习速率太
+训练数据来获得有意义的学习？或者我们没有进行足够的\epoch{}？或者可能对于具有这种
+结构的神经网络，学习识别手写数字是不可能的？可能\learningrate{}太低？或者可能\learningrate{}太
 高？当你第一次遇到问题，你不总是能有把握。
 
 从这得到的教训是调试一个神经网络不是琐碎的，就像常规编程那样，它是一门艺术。你需
