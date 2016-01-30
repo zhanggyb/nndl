@@ -658,11 +658,12 @@ $C$ 的变化，正如我们期望的用梯度来表示。但是这个方程真�
   \label{eq:10}\tag{10}
 \end{equation}
 
-这里的 $\eta$ 是个很小的正数（称为\emph{\learningrate}\index{\learningrate}\index{learning rate}）。方程~\eqref{eq:9} 告诉我们
-$\Delta C \approx -\eta \nabla C \cdot \nabla C = -\eta \|\nabla C\|^2$。由于
-$\| \nabla C \|^2 \geq 0$，这保证了$\Delta C \leq 0$，即，如果我们按照方
-程~\eqref{eq:10} 的规则去改变 $v$，那么 $C$ 会一直减小，不会增加。（当然，要在方
-  程~\eqref{eq:9}的近似约束下）。这正是我们想要的特性！因此我们把方
+这里的 $\eta$ 是个很小的正数（称为%
+  \emph{\learningrate}\index{\learningrate}\index{learning rate}）。方
+程~\eqref{eq:9} 告诉我们$\Delta C \approx -\eta \nabla C \cdot \nabla C = -\eta
+\|\nabla C\|^2$。由于$\| \nabla C \|^2 \geq 0$，这保证了$\Delta C \leq 0$，即，
+如果我们按照方程~\eqref{eq:10} 的规则去改变 $v$，那么 $C$ 会一直减小，不会增加。
+（当然，要在方程~\eqref{eq:9}的近似约束下）。这正是我们想要的特性！因此我们把方
 程~\eqref{eq:10} 用于定义球体在梯度下降算法下的“运动定律”。也就是说，我们用方
 程~\eqref{eq:10} 计算 $\Delta v$，来移动球体的位置 $v$：
 \begin{equation}
@@ -737,7 +738,7 @@ $\epsilon > 0$。当步长固定时，我们要找到使得 $C$ 减小最大的�
 \subsection*{练习}
 
 \begin{itemize}
-\item 证明上一段落的推断。提示：可以利用
+\item 证明上一段落的推断。提示：可以利用%
   \href{http://en.wikipedia.org/wiki/Cauchy–Schwarz_inequality}{柯西-施瓦茨不等
     式}。
 \item 我已经解释了当 $C$ 是二元及其多元函数的情况。那如果 $C$ 是一个一元函数呢？
@@ -755,8 +756,8 @@ $v_j$，那我们必须要计算数万亿（即百万次的平方）级别的二
 但在这本书中我们将主要用梯度下降算法（包括变化形式）使神经网络学习。
 
 我们怎么在神经网络中用梯度下降算法去学习呢？其思想就是利用梯度下降算法去寻找能使
-得方程~\eqref{eq:6} 的代价取得最小值的权重 $w_k$ 和偏差 $b_l$。为了清楚这是如何工
-作的，我们将用权重和偏差代替变量 $v_j$。也就是说，现在``位置''变量有两个分量组
+得方程~\eqref{eq:6} 的代价取得最小值的权重 $w_k$ 和偏差 $b_l$。为了清楚这是如何
+工作的，我们将用权重和偏差代替变量 $v_j$。也就是说，现在``位置''变量有两个分量组
 成：$w_k$ 和 $b_l$，而梯度向量 $\nabla C$ 则有相应的分量 $\partial C / \partial
 w_k$和$\partial C / \partial b_l$。用这些分量来写梯度下降的更新规则，我们得到：
 \begin{align}
@@ -768,12 +769,12 @@ w_k$和$\partial C / \partial b_l$。用这些分量来写梯度下降的更新�
 换句话说，这是一个能让神经网络学习的规则。
 
 应用梯度下降规则有很多挑战。我们将在下一章深入讨论。但是现在只提及一个问题。为了
-理解问题是什么，我们先回顾\eqref{eq:6} 中的二次代价。注意这个代价函数有着这样的形
-式 $C = \frac{1}{n} \sum_x C_x$，即，它是遍及每个训练样本代价 $C_x \equiv
-\frac{\|y(x)-a\|^2}{2}$ 的平均值。在实践中，为了计算梯度 $\nabla C$，我们需要为每
-个训练输入 $x$ 单独地计算梯度值 $\nabla
-C_x$，然后求平均值，$\nabla C = \frac{1}{n} \sum_x \nabla C_x$。不幸的是，当训练
-输入的数量过大时会花费很长时间，这样会使学习变得相当缓慢。
+理解问题是什么，我们先回顾\eqref{eq:6} 中的二次代价。注意这个代价函数有着这样的
+形式 $C = \frac{1}{n} \sum_x C_x$，即，它是遍及每个训练样本代价 $C_x \equiv
+\frac{\|y(x)-a\|^2}{2}$ 的平均值。在实践中，为了计算梯度 $\nabla C$，我们需要为
+每个训练输入 $x$ 单独地计算梯度值 $\nabla C_x$，然后求平均值，$\nabla C =
+\frac{1}{n} \sum_x \nabla C_x$。不幸的是，当训练输入的数量过大时会花费很长时间，
+这样会使学习变得相当缓慢。
 
 有种叫做\emph{随机梯度下降}的算法能够加速学习。其思想就是通过随机选取小量训练输
 入样本来计算 $\nabla C_x$，进而估算梯度 $\nabla C$。通过计算少量样本的平均值我们
@@ -781,9 +782,10 @@ C_x$，然后求平均值，$\nabla C = \frac{1}{n} \sum_x \nabla C_x$。不幸�
 加速学习过程。
 
 更准确地说，随机梯度下降通过随机选取小量的 $m$ 个训练输入来工作。我们将这些随机
-的训练输入标记为$X_1, X_2, \ldots, X_m$，并把它们称为一个\emph{\minibatch{}\index{\minibatch}
-  （mini-batch\index{mini-batch}）}。假设样本数量 $m$ 足够
-大，我们期望 $\nabla C_{X_j}$ 的平均值大致相等于整个 $\nabla C_x$ 的平均值，即，
+的训练输入标记为$X_1, X_2, \ldots, X_m$，并把它们称为一个%
+\emph{\minibatch{}\index{\minibatch}（mini-batch\index{mini-batch}）}。假设样本
+数量 $m$ 足够大，我们期望 $\nabla C_{X_j}$ 的平均值大致相等于整个 $\nabla C_x$
+的平均值，即，
 \begin{equation}
   \frac{\sum_{j=1}^m \nabla C_{X_{j}}}{m} \approx \frac{\sum_x \nabla C_x}{n} = \nabla C
   \label{eq:18}\tag{18}
@@ -806,37 +808,38 @@ C_x$，然后求平均值，$\nabla C = \frac{1}{n} \sum_x \nabla C_x$。不幸�
                                       \sum_j \frac{\partial C_{X_j}}{\partial b_l}
                                       \tag{21}
 \end{align}
-其中两个求和符号是在当前\minibatch{}中的所有训练样本 $X_j$ 上进行的。然后我们再挑选另一随机
-选定的\minibatch{}去训练。直到我们用完了所有的训练输入，这被称为完成了一个训练%
-\emph{迭代期\index{迭代期}（epoch\index{epoch}）}。然后我们就会开始一个新的训练\epoch{}。
+其中两个求和符号是在当前\minibatch{}中的所有训练样本 $X_j$ 上进行的。然后我们再
+挑选另一随机选定的\minibatch{}去训练。直到我们用完了所有的训练输入，这被称为完成
+了一个训练\emph{迭代期\index{迭代期}（epoch\index{epoch}）}。然后我们就会开始一
+个新的训练\epoch{}。
 
-另外值得提一下，对于改变代价函数大小的参数，和用于计算权重和偏差的\minibatch{}的更
-新规则，会有不同的约定。在方程~\eqref{eq:6} 中，我们通过因子$\frac{1}{n}$ 来改变
-整个代价函数的大小。人们有时候忽略
-$\frac{1}{n}$，直接取单个训练样本的代价总和，而不是取平均值。这对我们不能提前知道
-训练数据数量的情况下特别有效。例如，这可能发生在有更多的训练数据是实时产生的情况
-下。同样，\minibatch{}的更新规则~\eqref{eq:20} 和~\eqref{eq:21} 有时也会舍弃前面
-的 $\frac{1}{m}$。从概念上这会有一点区别，因为它等价于改变了\learningrate{} $\eta$ 的大
-小。但在对不同工作进行详细对比时，需要对它警惕。
+另外值得提一下，对于改变代价函数大小的参数，和用于计算权重和偏差的\minibatch{}的
+更新规则，会有不同的约定。在方程~\eqref{eq:6} 中，我们通过因子$\frac{1}{n}$ 来改
+变整个代价函数的大小。人们有时候忽略$\frac{1}{n}$，直接取单个训练样本的代价总和，
+而不是取平均值。这对我们不能提前知道训练数据数量的情况下特别有效。例如，这可能发
+生在有更多的训练数据是实时产生的情况下。同样，\minibatch{}的更新规则~\eqref{eq:20}
+和~\eqref{eq:21} 有时也会舍弃前面的 $\frac{1}{m}$。从概念上这会有一点区别，因为
+它等价于改变了\learningrate{} $\eta$ 的大小。但在对不同工作进行详细对比时，需要
+对它警惕。
 
-我们可以把随机梯度下降想象成一次民意调查：在一个\minibatch{}上采样比对一个完整数据集进
-行梯度下降分析要容易得多，正如进行一次民意调查比举行一次全民选举要更容易。例如，
-如果我们有一个规模为 $n = 60,000$ 的训练集，就像 MNIST，并选取\minibatch{}大小
-为 $m = 10$，这意味着在估算梯度过程中加速了 $6,000$ 倍！当然，这个估算并不是完美
-的 —— 存在统计波动 —— 但是没必要完美：我们实际关心的是在某个方向上移动来减少
-$C$，而这意味着我们不需要梯度的精确计算。在实践中，随机梯度下降是在神经网络的学习
-中被广泛使用、十分有效的技术，它也是本书中展开的大多数学习技术的基础。
+我们可以把随机梯度下降想象成一次民意调查：在一个\minibatch{}上采样比对一个完整数
+据集进行梯度下降分析要容易得多，正如进行一次民意调查比举行一次全民选举要更容易。
+例如，如果我们有一个规模为 $n = 60,000$ 的训练集，就像 MNIST，并选取\minibatch{}
+大小为 $m = 10$，这意味着在估算梯度过程中加速了 $6,000$ 倍！当然，这个估算并不是
+完美的 —— 存在统计波动 —— 但是没必要完美：我们实际关心的是在某个方向上移动来减少
+$C$，而这意味着我们不需要梯度的精确计算。在实践中，随机梯度下降是在神经网络的学
+习中被广泛使用、十分有效的技术，它也是本书中展开的大多数学习技术的基础。
 
 \subsection*{练习}
 
 \begin{itemize}
-\item 梯度下降算法一个极端的版本是把\minibatch{}的大小设为 $1$。即，假设一个训练输
-  入 $x$，我们按照规则 $w_k \rightarrow w_k' = w_k - \eta \partial C_x /
+\item 梯度下降算法一个极端的版本是把\minibatch{}的大小设为 $1$。即，假设一个训练
+  输入 $x$，我们按照规则 $w_k \rightarrow w_k' = w_k - \eta \partial C_x /
   \partial w_k$和$b_l \rightarrow b_l' = b_l - \eta \partial C_x / \partial b_l$
   更新我们的权重和偏差。然后我们选取另一个训练输入，再一次更新权重和偏差。如此重
-  复。这个过程被称为 \emph{online}、\emph{on-line}、或者\emph{递增}学习。在递增
-  学习中，神经网络在一个时刻只学习一个训练输入（正如人类做的）。对比具有一个小批
-  量输入大小为 $20$ 的随机梯度下降，说出递增学习的一个优点和一个缺点。
+  复。这个过程被称为 \emph{online}、\emph{on-line}、或者\emph{递增}学习。在
+  online 学习中，神经网络在一个时刻只学习一个训练输入（正如人类做的）。对比具有
+  一个小批量输入大小为 $20$ 的随机梯度下降，说出递增学习的一个优点和一个缺点。
 \end{itemize}
 
 让我们讨论一个令刚接触梯度下降的人困惑的问题来总结这部分的内容。在神经网络中，代
@@ -858,9 +861,9 @@ $C$ 减少。那些善于思考高维的人内心有着包含有许多不同的�
 \section{实现我们的网络来分类数字}
 \label{sec:implementing_our_network_to_classify_digits}
 
-好吧，现在让我们写一个学习如何识别手写数字的程序，使用随机梯度下降算法和 MNIST 训
-练数据。我们需要做的第一件事情是获取 MNIST 数据。如果你是一个 \lstinline!git! 用
-户，那么你能够通过克隆这本书的代码仓库获得数据，
+好吧，现在让我们写一个学习如何识别手写数字的程序，使用随机梯度下降算法和 MNIST
+训练数据。我们需要做的第一件事情是获取 MNIST 数据。如果你是一个 \lstinline!git!
+用户，那么你能够通过克隆这本书的代码仓库获得数据，
 
 \begin{lstlisting}[language=sh]
 git clone https://github.com/mnielsen/neural-networks-and-deep-learning.git
@@ -870,29 +873,29 @@ git clone https://github.com/mnielsen/neural-networks-and-deep-learning.git
 \href{https://github.com/mnielsen/neural-networks-and-deep-learning/archive/master.zip}{
   这里}下载数据和代码。
 
-顺便提一下，当我在之前描述 MNIST 数据时，我说它分成了 60,000 个训练图像
-和 10,000个测试图像。这是官方的 MNIST 的描述。实际上，我们将用稍微不同的方法对数
-据进行划分。我们将测试集保持原样，但是将 60,000 个图像的 MNIST 训练集分成两个部分：
-一部分 50,000 个图像，我们将用来训练我们的神经网络，和一个单独的 10,000 个图像
-的\emph{验证集}。在本章中我们不使用验证数据，但是在本书的后面我们将会发现它对于解
-决如何去设置某些神经网络中的\emph{超参数}\index{超参数}是很有用的 —— 例如\learningrate{}等，这些参数不
-被我们的学习算法直接选择。尽管验证数据不是原始 MNIST 规范的一部分，然而许多人以这
-种方式使用 MNIST，并且在神经网络中使用验证数据是很普遍的。从现在起当我提
-到``MNIST 训练数据''时，我指的是我们的 50,000 个图像数据集，而不是原始的 60,000
-图像数据集\footnote{如前所述，MNIST数据集是基于NIST（美国国家标准与技术研究院）收
-  集的两个数据集合。为了构建MNIST，NIST数据集合被Yann LeCun，Corinna
-  Cortes和Christopher J. C. Burges拆分放入一个更方便的格式。更多细节请看这个链接。
-  我的仓库中的数据集是在一种更容易在Python中加载和操纵MNIST数据的形式。我从蒙特利
-  尔大学的LISA机器学习实验室获得了这个特殊格式的数据
+顺便提一下，当我在之前描述 MNIST 数据时，我说它分成了 60,000 个训练图像和 10,000
+个测试图像。这是官方的 MNIST 的描述。实际上，我们将用稍微不同的方法对数据进行划
+分。我们将测试集保持原样，但是将 60,000 个图像的 MNIST 训练集分成两个部分：一部
+分 50,000 个图像，我们将用来训练我们的神经网络，和一个单独的 10,000 个图像的%
+\emph{验证集}。在本章中我们不使用验证数据，但是在本书的后面我们将会发现它对于解
+决如何去设置某些神经网络中的\emph{超参数}\index{超参数}是很有用的 —— 例如%
+\learningrate{}等，这些参数不被我们的学习算法直接选择。尽管验证数据不是原始
+MNIST 规范的一部分，然而许多人以这种方式使用 MNIST，并且在神经网络中使用验证数据
+是很普遍的。从现在起当我提到``MNIST 训练数据''时，我指的是我们的 50,000 个图像数
+据集，而不是原始的 60,000图像数据集\footnote{如前所述，MNIST数据集是基于NIST（美
+    国国家标准与技术研究院）收集的两个数据集合。为了构建MNIST，NIST数据集合被
+  Yann LeCun，Corinna Cortes和Christopher J. C. Burges拆分放入一个更方便的格式。
+  更多细节请看这个链接。我的仓库中的数据集是在一种更容易在Python中加载和操纵
+  MNIST数据的形式。我从蒙特利尔大学的LISA机器学习实验室获得了这个特殊格式的数据
   （\href{http://www.deeplearning.net/tutorial/gettingstarted.html}{链接}）}。
 
 除了 MNIST 数据，我们还需要一个叫做 \href{http://numpy.org/}{Numpy} 的 Python 库，
-用来做快速线性代数。如果你没有安装过 Numpy，你能够
-从\href{http://www.scipy.org/install.html}{这里}下载。
+用来做快速线性代数。如果你没有安装过 Numpy，你能够从%
+\href{http://www.scipy.org/install.html}{这里}下载。
 
-在列出一个完整的代码清单之前，让我解释一下神经网络代码的核心特性。核心片段是一
-个 \lstinline!Network! 类，我们用来表示一个神经网络。这是我们用来初始化一
-个 \lstinline!Network! 对象的代码：
+在列出一个完整的代码清单之前，让我解释一下神经网络代码的核心特性。核心片段是一个
+\lstinline!Network! 类，我们用来表示一个神经网络。这是我们用来初始化一个
+\lstinline!Network! 对象的代码：
 \begin{lstlisting}[language=Python]
 class Network(object):
 
@@ -1001,9 +1004,9 @@ def SGD(self, training_data, epochs, mini_batch_size, eta,
 
 \lstinline!training_data! 是一个 \lstinline!(x, y)! 元组的列表，表示训练输入和其
 对应的期望输出。变量 \lstinline!epochs! 和 \lstinline!mini_batch_size! 正如你预
-料的 —— \epochs{}数量，和采样时的\minibatch{}的大小。\lstinline!eta! 是\learningrate{}，
-$\eta$。如果给出了可选参数 \lstinline!test_data!，那么程序会在每个训练器后评估网
-络，并打印出部分进展。这对于追踪进度很有用，但相当拖慢执行速度。
+料的 —— \epochs{}数量，和采样时的\minibatch{}的大小。\lstinline!eta! 是%
+\learningrate{}，$\eta$。如果给出了可选参数 \lstinline!test_data!，那么程序会在
+每个训练器后评估网络，并打印出部分进展。这对于追踪进度很有用，但相当拖慢执行速度。
 
 代码如下工作。在每个\epoch{}，它首先随机地将训练数据打乱，然后将它分成多个适当大
 小的\minibatch{}。这是一个简单的从训练数据的随机采样方法。然后对于每一个
@@ -1269,10 +1272,11 @@ Epoch 29: 9534 / 10000
   行给出的结果相当糟糕。使用第三章所介绍的技术将大大减少我们网络上这些不同训练运
   行性能的差别。}。
 
-当然，为了获得这些准确性，我不得不对训练的迭代次数，\minibatch{}大小和\learningrate{}
-$\eta$ 做特别的选择。正如我上面所提到的，这些在我们的神经网络中被称为超参数，以
-区别于通过我们的学习算法所学到的参数（权重和偏差）。如果我们选择了糟糕的超参数，
-我们会得到较差的结果。假如我们选定\learningrate{}为 $\eta = 0.001$,
+当然，为了获得这些准确性，我不得不对训练的\epochs{}数量，\minibatch{}大小和%
+\learningrate{} $\eta$ 做特别的选择。正如我上面所提到的，这些在我们的神经网络中
+被称为超参数，以区别于通过我们的学习算法所学到的参数（权重和偏差）。如果我们选择
+了糟糕的超参数，我们会得到较差的结果。假如我们选定\learningrate{}为 $\eta =
+0.001$,
 
 \begin{lstlisting}[language=Python]
 >>> net = network.Network([784, 100, 10])
@@ -1321,12 +1325,12 @@ Epoch 29: 982 / 10000
 \end{lstlisting}
 
 现在想象一下，我们第一次遇到这样的问题。当然，我们从之前的实验中知道正确的做法是
-减小\learningrate{}。但是如果我们第一次遇到这样的问题，那么输出的数据就不会有太多信息能
-指导我们怎么做。我们可能不仅关心\learningrate{}，还要关心我们的神经网络中的其它每一个部
-分。我们可能想知道是否用了让网络很难学习的初始权重和偏差？或者可能我们没有足够的
-训练数据来获得有意义的学习？或者我们没有进行足够的\epoch{}？或者可能对于具有这种
-结构的神经网络，学习识别手写数字是不可能的？可能\learningrate{}太低？或者可能\learningrate{}太
-高？当你第一次遇到问题，你不总是能有把握。
+减小\learningrate{}。但是如果我们第一次遇到这样的问题，那么输出的数据就不会有太
+多信息能指导我们怎么做。我们可能不仅关心\learningrate{}，还要关心我们的神经网络
+中的其它每一个部分。我们可能想知道是否用了让网络很难学习的初始权重和偏差？或者可
+能我们没有足够的训练数据来获得有意义的学习？或者我们没有进行足够的\epoch{}？或者
+可能对于具有这种结构的神经网络，学习识别手写数字是不可能的？可能\learningrate{}
+太低？或者可能\learningrate{}太高？当你第一次遇到问题，你不总是能有把握。
 
 从这得到的教训是调试一个神经网络不是琐碎的，就像常规编程那样，它是一门艺术。你需
 要学习调试的艺术来获得神经网络更好的结果。更普通的是，我们需要启发式方法来选择好
@@ -1444,19 +1448,19 @@ def vectorized_result(j):
 \end{center}
 
 这提示我们可以用训练数据来计算数字图像的平均暗度，$0, 1, 2,\ldots, 9$。当有一幅
-新的图像呈现，我们先计算图像的暗度，然后猜测它接近哪个数字的平均暗度。这是一
-个简单的程序，而且容易编写代码，所以我不会在这里把它们都写出来 —— 如果你有兴趣，
-代码在
+新的图像呈现，我们先计算图像的暗度，然后猜测它接近哪个数字的平均暗度。这是一个简
+单的程序，而且容易编写代码，所以我不会在这里把它们都写出来 —— 如果你有兴趣，代码
+在
 \href{https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/src/mnist_average_darkness.py}{GitHub
   仓库}里。但是它和随机地猜测相比有了很大的改进，能取得 $10,000$ 测试图像中
 $2,225$ 的精确度，即 $22.25\%$。
 
 找到其它能使精确度达到 $20\%$ 到 $50\%$ 之间的办法也不难。如果你更努力些能超过
 $50\%$。但要获得更高的精确度，采用已经被认可的机器学习算法是很有帮助的。让我们尝
-试使用其中最著名的算法之一，\emph{支持向量机}\index{支持向量机}，或 \emph{SVM}\index{SVM}。如果你不熟悉 SVM，
-不用担心，我们不需要去理解 SVM 如何工作的细节。我们将使用
-\href{http://scikit-learn.org/stable/}{scikit-learn} Python 程序库，它提供了一个
-简单的 Python 接口，包装了一个用于 SVM 的快速的，称为
+试使用其中最著名的算法之一，\emph{支持向量机}\index{支持向量机}，或
+\emph{SVM}\index{SVM}。如果你不熟悉 SVM，不用担心，我们不需要去理解 SVM 如何工作
+的细节。我们将使用\href{http://scikit-learn.org/stable/}{scikit-learn} Python 程
+序库，它提供了一个简单的 Python 接口，包装了一个用于 SVM 的快速的，称为
 \href{http://www.csie.ntu.edu.tw/~cjlin/libsvm/}{LIBSVM} 的 C 库。
 
 如果我们用默认设置运行 scikit-learn 的 SVM 分类器，那么它能从 $10,000$ 测试图像
