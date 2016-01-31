@@ -1,0 +1,28 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[tikz]{standalone}
+\usetikzlibrary{math}
+
+\begin{document}
+\begin{tikzpicture}[
+    tick/.style={font=\scriptsize}
+  ]
+  
+  \draw (-6,0) -- (6,0);
+  \foreach \x in {-30, -20, -10, 0, 10, 20, 30}
+  \draw (\x / 5, 0) -- (\x / 5, -0.1) node[tick,below]{$\x$};
+  
+  \draw (0,0) -- (0,1.8);
+  \draw (0,1.8) -- (-0.1, 1.8) node[tick,left] {$0.02$};
+  
+  \tikzmath{
+    % Gaussian distribution:
+    function gaussian(\x, \m, \s) {
+      return (1 / (sqrt(2 * pi) * \s)) * exp(- (pow(\x - \m,2)) / (2 * pow(\s, 2)));
+    };
+    {\draw[blue,domain=-30:30,samples=101,xscale=0.2] plot (\x, {gaussian(\x, 0, 22.4) * 90});};
+  }
+  
+\end{tikzpicture} 
+\end{document}
