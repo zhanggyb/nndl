@@ -21,7 +21,7 @@
   \draw (0, -0.5) node[below] {Z};
   \draw (0, 5) node[above] {sigmoid function};
   
-  \draw[blue,thick,domain=-5:5] plot (\x, {5 * (1/(1 + exp(-\x)))});
+  \draw[blue,thick,domain=-5:5,samples=101] plot (\x, {5 * (1/(1 + exp(-\x)))});
   
 \end{tikzpicture} 
 \end{document}

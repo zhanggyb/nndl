@@ -23,7 +23,7 @@
   
   \draw (0, 3) node[above] {tanh function};
   
-  \draw[blue,thick,domain=-5:5] plot (\x, {6 * (1 + tanh(\x/2))/2 - 3});
+  \draw[blue,thick,domain=-10:10,xscale=0.5,samples=101] plot (\x, {6 * (1 + tanh(\x/2))/2 - 3});
   
 \end{tikzpicture} 
 \end{document}

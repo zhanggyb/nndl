@@ -8,11 +8,15 @@ MAKE = make
 TARGET = nndl-ebook.pdf
 SOURCES := $(wildcard *.tex)
 
+IMAGEDEPS := $(wildcard images/*.tex)
+IMAGEDEPS += $(wildcard images/*.png)
+IMAGEDEPS += $(wildcard images/*.jpeg)
+
 .PHONY: all graphics
 
 all: graphics $(TARGET)
 
-$(TARGET): $(SOURCES)
+$(TARGET): $(SOURCES) $(IMAGEDEPS)
 	$(TEX) $(basename $@)
 	$(MKIDX) $(basename $@)
 	$(TEX) $(basename $@)
