@@ -1325,8 +1325,7 @@ C/\partial w$ 未定义。原因在于函数 $|w|$ 在 $w=0$ 时有个``直角''
 全部训练数据集合上训练 30 个\epochs{}，然后会随着训练数据量的下降而成比例增加
 \epochs{}的数量。为了确保权重衰减因子在训练数据集上相同，我们会在全部训练集上使
 用规范化参数为 $\lambda = 5.0$，然后在使用更小的训练集的时候成比例地降低
-$\lambda$ 值\footnote{这个以及下两个图形由程序
-  \href{https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/fig/more_data.py}{\lstinline!more_data.py!}
+$\lambda$ 值\footnote{这个以及下两个图形由程序  \href{https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/fig/more_data.py}{\lstinline!more_data.py!}
   生成}。
 
 如你所见，分类准确度在使用更多的训练数据时提升了很大。根据这个趋势的话，提升会随
@@ -1391,7 +1390,7 @@ $\lambda$ 值\footnote{这个以及下两个图形由程序
 它。正如第一章中的情况，不要担心你熟不熟悉 SVM，我们不进行深入的讨论。我们使用
 \href{http://scikit-learn.org/stable/}{scikit-learn 库}提供的 SVM 替换神经网络。
 下面是 SVM 模型的性能随着训练数据集的大小变化的情况，我也画出了神经网络的结果来
-方便对比\footnote{这个图形由程序 \lstinline!more_data.py! 生成（和上面几个图形一
+方便对比\footnote{这个图形由程序 \href{https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/fig/more_data.py}{\lstinline!more_data.py!} 生成（和上面几个图形一
     样）。}：
 
 可能第一件让你吃惊的是神经网络在每个训练规模下性能都超过了 SVM。这很好，尽管你对
@@ -1404,7 +1403,7 @@ $\lambda$ 值\footnote{这个以及下两个图形由程序
 还有更加有趣的现象也出现了。假设我们试着用两种机器学习算法去解决问题，算法 A 和
 算法 B。有时候出现，算法 A 在一个训练集合上超过算法 B，却在另一个训练集上弱于算
 法 B。上面我们并没有看到这个情况 —— 因为这要求两幅图有交叉的点 —— 这里并没
-有\footnote{显著的例子在\href{http://dx.doi.org/10.3115/1073012.1073017}{Scaling
+有\footnote{显著的例子参见 \href{http://dx.doi.org/10.3115/1073012.1073017}{Scaling
     to very very large corpora for natural language disambiguation}, by Michele
   Banko and Eric Brill (2001).}。对``算法 A 是不是要比算法 B 好？''正确的反应应
 该是``你在使用什么训练集合？''
@@ -1438,50 +1437,48 @@ $\lambda$ 值\footnote{这个以及下两个图形由程序
 
 创建了神经网络后，我们需要进行权重和偏差的初始化。到现在，我们一直是根据在%
 \hyperref[ch:UsingNeuralNetsToRecognizeHandwrittenDigits]{第一章中}介绍的那样进
-行初始化。提醒你一下，之前的方式就是根据独立的均值为 $0$，标准差为$1$ 的高斯随机
-变量随机采样作为权重和偏差的初始值。这个方法工作的还不错，但是非常\emph{特别}，
-所以我们需要寻找一些更好的方式来设置我们网络的初始化权重和偏差，这对于帮助网络学
-习速度的提升很有价值。
+行初始化。提醒你一下，之前的方式就是根据独立高斯随机变量来选择权重和偏差，其被归一化为均值为 $0$，标准差 $1$。这个方法工作的还不错，但是非常\emph{特别}，
+所以值得去重新探讨它，看看是否能寻找一些更好的方式来设置初始的权重和偏差，这也许能帮助我们的网络学
+习得更快。
 
-结果表明，我们可以比使用归一化的高斯分布效果更好。为什么？假设我们使用一个很多的
-输入神经元，比如说 $1000$。假设，我们已经使用正规化的高斯分布初始化了连接第一隐
+结果表明，我们可以比使用归一化的高斯分布做得更好。为什么？假设我们使用一个有大量
+输入神经元的网络，比如说 $1,000$ 个。假设，我们已经使用归一化的高斯分布初始化了连接第一个隐
 藏层的权重。现在我将注意力集中在这一层的连接权重上，忽略网络其他部分：
 \begin{center}
   \includegraphics{tikz32}
 \end{center}
 
-我们为了简化，假设，我们使用训练样本 x 其中一半的神经元值为 $0$，另一半为 $1$。
-下面的观点也是可以更加广泛地应用，但是你可以从特例中获得背后的思想。让我们考虑带
-权和 $z=\sum_j w_j x_j + b$ 的隐藏元输入。其中 $500$ 个项消去了，因为对应的输入
-$x_j=0$。所以 $z$ 是 $501$ 个正规化的高斯随机变量的和，包含 $500$ 个权重项和额外
-的 $1$ 个偏差项。因此 $z$ 本身是一个均值为 $0$ 标准差为 $\sqrt{501}\approx 22.4$
-的分布。$z$ 其实有一个非常宽的高斯分布，不是非常尖的形状：
+为了简化，假设我们使用训练输入 $x$，其中一半的输入神经元值为 $1$，另一半为 $0$。
+以下的论点更普遍适用，但你可以从这种特殊情况得到要点。让我们考虑隐藏神经元输入的带
+权和 $z=\sum_j w_j x_j + b$。其中 $500$ 个项消去了，因为对应的输入
+$x_j$ 为 $0$。所以 $z$ 是遍历总共 $501$ 个归一化的高斯随机变量的和，包含 $500$ 个权重项和额外
+的 $1$ 个偏差项。因此 $z$ 本身是一个均值为 $0$ 标准差为 $\sqrt{501} \approx 22.4$
+的高斯分布。$z$ 其实有一个非常宽的高斯分布，完全不是非常尖的形状：
 \begin{center}
   \includegraphics{wide_gaussian}
 \end{center}
 
-尤其是，我们可以从这幅图中看出 $|z|$ 会变得非常的大，比如说 $z\gg1$ 或者 $z\ll
-1$。如果是这样，输出 $\sigma(z)$ 就会接近 $1$ 或者$0$。也就表示我们的隐藏元会饱
-和。所以当出现这样的情况时，在权重中进行微小的调整仅仅会给隐藏元的激活值带来极其
+尤其是，我们可以从这幅图中看出 $|z|$ 会变得非常的大，即 $z \gg 1$ 或者 $z \ll -1$。如果是这样，隐藏神经元的输出 $\sigma(z)$ 就会接近 $1$ 或者 $0$。也就表示我们的隐藏神经元会饱
+和。所以当出现这样的情况时，在权重中进行微小的调整仅仅会给隐藏神经元的激活值带来极其
 微弱的改变。而这种微弱的改变也会影响网络中剩下的神经元，然后会带来相应的代价函数
-的改变。结果就是，这些权重在我们进行梯度下降算法时会学习得非常缓慢。这其实和我们
-前面讨论的问题差不多，前面的情况是输出神经元在错误的值上饱和导致学习的下降。我们
+的改变。结果就是，这些权重在我们进行梯度下降算法时会学习得非常缓慢\footnote{We discussed this in more detail in \hyperref[sec:the_four_fundamental_equations_behind_backpropagation]{Chapter 2}, where we used the equations of backpropagation to show that weights input to saturated neurons learned slowly.}。这其实和我们
+在本章前面讨论的问题差不多，前面的情况是输出神经元在错误的值上饱和导致学习的下降。我们
 之前通过代价函数的选择解决了前面的问题。不幸的是，尽管那种方式在输出神经元上有效，
-但对于隐藏元的饱和却一点作用都没有。
+但对于隐藏神经元的饱和却一点作用都没有。
 
-我已经研究了第一隐藏层的权重输入。当然，类似的论断也对后面的隐藏层有效：如果权重
-也是用正规化的高斯分布进行初始化，那么激活值将会接近 $0$ 或者 $1$，学习速度也会
+我已经讨论了第一个隐藏层的权重输入。当然，类似的论证也适用于后面的隐藏层：如果后面隐藏层的权重
+也是用归一化的高斯分布进行初始化，那么激活值将会非常接近 $0$ 或者 $1$，学习速度也会
 相当缓慢。
 
-还有可以帮助我们进行更好地初始化么，能够避免这种类型的饱和，最终避免学习速度的下
-降？假设我们有一个有 $n_{in}$ 个输入权重的神经元。我们会使用均值为 $0$ 标准差为
-$1/\sqrt{n_{in}}$ 的高斯分布初始化这些权重。也就是说，我们会向下挤压高斯分布，让
+还有可以帮助我们进行更好地初始化，能够避免这种类型的饱和，最终避免学习速度的下
+降？假设我们有一个有 $n_{\rm in}$ 个输入权重的神经元。我们会使用均值为 $0$ 标准差为
+$1/\sqrt{n_{\rm in}}$ 的高斯随机分布初始化这些权重。也就是说，我们会向下挤压高斯分布，让
 我们的神经元更不可能饱和。我们会继续使用均值为 $0$ 标准差为 $1$ 的高斯分布来对偏
-差进行初始化，后面会告诉你原因。有了这些设定，带权和 $z=\sum_j w_j x_j + b$ 仍然
-是一个均值为 $0$ 不过有很陡的峰顶的高斯分布。假设，我们有 $500$ 个值为 $0$ 的输
-入和$500$ 个值为 $1$ 的输入。那么很容证明 $z$ 是服从均值为 $0$ 标准差为
-$\sqrt{3/2} = 1.22$ 的高斯分布。这图像要比以前陡得多，所以即使我已经对横坐标进行
-压缩为了进行更直观的比较：
+差进行初始化，后面会告诉你原因。有了这些设定，带权和 $z = \sum_j w_j x_j + b$ 仍然
+是一个均值为 $0$， 不过有尖锐峰值的高斯分布。假设，我们有 $500$ 个值为 $0$ 的输
+入和 $500$ 个值为 $1$ 的输入。那么很容易证明 $z$ 是服从均值为 $0$ 标准差为
+$\sqrt{3/2} = 1.22\ldots$ 的高斯分布。这要比以前有更尖锐的峰值，尖锐到为了用下图更直观地比较，我不得不对对纵坐标进行
+压缩：
 \begin{center}
   \includegraphics{narrow_gaussian}
 \end{center}
@@ -1491,20 +1488,20 @@ $\sqrt{3/2} = 1.22$ 的高斯分布。这图像要比以前陡得多，所以即
 \subsection*{练习}
 
 \begin{itemize}
-\item 验证 $z=\sum_j w_j x_j + b$ 标准差为 $\sqrt{3/2}$。下面两点可能会有帮助：
-  （a） 独立随机变量的和的方差是每个独立随即便方差的和；（b）方差是标准差的平方。
+\item 验证 $z = \sum_j w_j x_j + b$ 标准差为 $\sqrt{3/2}$。下面两点可能会有帮助：
+  （a）独立随机变量和的方差，是每个独立随机变量方差的和；（b）方差是标准差的平方。
 \end{itemize}
 
-我在上面提到，我们使用同样的方式对偏差进行初始化，就是使用均值为 $0$ 标准差为
+我在上面提到，我们会继续使用之前的方式对偏差进行初始化，就是使用均值为 $0$ 标准差为
 $1$ 的高斯分布来对偏差进行初始化。这其实是可行的，因为这样并不会让我们的神经网络
-更容易饱和。实际上，其实已经避免了饱和的问题的话，如何初始化偏差影响不大。有些人
+更容易饱和。实际上，考虑到已经避免了饱和的问题，如何初始化偏差影响不大。有些人
 将所有的偏差初始化为 $0$，依赖梯度下降来学习合适的偏差。但是因为差别不是很大，我
 们后面还会按照前面的方式来进行初始化。
 
 让我们在 MNIST 数字分类任务上比较一下新旧两种权重初始化方式。同样，还是使用 $30$
-个隐藏元，minibatch 的大小为 $30$，规范化参数 $\lambda=5.0$，然后是交叉熵代价函
-数。我们将\learningrate{}从 $\eta=0.5$ 调整到 $0.1$，因为这样会让结果在图像中表现得更加明
-显。我们先使用旧的初始化方法训练：
+个隐藏元，\minibatch 的大小为 $10$，规范化参数 $\lambda = 5.0$，然后是交叉熵代价函
+数。我们将\learningrate{}从 $\eta=0.5$ 降到 $0.1$，因为这样会让结果在图像中表现得更加明
+显。我们先使用旧的权重初始化方法训练：
 
 \begin{lstlisting}[language=Python]
 ```python
@@ -1520,7 +1517,7 @@ $1$ 的高斯分布来对偏差进行初始化。这其实是可行的，因为�
 \end{lstlisting}
 
 我们也使用新方法来进行权重的初始化。这实际上还要更简单，因为
-\lstinline!network2! 默认方式就是使用新的方法。这意味着我们可以丢掉
+\lstinline!network2! 默认方式就是使用新的方法。这意味着我们可以丢掉上面的
 \lstinline!net.large_weight_initializer()! 调用：
 
 \begin{lstlisting}[language=Python]
@@ -1530,23 +1527,23 @@ $1$ 的高斯分布来对偏差进行初始化。这其实是可行的，因为�
 ... monitor_evaluation_accuracy=True)
 \end{lstlisting}
 
-将结果用图展示出来，就是：
+将结果用图展示出来\footnote{The program used to generate this and the next graph is \href{https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/fig/weight_initialization.py}{\lstinline!weight_initialization.py!}.}，我们得到：
 
 两种情形下，我们在 96\% 的准确度上重合了。最终的分类准确度几乎完全一样。但是新的
-初始化技术带来了速度的提升。在第一种初始化方式的分类准确度在 87\% 一下，而新的方
+初始化技术带来了速度的提升。在第一种初始化方式的分类准确度在 87\% 以下，而新的方
 法已经几乎达到了 93\%。看起来的情况就是我们新的关于权重初始化的方式将训练带到了
 一个新的境界，让我们能够更加快速地得到好的结果。同样的情况在 $100$ 个神经元的设
 定中也出现了：
 
 在这个情况下，两个曲线并没有重合。然而，我做的实验发现了其实就在一些额外的%
 \epochs{}后（这里没有展示）准确度其实也是几乎相同的。所以，基于这些实验，看起来
-提升的权重初始化仅仅会加快训练，不会改变网络的性能。然而，在第四张，我们会看到一
-些例子里面使用 $1/\sqrt{n_{in}}$ 权重初始化的长期运行的结果要显著更优。因此，不
+提升的权重初始化仅仅会加快训练，不会改变网络的最终性能。然而，在第四章，我们会看到一
+些例子里面使用 $1/\sqrt{n_{\rm in}}$ 权重初始化的长期运行的结果要显著更优。因此，不
 仅仅能够带来训练速度的加快，有时候在最终性能上也有很大的提升。
 
-$1/\sqrt{n_{in}}$ 的权重初始化方法帮助我们提升了神经网络学习的方式。其他的权重初
-始化技术同样也有，很多都是基于这个基本的思想。我不会在这里给出其他的方法，因为
-$1/\sqrt{n_{in}}$ 已经可以工作得很好了。如果你对另外的思想感兴趣，我推荐你看看在
+$1/\sqrt{n_{\rm in}}$ 的权重初始化方法帮助我们提升了神经网络学习的方式。其他的权重初
+始化技术同样也被提出，很多都是基于这个基本的思想。我不会在这里回顾其他的方法，因为
+$1/\sqrt{n_{\rm in}}$ 已经可以工作得很好了。如果你感兴趣的话，我推荐你看看在
 2012 年的 Yoshua Bengio 的论
 文\footnote{\href{http://arxiv.org/pdf/1206.5533v2.pdf}{Practical
     Recommendations for Gradient-Based Training of Deep Architectures}, by
@@ -1557,18 +1554,18 @@ $1/\sqrt{n_{in}}$ 已经可以工作得很好了。如果你对另外的思想�
 \begin{itemize}
 \item \textbf{将规范化和改进的权重初始化方法结合使用} L2 规范化有时候会自动给我
   们一些类似于新的初始化方法的东西。假设我们使用旧的初始化权重的方法。考虑一个启
-  发式的观点：（1）假设$\lambda$ 不太小，训练的第一\epochs{}将会几乎被权重下降统
-  治。；（2）如果 $\eta\lambda \ll n$，权重会按照因子 $exp(-\eta\lambda/m)$ 每
-  \epochs{}下降；（3）假设 $\lambda$ 不太大，权重下降会在权重降到 $1/\sqrt{n}$
-  的时候保持住，其中 $n$ 是网络中权重的个数。用论述这些条件都已经满足本节给出的
-  例子。
+  发式的观点：（1）假设 $\lambda$ 不太小，训练的第一\epochs{}将会几乎被权重衰减统
+  治；（2）如果 $\eta \lambda \ll n$，权重会按照因子 $\exp(-\eta \lambda / m)$ 每
+  \epochs{}衰减；（3）假设 $\lambda$ 不太大，权重衰减会在权重降到 $1/\sqrt{n}$
+  的时候保持住，其中 $n$ 是网络中权重的个数。论证这些条件都已经在本节给出图示的
+  例子中满足。
 \end{itemize}
 
 \section{再看手写识别问题：代码}
 \label{sec:handwriting_recognition_revisited_the_code}
 
 让我们实现本章讨论过的这些想法。我们将写出一个新的程序，\lstinline!network2.py!，
-这是一个对第一章中开发的 \lstinline!network.py! 的改进版本。如果你没有仔细看过
+这是一个对\hyperref[sec:implementing_our_network_to_classify_digits]{第一章}中开发的 \lstinline!network.py! 的改进版本。如果你没有仔细看过
 \lstinline!network.py!，那你可能会需要重读前面关于这段代码的讨论。仅仅 $74$ 行代
 码，也很易懂。
 
@@ -1585,13 +1582,10 @@ class Network(object):
         self.cost=cost
 \end{lstlisting}
 
-\lstinline!__init__! 方法的和 \lstinline!network.py! 中一样，可以轻易弄懂。但是
+最开始几行里的 \lstinline!__init__! 方法的和 \lstinline!network.py! 中一样，可以轻易弄懂。但是
 下面两行是新的，我们需要知道他们到底做了什么。
 
-我们先看看 \lstinline!default_weight_initializer! 方法，使用了我们新式改进后的初
-始化权重方法。如我们已经看到的，使用了均值为 $0$ 而标准差为 $1/\sqrt{n}$，$n$ 为
-对应的输入连接个数。我们使用均值为 $0$ 而标准差为 $1$ 的高斯分布来初始化偏差。下
-面是代码：
+我们先看看 \lstinline!default_weight_initializer! 方法，使用了我们\hyperref[sec:weight_initialization]{新式改进后的初始化权重方法}。如我们已经看到的，使用了均值为 $0$ 而标准差为 $1/\sqrt{n}$，$n$ 为对应的输入连接个数。我们使用均值为 $0$ 而标准差为 $1$ 的高斯分布来初始化偏差。下面是代码：
 \begin{lstlisting}[language=Python]
 def default_weight_initializer(self):
         self.biases = [np.random.randn(y, 1) for y in self.sizes[1:]]
@@ -1619,7 +1613,7 @@ def large_weight_initializer(self):
 
 初始化方法 \lstinline!__init__! 中的第二个新的东西就是我们初始化了
 \lstinline!cost! 属性。为了理解这个工作的原理，让我们看一下用来表示交叉熵代价的
-类：
+类\footnote{If you're not familiar with Python's static methods you can ignore the @staticmethod decorators, and just treat fn and delta as ordinary methods. If you're curious about details, all @staticmethod does is tell the Python interpreter that the method which follows doesn't depend on the object in any way. That's why self isn't passed as a parameter to the fn and delta methods.}：
 \begin{lstlisting}[language=Python]
 class CrossEntropyCost(object):
 
@@ -1637,9 +1631,9 @@ class CrossEntropyCost(object):
 我们的网络中扮演了两种不同的角色。明显的角色就是代价是输出激活值 $a$ 和目标输出
 $y$ 差距优劣的度量。这个角色通过 \lstinline!CrossEntropyCost.fn! 方法来扮演。
 （注意，\lstinline!np.nan_to_num! 调用确保了 Numpy 正确处理接近 $0$ 的对数值）但
-是代价函数其实还有另一个角色。回想第二章中运行反向传播算法时，我们需要计算网络输
+是代价函数其实还有另一个角色。回想\hyperref[sec:the_four_fundamental_equations_behind_backpropagation]{第二章}中运行反向传播算法时，我们需要计算网络输
 出误差，$\delta^L$。这种形式的输出误差依赖于代价函数的选择：不同的代价函数，输出
-误差的形式就不同。对于交叉熵函数，输出误差就如公式(66)所示：
+误差的形式就不同。对于交叉熵函数，输出误差就如公式~\eqref{eq:66}所示：
 \begin{equation}
   \delta^L = a^L-y
   \label{eq:99}\tag{99}
@@ -1652,8 +1646,8 @@ $y$ 差距优劣的度量。这个角色通过 \lstinline!CrossEntropyCost.fn! �
 类似地，\lstinline!network2.py! 还包含了一个表示二次代价函数的类。这个是用来和第
 一章的结果进行对比的，因为后面我们几乎都在使用交叉函数。代码如下。
 \lstinline!QuadraticCost.fn! 方法是关于网络输出 $a$ 和目标输出 $y$ 的二次代价函
-数的直接计算结果。由 \lstinline!QuadraticCost.delta! 返回的值就是二次代价函数的
-误差。
+数的直接计算结果。由 \lstinline!QuadraticCost.delta! 返回的值基于二次代价函数的
+误差表达式~\eqref{eq:30}，我们在第二章中得到它。
 \begin{lstlisting}[language=Python]
 class QuadraticCost(object):
 
@@ -2056,7 +2050,7 @@ pickle 对象，会导致 \lstinline!load! 函数出错。使用 JSON 进行序�
 \begin{itemize}
 \item 更改上面的代码来实现 L1 规范化，使用 L1 规范化使用 $30$ 个隐藏元的神经网络
   对 MNIST 数字进行分类。你能够找到一个规范化参数使得比无规范化效果更好么？
-\item 看看 \lstinline!network.py! 中的 \lstinline!Network.cost_derivative! 方法。
+\item 看看 \href{https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/src/network.py}{\lstinline!network.py!} 中的 \lstinline!Network.cost_derivative! 方法。
   这个方法是为二次代价函数写的。怎样修改可以用于交叉熵代价函数上？你能不能想到可
   能在交叉熵函数上遇到的问题？在 \lstinline!network2.py! 中，我们已经去掉了
   \lstinline!Network.cost_derivative! 方法，将其集成进了

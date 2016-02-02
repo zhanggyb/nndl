@@ -1,0 +1,25 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[tikz]{standalone}
+\usetikzlibrary{math}
+
+\begin{document}
+\begin{tikzpicture}[
+    tick/.style={font=\scriptsize}
+  ]
+  
+  \draw[->] (0,0) -- (5,0) node [right] {$x$};
+  \draw[->] (0,0) -- (0,5) node [left] { };
+  \node[above] at (2.5,5) {$f(x)$};
+  
+  \tikzmath{
+    % See function sampleFunction(id) in https://github.com/mnielsen/nnadl_site/blob/gh-pages/js/chap4.js.
+    function f(\x) {
+      return 0.2+0.4*\x*\x+0.3*\x*sin(15*180*\x/pi)+0.05*cos(50*180*\x/pi);
+    };
+    {\draw[blue,domain=0:1,samples=101,xscale=5,yscale=5] plot (\x, {f(\x)});};
+  }
+  
+\end{tikzpicture} 
+\end{document}

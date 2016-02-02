@@ -1,93 +1,7 @@
 % file: localization.tex
 
-\newcommand{\fontdir}[0]{/usr/local/texlive/2015/texmf-dist/fonts/}
-\newcommand{\robotodir}[0]{\fontdir/truetype/google/roboto/}
-\newcommand{\sourcecodeprodir}[0]{\fontdir/opentype/adobe/sourcecodepro/}
-
-\newcommand{\robotomd}[0]{Light}
-\newcommand{\robotobf}[0]{Medium}
-\newcommand{\robotoit}[0]{LightItalic}
-\newcommand{\robotobi}[0]{MediumItalic}
-\newcommand{\codepromd}[0]{Light}
-\newcommand{\codeprobf}[0]{Medium}
-\newcommand{\codeproit}[0]{LightIt}
-\newcommand{\codeprobi}[0]{MediumIt}
-
-\newfontfamily\Roboto{Roboto}[
-  Extension=.ttf,
-  Path=\robotodir,
-  UprightFont=*-Regular,
-  BoldFont=*-Bold,
-  ItalicFont=*-RegularItalic,
-  BoldItalicFont=*-BoldItalic]
-
-\newfontfamily\SourceCodePro{SourceCodePro}[
-  Extension=.otf,
-  Path=\sourcecodeprodir,
-  UprightFont=*-\codepromd,
-  BoldFont=*-\codeprobf,
-  ItalicFont=*-\codeproit,
-  BoldItalicFont=*-\codeprobi]
-
-\newfontfamily\RobotoThin{Roboto}[
-  Extension=.ttf,
-  Path=\robotodir,
-  UprightFont=*-Thin,
-  ItalicFont=*-ThinItalic]
-
-\newfontfamily\RobotoLight{Roboto}[
-  Extension=.ttf,
-  Path=\robotodir,
-  UprightFont=*-Light,
-  ItalicFont=*-LightItalic]
-
-\newfontfamily\RobotoRegular{Roboto}[
-  Extension=.ttf,
-  Path=\robotodir,
-  UprightFont=*-Regular,
-  ItalicFont=*-RegularItalic]
-
-\newfontfamily\RobotoMedium{Roboto}[
-  Extension=.ttf,
-  Path=\robotodir,
-  UprightFont=*-Medium,
-  ItalicFont=*-MediumItalic]
-
-\newfontfamily\RobotoBold{Roboto}[
-  Extension=.ttf,
-  Path=\robotodir,
-  UprightFont=*-Bold,
-  ItalicFont=*-BoldItalic]
-
-\newfontfamily\RobotoBlack{Roboto}[
-  Extension=.ttf,
-  Path=\robotodir,
-  UprightFont=*-Black,
-  ItalicFont=*-BlackItalic]
-
-\setmainfont{Roboto}[
-  Extension=.ttf,
-  Path=\robotodir,
-  UprightFont=*-\robotomd,
-  BoldFont=*-\robotobf,
-  ItalicFont=*-\robotoit,
-  BoldItalicFont=*-\robotobi]
-
-\setsansfont{Roboto}[
-  Extension=.ttf,
-  Path=\robotodir,
-  UprightFont=*-\robotomd,
-  BoldFont=*-\robotobf,
-  ItalicFont=*-\robotoit,
-  BoldItalicFont=*-\robotobi]
-
-\setmonofont{SourceCodePro}[
-  Extension=.otf,
-  Path=\sourcecodeprodir,
-  UprightFont=*-\codepromd,
-  BoldFont=*-\codeprobf,
-  ItalicFont=*-\codeproit,
-  BoldItalicFont=*-\codeprobi]
+% load cjkfonts and set Source Han Sans SC as the default CJK fonts:
+\usepackage[default,mdseries=Light,bfseries=Medium]{cjkfonts}
 
 \usepackage{titlesec}
 
@@ -102,6 +16,7 @@
 
 % Redefine \emph to be both bold and italic, better in chinese document
 \let\emph\relax
-\DeclareTextFontCommand{\emph}{\bfseries\em}
+%\DeclareTextFontCommand{\emph}{\bfseries\em} % bold and italic
+\DeclareTextFontCommand{\emph}{\bfseries} % just bold
 
 \usepackage{indentfirst}

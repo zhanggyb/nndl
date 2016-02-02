@@ -75,11 +75,12 @@
 % for compact item list
 \usepackage{paralist}
 
-% load cjkfonts and set Source Han Sans SC as the default CJK fonts:
-\usepackage[default,mdseries=Light,bfseries=Medium]{cjkfonts}
-% Set Roboto and Source Code Pro, which are installed with TexLive,
-% for western fonts:
 \input{localization.tex}
+
+% Set Roboto and Source Code Pro, which are installed with TexLive, for western
+% fonts:
+\input{westernfonts.tex}
+\setdefaultwesternfonts{}
 
 \usepackage{setspace}
 \onehalfspacing{}

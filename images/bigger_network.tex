@@ -1,0 +1,28 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[tikz]{standalone}
+\usetikzlibrary{calc,positioning}
+
+\begin{document}
+  \begin{tikzpicture}[
+    neuron/.style={circle,draw,inner sep=0pt,minimum size=10mm}
+    ]
+    
+    \foreach \y in {0,...,4}
+      \node (m\y) [neuron] at (0, \y * 1.5) {};
+
+    \node (l0) [neuron,left=of m2] {$x$};
+    
+    \node (r0) [neuron,right=of m2] {};
+    
+    \foreach \y in {0,...,4}
+      \draw[->] (l0) to (m\y);
+
+    \foreach \y in {0,...,4}
+      \draw[->] (m\y) to (r0);
+
+    \draw[->] (r0) -- ++(1,0) node [right] {$f(x)$};
+
+  \end{tikzpicture} 
+\end{document}
