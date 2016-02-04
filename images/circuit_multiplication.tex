@@ -11,30 +11,38 @@
   \begin{tikzpicture}[font={\RobotoLight}]
 
     \foreach \x in {0,...,26}
-      \draw (\x * 0.4,0) -- (\x * 0.4, 1);
+      \coordinate (p\x) at (\x * 0.4,0);
+
+    \foreach \x in {0,...,26}
+      \draw (p\x) -- ++(0, 1);
 
     \coordinate (layer1bottom) at (5.2,1);
     \coordinate (layer2top) at (5.2,0);
     \node(layer1) [above,rectangle,draw,minimum width=11cm,inner sep=6pt] at (layer1bottom) {
-      First layer of circuit elements (\texttt{AND}, \texttt{OR}, \texttt{NOT} etc)
+      First layer, doing simple tasks, e.g. adding bits
     };
 
     \node(layer2) [below,rectangle,draw,minimum width=11cm,inner sep=6pt] at (layer2top) {
-      Second layer of circuit elements
+      Integrated into more complex tasks, e.g. adding numbers
     };
     
+    \coordinate (layer2bottom) at ($ (layer2top)-(layer2.north)+(layer2.south) $);
+
+    \foreach \x in {0,...,26}
+      \draw ($ (p\x)-(layer2.north)+(layer2.south)$) -- ++(0, -1);
+
+    \coordinate (layer3top) at ($ (layer2bottom)-(0,1) $);
+
+    \node(layer3) [below,rectangle,draw,minimum width=11cm,inner sep=6pt] at (layer3top) {
+      Integrated into multiplication
+    };
+
     \node(input) [above=of layer1] {
-      \begin{tabular}{c}
-        External inputs\\
-        (keyboard etc)
-      \end{tabular}
+      Inputs: x and y
     };
     
-    \node(output) [below=of layer2] {
-      \begin{tabular}{c}
-        External outputs\\
-        (screen etc)
-      \end{tabular}
+    \node(output) [below=of layer3] {
+      Output: x.y
     };
 
     \coordinate (t0) at (layer1.north);
@@ -50,9 +58,9 @@
     \foreach \x in {0.15,0.35,0.6,0.95}
       \draw ($ (i0)!\x!(i2) $) to ($ (t0)!\x!(t2) $);
 
-    \coordinate (b0) at (layer2.south);
-    \coordinate (b1) at (layer2.south east);
-    \coordinate (b2) at (layer2.south west);
+    \coordinate (b0) at (layer3.south);
+    \coordinate (b1) at (layer3.south east);
+    \coordinate (b2) at (layer3.south west);
     \coordinate (o0) at (output.north);
     \coordinate (o1) at (output.north east);
     \coordinate (o2) at (output.north west);

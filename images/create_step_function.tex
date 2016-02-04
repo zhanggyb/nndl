@@ -1,0 +1,70 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[tikz,border=1]{standalone}
+\usetikzlibrary{calc,positioning}
+\usepackage{pgfplots}
+
+\usepackage[default,mdseries=Light,bfseries=Medium,path=../fonts]{cjkfonts}
+\input{../westernfonts}
+\input{../plots}
+
+\begin{document}
+  
+  \begin{tikzpicture}
+
+    \begin{axis}[
+        % width=5.5cm,
+        % height=5.5cm,
+        xlabel={\normalsize $x$},
+        axis lines=left,
+        tick label style={font=\tiny},
+        label style={font=\tiny},
+        title style={font=\scriptsize},
+        legend style={font=\tiny},
+        % xtick={0,1},
+        % ytick={0,1},
+        % minor tick num=1,
+        legend entries={$w=8,b=-4$\\$w=8,b=4$\\$w=3,b=4$\\$w=105,b=4$\\},
+        title={\RobotoLight 顶部隐藏神经元的输出}
+      ]
+      \addplot[
+        black,
+        thick,
+        dotted,
+        domain=-5:5,
+        samples=101
+      ] {
+        1/(1 + exp(-(8 * x + -4)))
+      };
+      \addplot[
+        orange!60,
+        thick,
+        dotted,
+        domain=-5:5,
+        samples=101
+      ] {
+        1/(1 + exp(-(8 * x + 4)))
+      };
+      \addplot[
+        orange!80,
+        thick,
+        dashed,
+        domain=-5:5,
+        samples=101
+      ] {
+        1/(1 + exp(-(3 * x + 4)))
+      };      
+      \addplot[
+        orange,
+        thick,
+        domain=-5:5,
+        samples=401
+      ] {
+        1/(1 + exp(-(105 * x + 4)))
+      };
+    \end{axis}
+    
+  \end{tikzpicture}%
+  
+\end{document}
