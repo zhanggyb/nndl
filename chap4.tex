@@ -124,51 +124,40 @@
 \end{center}
 
 正如我们在\hyperref[sec:sigmoid_neurons]{本书前面}学到的，隐藏神经元在计算的
-是 $\sigma(wx + b)$，这里 $\sigma(z) \equiv 1/(1+e^{-z})$ 是 S 型函数。Up to
-now, we've made frequent use of this algebraic form. But for the proof of
-universality we will obtain more insight by ignoring the algebra entirely, and
-instead manipulating and observing the shape shown in the graph. This won't just
-give us a better feel for what's going on, it will also give us a
-proof\footnote{ Strictly speaking, the visual approach I'm taking isn't what's
-  traditionally thought of as a proof. But I believe the visual approach gives
-  more insight into why the result is true than a traditional proof. And, of
-  course, that kind of insight is the real purpose behind a proof. Occasionally,
-  there will be small gaps in the reasoning I present: places where I make a
-  visual argument that is plausible, but not quite rigorous. If this bothers
-  you, then consider it a challenge to fill in the missing steps. But don't lose
-  sight of the real purpose: to understand why the universality theorem is
-  true.} of universality that applies to activation functions other than the
-sigmoid function.
+是 $\sigma(wx + b)$，这里 $\sigma(z) \equiv 1/(1+e^{-z})$ 是 S 型函数。目前为止，
+我们已经频繁使用了这个代数形式。但是为了证明普遍性，我们会完全忽略其代数性质，取
+而代之的是在图形中调整和观察形状来获取更多的领悟。这不仅会给我们更好的感性认识，
+而且它也会给我们一个可应用于除了S型函数之外其它激活函数的普遍性的证明\footnote{严
+  格地说，我所采取的可视化方式传统上并不被认为是一个证明。但我相信可视化的方法比
+  一个传统的证明能给出更深入的了解。当然，这种了解是证明背后的真正目的。偶尔，在
+  我呈现的推理中会有小的差距：那些有可视化参数的地方，看上去合理，但不是很严谨。
+  如果这让你烦恼，那就把它视为一个挑战，来填补这些缺失的步骤。但不要忽视了真正的
+  目的：了解为什么普遍性定理是正确的。}。
 
-To get started on this proof, try clicking on the bias, $b$, in the diagram
-above, and dragging to the right to increase it. You'll see that as the bias
-increases the graph moves to the left, but its shape doesn't change.
+开始，试着点击上面图像中的偏差 $b$，往右拖动来增加它。你能看到当偏差增加时，图形
+往左移动，但是形状不变。
 
-Next, click and drag to the left in order to decrease the bias. You'll see that
-as the bias decreases the graph moves to the right, but, again, its shape
-doesn't change.
+接下来，点击并往左拖动来减小偏差。你能看到当偏差减小时图形往右移动，但是再一次，
+它的形状没有变化。
 
-Next, decrease the weight to around $2$ or $3$. You'll see that as you decrease
-the weight, the curve broadens out. You might need to change the bias as well,
-in order to keep the curve in-frame.
+继续，将权重减小到大约 $2$ 或 $3$。你能看到当你减小权重时，曲线往两边拉宽了。你可
+以同时改变偏差，让曲线保持在框内。
 
-Finally, increase the weight up past $w = 100$. As you do, the curve gets
-steeper, until eventually it begins to look like a step function. Try to adjust
-the bias so the step occurs near $x = 0.3$. The following short clip shows what
-your result should look like. Click on the play button to play (or replay) the
-video:
+最后，把权重增加到超过 $w = 100$。当你这样做时，曲线变得越来越陡，直到最终看上去
+就像是一个阶跃函数。试着调整偏差，使得阶跃位置靠近 $x = 0.3$。下面一个短片显示你
+应该看到的结果。点击播放按钮来播放（或重播）视频：
+\begin{center}
+  \includegraphics{create_step_function}
+\end{center}
 
 % insert video
 
-We can simplify our analysis quite a bit by increasing the weight so much that
-the output really is a step function, to a very good approximation. Below I've
-plotted the output from the top hidden neuron when the weight is $w = 999$. Note
-that this plot is static, and you can't change parameters such as the weight.
+你能给权重增加很大的值来简化我们的分析，使得输出实际上是个非常接近的阶跃函数。下
+面我画出了当权重为 $w = 999$ 时从顶部隐藏神经元的输出。注意这个图是静态的，你不能
+改动如权重等参数。
 \begin{center}
   \includegraphics{high_weight_function}
 \end{center}
-
-% insert graph
 
 It's actually quite a bit easier to work with step functions than general
 sigmoid functions. The reason is that in the output layer we add up
@@ -201,6 +190,46 @@ single parameter, $s$, which is the step position, $s = -b/w$. Try modifying $s$
 in the following diagram, in order to get used to the new parameterization:
 
 % insert graph
+
+As noted above, we've implicitly set the weight $w$ on the input to be some
+large value - big enough that the step function is a very good approximation. We
+can easily convert a neuron parameterized in this way back into the conventional
+model, by choosing the bias $b = -w s$.
+
+Up to now we've been focusing on the output from just the top hidden
+neuron. Let's take a look at the behavior of the entire network. In particular,
+we'll suppose the hidden neurons are computing step functions parameterized by
+step points $s_1$ (top neuron) and $s_2$ (bottom neuron). And they'll have
+respective output weights $w_1$ and $w_2$. Here's the network:
+
+What's being plotted on the right is the weighted output $w_1 a_1 + w_2 a_2$
+from the hidden layer. Here, $a_1$ and $a_2$ are the outputs from the top and
+bottom hidden neurons, respectively\footnote{Note, by the way, that the output
+  from the whole network is $\sigma(w_1 a_1+w_2 a_2 + b)$, where $b$ is the bias
+  on the output neuron. Obviously, this isn't the same as the weighted output
+  from the hidden layer, which is what we're plotting here. We're going to focus
+  on the weighted output from the hidden layer right now, and only later will we
+  think about how that relates to the output from the whole network.}. These
+outputs are denoted with a a s because they're often known as the neurons'
+activations.
+
+Try increasing and decreasing the step point $s_1$ of the top hidden neuron. Get
+a feel for how this changes the weighted output from the hidden layer. It's
+particularly worth understanding what happens when $s_1$ goes past $s_2$. You'll
+see that the graph changes shape when this happens, since we have moved from a
+situation where the top hidden neuron is the first to be activated to a
+situation where the bottom hidden neuron is the first to be activated.
+
+Similarly, try manipulating the step point $s_2$ of the bottom hidden neuron,
+and get a feel for how this changes the combined output from the hidden neurons.
+
+Try increasing and decreasing each of the output weights. Notice how this
+rescales the contribution from the respective hidden neurons. What happens when
+one of the weights is zero?
+
+Finally, try setting $w_1$ to be $0.8$ and $w_2$ to be $−0.8$. You get a
+``bump'' function, which starts at point $s_1$, ends at point $s_2$, and has
+height $0.8$. For instance, the weighted output might look like this:
 
 \section{很多个输入变量}
 \label{sec:many_input_variables}
