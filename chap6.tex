@@ -66,17 +66,89 @@
 
 我们在深度神经网络中使用全连接的邻接关系。网络中的神经元与相邻的层上的所有神经元
 均连接：
+\begin{center}
+  \includegraphics{tikz41}
+\end{center}
 
 特别地，对输入图像中的每个像素点，我们将其光强度作为对应输入层神经元的输入。对
-于 $28 \times 28$ 像素的图像，这意味着我们输入神经元需要有 784（$= 28 \times 28$）
-个。
+于 $28 \times 28$ 像素的图像，这意味着我们我们的网络需要有
+$784$（$= 28 \times 28$）个输入神经元。我们然后训练网络的权重和偏差，使得网络输出
+能够 —— 如我们希望地 —— 正确地辨认输入图像：'0', '1', '2', ..., '8', or '9'。
+
+我们之前地网络工作得相当好：...
+
+卷积神经网络采用了三种基本概念：\emph{局部感受野\index{局部感受野}（local
+  receptive fields\index{local receptive fields）}，\emph{共享权重\index{共享权
+      重}（shared weights\index{shared weights}）}，和\emph{混合储存\index{混合储
+      存}（pooling\index{pooling}）}。让我们逐个看下：
+
+\textbf{局部感受野：} 
+
+\begin{center}
+  \includegraphics{tikz42}
+\end{center}
+
+\begin{center}
+  \includegraphics{tikz43}
+\end{center}
+
+\begin{center}
+  \includegraphics{tikz44}
+\end{center}
+
+\begin{center}
+  \includegraphics{tikz45}
+\end{center}
+
+\textbf{共享权重和偏差：}
+
+\begin{equation}
+  \sigma\left(b + \sum_{l=0}^4 \sum_{m=0}^4  w_{l,m} a_{j+l, k+m} \right)
+  \label{eq:125}\tag{125}
+\end{equation}
+
+\begin{center}
+  \includegraphics{tikz46}
+\end{center}
+
+\textbf{混合储存层：}
+
+\begin{center}
+  \includegraphics{tikz47}
+\end{center}
+
+\textbf{综合在一起：}
+
+\subsection*{问题}
+
+\begin{itemize}
+  \item \textbf{卷积网络中的反向传播}\quad 
+\end{itemize}
 
 \section{卷积神经网络在实际中的应用}
+\label{seq:convolutional_neural_networks_in_practice}
+
+\begin{lstlisting}[language=Python]
+>>> import network3
+>>> from network3 import Network
+>>> from network3 import ConvPoolLayer, FullyConnectedLayer, SoftmaxLayer
+>>> training_data, validation_data, test_data = network3.load_data_shared()
+>>> mini_batch_size = 10
+>>> net = Network([
+        FullyConnectedLayer(n_in=784, n_out=100),
+        SoftmaxLayer(n_in=100, n_out=10)], mini_batch_size)
+>>> net.SGD(training_data, 60, mini_batch_size, 0.1, 
+            validation_data, test_data)
+\end{lstlisting}
 
 \section{卷积网络的代码}
+\label{sec:the_code_for_our_convolutional_networks}
 
 \section{图像识别领域中的近期进展}
+\label{sec:recent_progress_in_image_recognition}
 
 \section{其他的深度学习模型}
+\label{sec:other_approaches_to_deep_neural_nets}
 
 \section{神经网络的未来}
+\label{sec:on_the_future_of_neural_networks}

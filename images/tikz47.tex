@@ -1,7 +1,7 @@
 %!TEX TS-program = xelatex
 %!TEX encoding = UTF-8 Unicode
 
-\documentclass[tikz,border=1]{standalone}
+\documentclass[11pt,tikz,border=1]{standalone}
 \usetikzlibrary{calc,positioning}
 
 \begin{document}
@@ -13,13 +13,13 @@
       \foreach \y in {0,...,27}
         \node (x\x y\y) [neuron,gray] at (\x * 0.35,\y * 0.35) {};
 
-    \node [above] at (4.85,9.7) {\Large hidden neurons (output from feature map)};
+    \node [above] at (4.85,9.7) {hidden neurons (output from feature map)};
 
     \foreach \x in {0,...,11}
       \foreach \y in {0,...,11}
         \node (m\x n\y) [neuron,gray] at (\x * 0.35 + 12, \y * 0.35 + 4.9) {};
 
-    \node [above] at (13.9, 9) {\Large max--pooling units};
+    \node [above] at (13.9, 9) {max--pooling units};
 
     \node(hidden) [neuron,orange,thick] at (m1n10) {};
 
