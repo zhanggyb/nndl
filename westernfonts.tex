@@ -3,6 +3,7 @@
 \newcommand{\fontdir}[0]{/usr/local/texlive/2015/texmf-dist/fonts/}
 \newcommand{\robotodir}[0]{\fontdir/truetype/google/roboto/}
 \newcommand{\sourcecodeprodir}[0]{\fontdir/opentype/adobe/sourcecodepro/}
+\newcommand{\sourceserifprodir}[0]{\fontdir/opentype/adobe/sourceserifpro/}
 
 \newcommand{\robotomd}[0]{Light}
 \newcommand{\robotobf}[0]{Medium}
@@ -12,6 +13,8 @@
 \newcommand{\codeprobf}[0]{Medium}
 \newcommand{\codeproit}[0]{LightIt}
 \newcommand{\codeprobi}[0]{MediumIt}
+\newcommand{\serifpromd}[0]{Light}
+\newcommand{\serifprobf}[0]{Semibold}
 
 \newfontfamily\Roboto{Roboto}[
   Extension=.ttf,
@@ -28,6 +31,12 @@
   BoldFont=*-\codeprobf,
   ItalicFont=*-\codeproit,
   BoldItalicFont=*-\codeprobi]
+
+\newfontfamily\SourceSerifPro{SourceSerifPro}[
+  Extension=.otf,
+  Path=\sourceserifprodir,
+  UprightFont=*-\serifpromd,
+  BoldFont=*-\serifprobf]
 
 \newfontfamily\RobotoThin{Roboto}[
   Extension=.ttf,

@@ -1,6 +1,6 @@
 % file: chap4.tex
 
-\chapter{目视神经网络可以计算任何函数}
+\chapter{神经网络可以计算任何函数的可视化证明}
 \label{ch:VisualProof}
 
 神经网络的一个最显著的事实就是它可以计算任何的函数。也就是说，假设某个人给你某种
@@ -29,11 +29,13 @@
 
 普遍性定理在使用神经网络的人群中是众所周知的。但是它为何正确却不被广泛地理解。现
 有的大多数的解释都具有很强的技术性。例如，有一篇原始的论
-文\footnote{Approximation by superpositions of a sigmoidal function, by George
-  Cybenko (1989). The result was very much in the air at the time, and several
-  groups proved closely related results. Cybenko's paper contains a useful
-  discussion of much of that work. Another important early paper is Multilayer
-  feedforward networks are universal approximators, by Kurt Hornik, Maxwell
+文\footnote{\href{http://www.dartmouth.edu/~gvc/Cybenko_MCSS.pdf}{Approximation
+    by superpositions of a sigmoidal function}, by George Cybenko (1989). The
+  result was very much in the air at the time, and several groups proved closely
+  related results. Cybenko's paper contains a useful discussion of much of that
+  work. Another important early paper is
+  \href{http://www.sciencedirect.com/science/article/pii/0893608089900208}{Multilayer
+    feedforward networks are universal approximators}, by Kurt Hornik, Maxwell
   Stinchcombe, and Halbert White (1989). This paper uses the Stone-Weierstrass
   theorem to arrive at similar results.}使用
 了\href{https://zh.wikipedia.org/wiki/哈恩－巴拿赫定理}{哈恩－巴拿赫定理定
@@ -170,6 +172,10 @@ then setting the position of the step by modifying the bias. Of course, treating
 the output as a step function is an approximation, but it's a very good
 approximation, and for now we'll treat it as exact. I'll come back later to
 discuss the impact of deviations from this approximation.
+
+实际上处理阶跃函数比一般的S型函数更加容易。原因是在输出层我们把所有隐藏神经元的贡
+献值加在一起。分析一批阶跃函数的和是容易的，相反，思考把一批S型曲线的和要更困难
+些。
 
 At what value of $x$ does the step occur? Put another way, how does the position
 of the step depend upon the weight and bias?
