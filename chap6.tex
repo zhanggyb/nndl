@@ -75,43 +75,38 @@
 $784$（$= 28 \times 28$）个输入神经元。我们然后训练网络的权重和偏差，使得网络输出
 能够 —— 如我们希望地 —— 正确地辨认输入图像：'0', '1', '2', ..., '8', or '9'。
 
-我们之前地网络工作得相当好：we've obtained a classification accuracy better than
-98 percent, using training and test data from the MNIST handwritten digit data
-set. But upon reflection, it's strange to use networks with fully-connected
-layers to classify images. The reason is that such a network architecture does
-not take into account the spatial structure of the images. For instance, it
-treats input pixels which are far apart and close together on exactly the same
-footing. Such concepts of spatial structure must instead be inferred from the
-training data. But what if, instead of starting with a network architecture
-which is tabula rasa, we used an architecture which tries to take advantage of
-the spatial structure? In this section I describe convolutional neural
-networks\footnote{The origins of convolutional neural networks go back to the
-  1970s. But the seminal paper establishing the modern subject of convolutional
-  networks was a 1998 paper, "Gradient-based learning applied to document
-  recognition", by Yann LeCun, Léon Bottou, Yoshua Bengio, and Patrick
-  Haffner. LeCun has since made an interesting remark on the terminology for
-  convolutional nets: "The [biological] neural inspiration in models like
-  convolutional nets is very tenuous. That's why I call them 'convolutional
-  nets' not 'convolutional neural nets', and why we call the nodes 'units' and
-  not 'neurons' ". Despite this remark, convolutional nets use many of the same
-  ideas as the neural networks we've studied up to now: ideas such as
-  backpropagation, gradient descent, regularization, non-linear activation
-  functions, and so on. And so we will follow common practice, and consider them
-  a type of neural network. I will use the terms "convolutional neural network"
-  and "convolutional net(work)" interchangeably. I will also use the terms
-  "[artificial] neuron" and "unit" interchangeably.}. These networks use a
-special architecture which is particularly well-adapted to classify
-images. Using this architecture makes convolutional networks fast to
-train. This, in turns, helps us train deep, many-layer networks, which are very
-good at classifying images. Today, deep convolutional networks or some close
-variant are used in most neural networks for image recognition.
+我们之前地网络工作得相当好：我们已经\hyperref[98percent]{得到了超过 98\% 的分类
+  准确度}，使用来自 \hyperref[sec:learning_with_gradient_descent]{MNIST 手写数字
+  数据集}的训练和测试数据。但是仔细推敲，使用全连接层的网络来分类图像是很奇怪的。
+原因是这样的一个网络架构不考虑图像的空间结构。例如，它在完全相同的基础上去对待相
+距很远和彼此接近的输入像素。这样的空间结构的概念必须从训练数据中推断。但是如果我
+们使用一个设法利用空间结构的架构，而不是从一个\emph{白板状态}的网络架构开始，会
+怎样？在这一节中，我会描述\emph{卷积神经网络}\index{卷积神经网络}\footnote{The
+  origins of convolutional neural networks go back to the 1970s. But the seminal
+  paper establishing the modern subject of convolutional networks was a 1998
+  paper, "Gradient-based learning applied to document recognition", by Yann
+  LeCun, Léon Bottou, Yoshua Bengio, and Patrick Haffner. LeCun has since made
+  an interesting remark on the terminology for convolutional nets: "The
+  [biological] neural inspiration in models like convolutional nets is very
+  tenuous. That's why I call them 'convolutional nets' not 'convolutional neural
+  nets', and why we call the nodes 'units' and not 'neurons' ". Despite this
+  remark, convolutional nets use many of the same ideas as the neural networks
+  we've studied up to now: ideas such as backpropagation, gradient descent,
+  regularization, non-linear activation functions, and so on. And so we will
+  follow common practice, and consider them a type of neural network. I will use
+  the terms "convolutional neural network" and "convolutional net(work)"
+  interchangeably. I will also use the terms "[artificial] neuron" and "unit"
+  interchangeably.}。这些网络使用一个特别适用于分类图像的特殊架构。使用这个架构
+使得卷积网络能跟快训练。相应的，这帮助我们训练深度的、多层的网络，它非常擅长于分
+类图像。今天，深度卷积网络或者一些近似的变化形式，被用在大多数图像识别的神经网络
+中。
 
-卷积神经网络采用了三种基本概念：\emph{局部感受野\index{局部感受野}（local
-  receptive fields\index{local receptive fields}）}，\emph{共享权重\index{共享权
-    重}（shared weights\index{shared weights}）}，和\emph{混合储存\index{混合储
-    存}（pooling\index{pooling}）}。让我们逐个看下：\\
+卷积神经网络采用了三种基本概念：\emph{局部感受野（local receptive
+    fields\index{local receptive fields}）}，\emph{共享权重（shared
+    weights\index{shared weights}）}，和\emph{混合储存（pooling\index{pooling}）}。
+让我们逐个看下：\\
 
-\textbf{局部感受野：} 在之前看到的全连接层的网络中，输入被描绘成纵向排列的神经元。
+\textbf{局部感受野\index{局部感受野}：} 在之前看到的全连接层的网络中，输入被描绘成纵向排列的神经元。
 但在一个卷积网络中，把输入看作是一个 $28 \times 28$ 的方形排列的神经元更有帮助，
 其值对应于我们用作输入的 $28 \times 28$ 的像素光强度：
 \begin{center}
@@ -146,7 +141,7 @@ variant are used in most neural networks for image recognition.
 如此重复，构建起第一个隐藏层。注意如果我们有一个 $28 \times 28$ 的输入图像，$5
 \times 5$ 的局部感受野，那么隐藏层中就会有 $24 \times 24$ 个神经元。这是因为在抵
 达右边（或者底部）的输入图像之前，我们只能把局部感受野横向移动 $23$ 个神经元（或
-者往下 $23$ 个神经元）。
+  者往下 $23$ 个神经元）。
 
 我显示的局部感受野每次移动一个像素。实际上，有时候会使用不同的\emph{跨距}。例如，
 我可以往右（或下）移动 $2$ 个像素的局部感受野，这种情况下我们使用了 $2$ 个跨距。
@@ -162,65 +157,92 @@ variant are used in most neural networks for image recognition.
   when the input images are significantly larger than the $28 \times 28$ pixel
   MNIST images.}。\\
 
-\textbf{共享权重和偏差：} 我已经说过每个隐藏神经元具有一个偏差和连接到它的局部感
-受野的 $5 \times 5$ 权重。我没有提及的是我们打算对 $24 \times 24$ 隐藏神经元中的
-每一个使用\emph{相同的}权重和偏差。换句话说，对第 $j, k$ 个隐藏神经元，输出为：
+\textbf{共享权重\index{共享权重}和偏差：} 我已经说过每个隐藏神经元具有一个偏差和
+连接到它的局部感受野的 $5 \times 5$ 权重。我没有提及的是我们打算对 $24 \times
+24$ 隐藏神经元中的每一个使用\emph{相同的}权重和偏差。换句话说，对第 $j, k$ 个隐
+藏神经元，输出为：
 \begin{equation}
   \sigma\left(b + \sum_{l=0}^4 \sum_{m=0}^4  w_{l,m} a_{j+l, k+m} \right)
   \label{eq:125}\tag{125}
 \end{equation}
 
-这里 $\sigma$ 是神经元的激活函数 —— 也许是我们在前面章里使用过
-的\hyperref[sec:sigmoid_neurons]{S型函数}。$b$ 是偏差的共享值。$w_{l,m}$ 是一个共
+这里 $\sigma$ 是神经元的激活函数 —— 可以是我们在前面章里使用过的
+\hyperref[sec:sigmoid_neurons]{S型函数}。$b$ 是偏差的共享值。$w_{l,m}$ 是一个共
 享权重的 $5 \times 5$ 数组。最后，我们使用 $a_{x, y}$ 来表示位置为 $x, y$ 的输入
 激活值。
 
-这意味着第一个隐藏层的所有神经元检测完全相同的特征，只是在输入图像的不同位置。要
-明白为什么是这个道理，假设权重和偏差是这样的，隐藏的神经元可以挑选，说，在一个特
-定的局部感受野的垂直边缘。这种能力也很可能是有用的，在其他地方的形象。因此，在图
-像中应用相同的特征检测器是非常有用的。把它放在稍微更抽象的术语，卷积网络是很好地
-适应图像的平移不变性：移动图片的猫（说）一个小的方式，它仍然是一个猫的形象
+这意味着第一个隐藏层的所有神经元检测完全相同的特征\footnote{我还没有精确定义特征
+  的概念。非正式地，把一个隐藏神经元检测的特征看作一种引起神经元激活的输入模式：
+  例如，它可能是图像的一条边，或者一些其它的形状。}，只是在输入图像的不同位置。
+要明白为什么是这个道理，把权重和偏差设想成隐藏神经元可以挑选的东西，例如，在一个
+特定的局部感受野的垂直边缘。这种能力在图像的其它位置也很可能是有用的。因此，在图
+像中应用相同的特征检测器是非常有用的。用稍微更抽象的术语，卷积网络能很好地适应图
+像的平移不变性：例如稍稍移动一幅猫的图像，它仍然是一幅猫的图像\footnote{In fact,
+  for the MNIST digit classification problem we've been studying, the images are
+  centered and size-normalized. So MNIST has less translation invariance than
+  images found "in the wild", so to speak. Still, features like edges and
+  corners are likely to be useful across much of the input space.}。
 
-This means that all the neurons in the first hidden layer detect exactly the
-same feature\footnote{I haven't precisely defined the notion of a
-  feature. Informally, think of the feature detected by a hidden neuron as the
-  kind of input pattern that will cause the neuron to activate: it might be an
-  edge in the image, for instance, or maybe some other type of shape.}, just at
-different locations in the input image. To see why this makes sense, suppose the
-weights and bias are such that the hidden neuron can pick out, say, a vertical
-edge in a particular local receptive field. That ability is also likely to be
-useful at other places in the image. And so it is useful to apply the same
-feature detector everywhere in the image. To put it in slightly more abstract
-terms, convolutional networks are well adapted to the translation invariance of
-images: move a picture of a cat (say) a little ways, and it's still an image of
-a cat\footnote{In fact, for the MNIST digit classification problem we've been
-  studying, the images are centered and size-normalized. So MNIST has less
-  translation invariance than images found "in the wild", so to speak. Still,
-  features like edges and corners are likely to be useful across much of the
-  input space.}.
-
-因为这个原因，我们有时候把从输入层到隐藏层的映射称为一个\emph{特征映射}。我们把定
-义特征映射的权重称为\emph{共享权重}。我们把以这种方式定义特征映射的偏差称
-为\emph{共享偏差}。共享权重和偏差经常被称为一个\emph{核}或者\emph{滤波器}。在文献
+因为这个原因，我们有时候把从输入层到隐藏层的映射称为一个\emph{特征映射}。我们把
+定义特征映射的权重称为\emph{共享权重}。我们把以这种方式定义特征映射的偏差称为
+\emph{共享偏差}。共享权重和偏差经常被称为一个\emph{核}或者\emph{滤波器}。在文献
 中，人们有时以稍微不同的方式使用这些术语，对此我不打算去严格区分；稍后我们会看一
 些具体的例子。
 
-For this reason, we sometimes call the map from the input layer to the hidden
-layer a \emph{feature map}. We call the weights defining the feature map the
-\emph{shared weights}. And we call the bias defining the feature map in this way
-the \emph{shared bias}. The shared weights and bias are often said to define a
-\emph{kernel} or \emph{filter}. In the literature, people sometimes use these
-terms in slightly different ways, and for that reason I'm not going to be more
-precise; rather, in a moment, we'll look at some concrete examples.
-
-The network structure I've described so far can detect just a single kind of
-localized feature. To do image recognition we'll need more than one feature
-map. And so a complete convolutional layer consists of several different feature
-maps:
-
+目前我描述的网络结构只能检测一种局部特征的类型。为了完成图像识别我们需要超过一个
+的特征映射。所以一个完整的卷积层由几个不同的特征映射组成：
 \begin{center}
   \includegraphics{tikz46}
 \end{center}
+
+在这个例子中，有 3 个特征映射。每个特征映射定义为一个 $5 \times 5$ 共享权重和单
+个共享偏差的集合。其结果是网络能够检测 3 种不同的特征，每个特征都在整个图像中可
+检测。
+
+为了让上面的图示简单些，我仅仅展示了 $3$ 个特征映射。然而，在实践中卷积网络可能
+使用很多（也许多得多）的特征映射。一种早期的识别 MNIST 数字的卷积网络，LeNet-5，
+使用 $6$ 个特征映射，每个关联到一个 $5 \times 5$ 的局部感受野。所以上面的插图例
+子实际和 LeNet-5 很接近。而在我们在本章后面要开发的例子里，我们将使用具有 20 和
+40 个特征映射的卷积层。让我们快速看下已经学到的一些特征\footnote{The feature
+  maps illustrated come from the final convolutional network we train, see
+  here.}：
+\begin{center}
+  \includegraphics[width=.65\textwidth]{net_full_layer_0}
+\end{center}
+
+这 20 幅图像对应于 20 个不同的特征映射（或滤波器、核）。每个映射有一幅 $5 \times
+5$ 块的图像表示，对应于局部感受野中的 $5 \times 5$ 权重。白色块意味着一个小（典
+  型的，更小的负数）权重，所以这样的特征映射对相应的输入像素有更小的响应。更暗的
+块意味着一个更大的权重，所以这样的特征映射对相应的输入像素有更大的响应。非常粗略
+地讲，上面的图像显示了卷基层作出响应的特征类型。
+
+所以我们能从这些特征映射中得到什么结论？很明显这里有超出了我们期望的空间结构：这
+些特征许多有清晰的亮和暗的子区域。这表示我们的网络实际上正在学习和空间结构相关的
+东西。然而，除了那个，看清这些特征检测器在学什么是很困难的。当然，我们并不是在学
+习（例如）\href{http://en.wikipedia.org/wiki/Gabor_filter}{Gabor 滤波器}，它已经
+被用在很多传统的图像识别方法中。实际上，现在有许多关于通过卷积网络来更好理解特征
+的工作成果。如果你感兴趣，我建议从 Matthew Zeiler 和 Rob Fergus 的（2013）论文
+\href{http://arxiv.org/abs/1311.2901}{Visualizing and Understanding
+  Convolutional Networks} 开始。
+
+共享权重和偏差的一个很大的优点是，它大大减少了参与的卷积网络的参数。对于每个特征
+映射我们需要 $25 = 5 \times 5$ 个共享权重，加上一个共享偏差。所以每个特征映射需
+要 $26$ 个参数。如果我们有 $20$ 个特征映射，那么总共有 $20 \times 26 = 520$ 个参
+数来定义卷积层。作为对比，假设我们有一个全连接的第一层，具有 $784 = 28 \times
+28$ 个输入神经元，和一个相对适中的 $30$ 个隐藏神经元，正如我们在本书之前的很多例
+子中使用的。总共有 $784 \times 30$ 个权重，加上额外的 $30$ 个偏差，共有 $23,550$
+个参数。换句话说，这个全连接的层有多达 $40$ 倍于卷基层的参数。
+
+当然，我们不能真正做一个参数数量之间的直接比较，因为这两个模型的本质是不同的径。
+但是，直观地，使用卷积层的平移不变性似乎很可能减少全连接模型中达到同样性能的参数
+数量。反过来，这将导致更快的卷积模型的训练，并最终，将有助于我们使用卷基层建立度
+深网络。
+
+顺便提一下，\emph{卷积}（\textit{convolutional}）这一名称源自方程~\eqref{eq:125}
+中的操作符有时被称为一个\emph{卷积}（\textit{convolution}）。稍微更精确些，人们
+有时把这个方程写成 $a^1 = \sigma(b + w * a^0)$，其中 $a^1$ 表示出自一个特征映射
+的输出激活值集合，$a^0$ 是输入激活值的集合，而 $*$ 被称为一个卷积操作。我们不打
+算深入使用卷积数学，所以你不用对此太担心。但是至少值得知道这个名称从何而来。\\
 
 \textbf{混合储存层：}
 
@@ -233,7 +255,10 @@ maps:
 \subsection*{问题}
 
 \begin{itemize}
-  \item \textbf{卷积网络中的反向传播}\quad 
+  \item \textbf{卷积网络中的反向传播}\quad 在一个具有全连接层的网络中，反向传播
+    的核心方程是 \eqref{eq:bp1}--\eqref{eq:bp4}（\hyperref[backpropsummary]{链
+        接}）。假设我们有这样一个网络，它包含有一个卷积层，一个 max-pooling 层，
+    和一个全连接的输出层，正如上面讨论的那样。反向传播的方程式要如何修改？
 \end{itemize}
 
 \section{卷积神经网络在实际中的应用}
