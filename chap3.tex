@@ -516,6 +516,7 @@ $a^L_1, a^L_2, \ldots$ 是实际输出值。那么我们定义交叉熵如下
 \end{itemize}
 
 \subsection{柔性最大值}
+\label{subsec:softmax}
 
 本章，我们大多数情况会使用交叉熵来解决学习缓慢的问题。但是，我希望简要介绍一下另
 一种解决这个问题的方法，基于\emph{柔性最大值\index{柔性最大
@@ -805,12 +806,13 @@ $10,000$ 幅都不相同。我们会使用 \lstinline!validation_data! 而不是
   400 \epoch{}后，性能又开始提升（也许只是一些少量提升），那我也不会诧异。所以，
   对提前停止采取更多或更少激进的策略也是可以的。}。
 
-为何要使用 \lstinline!validation_data! 来替代 \lstinline!test_data! 防止过度拟合问
-题？实际上，这是一个更为一般的策略的一部分，这个一般的策略就是使用
-\lstinline!validation_data! 来衡量不同的超参数（如\epochs{}，\learningrate{}，最好的网络
-  架构等等）的选择的效果。我们使用这样方法来找到超参数的合适值。因此，尽管到现在
-我并没有提及这点，但其实本书前面已经稍微介绍了一些超参数选择的方法。（更多内容在%
-  \hyperref[sec:how_to_choose_a_neural_network's_hyper-parameters]{本章后面}讨论）
+\label{validation_explanation}
+为何要使用 \lstinline!validation_data! 来替代 \lstinline!test_data! 防止过度拟合
+问题？实际上，这是一个更为一般的策略的一部分，这个一般的策略就是使
+用 \lstinline!validation_data! 来衡量不同的超参数（如\epochs{}，\learningrate{}，
+最好的网络架构等等）的选择的效果。我们使用这样方法来找到超参数的合适值。因此，尽
+管到现在我并没有提及这点，但其实本书前面已经稍微介绍了一些超参数选择的方法。（更多内容在%
+\hyperref[sec:how_to_choose_a_neural_network's_hyper-parameters]{本章后面}讨论）
 
 当然，这仍然没有回答为什么我们用 \lstinline!validation_data! 而不是
 \lstinline!test_data! 来防止过度拟合的问题。实际上，有一个更加一般的问题，就是为何
@@ -1012,9 +1014,10 @@ $1-\frac{\eta\lambda}{n}$。如果我们持续使用 $\lambda = 0.1$ 就会产�
 ... monitor_evaluation_accuracy=True)
 \end{lstlisting}
 
-最终在验证集上的准确度达到了 97.92\%。这是比 30 个隐藏元的较大飞跃。实际上，稍微
-改变一点，60 \epochs{} $\eta=0.1$ 和 $\lambda = 5.0$。我们就突破了 98\%，达到了
-98.04\% 的分类准确度\label{98percent}。对于 152 行代码这个效果还真不错！
+最终在验证集上的准确度达到了 97.92\%。这是比 30 个隐藏元的较大飞
+跃。\label{chap3_98_04_percent}实际上，稍微改变一点，60 \epochs{}
+$\eta=0.1$ 和 $\lambda = 5.0$。我们就突破了 98\%，达到了98.04\% 的分类准确
+度\label{98percent}。对于 152 行代码这个效果还真不错！
 
 我已经把规范化描述为一种减轻过度拟合和提高分类准确度的方法。实际上，这不是仅
 有的好处。实践表明，在使用不同的（随机）权重初始化进行多次 MNIST 网络训练的时候，
@@ -2391,6 +2394,7 @@ $\lambda=1.0$ 开始，然后根据验证集上的性能按照因子 $10$增加�
 照目前的规范进行了众多的比较，实践上，我觉得要做到需要过多的计算资源了。这也是我
 使用折衷方式来采用尽可能好（却不一定最优）的超参数选择。
 
+\label{mini_batch_size}
 \textbf{\minibatch{}大小：} 我们应该如何设置 minibatch 的大小？为了回答这个问题，
 让我们先假设正在进行在线学习，也就是说使用大小为 $1$ 的minibatch。
 
