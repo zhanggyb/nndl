@@ -1010,14 +1010,50 @@ def dropout_layer(layer, p_dropout):
 \section{图像识别领域中的近期进展}
 \label{sec:recent_progress_in_image_recognition}
 
-在 1998 年，那年 MNIST 被初次提出，训练一个使用最先进技术的工作站，来达到明显差于我们
-使用 GPU 并且训练少于一小时就能达到的准确率，要花费几周时间。因此，MNIST 不再是一个推动
-现有技术限制的问题；相反，训练的速度意味着它是个用于教授和学习目的的很好的问题。与此同时，
-研究的重点已经转移，现代的工作涉及到更具挑战性的图像识别问题。在这一节中，我简要介绍一些
-最近的使用神经网络的图像识别成果。
+在 1998 年，那年 MNIST 被初次提出，训练一个使用最先进技术的工作站，来达到明显差于
+我们使用 GPU 并且训练少于一小时就能达到的准确率，要花费几周时间。因此，MNIST 不再
+是一个推动现有技术限制的问题；相反，训练的速度意味着它是个用于教授和学习目的的很
+好的问题。与此同时，研究的重点已经转移，现代的工作涉及到更具挑战性的图像识别问题。
+在这一节中，我简要介绍一些最近的使用神经网络的图像识别成果。
 
-这一节和本书的大部分内容不同。贯穿本书我集中在可能引起持久的兴趣的思想 —— 如反向传播、
-规范化、卷积网络。我曾试图避免像我写的那样的结果，但其长期价值是未知的。
+这一节和本书的大部分内容不同。贯穿本书我集中在可能引起持久兴趣的思想 —— 如反向传
+播、规范化、卷积网络。正如我写过的，我曾试图避免那些流行一时的成绩，但其长期价值
+是未知的。在科学界，这样的成绩往往是生命短促的事物，它们逐渐消失，很少有持久的影
+响。鉴于此，一个怀疑论者可能会说：``嗯，当真最近在图像识别中的进步是流行一时的例
+子吗？在另外两年或三年中，一切会继续前进。所以当真这些成绩仅仅提起一些想要在绝对
+前沿竞争的专家的兴趣？为什么要讨论呢？''
+
+这样的一个怀疑论者是对的，最近论文的一些出色的细节，其被认为的重要性会逐渐减弱。
+但过去几年已经看到了使用深度网络攻克极度困难的图像识别任务的非凡的进步。想象一下
+一个科学历史学家在 2100 年写关于计算机视觉的东西。它们会把 2011 年至 2015 年（也
+许超过几年）鉴定为由卷积神经网络驱动的取得重大突破的时间。那并不意味着深度卷积网
+络在 2100 年仍然被使用，更不用提诸如弃权、修正线性单元等细节概念。但是它确实意味
+着一个重要的变革正在发生，就现在，在知识的历史中。它有点像观察原子的发现，或者抗
+生素的发明：具有历史意义的发明和探索。所以尽管我们不会深入挖掘细节，了解一些目前
+正在进行的令人兴奋的探索是值得的。\\
+
+\textbf{2012 LRMD 论文：} 让我从一篇源自斯坦福和谷歌的研究小组的 2012 年论
+文\footnote{Building high-level features using large scale unsupervised
+  learning, by Quoc Le, Marc'Aurelio Ranzato, Rajat Monga, Matthieu Devin, Kai
+  Chen, Greg Corrado, Jeff Dean, and Andrew Ng (2012). Note that the detailed
+  architecture of the network used in the paper differed in many details from
+  the deep convolutional networks we've been studying. Broadly speaking,
+  however, LRMD is based on many similar ideas.}开始。我把这篇论文称为 LRMD，取自
+前四位作者的姓。LRMD 使用一个神经网络来分
+类 \href{http://www.image-net.org/}{ImageNet} 的图像，一个非常具有挑战性的图像识
+别问题。他们使用的 2011 年 ImageNet 数据包含 16,000,000 幅全彩色图像，有 20,000
+个分类。这些图像收集自开放的网络，由亚马逊的 Mechanical Turk 服务部门的员工分类。
+这里有一些 ImageNet 图像\footnote{These are from the 2014 dataset, which is
+  somewhat changed from 2011. Qualitatively, however, the dataset is extremely
+  similar. Details about ImageNet are available in the original ImageNet paper,
+  ImageNet: a large-scale hierarchical image database, by Jia Deng, Wei Dong,
+  Richard Socher, Li-Jia Li, Kai Li, and Li Fei-Fei (2009).}：
+
+\textbf{2012 KSH 论文：}
+
+\textbf{2014 ILSVRC 竞赛：}
+
+\textbf{其它活动：}
 
 \section{其他的深度学习模型}
 \label{sec:other_approaches_to_deep_neural_nets}
