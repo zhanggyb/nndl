@@ -5,13 +5,13 @@
 
 当一个高尔夫球员刚开始学习打高尔夫时，他们通常会在挥杆的练习上花费大多数时间。慢
 慢地他们才会在基本的挥杆上通过变化发展其他的击球方式，学习低飞球、左曲球和右曲球。
-类似的，我们现在仍然聚焦在反向传播算法的理解上。这就是我们的``基本挥杆''，神经网
+类似的，我们现在仍然聚焦在反向传播算法的理解上。这就是我们的“基本挥杆”，神经网
 络中大部分工作学习和研究的基础。本章，我会解释若干技术能够用来提升我们关于反向传
 播的初级的实现，最终改进网络学习的方式。
 
 本章涉及的技术包括：更好的代价函数的选择 ——
 \hyperref[sec:the_cross-entropy_cost_function]{交叉熵}代价函数；四种称为%
-\hyperref[sec:overfitting_and_regularization]{``规范化''的方法}（L1 和 L2 规范化，
+\hyperref[sec:overfitting_and_regularization]{“规范化”的方法}（L1 和 L2 规范化，
   弃权和训练数据的人为扩展），这会让我们的网络在训练集之外的数据上更好地泛化；%
 \hyperref[sec:weight_initialization]{更好的权重初始化方法}；还有%
 \hyperref[sec:how_to_choose_a_neural_network's_hyper-parameters]{帮助选择好的超
@@ -51,14 +51,14 @@
 的开始学习的选择，并没有任何刻意的想法。一开始的神经元的输出是 $0.82$，所以这离
 我们的目标输出 $0.0$ 还差得很远。点击%
 \href{http://neuralnetworksanddeeplearning.com/chap3.html#the_cross-entropy_cost_function}{
-  网页上图形右下角的``运行''按钮}来看看神经元如何学习到让输出接近 $0.0$ 的。注意
+  网页上图形右下角的“运行”按钮}来看看神经元如何学习到让输出接近 $0.0$ 的。注意
 这并不是一个已经录好的动画，你的浏览器实际上是正在进行梯度的计算，然后使用梯度更
 新来对权重和偏差进行更新，并且展示结果。设置\learningrate{} $\eta=0.15$ 进行学习一方面足
 够慢的让我们跟随学习的过程，另一方面也保证了学习的时间不会太久，几秒钟应该就足够
 了。代价函数是我们在第一章用到的二次函数，$C$。这里我也会给出准确的形式，所以不
 需要翻到前面查看定义了。注意，你可以通过点击%
 \href{http://neuralnetworksanddeeplearning.com/chap3.html#the_cross-entropy_cost_function}{
-  网页上图形中的``Run''按钮}重复运行动画多次。
+  网页上图形中的“Run”按钮}重复运行动画多次。
 % checkout https://github.com/mnielsen/nnadl_site/tree/gh-pages/js/saturation1.js to get the JS code
 % The macro \quadraticCostLearning is defined in plots.tex
 \begin{center}
@@ -86,7 +86,7 @@ $0.09$。这虽然不是我们的目标输出 $0.0$，但是已经挺好了。�
 \end{center}
 点击%
 \href{http://neuralnetworksanddeeplearning.com/chap3.html#the_cross-entropy_cost_function}{
-  网页上的``Run''按钮}，你将看到如下的一系列变化：
+  网页上的“Run”按钮}，你将看到如下的一系列变化：
   \begin{center}
     \begin{tabular}{ll}
       \includegraphics{saturation2-50} & \includegraphics{saturation2-100}\\
@@ -110,7 +110,7 @@ $0.09$。这虽然不是我们的目标输出 $0.0$，但是已经挺好了。�
 
 为了理解这个问题的源头，想想我们的神经元是通过改变权重和偏差，并以一个代价函数的
 偏导数（$\partial C/\partial w$ 和$\partial C/\partial b$）决定的速度学习。所以，
-我们在说``学习缓慢''时，实际上就是说这些偏导数很小。理解他们为何这么小就是我们面
+我们在说“学习缓慢”时，实际上就是说这些偏导数很小。理解他们为何这么小就是我们面
 临的挑战。为了理解这些，让我们计算偏导数看看。我们一直在用的是方程~\eqref{eq:6}
 表示的二次代价函数，定义如下
 \begin{equation}
@@ -383,7 +383,7 @@ $a^L_1, a^L_2, \ldots$ 是实际输出值。那么我们定义交叉熵如下
   获取。}。现在我们看看新的程序在进行 MNIST 数字分类问题上的表现。如在第一章中那
 样，我们会使用一个包含 $30$ 个隐藏元的网络，而\minibatch{}的大小也设置为 $10$。我
 们将\learningrate{}设置为 $\eta=0.5$ \footnote{在第一章里我们用了二次代价和 $\eta =
-  3.0$ 的\learningrate{}。上面已经讨论过，准确地说出当代价函数改变时用``相同的''学习速
+  3.0$ 的\learningrate{}。上面已经讨论过，准确地说出当代价函数改变时用“相同的”学习速
   率意味什么，这是不可能的。对于两种代价函数，在给出其它超参数的选择后，我都做了
   实验来找出一个接近优化性能的\learningrate{}，顺便提一下，有一个非常粗略的将交叉熵和二
   次代价的\learningrate{}联系起来的推导。正如我们之前看到的，二次代价的梯度项中有一个额
@@ -424,7 +424,7 @@ $a^L_1, a^L_2, \ldots$ 是实际输出值。那么我们定义交叉熵如下
 优于二次代价的理论论断。
 
 这只是本章后面的内容和整本书剩余内容中的更为一般的模式的一部分。我们将给出一个新
-的技术，然后进行尝试，随后获得``提升的''结果。当然，看到这些进步是很好的。但是这
+的技术，然后进行尝试，随后获得“提升的”结果。当然，看到这些进步是很好的。但是这
 些提升的解释一般来说都困难重重。它们只有在我们进行了大量工作来优化所有其他的超参
 数时，才确实具有说服力。工作量很大，需要大量的计算能力，我们通常也不会进行这样彻
 底的调研。相反，我采用上面进行的那些不正式的测试来达成目标。然而你要记住这样的测
@@ -493,12 +493,12 @@ $a^L_1, a^L_2, \ldots$ 是实际输出值。那么我们定义交叉熵如下
 
 那么交叉熵直觉含义又是什么？我们如何看待它？深入解释这一点会将我们带到一个不大愿
 意讨论的领域。然而，还是值得提一下，有一种源自信息论的解释交叉熵的标准方式。粗略
-地说，交叉熵是``不确定性''的一种度量。特别地，我们的神经元想要计算函数 $x
+地说，交叉熵是“不确定性”的一种度量。特别地，我们的神经元想要计算函数 $x
 \rightarrow y = y(x)$。但是，它用函数 $x \rightarrow a = a(x)$ 进行了替换。假设
 我们将 $a$ 想象成我们神经元估计为 $y = 1$ 的概率，而 $1-a$ 则是 $y=0$ 的概率。那
 么交叉熵衡量我们学习到 $y$ 的正确值的平均起来的不确定性。 如果输出我们期望的结果，
-不确定性就会小一点；反之，不确定性就大一些。当然，我这里没有严格地给出``不确定
-性''到底意味着什么，所以看起来像在夸夸奇谈。但是实际上，在信息论中有一种准确的方
+不确定性就会小一点；反之，不确定性就大一些。当然，我这里没有严格地给出“不确定
+性”到底意味着什么，所以看起来像在夸夸奇谈。但是实际上，在信息论中有一种准确的方
 式来定义不确定性究竟是什么。不过，我也不清楚在网络上，哪里有好的、短小的、包含有
 对这个主题的讨论。但如果你要深入了解的话，维基百科包含一个%
 \href{http://en.wikipedia.org/wiki/Cross_entropy#Motivation}{简短的总结}，这会指
@@ -681,14 +681,14 @@ a_7^L$ 随之增大。所以对数似然代价函数也是满足我们期待的�
 
 诺贝尔奖获得者，物理学家恩里科·费米有一次被问到他对一些同僚提出的一个数学模型的
 意见，这个数学模型尝试解决一个重要的未解决的物理难题。模型和实验非常匹配，但是费
-米却对其产生了怀疑。他问模型中需要设置的自由参数有多少个。答案是``4''。费米回答
+米却对其产生了怀疑。他问模型中需要设置的自由参数有多少个。答案是“4”。费米回答
 道\footnote{这个引用的故事来自一篇
   \href{http://www.nature.com/nature/journal/v427/n6972/full/427297a.html}{Freeman
     Dyson} 所写的引人入胜的文章。他是提出这个有瑕疵的模型的人之一。一个关于四个
   参数模拟大象的例子可以在%
   \href{http://www.johndcook.com/blog/2011/06/21/how-to-fit-an-elephant/}{这里}
-  找到。}：``我记得我的朋友约翰·冯·诺伊曼过去常说，有四个参数，我可以模拟一头大
-象，而有五个参数，我还能让他卷鼻子。''
+  找到。}：“我记得我的朋友约翰·冯·诺伊曼过去常说，有四个参数，我可以模拟一头大
+象，而有五个参数，我还能让他卷鼻子。”
 
 这里，其实是说拥有大量的自由参数的模型能够描述特别神奇的现象。即使这样的模型能够
 很好的拟合已有的数据，但并不表示是一个好模型。因为这可能只是因为模型中足够的自由
@@ -740,7 +740,7 @@ a_7^L$ 随之增大。所以对数似然代价函数也是满足我们期待的�
 了 82\%。然后学习逐渐变缓。最终，在 280 \epoch{}左右分类准确度就停止了增长。后面
 的\epochs{}，仅仅看到了在 280 \epoch{}准确度周围随机的小波动。将这幅图和前面的图
 进行对比，前面的图中和训练数据相关的代价持续平滑下降。如果我们只看那个代价，会发
-现我们模型的表现变得``更好''。但是测试准确度展示了提升只是一种假象。就像费米不大
+现我们模型的表现变得“更好”。但是测试准确度展示了提升只是一种假象。就像费米不大
 喜欢的那个模型一样，我们的网络在 280 \epoch{}后就不在能够推广到测试数据上。所以
 这不是有用的学习。我们说网络在 280 \epoch{}后就\emph{过度拟合}\index{过度拟
   合}（overfitting\index{overfitting}）或者\emph{过度训练}\index{过度训
@@ -786,7 +786,7 @@ a_7^L$ 随之增大。所以对数似然代价函数也是满足我们期待的�
 个数据集：
 
 \begin{lstlisting}[language=Python]
-```python
+“`python
 >>> import mnist_loader
 >>> training_data, validation_data, test_data = \
 ... mnist_loader.load_data_wrapper()
@@ -826,7 +826,7 @@ $10,000$ 幅都不相同。我们会使用 \lstinline!validation_data! 而不是
 \lstinline!test_data! 上的结果是一个网络泛化能力真正的度量方式的信心。换言之，你
 可以将验证集看成是一种特殊的训练数据集能够帮助我们学习好的超参数。这种寻找好的超
 参数的方法有时候被称为\emph{hold out}方法，因为 \lstinline!validation_data! 是从
-\lstinline!traning_data! 训练集中留出或者``拿出''的一部分。
+\lstinline!traning_data! 训练集中留出或者“拿出”的一部分。
 
 在实际应用中，甚至在衡量了 \lstinline!test_data! 的性能后，我们可能也会改变想法
 并去尝试另外的方法 —— 也许是一种不同的网络架构 —— 这将会引入寻找新的超参数的的过
@@ -1250,7 +1250,7 @@ L1 规范化倾向于聚集网络的权重在相对少量的高重要度连接�
 $0$ 接近。
 
 我在上面的讨论中其实忽略了一个问题 —— 在 $w=0$ 的时候，偏导数 $\partial
-C/\partial w$ 未定义。原因在于函数 $|w|$ 在 $w=0$ 时有个``直角''，事实上，导数是
+C/\partial w$ 未定义。原因在于函数 $|w|$ 在 $w=0$ 时有个“直角”，事实上，导数是
 不存在的。不过也没有关系。我们下面要做的就是应用通常的（无规范化的）随机梯度下降
 的规则在 $w=0$ 处。这应该不会有什么问题，凭直觉地看，规范化的效果就是缩小权重，
 显然，不能对一个已经是 $0$ 的权重进行缩小了。更准确地说，我们将会使用方
@@ -1290,7 +1290,7 @@ C/\partial w$ 未定义。原因在于函数 $|w|$ 在 $w=0$ 时有个``直角''
 特别地，想象一下我们训练几个不同的神经网络，都使用同一个训练数据。当然，网络可能
 不是从同一初始状态开始的，最终的结果也会有一些差异。出现这种情况时，我们可以使用
 一些平均或者投票的方式来确定接受哪个输出。例如，如果我们训练了五个网络，其中三个
-把一个数字分类成 ``3''，那很可能它就是``3''。另外两个可能就犯了错误。这种平均的
+把一个数字分类成 “3”，那很可能它就是“3”。另外两个可能就犯了错误。这种平均的
 方式通常是一种强大（尽管代价昂贵）的方式来减轻过度拟合。原因在于不同的网络可能会
 以不同的方式过度拟合，平均法可能会帮助我们消除那样的过度拟合。
 
@@ -1301,9 +1301,9 @@ C/\partial w$ 未定义。原因在于函数 $|w|$ 在 $w=0$ 时有个``直角''
 一个相关的启发式解释在早期使用这项技术的论文中曾经给
 出\footnote{\href{https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf}{ImageNet
     Classification with Deep Convolutional Neural Networks}, by Alex Krizhevsky,
-  Ilya Sutskever, and Geoffrey Hinton (2012).}：``因为神经元不能依赖其他神经元特
+  Ilya Sutskever, and Geoffrey Hinton (2012).}：“因为神经元不能依赖其他神经元特
 定的存在，这个技术其实减少了复杂的互适应的神经元。所以，强制要学习那些在神经元的
-不同随机子集中更加健壮的特征。'' 换言之，如果我们将我们的神经网络看做一个进行预
+不同随机子集中更加健壮的特征。” 换言之，如果我们将我们的神经网络看做一个进行预
 测的模型的话，我们就可以将弃权看做是一种确保模型对于一部分证据丢失健壮的方式。这
 样看来，弃权和 L1、L2 规范化也是有相似之处的，这也倾向于更小的权重，最后让网络对
 丢失个体连接的场景更加健壮。
@@ -1364,7 +1364,7 @@ $\lambda$ 值\footnote{这个以及下两个图形由程序  \href{https://githu
 实和我们已经使用过的类似 —— 一个拥有 800 个隐藏元的前馈神经网络，使用了交叉熵代
 价函数。在标准的 MNIST 训练数据上运行这个网络，得到了 98.4\% 的分类准确度。他们
 不只旋转，还转换和扭曲图像来扩展训练数据。通过在这个扩展后的数据集上的训练，他们
-提升到了 98.9\% 的准确度。然后还在``弹性扭曲''的数据上进行了实验，这是一种特殊的
+提升到了 98.9\% 的准确度。然后还在“弹性扭曲”的数据上进行了实验，这是一种特殊的
 为了模仿手部肌肉的随机抖动的图像扭曲方法。通过使用弹性扭曲扩展的数据，他们最终达
 到了 99.3\% 的分类准确度。他们通过展示训练数据的所有类型的变化形式来扩展网络的经
 验。
@@ -1410,12 +1410,12 @@ $\lambda$ 值\footnote{这个以及下两个图形由程序  \href{https://githu
 有\footnote{显著的例子参见
   \href{http://dx.doi.org/10.3115/1073012.1073017}{Scaling to very very large
     corpora for natural language disambiguation}, by Michele Banko and Eric
-  Brill (2001).}。对``算法 A 是不是要比算法 B 好？''正确的反应应该是``你在使用什
-么训练集合？''
+  Brill (2001).}。对“算法 A 是不是要比算法 B 好？”正确的反应应该是“你在使用什
+么训练集合？”
 
 在进行开发时或者在读研究论文时，这都是需要记住的事情。很多论文聚焦在寻找新的技巧
-来给出标准数据集上更好的性能。``我们的超赞的技术在标准测试集 Y 上给出了百分之 X
-的性能提升。''这是通常的研究声明。这样的声明通常比较有趣，不过也必须被理解为仅仅
+来给出标准数据集上更好的性能。“我们的超赞的技术在标准测试集 Y 上给出了百分之 X
+的性能提升。”这是通常的研究声明。这样的声明通常比较有趣，不过也必须被理解为仅仅
 在特定的训练数据集上的应用效果。那些给出基准数据集的人们会拥有更大的研究经费支持，
 这样能够获得更好的训练数据。所以，很可能他们由于超赞的技术的性能提升其实在更大的
 数据集合上就丧失了。换言之，人们标榜的提升可能就是历史的偶然。所以需要记住的特别
@@ -1509,7 +1509,7 @@ $1$ 的高斯分布来对偏差进行初始化。这其实是可行的，因为�
 显。我们先使用旧的权重初始化方法训练：
 
 \begin{lstlisting}[language=Python]
-```python
+“`python
 >>> import mnist_loader
 >>> training_data, validation_data, test_data = \
 ... mnist_loader.load_data_wrapper()
@@ -1704,8 +1704,8 @@ class QuadraticCost(object):
 
     @staticmethod
     def fn(a, y):
-        """Return the cost associated with an output ``a`` and desired output
-        ``y``.
+        """Return the cost associated with an output “a“ and desired output
+        “y“.
 
         """
         return 0.5*np.linalg.norm(a-y)**2
@@ -1720,9 +1720,9 @@ class CrossEntropyCost(object):
 
     @staticmethod
     def fn(a, y):
-        """Return the cost associated with an output ``a`` and desired output
-        ``y``.  Note that np.nan_to_num is used to ensure numerical
-        stability.  In particular, if both ``a`` and ``y`` have a 1.0
+        """Return the cost associated with an output “a“ and desired output
+        “y“.  Note that np.nan_to_num is used to ensure numerical
+        stability.  In particular, if both “a“ and “y“ have a 1.0
         in the same slot, then the expression (1-y)*np.log(1-a)
         returns nan.  The np.nan_to_num ensures that that is converted
         to the correct value (0.0).
@@ -1733,7 +1733,7 @@ class CrossEntropyCost(object):
     @staticmethod
     def delta(z, a, y):
         """Return the error delta from the output layer.  Note that the
-        parameter ``z`` is not used by the method.  It is included in
+        parameter “z“ is not used by the method.  It is included in
         the method's parameters in order to make the interface
         consistent with the delta method for other cost classes.
 
@@ -1745,13 +1745,13 @@ class CrossEntropyCost(object):
 class Network(object):
 
     def __init__(self, sizes, cost=CrossEntropyCost):
-        """The list ``sizes`` contains the number of neurons in the respective
+        """The list “sizes“ contains the number of neurons in the respective
         layers of the network.  For example, if the list was [2, 3, 1]
         then it would be a three-layer network, with the first layer
         containing 2 neurons, the second layer 3 neurons, and the
         third layer 1 neuron.  The biases and weights for the network
         are initialized randomly, using
-        ``self.default_weight_initializer`` (see docstring for that
+        “self.default_weight_initializer“ (see docstring for that
         method).
 
         """
@@ -1798,7 +1798,7 @@ class Network(object):
                         for x, y in zip(self.sizes[:-1], self.sizes[1:])]
 
     def feedforward(self, a):
-        """Return the output of the network if ``a`` is input."""
+        """Return the output of the network if “a“ is input."""
         for b, w in zip(self.biases, self.weights):
             a = sigmoid(np.dot(w, a)+b)
         return a
@@ -1811,11 +1811,11 @@ class Network(object):
             monitor_training_cost=False,
             monitor_training_accuracy=False):
         """Train the neural network using mini-batch stochastic gradient
-        descent.  The ``training_data`` is a list of tuples ``(x, y)``
+        descent.  The “training_data“ is a list of tuples “(x, y)“
         representing the training inputs and the desired outputs.  The
         other non-optional parameters are self-explanatory, as is the
-        regularization parameter ``lmbda``.  The method also accepts
-        ``evaluation_data``, usually either the validation or test
+        regularization parameter “lmbda“.  The method also accepts
+        “evaluation_data“, usually either the validation or test
         data.  We can monitor the cost and accuracy on either the
         evaluation data or the training data, by setting the
         appropriate flags.  The method returns a tuple containing four
@@ -1867,9 +1867,9 @@ class Network(object):
     def update_mini_batch(self, mini_batch, eta, lmbda, n):
         """Update the network's weights and biases by applying gradient
         descent using backpropagation to a single mini batch.  The
-        ``mini_batch`` is a list of tuples ``(x, y)``, ``eta`` is the
-        learning rate, ``lmbda`` is the regularization parameter, and
-        ``n`` is the total size of the training data set.
+        “mini_batch“ is a list of tuples “(x, y)“, “eta“ is the
+        learning rate, “lmbda“ is the regularization parameter, and
+        “n“ is the total size of the training data set.
 
         """
         nabla_b = [np.zeros(b.shape) for b in self.biases]
@@ -1884,10 +1884,10 @@ class Network(object):
                        for b, nb in zip(self.biases, nabla_b)]
 
     def backprop(self, x, y):
-        """Return a tuple ``(nabla_b, nabla_w)`` representing the
-        gradient for the cost function C_x.  ``nabla_b`` and
-        ``nabla_w`` are layer-by-layer lists of numpy arrays, similar
-        to ``self.biases`` and ``self.weights``."""
+        """Return a tuple “(nabla_b, nabla_w)“ representing the
+        gradient for the cost function C_x.  “nabla_b“ and
+        “nabla_w“ are layer-by-layer lists of numpy arrays, similar
+        to “self.biases“ and “self.weights“."""
         nabla_b = [np.zeros(b.shape) for b in self.biases]
         nabla_w = [np.zeros(w.shape) for w in self.weights]
         # feedforward
@@ -1918,15 +1918,15 @@ class Network(object):
         return (nabla_b, nabla_w)
 
     def accuracy(self, data, convert=False):
-        """Return the number of inputs in ``data`` for which the neural
+        """Return the number of inputs in “data“ for which the neural
         network outputs the correct result. The neural network's
         output is assumed to be the index of whichever neuron in the
         final layer has the highest activation.
 
-        The flag ``convert`` should be set to False if the data set is
+        The flag “convert“ should be set to False if the data set is
         validation or test data (the usual case), and to True if the
         data set is the training data. The need for this flag arises
-        due to differences in the way the results ``y`` are
+        due to differences in the way the results “y“ are
         represented in the different data sets.  In particular, it
         flags whether we need to convert between the different
         representations.  It may seem strange to use different
@@ -1949,11 +1949,11 @@ class Network(object):
         return sum(int(x == y) for (x, y) in results)
 
     def total_cost(self, data, lmbda, convert=False):
-        """Return the total cost for the data set ``data``.  The flag
-        ``convert`` should be set to False if the data set is the
+        """Return the total cost for the data set “data“.  The flag
+        “convert“ should be set to False if the data set is the
         training data (the usual case), and to True if the data set is
         the validation or test data.  See comments on the similar (but
-        reversed) convention for the ``accuracy`` method, above.
+        reversed) convention for the “accuracy“ method, above.
         """
         cost = 0.0
         for x, y in data:
@@ -1965,7 +1965,7 @@ class Network(object):
         return cost
 
     def save(self, filename):
-        """Save the neural network to the file ``filename``."""
+        """Save the neural network to the file “filename“."""
         data = {"sizes": self.sizes,
                 "weights": [w.tolist() for w in self.weights],
                 "biases": [b.tolist() for b in self.biases],
@@ -1976,7 +1976,7 @@ class Network(object):
 
 #### Loading a Network
 def load(filename):
-    """Load a neural network from the file ``filename``.  Returns an
+    """Load a neural network from the file “filename“.  Returns an
     instance of Network.
 
     """
@@ -2543,7 +2543,7 @@ $w+\Delta w = w - H^{-1}\nabla C$ 可以显著地降低代价函数的值。这�
 \item 选择开始点，$w$
 \item 更新 $w$ 到新点 $w' = w - H_{-1}\nabla C$，其中 Hessian $H$ 和 $\nabla C$
   在 $w$ 处计算出来的
-\item 更新 $w'$ 到新点 $w'' = w' - H'^{-1}\nabla' C$，其中 Hessian $H'$ 和
+\item 更新 $w'$ 到新点 $w” = w' - H'^{-1}\nabla' C$，其中 Hessian $H'$ 和
   $\nabla' C$ 在 $w'$ 处计算出来的
 \item $\ldots$
 \end{itemize}

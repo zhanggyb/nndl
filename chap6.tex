@@ -103,7 +103,7 @@ $784$（$= 28 \times 28$）个输入神经元。我们然后训练网络的权�
 
 卷积神经网络采用了三种基本概念：\emph{局部感受野（local receptive
     fields\index{local receptive fields}）}，\emph{共享权重（shared
-    weights\index{shared weights}）}，和\emph{混合储存（pooling\index{pooling}）}。
+    weights\index{shared weights}）}，和\emph{混合（pooling\index{pooling}）}。
 让我们逐个看下：\\
 
 \textbf{局部感受野\index{局部感受野}：} 在之前看到的全连接层的网络中，输入被描绘
@@ -244,42 +244,41 @@ $784$（$= 28 \times 28$）个输入神经元。我们然后训练网络的权�
 作。我们不打
 算深入使用卷积数学，所以你不用对此太担心。但是至少值得知道这个名称从何而来。\\
 
-\textbf{混合储存层：} 除了刚刚描述的卷积层，卷积神经网络也包含\emph{混合储存
-  层}（\textit{pooling layers}）。混合储存层通常紧接着在卷积层之后使用。它要做的
+\textbf{混合层：} 除了刚刚描述的卷积层，卷积神经网络也包含\emph{混合
+  层}（\textit{pooling layers}）。混合层通常紧接着在卷积层之后使用。它要做的
 简化从卷积层输出的信息。
 
-详细地说，一个混合储存层取得从卷积层输出的每一个特征映射\footnote{The
+详细地说，一个混合层取得从卷积层输出的每一个特征映射\footnote{The
   nomenclature is being used loosely here. In particular, I'm using "feature
   map" to mean not the function computed by the convolutional layer, but rather
   the activation of the hidden neurons output from the layer. This kind of mild
   abuse of nomenclature is pretty common in the research literature.}并且从它们准
-备一个凝缩的特征映射。例如，混合储存层的每个单元可能概括了前一层的一个（比如）$2
-\times 2$ 的区域。作为一个具体的例子，一个常见的混合储存的程序被称为\emph{最大混
-  合储存}（\textit{max-pooling}）。在最大混合储存中，一个混合储存单元简单地输出
+备一个凝缩的特征映射。例如，混合层的每个单元可能概括了前一层的一个（比如）$2
+\times 2$ 的区域。作为一个具体的例子，一个常见的混合的程序被称为\emph{最大混
+  合}（\textit{max-pooling}）。在最大混合中，一个混合单元简单地输出
 其 $2 \times 2$ 输入区域的最大激活值，正如下图说明的：
 \begin{center}
   \includegraphics{tikz47}
 \end{center}
-注意既然从卷积层有 $24 \times 24$ 个神经元输出，混合储存后我们得到 $12 \times
+注意既然从卷积层有 $24 \times 24$ 个神经元输出，混合后我们得到 $12 \times
 12$ 个神经元。
 
-正如上面提到的，卷积层通常包含超过一个特征映射。我们将最大混合储存分别应用于每一
-个特征映射。所以如果有三个特征映射，组合在一起的卷积层和最大混合储存层看起来像这
+正如上面提到的，卷积层通常包含超过一个特征映射。我们将最大混合分别应用于每一
+个特征映射。所以如果有三个特征映射，组合在一起的卷积层和最大混合层看起来像这
 样：
 \begin{center}
   \includegraphics{tikz48}  
 \end{center}
 
-我们可以把最大混合储存看作一种网络询问是否有一个给定的特征在一个图像区域中的哪个
+我们可以把最大混合看作一种网络询问是否有一个给定的特征在一个图像区域中的哪个
 地方被发现的方式。然后它扔掉确切的位置信息。直观上，一旦一个特征被发现，它的确切
 位置并不如它相对于其它特征的大概位置重要。一个很大的好处是，这样可以有很多被更少
-地混合储存的特征，所以这有助于减少在以后的层所需的参数的数目。
+地混合的特征，所以这有助于减少在以后的层所需的参数的数目。
 
-最大混合储存并不是用于混合储存的仅有的技术。另一个常用的方法是\emph{L2 混合储
-  存}（\textit{L2 pooling}）。这里我们取 $2 \times 2$ 区域中激活值的平方和的平方
-根，而不是最大激活值。虽然细节不同，但其直观上和最大储存是相似的：L2 储存是一种凝
+最大混合并不是用于混合的仅有的技术。另一个常用的方法是\emph{L2 混合}（\textit{L2 pooling}）。这里我们取 $2 \times 2$ 区域中激活值的平方和的平方
+根，而不是最大激活值。虽然细节不同，但其直观上和最大混合是相似的：L2 混合是一种凝
 缩从卷积层输出的信息的方式。在实践中，两种技术都被广泛应用。而且有时候人们使用其
-它混合储存操作的类型。如果你正在尝试优化性能，你可以使用验证数据来比较混合储存的
+它混合操作的类型。如果你正在尝试优化性能，你可以使用验证数据来比较混合的
 不同方法，并选择一个工作得最好的。但我们不打算
 惦记这种细节上的优化。\\
 
@@ -292,11 +291,11 @@ $784$（$= 28 \times 28$）个输入神经元。我们然后训练网络的权�
 
 这个网络从 $28 \times 28$ 个输入神经元开始，这些神经元用于对 MNIST 图像的像素强度
 进行编码。接着的是一个卷积层，使用一个 $5 \times 5$ 局部感受野和 $3$ 个特征映射。
-其结果是一个 $3 \times 24 \times 24$ 隐藏特征神经元层。下一步是一个最大混合储存层，
+其结果是一个 $3 \times 24 \times 24$ 隐藏特征神经元层。下一步是一个最大混合层，
 应用于$2 \times 2$ 区域，遍及 $3$ 个特征映射。结果是一个 $3 \times 12 \times 12$
 隐藏特征神经元层。
 
-网络中最后连接的层是一个全连接层。更确切地说，这一层将最大储存层的\emph{每一个}神
+网络中最后连接的层是一个全连接层。更确切地说，这一层将最大混合层的\emph{每一个}神
 经元连接到每一个输出神经元。这个全连接结构和我们之前章节中使用的相同。然而，注意
 上面的图示，为了简化，我只使用了一个箭头，而不是显示所有的连接。当然，你可以很容
 易想象到这些连接。
@@ -308,7 +307,7 @@ $784$（$= 28 \times 28$）个输入神经元。我们然后训练网络的权�
 特别的，正如本书中前面那样，我们将用随即梯度下降和反向传播训练我们的网络。这大部
 分按照前面章节中完全相同的方式来处理。然而，我们确实需要对反向传播程序做些修改。
 原因是我们之前的\hyperref[ch:HowThebackpropagationalgorithmworks]{反向传播的推导}是
-针对全连接层的网络。幸运的是，针对卷积和最大储存层的推导是简单的。如果你想理解细
+针对全连接层的网络。幸运的是，针对卷积和最大混合层的推导是简单的。如果你想理解细
 节，那么我请你完成下面的问题。注意这个问题会花费些时间来完成，除非你确实已经吸收
 了\hyperref[ch:HowThebackpropagationalgorithmworks]{之前的反向传播的推导}（这种情
 况下是容易的）。
@@ -318,7 +317,7 @@ $784$（$= 28 \times 28$）个输入神经元。我们然后训练网络的权�
 \begin{itemize}
 \item \textbf{卷积网络中的反向传播}\quad 在一个具有全连接层的网络中，反向传播的核
   心方程是 \eqref{eq:bp1}--\eqref{eq:bp4}（\hyperref[backpropsummary]{链接}）。假
-  设我们有这样一个网络，它包含有一个卷积层，一个最大储存层，和一个全连接的输出层，
+  设我们有这样一个网络，它包含有一个卷积层，一个最大混合层，和一个全连接的输出层，
   正如上面讨论的那样。反向传播的方程式要如何修改？
 \end{itemize}
 
@@ -420,14 +419,14 @@ GPU 支持的 Ubuntu 14.04 中运行过。有些实验在两个系统中都运�
 我们能用一个更深的网络架构来做得比这些结果更好吗？
 
 让我们从在网络开始位置的右边插入一个卷积层开始。我们将使用 $5 \times 5$ 局部感受
-野，跨距为 $1$，$20$ 个特征映射。我们也会插入一个最大混合储存层，它用一个 $2
-\times 2$ 的混合储存窗口来合并特征。所以总体的网络架构看起来很像上一节讨论的架构，
+野，跨距为 $1$，$20$ 个特征映射。我们也会插入一个最大混合层，它用一个 $2
+\times 2$ 的混合窗口来合并特征。所以总体的网络架构看起来很像上一节讨论的架构，
 但是有一个额外的全连接层：
 \begin{center}
   \includegraphics{simple_conv}  
 \end{center}
 
-在这个架构中，我们可以把卷积和混合储存层看作是在学习输入训练图像中的局部感受野，
+在这个架构中，我们可以把卷积和混合层看作是在学习输入训练图像中的局部感受野，
 而后面的全连接层则在一个更抽象的层次学习，从整个图像整合全局信息。这是一种常见的
 卷积神经网络模式。
 
@@ -451,7 +450,7 @@ GPU 支持的 Ubuntu 14.04 中运行过。有些实验在两个系统中都运�
 我们得到了 $98.78$\% 的准确率，这是相当大的改善，超过了我们以前结构的任何一个。事
 实上，我们已经减少了超过三分之一的错误率，这是一个很大的进步。
 
-在指定网络结构时，我把卷积和混合储存层作为一个单一层对待。不管他们是被视为分开的
+在指定网络结构时，我把卷积和混合层作为一个单一层对待。不管他们是被视为分开的
 层还是作为一个单一的层在一定程度上是一个个人喜好的问题。\lstinline!network3.py!
 视他们为单个层，因为它使得 \lstinline!network3.py! 的代码更紧凑。然而，如果需要的
 话，很容易修改 \lstinline!network3.py! 使得这些层可以单独指定。
@@ -459,15 +458,14 @@ GPU 支持的 Ubuntu 14.04 中运行过。有些实验在两个系统中都运�
 \subsection*{练习}
 
 \begin{itemize}
-\item What classification accuracy do you get if you omit the fully-connected
-  layer, and just use the convolutional-pooling layer and softmax layer? Does
-  the inclusion of the fully-connected layer help?
+\item 如果你删除了全连接层，只使用卷积--混合层和柔性最大值层，你得到了什么样的分类准确率？
+全连接层的加入有帮助吗？
 \end{itemize}
 
 我们能改进 $98.78$\% 的分类准确率吗？
 
-让我们试着插入第二个卷积--混合储存层。把它插在已有的卷积--混合储存层和全连接隐藏
-层之间。我们再次使用一个 $5 \times 5$ 局部感受野，混合储存 $2 \times 2$ 的区域。
+让我们试着插入第二个卷积--混合层。把它插在已有的卷积--混合层和全连接隐藏
+层之间。我们再次使用一个 $5 \times 5$ 局部感受野，混合 $2 \times 2$ 的区域。
 让我们看看用前面相似的超参数训练会发生什么：
 \begin{lstlisting}[language=Python]
 >>> net = Network([
@@ -484,6 +482,20 @@ GPU 支持的 Ubuntu 14.04 中运行过。有些实验在两个系统中都运�
 \end{lstlisting}
 
 再一次，我们得到了改善：现在我们达到了 $99.06$\% 的分类准确率。
+
+在这里有两个很自然想到的问题。第一个问题是：应用第二个卷积--混合层意味着什么？
+实际上，你可以认为第二个卷积--混合层输入 $12 \times 12$ 幅“图像”，其“像素”
+代表原始输入图像中特定的局部特征的存在（或不存在）。所以你可以认为这一层输入原始
+输入图像的一个版本。这个版本是经过抽象和凝缩过的，但是仍然有大量的空间结构，所以
+使用第二个卷积--混合层是有意义的。
+
+这是一个令然满意的观点，但是引出了第二个问题。从前面层的输出涉及 $20$ 个独立的特征
+映射，所以对第二个卷积--混合层有 $20 \times 20 \times 12$ 个输入。就好像我们有
+$20$ 幅单独的图像输入给卷积--混合层，而不是第一个卷积--混合层情况下的单幅图像。第二
+个卷积--混合层里的神经元应该如何响应这些多重的输入图像呢？实际上，我们将允许这一层中的
+每个神经元从它的局部感受野中的\emph{所有} $20 \times 5 \times 5$ 输入神经元学习。
+更非正式的：第二个卷积--混合层中的特征检测器可访问\emph{所有}前面层的特征，但仅在其
+特定的局部感受野中\footnote{This issue would have arisen in the first layer if the input images were in color. In that case we'd have 3 input features for each pixel, corresponding to red, green and blue channels in the input image. So we'd allow the feature detectors to have access to all color information, but only within a given local receptive field.}。
 
 \subsection*{问题}
 
@@ -1019,9 +1031,9 @@ def dropout_layer(layer, p_dropout):
 这一节和本书的大部分内容不同。贯穿本书我集中在可能引起持久兴趣的思想 —— 如反向传
 播、规范化、卷积网络。正如我写过的，我曾试图避免那些流行一时的成绩，但其长期价值
 是未知的。在科学界，这样的成绩往往是生命短促的事物，它们逐渐消失，很少有持久的影
-响。鉴于此，一个怀疑论者可能会说：``嗯，当真最近在图像识别中的进步是流行一时的例
+响。鉴于此，一个怀疑论者可能会说：“嗯，当真最近在图像识别中的进步是流行一时的例
 子吗？在另外两年或三年中，一切会继续前进。所以当真这些成绩仅仅提起一些想要在绝对
-前沿竞争的专家的兴趣？为什么要讨论呢？''
+前沿竞争的专家的兴趣？为什么要讨论呢？”
 
 这样的一个怀疑论者是对的，最近论文的一些出色的细节，其被认为的重要性会逐渐减弱。
 但过去几年已经看到了使用深度网络攻克极度困难的图像识别任务的非凡的进步。想象一下
@@ -1042,7 +1054,7 @@ def dropout_layer(layer, p_dropout):
 前四位作者的姓。LRMD 使用一个神经网络来分
 类 \href{http://www.image-net.org/}{ImageNet} 的图像，一个非常具有挑战性的图像识
 别问题。他们使用的 2011 年 ImageNet 数据包含 16,000,000 幅全彩色图像，有 20,000
-个分类。这些图像收集自开放的网络，由亚马逊的 Mechanical Turk 服务部门的员工分类。
+个种类。这些图像收集自开放的网络，由亚马逊的 Mechanical Turk 服务部门的员工分类。
 这里有一些 ImageNet 图像\footnote{These are from the 2014 dataset, which is
   somewhat changed from 2011. Qualitatively, however, the dataset is extremely
   similar. Details about ImageNet are available in the original ImageNet paper,
@@ -1059,18 +1071,28 @@ def dropout_layer(layer, p_dropout):
 这些是各自分类中的圆线刨、褐根腐菌、煮过的牛奶和常见的蛔虫。如果你正在找个挑战，
 我鼓励你去访问 ImageNet 的%
 \href{http://www.image-net.org/synset?wnid=n03489162}{手工具}列表，这个列表把圆
-线刨、短刨、倒角刨和大概一打的其它刨子类型从其它分类中区分开。我不知道你怎么样，
+线刨、短刨、倒角刨和大概一打的其它刨子类型从其它种类中区分开。我不知道你怎么样，
 但是我是没有信心区分所有这些工具的类型。这明显是一个比 MNIST 更有挑战性的图像识
 别任务。LRMD 的网络获得了一个不错的 15.8\% 的准确率来正确分类 ImageNet 图像。那
 听上去可能不算令人印象深刻，但是和以前的最好成绩 9.3\% 准确率相比已经是巨大的进
 步了。这个跳跃暗示着神经网络也许能提供一个强大的方法来应对非常有挑战性的图像识别
 任务，比如 ImageNet。\\
 
-\textbf{2012 KSH 论文：}
+\textbf{2012 KSH 论文：} LRMD 的成果被一篇 Krizhevsky, Sutskever 和 Hinton 
+（KSH）\footnote{\href{http://www.cs.toronto.edu/~fritz/absps/imagenet.pdf}{ImageNet classification with deep convolutional neural networks}, by Alex Krizhevsky, Ilya Sutskever, and Geoffrey E. Hinton (2012).} 的 2012 年论文追随。KSH 训练和测试一个深度卷积神经网络，它使用 ImageNet
+数据的一个有限的子集。他们使用的子集来自一个流行的机器学习竞赛 —— the ImageNet Large-Scale Visual Recognition Challenge （ILSVRC）。使用一个竞赛用的数据集给了他们一个很好的和其它领先技术比较的方式。
+ILSVRC-2012 训练集包含有大约 1,200,000 幅 ImageNet 图像，取自 1,000 个种类。验证和
+测试集分别包含有 50,000 和 150,000 幅图像，各自取自同样的 1,000 个种类。
+
+That's an overview of many of the core ideas in the KSH paper. I've omitted some details, for which you should look at the paper. You can also look at Alex Krizhevsky's cuda-convnet (and successors), which contains code implementing many of the ideas. A Theano-based implementation has also been developed\footnote{Theano-based large-scale visual recognition with multiple GPUs, by Weiguang Ding, Ruoyan Wang, Fei Mao, and Graham Taylor (2014).}, with the code available here. The code is recognizably along similar lines to that developed in this chapter, although the use of multiple GPUs complicates things somewhat. The Caffe neural nets framework also includes a version of the KSH network, see their Model Zoo for details.\\
 
 \textbf{2014 ILSVRC 竞赛：}
 
 \textbf{其它活动：}
+
+\begin{center}
+	\includegraphics[width=.75\textwidth]{adversarial.jpg}
+\end{center}
 
 \section{其他的深度学习模型}
 \label{sec:other_approaches_to_deep_neural_nets}
