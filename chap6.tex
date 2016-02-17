@@ -254,8 +254,8 @@ $784$（$= 28 \times 28$）个输入神经元。我们然后训练网络的权�
   the activation of the hidden neurons output from the layer. This kind of mild
   abuse of nomenclature is pretty common in the research literature.}并且从它们准
 备一个凝缩的特征映射。例如，混合层的每个单元可能概括了前一层的一个（比如）$2
-\times 2$ 的区域。作为一个具体的例子，一个常见的混合的程序被称为\emph{最大混
-  合}（\textit{max-pooling}）。在最大混合中，一个混合单元简单地输出
+\times 2$ 的区域。作为一个具体的例子，一个常见的混合的程序被称为\emph{最大值混
+  合}（\textit{max-pooling}）。在最大值混合中，一个混合单元简单地输出
 其 $2 \times 2$ 输入区域的最大激活值，正如下图说明的：
 \begin{center}
   \includegraphics{tikz47}
@@ -263,24 +263,24 @@ $784$（$= 28 \times 28$）个输入神经元。我们然后训练网络的权�
 注意既然从卷积层有 $24 \times 24$ 个神经元输出，混合后我们得到 $12 \times
 12$ 个神经元。
 
-正如上面提到的，卷积层通常包含超过一个特征映射。我们将最大混合分别应用于每一
-个特征映射。所以如果有三个特征映射，组合在一起的卷积层和最大混合层看起来像这
+正如上面提到的，卷积层通常包含超过一个特征映射。我们将最大值混合分别应用于每一
+个特征映射。所以如果有三个特征映射，组合在一起的卷积层和最大值混合层看起来像这
 样：
 \begin{center}
   \includegraphics{tikz48}  
 \end{center}
 
-我们可以把最大混合看作一种网络询问是否有一个给定的特征在一个图像区域中的哪个
+我们可以把最大值混合看作一种网络询问是否有一个给定的特征在一个图像区域中的哪个
 地方被发现的方式。然后它扔掉确切的位置信息。直观上，一旦一个特征被发现，它的确切
 位置并不如它相对于其它特征的大概位置重要。一个很大的好处是，这样可以有很多被更少
 地混合的特征，所以这有助于减少在以后的层所需的参数的数目。
 
-最大混合并不是用于混合的仅有的技术。另一个常用的方法是\emph{L2 混合}（\textit{L2 pooling}）。这里我们取 $2 \times 2$ 区域中激活值的平方和的平方
-根，而不是最大激活值。虽然细节不同，但其直观上和最大混合是相似的：L2 混合是一种凝
-缩从卷积层输出的信息的方式。在实践中，两种技术都被广泛应用。而且有时候人们使用其
-它混合操作的类型。如果你正在尝试优化性能，你可以使用验证数据来比较混合的
-不同方法，并选择一个工作得最好的。但我们不打算
-惦记这种细节上的优化。\\
+最大值混合并不是用于混合的仅有的技术。另一个常用的方法是\emph{L2 混合}（\textit{L2
+    pooling}）。这里我们取 $2 \times 2$ 区域中激活值的平方和的平方根，而不是最大
+激活值。虽然细节不同，但其直观上和最大值混合是相似的：L2 混合是一种凝缩从卷积层输
+出的信息的方式。在实践中，两种技术都被广泛应用。而且有时候人们使用其它混合操作的
+类型。如果你正在尝试优化性能，你可以使用验证数据来比较混合的不同方法，并选择一个
+工作得最好的。但我们不打算惦记这种细节上的优化。\\
 
 \textbf{综合在一起：} 我们现在可以把这些思想都放在一起来构建一个完整的卷积神经网
 络。它和我们刚看到的架构相似，但是有额外的一层 $10$ 个输出神经元，对应于 $10$ 个
@@ -291,11 +291,11 @@ $784$（$= 28 \times 28$）个输入神经元。我们然后训练网络的权�
 
 这个网络从 $28 \times 28$ 个输入神经元开始，这些神经元用于对 MNIST 图像的像素强度
 进行编码。接着的是一个卷积层，使用一个 $5 \times 5$ 局部感受野和 $3$ 个特征映射。
-其结果是一个 $3 \times 24 \times 24$ 隐藏特征神经元层。下一步是一个最大混合层，
+其结果是一个 $3 \times 24 \times 24$ 隐藏特征神经元层。下一步是一个最大值混合层，
 应用于$2 \times 2$ 区域，遍及 $3$ 个特征映射。结果是一个 $3 \times 12 \times 12$
 隐藏特征神经元层。
 
-网络中最后连接的层是一个全连接层。更确切地说，这一层将最大混合层的\emph{每一个}神
+网络中最后连接的层是一个全连接层。更确切地说，这一层将最大值混合层的\emph{每一个}神
 经元连接到每一个输出神经元。这个全连接结构和我们之前章节中使用的相同。然而，注意
 上面的图示，为了简化，我只使用了一个箭头，而不是显示所有的连接。当然，你可以很容
 易想象到这些连接。
@@ -307,17 +307,17 @@ $784$（$= 28 \times 28$）个输入神经元。我们然后训练网络的权�
 特别的，正如本书中前面那样，我们将用随即梯度下降和反向传播训练我们的网络。这大部
 分按照前面章节中完全相同的方式来处理。然而，我们确实需要对反向传播程序做些修改。
 原因是我们之前的\hyperref[ch:HowThebackpropagationalgorithmworks]{反向传播的推导}是
-针对全连接层的网络。幸运的是，针对卷积和最大混合层的推导是简单的。如果你想理解细
+针对全连接层的网络。幸运的是，针对卷积和最大值混合层的推导是简单的。如果你想理解细
 节，那么我请你完成下面的问题。注意这个问题会花费些时间来完成，除非你确实已经吸收
-了\hyperref[ch:HowThebackpropagationalgorithmworks]{之前的反向传播的推导}（这种情
-况下是容易的）。
+了\hyperref[ch:HowThebackpropagationalgorithmworks]{之前的反向传播的推导}（这种
+  情况下是容易的）。
 
 \subsection*{问题}
 
 \begin{itemize}
 \item \textbf{卷积网络中的反向传播}\quad 在一个具有全连接层的网络中，反向传播的核
   心方程是 \eqref{eq:bp1}--\eqref{eq:bp4}（\hyperref[backpropsummary]{链接}）。假
-  设我们有这样一个网络，它包含有一个卷积层，一个最大混合层，和一个全连接的输出层，
+  设我们有这样一个网络，它包含有一个卷积层，一个最大值混合层，和一个全连接的输出层，
   正如上面讨论的那样。反向传播的方程式要如何修改？
 \end{itemize}
 
@@ -419,7 +419,7 @@ GPU 支持的 Ubuntu 14.04 中运行过。有些实验在两个系统中都运�
 我们能用一个更深的网络架构来做得比这些结果更好吗？
 
 让我们从在网络开始位置的右边插入一个卷积层开始。我们将使用 $5 \times 5$ 局部感受
-野，跨距为 $1$，$20$ 个特征映射。我们也会插入一个最大混合层，它用一个 $2
+野，跨距为 $1$，$20$ 个特征映射。我们也会插入一个最大值混合层，它用一个 $2
 \times 2$ 的混合窗口来合并特征。所以总体的网络架构看起来很像上一节讨论的架构，
 但是有一个额外的全连接层：
 \begin{center}
@@ -699,319 +699,7 @@ class Network(object):
              for param, grad in zip(self.params, grads)]
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python]
-"""network3.py
-~~~~~~~~~~~~~~
-
-A Theano-based program for training and running simple neural
-networks.
-
-Supports several layer types (fully connected, convolutional, max
-pooling, softmax), and activation functions (sigmoid, tanh, and
-rectified linear units, with more easily added).
-
-When run on a CPU, this program is much faster than network.py and
-network2.py.  However, unlike network.py and network2.py it can also
-be run on a GPU, which makes it faster still.
-
-Because the code is based on Theano, the code is different in many
-ways from network.py and network2.py.  However, where possible I have
-tried to maintain consistency with the earlier programs.  In
-particular, the API is similar to network2.py.  Note that I have
-focused on making the code simple, easily readable, and easily
-modifiable.  It is not optimized, and omits many desirable features.
-
-This program incorporates ideas from the Theano documentation on
-convolutional neural nets (notably,
-http://deeplearning.net/tutorial/lenet.html ), from Misha Denil's
-implementation of dropout (https://github.com/mdenil/dropout ), and
-from Chris Olah (http://colah.github.io ).
-
-"""
-
-#### Libraries
-# Standard library
-import cPickle
-import gzip
-
-# Third-party libraries
-import numpy as np
-import theano
-import theano.tensor as T
-from theano.tensor.nnet import conv
-from theano.tensor.nnet import softmax
-from theano.tensor import shared_randomstreams
-from theano.tensor.signal import downsample
-
-# Activation functions for neurons
-def linear(z): return z
-def ReLU(z): return T.maximum(0.0, z)
-from theano.tensor.nnet import sigmoid
-from theano.tensor import tanh
-
-
-#### Constants
-GPU = True
-if GPU:
-    print "Trying to run under a GPU.  If this is not desired, then modify "+\
-        "network3.py\nto set the GPU flag to False."
-    try: theano.config.device = 'gpu'
-    except: pass # it's already set
-    theano.config.floatX = 'float32'
-else:
-    print "Running with a CPU.  If this is not desired, then the modify "+\
-        "network3.py to set\nthe GPU flag to True."
-
-#### Load the MNIST data
-def load_data_shared(filename="../data/mnist.pkl.gz"):
-    f = gzip.open(filename, 'rb')
-    training_data, validation_data, test_data = cPickle.load(f)
-    f.close()
-    def shared(data):
-        """Place the data into shared variables.  This allows Theano to copy
-        the data to the GPU, if one is available.
-
-        """
-        shared_x = theano.shared(
-            np.asarray(data[0], dtype=theano.config.floatX), borrow=True)
-        shared_y = theano.shared(
-            np.asarray(data[1], dtype=theano.config.floatX), borrow=True)
-        return shared_x, T.cast(shared_y, "int32")
-    return [shared(training_data), shared(validation_data), shared(test_data)]
-
-#### Main class used to construct and train networks
-class Network(object):
-
-    def __init__(self, layers, mini_batch_size):
-        """Takes a list of `layers`, describing the network architecture, and
-        a value for the `mini_batch_size` to be used during training
-        by stochastic gradient descent.
-
-        """
-        self.layers = layers
-        self.mini_batch_size = mini_batch_size
-        self.params = [param for layer in self.layers for param in layer.params]
-        self.x = T.matrix("x")
-        self.y = T.ivector("y")
-        init_layer = self.layers[0]
-        init_layer.set_inpt(self.x, self.x, self.mini_batch_size)
-        for j in xrange(1, len(self.layers)):
-            prev_layer, layer  = self.layers[j-1], self.layers[j]
-            layer.set_inpt(
-                prev_layer.output, prev_layer.output_dropout, self.mini_batch_size)
-        self.output = self.layers[-1].output
-        self.output_dropout = self.layers[-1].output_dropout
-
-    def SGD(self, training_data, epochs, mini_batch_size, eta,
-            validation_data, test_data, lmbda=0.0):
-        """Train the network using mini-batch stochastic gradient descent."""
-        training_x, training_y = training_data
-        validation_x, validation_y = validation_data
-        test_x, test_y = test_data
-
-        # compute number of minibatches for training, validation and testing
-        num_training_batches = size(training_data)/mini_batch_size
-        num_validation_batches = size(validation_data)/mini_batch_size
-        num_test_batches = size(test_data)/mini_batch_size
-
-        # define the (regularized) cost function, symbolic gradients, and updates
-        l2_norm_squared = sum([(layer.w**2).sum() for layer in self.layers])
-        cost = self.layers[-1].cost(self)+\
-               0.5*lmbda*l2_norm_squared/num_training_batches
-        grads = T.grad(cost, self.params)
-        updates = [(param, param-eta*grad)
-                   for param, grad in zip(self.params, grads)]
-
-        # define functions to train a mini-batch, and to compute the
-        # accuracy in validation and test mini-batches.
-        i = T.lscalar() # mini-batch index
-        train_mb = theano.function(
-            [i], cost, updates=updates,
-            givens={
-                self.x:
-                training_x[i*self.mini_batch_size: (i+1)*self.mini_batch_size],
-                self.y:
-                training_y[i*self.mini_batch_size: (i+1)*self.mini_batch_size]
-            })
-        validate_mb_accuracy = theano.function(
-            [i], self.layers[-1].accuracy(self.y),
-            givens={
-                self.x:
-                validation_x[i*self.mini_batch_size: (i+1)*self.mini_batch_size],
-                self.y:
-                validation_y[i*self.mini_batch_size: (i+1)*self.mini_batch_size]
-            })
-        test_mb_accuracy = theano.function(
-            [i], self.layers[-1].accuracy(self.y),
-            givens={
-                self.x:
-                test_x[i*self.mini_batch_size: (i+1)*self.mini_batch_size],
-                self.y:
-                test_y[i*self.mini_batch_size: (i+1)*self.mini_batch_size]
-            })
-        self.test_mb_predictions = theano.function(
-            [i], self.layers[-1].y_out,
-            givens={
-                self.x:
-                test_x[i*self.mini_batch_size: (i+1)*self.mini_batch_size]
-            })
-        # Do the actual training
-        best_validation_accuracy = 0.0
-        for epoch in xrange(epochs):
-            for minibatch_index in xrange(num_training_batches):
-                iteration = num_training_batches*epoch+minibatch_index
-                if iteration % 1000 == 0:
-                    print("Training mini-batch number {0}".format(iteration))
-                cost_ij = train_mb(minibatch_index)
-                if (iteration+1) % num_training_batches == 0:
-                    validation_accuracy = np.mean(
-                        [validate_mb_accuracy(j) for j in xrange(num_validation_batches)])
-                    print("Epoch {0}: validation accuracy {1:.2%}".format(
-                        epoch, validation_accuracy))
-                    if validation_accuracy >= best_validation_accuracy:
-                        print("This is the best validation accuracy to date.")
-                        best_validation_accuracy = validation_accuracy
-                        best_iteration = iteration
-                        if test_data:
-                            test_accuracy = np.mean(
-                                [test_mb_accuracy(j) for j in xrange(num_test_batches)])
-                            print('The corresponding test accuracy is {0:.2%}'.format(
-                                test_accuracy))
-        print("Finished training network.")
-        print("Best validation accuracy of {0:.2%} obtained at iteration {1}".format(
-            best_validation_accuracy, best_iteration))
-        print("Corresponding test accuracy of {0:.2%}".format(test_accuracy))
-
-#### Define layer types
-
-class ConvPoolLayer(object):
-    """Used to create a combination of a convolutional and a max-pooling
-    layer.  A more sophisticated implementation would separate the
-    two, but for our purposes we'll always use them together, and it
-    simplifies the code, so it makes sense to combine them.
-
-    """
-
-    def __init__(self, filter_shape, image_shape, poolsize=(2, 2),
-                 activation_fn=sigmoid):
-        """`filter_shape` is a tuple of length 4, whose entries are the number
-        of filters, the number of input feature maps, the filter height, and the
-        filter width.
-
-        `image_shape` is a tuple of length 4, whose entries are the
-        mini-batch size, the number of input feature maps, the image
-        height, and the image width.
-
-        `poolsize` is a tuple of length 2, whose entries are the y and
-        x pooling sizes.
-
-        """
-        self.filter_shape = filter_shape
-        self.image_shape = image_shape
-        self.poolsize = poolsize
-        self.activation_fn=activation_fn
-        # initialize weights and biases
-        n_out = (filter_shape[0]*np.prod(filter_shape[2:])/np.prod(poolsize))
-        self.w = theano.shared(
-            np.asarray(
-                np.random.normal(loc=0, scale=np.sqrt(1.0/n_out), size=filter_shape),
-                dtype=theano.config.floatX),
-            borrow=True)
-        self.b = theano.shared(
-            np.asarray(
-                np.random.normal(loc=0, scale=1.0, size=(filter_shape[0],)),
-                dtype=theano.config.floatX),
-            borrow=True)
-        self.params = [self.w, self.b]
-
-    def set_inpt(self, inpt, inpt_dropout, mini_batch_size):
-        self.inpt = inpt.reshape(self.image_shape)
-        conv_out = conv.conv2d(
-            input=self.inpt, filters=self.w, filter_shape=self.filter_shape,
-            image_shape=self.image_shape)
-        pooled_out = downsample.max_pool_2d(
-            input=conv_out, ds=self.poolsize, ignore_border=True)
-        self.output = self.activation_fn(
-            pooled_out + self.b.dimshuffle('x', 0, 'x', 'x'))
-        self.output_dropout = self.output # no dropout in the convolutional layers
-
-class FullyConnectedLayer(object):
-
-    def __init__(self, n_in, n_out, activation_fn=sigmoid, p_dropout=0.0):
-        self.n_in = n_in
-        self.n_out = n_out
-        self.activation_fn = activation_fn
-        self.p_dropout = p_dropout
-        # Initialize weights and biases
-        self.w = theano.shared(
-            np.asarray(
-                np.random.normal(
-                    loc=0.0, scale=np.sqrt(1.0/n_out), size=(n_in, n_out)),
-                dtype=theano.config.floatX),
-            name='w', borrow=True)
-        self.b = theano.shared(
-            np.asarray(np.random.normal(loc=0.0, scale=1.0, size=(n_out,)),
-                       dtype=theano.config.floatX),
-            name='b', borrow=True)
-        self.params = [self.w, self.b]
-
-    def set_inpt(self, inpt, inpt_dropout, mini_batch_size):
-        self.inpt = inpt.reshape((mini_batch_size, self.n_in))
-        self.output = self.activation_fn(
-            (1-self.p_dropout)*T.dot(self.inpt, self.w) + self.b)
-        self.y_out = T.argmax(self.output, axis=1)
-        self.inpt_dropout = dropout_layer(
-            inpt_dropout.reshape((mini_batch_size, self.n_in)), self.p_dropout)
-        self.output_dropout = self.activation_fn(
-            T.dot(self.inpt_dropout, self.w) + self.b)
-
-    def accuracy(self, y):
-        "Return the accuracy for the mini-batch."
-        return T.mean(T.eq(y, self.y_out))
-
-class SoftmaxLayer(object):
-
-    def __init__(self, n_in, n_out, p_dropout=0.0):
-        self.n_in = n_in
-        self.n_out = n_out
-        self.p_dropout = p_dropout
-        # Initialize weights and biases
-        self.w = theano.shared(
-            np.zeros((n_in, n_out), dtype=theano.config.floatX),
-            name='w', borrow=True)
-        self.b = theano.shared(
-            np.zeros((n_out,), dtype=theano.config.floatX),
-            name='b', borrow=True)
-        self.params = [self.w, self.b]
-
-    def set_inpt(self, inpt, inpt_dropout, mini_batch_size):
-        self.inpt = inpt.reshape((mini_batch_size, self.n_in))
-        self.output = softmax((1-self.p_dropout)*T.dot(self.inpt, self.w) + self.b)
-        self.y_out = T.argmax(self.output, axis=1)
-        self.inpt_dropout = dropout_layer(
-            inpt_dropout.reshape((mini_batch_size, self.n_in)), self.p_dropout)
-        self.output_dropout = softmax(T.dot(self.inpt_dropout, self.w) + self.b)
-
-    def cost(self, net):
-        "Return the log-likelihood cost."
-        return -T.mean(T.log(self.output_dropout)[T.arange(net.y.shape[0]), net.y])
-
-    def accuracy(self, y):
-        "Return the accuracy for the mini-batch."
-        return T.mean(T.eq(y, self.y_out))
-
-
-#### Miscellanea
-def size(data):
-    "Return the size of the dataset `data`."
-    return data[0].get_value(borrow=True).shape[0]
-
-def dropout_layer(layer, p_dropout):
-    srng = shared_randomstreams.RandomStreams(
-        np.random.RandomState(0).randint(999999))
-    mask = srng.binomial(n=1, p=1-p_dropout, size=layer.shape)
-    return layer*T.cast(mask, theano.config.floatX)
-\end{lstlisting}
+\lstinputlisting[language=Python]{code_samples/src/network3.py}
 
 \subsection*{问题}
 

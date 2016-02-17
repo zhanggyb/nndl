@@ -22,9 +22,24 @@ Also, please make sure you have these font packages installed: roboto,
 sourcecodepro, as these fonts are required in typesetting. You can install them
 with `tlmgr` command.
 
+### Checkout source
+
+Use git to clone this repository and the code samples as a sub module:
+
+```shell
+$ git clone --recursive https://github.com/zhanggyb/nndl.git
+````
+
+or
+```shell
+$ git clone https://github.com/zhanggyb/nndl.git
+$ cd nndl
+$ git submodule update --init --recursive
+````
+
 ### Prepare Fonts
 
-Run
+Run the `bootstrap.sh` in the working copy to download CJK fonts required:
 
 ``` shell
 $ ./bootstrap.sh

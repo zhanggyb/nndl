@@ -271,11 +271,12 @@ $a=\sigma(z)$ 代入到 \eqref{eq:57} 中应用两次链式法则，得到：
 以发现代价函数曲线要比二次代价函数训练前面部分要陡很多。那个交叉熵导致的陡度让我
 们高兴，这正是我们期待的当神经元开始出现严重错误时能以最快速度学习。
 
-我还没有提及刚才的示例用了什么\learningrate{}。刚开始使用二次代价函数的时候，我们使用了
-$\eta = 0.15$。在新例子中，我们还应该使用同样的\learningrate{}吗？实际上，根据不同的代
-价函数，我们不能够直接去套用同样的\learningrate{}。这好比苹果和橙子的比较。对于这两种代
-价函数，我只是通过简单的实验来找到一个能够让我们看清楚变化过程的\learningrate{}的值。尽
-管我不愿意提及，但如果你仍然好奇，这个例子中我使用了 $\eta = 0.005$。
+我还没有提及刚才的示例用了什么\learningrate{}。刚开始使用二次代价函数的时候，我
+们使用了$\eta = 0.15$。在新例子中，我们还应该使用同样的\learningrate{}吗？实际上，
+根据不同的代价函数，我们不能够直接去套用同样的\learningrate{}。这好比苹果和橙子
+的比较。对于这两种代价函数，我只是通过简单的实验来找到一个能够让我们看清楚变化过
+程的\learningrate{}的值。尽管我不愿意提及，但如果你仍然好奇，这个例子中我使用了
+$\eta = 0.005$。
 
 你可能会反对说，上面\learningrate{}的改变使得上面的图失去了意义。谁会在意当%
 \learningrate{}的选择是任意挑选的时候神经元学习的速度？！这样的反对其实没有抓住
@@ -548,7 +549,7 @@ w^L_{jk} a^{L-1}_k + b^L_j$。不过，这里我们不会使用 S 型函数来�
   \includegraphics{softmax}
 \end{center}
 
-在\href{http://neuralnetworksanddeeplearning.com/chap3.html#softmax}{原文的网页}
+在\href{http://neuralnetworksanddeeplearning.com/chap3.html#softmax}{原文的网页}%
 上有交互式的 JavaScript 控件。
 
 当你增加 $z^L_4$ 的时候，你可以看到对应激活值 $a^L_4$ 的增加，而其他的激活值就在
@@ -636,10 +637,10 @@ a_7^L$ 随之增大。所以对数似然代价函数也是满足我们期待的�
   \frac{\partial C}{\partial w^L_{jk}} &= a^{L-1}_k (a^L_j-y_j) \label{eq:82}\tag{82}
 \end{align}
 
-这些方程其实和我们前面对交叉熵得到的类似。就拿方程~\eqref{eq:82} 和~\eqref{eq:67}
-比较。尽管后者我对整个训练样本进行了平均，不过形式还是一致的。而且，正如前面的分
-析，这些表达式确保我们不会遇到学习缓慢的问题。事实上，把一个具有对数似然代价的柔
-性最大值输出层，看作与一个具有交叉熵代价的 S 型输出层非常相似，这是很有用的。
+这些方程其实和我们前面对交叉熵得到的类似。就拿方程~\eqref{eq:82} 和~\eqref{eq:67}比
+较。尽管后者我对整个训练样本进行了平均，不过形式还是一致的。而且，正如前面的分析，
+这些表达式确保我们不会遇到学习缓慢的问题。事实上，把一个具有对数似然代价的柔性最
+大值输出层，看作与一个具有交叉熵代价的 S 型输出层非常相似，这是很有用的。
 
 有了这样的相似性，你应该使用一个具有交叉熵代价的 S 型输出层，还是一个具有对数似
 然代价的柔性最大值输出层呢？实际上，在很多应用场景中，这两种方式的效果都不错。本
@@ -1020,21 +1021,21 @@ $1-\frac{\eta\lambda}{n}$。如果我们持续使用 $\lambda = 0.1$ 就会产�
 ... monitor_evaluation_accuracy=True)
 \end{lstlisting}
 
-最终在验证集上的准确度达到了 97.92\%。这是比 30 个隐藏元的较大飞
-跃。\label{chap3_98_04_percent}实际上，稍微改变一点，60 \epochs{}
-$\eta=0.1$ 和 $\lambda = 5.0$。我们就突破了 98\%，达到了98.04\% 的分类准确
-度\label{98percent}。对于 152 行代码这个效果还真不错！
+最终在验证集上的准确度达到了 97.92\%。这是比 30 个隐藏元的较大飞跃。
+\label{chap3_98_04_percent}实际上，稍微改变一点，60 \epochs{} $\eta=0.1$ 和
+$\lambda = 5.0$。我们就突破了 98\%，达到了98.04\% 的分类准确度\label{98percent}。
+对于 152 行代码这个效果还真不错！
 
-我已经把规范化描述为一种减轻过度拟合和提高分类准确度的方法。实际上，这不是仅
-有的好处。实践表明，在使用不同的（随机）权重初始化进行多次 MNIST 网络训练的时候，
-我发现无规范化的网络会偶然被限制住，明显困在了代价函数的局部最优值处。结果就是不
-同的运行会给出相差很大的结果。对比看来，规范化的网络能够提供更容易复制的结果。
+我已经把规范化描述为一种减轻过度拟合和提高分类准确度的方法。实际上，这不是仅有的
+好处。实践表明，在使用不同的（随机）权重初始化进行多次 MNIST 网络训练的时候，我
+发现无规范化的网络会偶然被限制住，明显困在了代价函数的局部最优值处。结果就是不同
+的运行会给出相差很大的结果。对比看来，规范化的网络能够提供更容易复制的结果。
 
 为何会这样子？从经验上看，如果代价函数是无规范化的，那么权重向量的长度可能会增长，
-而其他的东西都保持一样。随着时间的推移，这会导致权重向量变得非常大。所以会使得
-权重向量卡在朝着更多还是更少的方向上变化，因为当长度很大的时候梯度下降带来的变化仅仅会引起在那个方向发
-生微小的变化。我相信这个现象让我们的学习算法更难有效地探索权重空间，最终导致很难找到代
-价函数的最优值。
+而其他的东西都保持一样。随着时间的推移，这会导致权重向量变得非常大。所以会使得权
+重向量卡在朝着更多还是更少的方向上变化，因为当长度很大的时候梯度下降带来的变化仅
+仅会引起在那个方向发生微小的变化。我相信这个现象让我们的学习算法更难有效地探索权
+重空间，最终导致很难找到代价函数的最优值。
 
 \subsection{为何规范化可以帮助减轻过度拟合}
 
@@ -1334,7 +1335,8 @@ C/\partial w$ 未定义。原因在于函数 $|w|$ 在 $w=0$ 时有个“直角�
 全部训练数据集合上训练 30 个\epochs{}，然后会随着训练数据量的下降而成比例增加
 \epochs{}的数量。为了确保权重衰减因子在训练数据集上相同，我们会在全部训练集上使
 用规范化参数为 $\lambda = 5.0$，然后在使用更小的训练集的时候成比例地降低
-$\lambda$ 值\footnote{这个以及下两个图形由程序  \href{https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/fig/more_data.py}{\lstinline!more_data.py!}
+$\lambda$ 值\footnote{这个以及下两个图形由程序
+  \href{https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/fig/more_data.py}{\lstinline!more_data.py!}
   生成}。
 
 如你所见，分类准确度在使用更多的训练数据时提升了很大。根据这个趋势的话，提升会随
@@ -1469,27 +1471,32 @@ $x_j$ 为 $0$。所以 $z$ 是遍历总共 $501$ 个归一化的高斯随机变�
   \includegraphics{wide_gaussian}
 \end{center}
 
-尤其是，我们可以从这幅图中看出 $|z|$ 会变得非常的大，即 $z \gg 1$ 或者 $z \ll -1$。如果是这样，隐藏神经元的输出 $\sigma(z)$ 就会接近 $1$ 或者 $0$。也就表示我们的隐藏神经元会饱
-和。所以当出现这样的情况时，在权重中进行微小的调整仅仅会给隐藏神经元的激活值带来极其
-微弱的改变。而这种微弱的改变也会影响网络中剩下的神经元，然后会带来相应的代价函数
-的改变。结果就是，这些权重在我们进行梯度下降算法时会学习得非常缓慢\footnote{We discussed this in more detail in \hyperref[sec:the_four_fundamental_equations_behind_backpropagation]{Chapter 2}, where we used the equations of backpropagation to show that weights input to saturated neurons learned slowly.}。这其实和我们
-在本章前面讨论的问题差不多，前面的情况是输出神经元在错误的值上饱和导致学习的下降。我们
-之前通过代价函数的选择解决了前面的问题。不幸的是，尽管那种方式在输出神经元上有效，
-但对于隐藏神经元的饱和却一点作用都没有。
+尤其是，我们可以从这幅图中看出 $|z|$ 会变得非常的大，即 $z \gg 1$ 或者 $z \ll
+-1$。如果是这样，隐藏神经元的输出 $\sigma(z)$ 就会接近 $1$ 或者 $0$。也就表示我
+们的隐藏神经元会饱和。所以当出现这样的情况时，在权重中进行微小的调整仅仅会给隐藏
+神经元的激活值带来极其微弱的改变。而这种微弱的改变也会影响网络中剩下的神经元，然
+后会带来相应的代价函数的改变。结果就是，这些权重在我们进行梯度下降算法时会学习得
+非常缓慢\footnote{We discussed this in more detail in
+  \hyperref[sec:the_four_fundamental_equations_behind_backpropagation]{Chapter
+    2}, where we used the equations of backpropagation to show that weights
+  input to saturated neurons learned slowly.}。这其实和我们在本章前面讨论的问题
+差不多，前面的情况是输出神经元在错误的值上饱和导致学习的下降。我们之前通过代价函
+数的选择解决了前面的问题。不幸的是，尽管那种方式在输出神经元上有效，但对于隐藏神
+经元的饱和却一点作用都没有。
 
-我已经讨论了第一个隐藏层的权重输入。当然，类似的论证也适用于后面的隐藏层：如果后面隐藏层的权重
-也是用归一化的高斯分布进行初始化，那么激活值将会非常接近 $0$ 或者 $1$，学习速度也会
-相当缓慢。
+我已经讨论了第一个隐藏层的权重输入。当然，类似的论证也适用于后面的隐藏层：如果后
+面隐藏层的权重也是用归一化的高斯分布进行初始化，那么激活值将会非常接近 $0$ 或者
+$1$，学习速度也会相当缓慢。
 
-还有可以帮助我们进行更好地初始化，能够避免这种类型的饱和，最终避免学习速度的下
-降？假设我们有一个有 $n_{\rm in}$ 个输入权重的神经元。我们会使用均值为 $0$ 标准差为
-$1/\sqrt{n_{\rm in}}$ 的高斯随机分布初始化这些权重。也就是说，我们会向下挤压高斯分布，让
-我们的神经元更不可能饱和。我们会继续使用均值为 $0$ 标准差为 $1$ 的高斯分布来对偏
-差进行初始化，后面会告诉你原因。有了这些设定，带权和 $z = \sum_j w_j x_j + b$ 仍然
-是一个均值为 $0$， 不过有尖锐峰值的高斯分布。假设，我们有 $500$ 个值为 $0$ 的输
-入和 $500$ 个值为 $1$ 的输入。那么很容易证明 $z$ 是服从均值为 $0$ 标准差为
-$\sqrt{3/2} = 1.22\ldots$ 的高斯分布。这要比以前有更尖锐的峰值，尖锐到为了用下图更直观地比较，我不得不对对纵坐标进行
-压缩：
+还有可以帮助我们进行更好地初始化，能够避免这种类型的饱和，最终避免学习速度的下降？
+假设我们有一个有 $n_{\rm in}$ 个输入权重的神经元。我们会使用均值为 $0$ 标准差为
+$1/\sqrt{n_{\rm in}}$ 的高斯随机分布初始化这些权重。也就是说，我们会向下挤压高斯
+分布，让我们的神经元更不可能饱和。我们会继续使用均值为 $0$ 标准差为 $1$ 的高斯分
+布来对偏差进行初始化，后面会告诉你原因。有了这些设定，带权和 $z = \sum_j w_j x_j
++ b$ 仍然是一个均值为 $0$， 不过有尖锐峰值的高斯分布。假设，我们有 $500$ 个值为
+$0$ 的输入和 $500$ 个值为 $1$ 的输入。那么很容易证明 $z$ 是服从均值为 $0$ 标准差
+为$\sqrt{3/2} = 1.22\ldots$ 的高斯分布。这要比以前有更尖锐的峰值，尖锐到为了用下
+图更直观地比较，我不得不对对纵坐标进行压缩：
 \begin{center}
   \includegraphics{narrow_gaussian}
 \end{center}
@@ -1605,7 +1612,10 @@ class Network(object):
 最开始几行里的 \lstinline!__init__! 方法的和 \lstinline!network.py! 中一样，可以轻易弄懂。但是
 下面两行是新的，我们需要知道他们到底做了什么。
 
-我们先看看 \lstinline!default_weight_initializer! 方法，使用了我们\hyperref[sec:weight_initialization]{新式改进后的初始化权重方法}。如我们已经看到的，使用了均值为 $0$ 而标准差为 $1/\sqrt{n}$，$n$ 为对应的输入连接个数。我们使用均值为 $0$ 而标准差为 $1$ 的高斯分布来初始化偏差。下面是代码：
+我们先看看 \lstinline!default_weight_initializer! 方法，使用了我们%
+\hyperref[sec:weight_initialization]{新式改进后的初始化权重方法}。如我们已经看到
+的，使用了均值为 $0$ 而标准差为 $1/\sqrt{n}$，$n$ 为对应的输入连接个数。我们使用
+均值为 $0$ 而标准差为 $1$ 的高斯分布来初始化偏差。下面是代码：
 \begin{lstlisting}[language=Python]
 def default_weight_initializer(self):
         self.biases = [np.random.randn(y, 1) for y in self.sizes[1:]]
@@ -1633,7 +1643,12 @@ def large_weight_initializer(self):
 
 初始化方法 \lstinline!__init__! 中的第二个新的东西就是我们初始化了
 \lstinline!cost! 属性。为了理解这个工作的原理，让我们看一下用来表示交叉熵代价的
-类\footnote{If you're not familiar with Python's static methods you can ignore the @staticmethod decorators, and just treat fn and delta as ordinary methods. If you're curious about details, all @staticmethod does is tell the Python interpreter that the method which follows doesn't depend on the object in any way. That's why self isn't passed as a parameter to the fn and delta methods.}：
+类\footnote{If you're not familiar with Python's static methods you can ignore
+  the @staticmethod decorators, and just treat fn and delta as ordinary
+  methods. If you're curious about details, all @staticmethod does is tell the
+  Python interpreter that the method which follows doesn't depend on the object
+  in any way. That's why self isn't passed as a parameter to the fn and delta
+  methods.}：
 \begin{lstlisting}[language=Python]
 class CrossEntropyCost(object):
 
@@ -1651,9 +1666,11 @@ class CrossEntropyCost(object):
 我们的网络中扮演了两种不同的角色。明显的角色就是代价是输出激活值 $a$ 和目标输出
 $y$ 差距优劣的度量。这个角色通过 \lstinline!CrossEntropyCost.fn! 方法来扮演。
 （注意，\lstinline!np.nan_to_num! 调用确保了 Numpy 正确处理接近 $0$ 的对数值）但
-是代价函数其实还有另一个角色。回想\hyperref[sec:the_four_fundamental_equations_behind_backpropagation]{第二章}中运行反向传播算法时，我们需要计算网络输
-出误差，$\delta^L$。这种形式的输出误差依赖于代价函数的选择：不同的代价函数，输出
-误差的形式就不同。对于交叉熵函数，输出误差就如公式~\eqref{eq:66}所示：
+是代价函数其实还有另一个角色。回想%
+\hyperref[sec:the_four_fundamental_equations_behind_backpropagation]{第二章}中运
+行反向传播算法时，我们需要计算网络输出误差，$\delta^L$。这种形式的输出误差依赖于
+代价函数的选择：不同的代价函数，输出误差的形式就不同。对于交叉熵函数，输出误差就
+如公式~\eqref{eq:66}所示：
 \begin{equation}
   \delta^L = a^L-y
   \label{eq:99}\tag{99}
@@ -1686,340 +1703,8 @@ class QuadraticCost(object):
 你不需要太仔细地读遍这些代码，但是对整个结构尤其是文档中的内容的理解是非常重要的，
 这样，你就可以理解每段程序所做的工作。当然，你也可以随自己意愿去深入研究！如果你
 迷失了理解，那么请读读下面的讲解，然后再回到代码中。不多说了，给代码：
-\begin{lstlisting}[language=Python]
-"""network2.py
-~~~~~~~~~~~~~~
 
-An improved version of network.py, implementing the stochastic
-gradient descent learning algorithm for a feedforward neural network.
-Improvements include the addition of the cross-entropy cost function,
-regularization, and better initialization of network weights.  Note
-that I have focused on making the code simple, easily readable, and
-easily modifiable.  It is not optimized, and omits many desirable
-features.
-
-"""
-
-#### Libraries
-# Standard library
-import json
-import random
-import sys
-
-# Third-party libraries
-import numpy as np
-
-
-#### Define the quadratic and cross-entropy cost functions
-
-class QuadraticCost(object):
-
-    @staticmethod
-    def fn(a, y):
-        """Return the cost associated with an output “a“ and desired output
-        “y“.
-
-        """
-        return 0.5*np.linalg.norm(a-y)**2
-
-    @staticmethod
-    def delta(z, a, y):
-        """Return the error delta from the output layer."""
-        return (a-y) * sigmoid_prime(z)
-
-
-class CrossEntropyCost(object):
-
-    @staticmethod
-    def fn(a, y):
-        """Return the cost associated with an output “a“ and desired output
-        “y“.  Note that np.nan_to_num is used to ensure numerical
-        stability.  In particular, if both “a“ and “y“ have a 1.0
-        in the same slot, then the expression (1-y)*np.log(1-a)
-        returns nan.  The np.nan_to_num ensures that that is converted
-        to the correct value (0.0).
-
-        """
-        return np.sum(np.nan_to_num(-y*np.log(a)-(1-y)*np.log(1-a)))
-
-    @staticmethod
-    def delta(z, a, y):
-        """Return the error delta from the output layer.  Note that the
-        parameter “z“ is not used by the method.  It is included in
-        the method's parameters in order to make the interface
-        consistent with the delta method for other cost classes.
-
-        """
-        return (a-y)
-
-
-#### Main Network class
-class Network(object):
-
-    def __init__(self, sizes, cost=CrossEntropyCost):
-        """The list “sizes“ contains the number of neurons in the respective
-        layers of the network.  For example, if the list was [2, 3, 1]
-        then it would be a three-layer network, with the first layer
-        containing 2 neurons, the second layer 3 neurons, and the
-        third layer 1 neuron.  The biases and weights for the network
-        are initialized randomly, using
-        “self.default_weight_initializer“ (see docstring for that
-        method).
-
-        """
-        self.num_layers = len(sizes)
-        self.sizes = sizes
-        self.default_weight_initializer()
-        self.cost=cost
-
-    def default_weight_initializer(self):
-        """Initialize each weight using a Gaussian distribution with mean 0
-        and standard deviation 1 over the square root of the number of
-        weights connecting to the same neuron.  Initialize the biases
-        using a Gaussian distribution with mean 0 and standard
-        deviation 1.
-
-        Note that the first layer is assumed to be an input layer, and
-        by convention we won't set any biases for those neurons, since
-        biases are only ever used in computing the outputs from later
-        layers.
-
-        """
-        self.biases = [np.random.randn(y, 1) for y in self.sizes[1:]]
-        self.weights = [np.random.randn(y, x)/np.sqrt(x)
-                        for x, y in zip(self.sizes[:-1], self.sizes[1:])]
-
-    def large_weight_initializer(self):
-        """Initialize the weights using a Gaussian distribution with mean 0
-        and standard deviation 1.  Initialize the biases using a
-        Gaussian distribution with mean 0 and standard deviation 1.
-
-        Note that the first layer is assumed to be an input layer, and
-        by convention we won't set any biases for those neurons, since
-        biases are only ever used in computing the outputs from later
-        layers.
-
-        This weight and bias initializer uses the same approach as in
-        Chapter 1, and is included for purposes of comparison.  It
-        will usually be better to use the default weight initializer
-        instead.
-
-        """
-        self.biases = [np.random.randn(y, 1) for y in self.sizes[1:]]
-        self.weights = [np.random.randn(y, x)
-                        for x, y in zip(self.sizes[:-1], self.sizes[1:])]
-
-    def feedforward(self, a):
-        """Return the output of the network if “a“ is input."""
-        for b, w in zip(self.biases, self.weights):
-            a = sigmoid(np.dot(w, a)+b)
-        return a
-
-    def SGD(self, training_data, epochs, mini_batch_size, eta,
-            lmbda = 0.0,
-            evaluation_data=None,
-            monitor_evaluation_cost=False,
-            monitor_evaluation_accuracy=False,
-            monitor_training_cost=False,
-            monitor_training_accuracy=False):
-        """Train the neural network using mini-batch stochastic gradient
-        descent.  The “training_data“ is a list of tuples “(x, y)“
-        representing the training inputs and the desired outputs.  The
-        other non-optional parameters are self-explanatory, as is the
-        regularization parameter “lmbda“.  The method also accepts
-        “evaluation_data“, usually either the validation or test
-        data.  We can monitor the cost and accuracy on either the
-        evaluation data or the training data, by setting the
-        appropriate flags.  The method returns a tuple containing four
-        lists: the (per-epoch) costs on the evaluation data, the
-        accuracies on the evaluation data, the costs on the training
-        data, and the accuracies on the training data.  All values are
-        evaluated at the end of each training epoch.  So, for example,
-        if we train for 30 epochs, then the first element of the tuple
-        will be a 30-element list containing the cost on the
-        evaluation data at the end of each epoch. Note that the lists
-        are empty if the corresponding flag is not set.
-
-        """
-        if evaluation_data: n_data = len(evaluation_data)
-        n = len(training_data)
-        evaluation_cost, evaluation_accuracy = [], []
-        training_cost, training_accuracy = [], []
-        for j in xrange(epochs):
-            random.shuffle(training_data)
-            mini_batches = [
-                training_data[k:k+mini_batch_size]
-                for k in xrange(0, n, mini_batch_size)]
-            for mini_batch in mini_batches:
-                self.update_mini_batch(
-                    mini_batch, eta, lmbda, len(training_data))
-            print "Epoch %s training complete" % j
-            if monitor_training_cost:
-                cost = self.total_cost(training_data, lmbda)
-                training_cost.append(cost)
-                print "Cost on training data: {}".format(cost)
-            if monitor_training_accuracy:
-                accuracy = self.accuracy(training_data, convert=True)
-                training_accuracy.append(accuracy)
-                print "Accuracy on training data: {} / {}".format(
-                    accuracy, n)
-            if monitor_evaluation_cost:
-                cost = self.total_cost(evaluation_data, lmbda, convert=True)
-                evaluation_cost.append(cost)
-                print "Cost on evaluation data: {}".format(cost)
-            if monitor_evaluation_accuracy:
-                accuracy = self.accuracy(evaluation_data)
-                evaluation_accuracy.append(accuracy)
-                print "Accuracy on evaluation data: {} / {}".format(
-                    self.accuracy(evaluation_data), n_data)
-            print
-        return evaluation_cost, evaluation_accuracy, \
-            training_cost, training_accuracy
-
-    def update_mini_batch(self, mini_batch, eta, lmbda, n):
-        """Update the network's weights and biases by applying gradient
-        descent using backpropagation to a single mini batch.  The
-        “mini_batch“ is a list of tuples “(x, y)“, “eta“ is the
-        learning rate, “lmbda“ is the regularization parameter, and
-        “n“ is the total size of the training data set.
-
-        """
-        nabla_b = [np.zeros(b.shape) for b in self.biases]
-        nabla_w = [np.zeros(w.shape) for w in self.weights]
-        for x, y in mini_batch:
-            delta_nabla_b, delta_nabla_w = self.backprop(x, y)
-            nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
-            nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
-        self.weights = [(1-eta*(lmbda/n))*w-(eta/len(mini_batch))*nw
-                        for w, nw in zip(self.weights, nabla_w)]
-        self.biases = [b-(eta/len(mini_batch))*nb
-                       for b, nb in zip(self.biases, nabla_b)]
-
-    def backprop(self, x, y):
-        """Return a tuple “(nabla_b, nabla_w)“ representing the
-        gradient for the cost function C_x.  “nabla_b“ and
-        “nabla_w“ are layer-by-layer lists of numpy arrays, similar
-        to “self.biases“ and “self.weights“."""
-        nabla_b = [np.zeros(b.shape) for b in self.biases]
-        nabla_w = [np.zeros(w.shape) for w in self.weights]
-        # feedforward
-        activation = x
-        activations = [x] # list to store all the activations, layer by layer
-        zs = [] # list to store all the z vectors, layer by layer
-        for b, w in zip(self.biases, self.weights):
-            z = np.dot(w, activation)+b
-            zs.append(z)
-            activation = sigmoid(z)
-            activations.append(activation)
-        # backward pass
-        delta = (self.cost).delta(zs[-1], activations[-1], y)
-        nabla_b[-1] = delta
-        nabla_w[-1] = np.dot(delta, activations[-2].transpose())
-        # Note that the variable l in the loop below is used a little
-        # differently to the notation in Chapter 2 of the book.  Here,
-        # l = 1 means the last layer of neurons, l = 2 is the
-        # second-last layer, and so on.  It's a renumbering of the
-        # scheme in the book, used here to take advantage of the fact
-        # that Python can use negative indices in lists.
-        for l in xrange(2, self.num_layers):
-            z = zs[-l]
-            sp = sigmoid_prime(z)
-            delta = np.dot(self.weights[-l+1].transpose(), delta) * sp
-            nabla_b[-l] = delta
-            nabla_w[-l] = np.dot(delta, activations[-l-1].transpose())
-        return (nabla_b, nabla_w)
-
-    def accuracy(self, data, convert=False):
-        """Return the number of inputs in “data“ for which the neural
-        network outputs the correct result. The neural network's
-        output is assumed to be the index of whichever neuron in the
-        final layer has the highest activation.
-
-        The flag “convert“ should be set to False if the data set is
-        validation or test data (the usual case), and to True if the
-        data set is the training data. The need for this flag arises
-        due to differences in the way the results “y“ are
-        represented in the different data sets.  In particular, it
-        flags whether we need to convert between the different
-        representations.  It may seem strange to use different
-        representations for the different data sets.  Why not use the
-        same representation for all three data sets?  It's done for
-        efficiency reasons -- the program usually evaluates the cost
-        on the training data and the accuracy on other data sets.
-        These are different types of computations, and using different
-        representations speeds things up.  More details on the
-        representations can be found in
-        mnist_loader.load_data_wrapper.
-
-        """
-        if convert:
-            results = [(np.argmax(self.feedforward(x)), np.argmax(y))
-                       for (x, y) in data]
-        else:
-            results = [(np.argmax(self.feedforward(x)), y)
-                        for (x, y) in data]
-        return sum(int(x == y) for (x, y) in results)
-
-    def total_cost(self, data, lmbda, convert=False):
-        """Return the total cost for the data set “data“.  The flag
-        “convert“ should be set to False if the data set is the
-        training data (the usual case), and to True if the data set is
-        the validation or test data.  See comments on the similar (but
-        reversed) convention for the “accuracy“ method, above.
-        """
-        cost = 0.0
-        for x, y in data:
-            a = self.feedforward(x)
-            if convert: y = vectorized_result(y)
-            cost += self.cost.fn(a, y)/len(data)
-        cost += 0.5*(lmbda/len(data))*sum(
-            np.linalg.norm(w)**2 for w in self.weights)
-        return cost
-
-    def save(self, filename):
-        """Save the neural network to the file “filename“."""
-        data = {"sizes": self.sizes,
-                "weights": [w.tolist() for w in self.weights],
-                "biases": [b.tolist() for b in self.biases],
-                "cost": str(self.cost.__name__)}
-        f = open(filename, "w")
-        json.dump(data, f)
-        f.close()
-
-#### Loading a Network
-def load(filename):
-    """Load a neural network from the file “filename“.  Returns an
-    instance of Network.
-
-    """
-    f = open(filename, "r")
-    data = json.load(f)
-    f.close()
-    cost = getattr(sys.modules[__name__], data["cost"])
-    net = Network(data["sizes"], cost=cost)
-    net.weights = [np.array(w) for w in data["weights"]]
-    net.biases = [np.array(b) for b in data["biases"]]
-    return net
-
-#### Miscellaneous functions
-def vectorized_result(j):
-    """Return a 10-dimensional unit vector with a 1.0 in the j'th position
-    and zeroes elsewhere.  This is used to convert a digit (0...9)
-    into a corresponding desired output from the neural network.
-
-    """
-    e = np.zeros((10, 1))
-    e[j] = 1.0
-    return e
-
-def sigmoid(z):
-    """The sigmoid function."""
-    return 1.0/(1.0+np.exp(-z))
-
-def sigmoid_prime(z):
-    """Derivative of the sigmoid function."""
-    return sigmoid(z)*(1-sigmoid(z))
-\end{lstlisting}
+\lstinputlisting[language=Python]{code_samples/src/network2.py}
 
 有个更加有趣的变动就是在代码中增加了 L2 规范化。尽管这是一个主要的概念上的变动，
 在实现中其实相当简单。对大部分情况，仅仅需要传递参数 \lstinline!lmbda! 到不同的
