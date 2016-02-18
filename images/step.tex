@@ -1,0 +1,62 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[11pt,tikz,border=1]{standalone}
+\usetikzlibrary{calc,positioning}
+\usepackage{pgfplots}
+
+\usepackage[mdseries=Light,bfseries=Medium,path=../fonts]{cjkfonts}
+
+\begin{document}
+
+  \begin{tikzpicture}[
+    neuron/.style={circle,draw,inner sep=0pt,minimum size=10mm}
+    ]
+
+    \begin{scope}
+      
+      \node (l0) [neuron] {$x$};
+      \node (m0) [neuron,right=of l0,yshift=-1.5cm] {};
+      \node (m1) [neuron,right=of l0,yshift=1.5cm] {};
+      \node (r0) [neuron,right=of m0,yshift=1.5cm] {};
+
+      \draw[->] (r0) -- ++(1,0);
+
+      \draw[->] (l0) to (m0);
+      \draw[->] (l0) to node (w) [blue,above,xshift=-0.5cm] {$w = 100$} (m1);
+      \draw[->] (m0) to (r0);
+      \draw[->] (m1) to (r0);
+
+      \node(b) [blue,above] at (m1.north) {$b = -40$};
+    \end{scope}
+
+    \begin{scope}[xshift=6cm]
+
+      \begin{axis}[
+          width=5.5cm,
+          height=5.5cm,
+          xlabel={\normalsize $-b/w = 0.40$},
+          axis lines=left,
+          tick label style={font=\tiny},
+          label style={font=\tiny},
+          title style={font=\scriptsize},
+          % xtick={0,1},
+          % ytick={0,1},
+          % minor tick num=1,
+          title={顶部隐藏神经元的输出}
+        ]
+        \addplot[
+          orange,
+          thick,
+          domain=0:1,
+          samples=101
+        ] {
+          1/(1 + exp(-(100 * x + (-40))))        
+        };
+      \end{axis}
+      
+    \end{scope}
+    
+  \end{tikzpicture}
+
+\end{document}
