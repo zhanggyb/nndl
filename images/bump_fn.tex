@@ -16,18 +16,19 @@
     \begin{scope}
       
       \node (l0) [neuron] {$x$};
-      \node (m0) [neuron,right=of l0,yshift=-1.5cm] {};
-      \node (m1) [neuron,right=of l0,yshift=1.5cm] {};
+      \node (m0) [neuron,blue,right=of l0,yshift=-1.5cm] {$0.60$};
+      \node (m1) [neuron,blue,right=of l0,yshift=1.5cm] {$0.40$};
       \node (r0) [neuron,right=of m0,yshift=1.5cm] {};
 
       \draw[->] (r0) -- ++(1,0);
 
       \draw[->] (l0) to (m0);
       \draw[->] (l0) to (m1);
-      \draw[->] (m0) to (r0);
-      \draw[->] (m1) to (r0);
-
-      \node(b) [blue,above] at (m1.north) {$s = 0.49$};
+      \draw[->] (m0) to node [xshift=3mm,yshift=-3mm] {$-0.6$} (r0);
+      \draw[->] (m1) to node (w1) [xshift=3mm,yshift=3mm] {$0.6$} (r0);
+      
+      \node [above=.5 of w1,blue] {$h = 0.6$};
+      
     \end{scope}
 
     \begin{scope}[xshift=6cm]
@@ -43,7 +44,7 @@
           % xtick={0,1},
           % ytick={0,1},
           % minor tick num=1,
-          title={顶部隐藏神经元的输出}
+          title={隐藏层的加权输出}
         ]
         \addplot[
           orange,
@@ -51,7 +52,7 @@
           domain=0:1,
           samples=101
         ] {
-          1/(1 + exp(-(100 * x + (-0.49 * 100))))        
+          1/(1 + exp(-(1000 * x + (-0.4 * 1000))))        
         };
       \end{axis}
       

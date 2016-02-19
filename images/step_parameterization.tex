@@ -27,7 +27,7 @@
       \draw[->] (m0) to (r0);
       \draw[->] (m1) to (r0);
 
-      \node(b) [blue,above] at (m1.north) {$s = 0.49$};
+      \node(b) [blue,above] at (m1.north) {$s = 0.40$};
     \end{scope}
 
     \begin{scope}[xshift=6cm]
@@ -51,7 +51,7 @@
           domain=0:1,
           samples=101
         ] {
-          1/(1 + exp(-(100 * x + (-0.49 * 100))))        
+          1/(1 + exp(-(1000 * x + (-0.40 * 1000))))        
         };
       \end{axis}
       

@@ -221,7 +221,7 @@ $784$（$= 28 \times 28$）个输入神经元。我们然后训练网络的权�
 习（例如）\href{http://en.wikipedia.org/wiki/Gabor_filter}{Gabor 滤波器}，它已经
 被用在很多传统的图像识别方法中。实际上，现在有许多关于通过卷积网络来更好理解特征
 的工作成果。如果你感兴趣，我建议从 Matthew Zeiler 和 Rob Fergus 的（2013）论
-文\href{http://arxiv.org/abs/1311.2901}{Visualizing and Understanding
+文 \href{http://arxiv.org/abs/1311.2901}{Visualizing and Understanding
   Convolutional Networks} 开始。
 
 共享权重和偏差的一个很大的优点是，它大大减少了参与的卷积网络的参数。对于每个特征
@@ -391,9 +391,9 @@ GPU 支持的 Ubuntu 14.04 中运行过。有些实验在两个系统中都运�
 
 我获得的一个最好的分类准确率是 $97.80$\%。这是 \lstinline!test_data! 上的分类准确
 率，在这个取值的训练\epoch{}的地方，我们在\lstinline!validation_data!上得到了最好
-的分类准确率。使用验证数据来决定在何时对测试准确率估值有助于避免测试数据上的过
-度拟合（见前面关于验证数据使用的\hyperref[validation_explanation]{讨论}）。我们将
-在下面遵循这个习惯。你的结构可能稍有不同，因为网络的权重和偏差是随机初始化
+的分类准确率。使用验证数据来决定在何时对测试准确率估值有助于避免测试数据上的过度
+拟合（见前面关于验证数据使用的\hyperref[validation_explanation]{讨论}）。我们将在
+下面遵循这个习惯。你的结构可能稍有不同，因为网络的权重和偏差是随机初始化
 的\footnote{In fact, in this experiment I actually did three separate runs
   training a network with this architecture. I then reported the test accuracy
   which corresponded to the best validation accuracy from any of the three
@@ -420,15 +420,15 @@ GPU 支持的 Ubuntu 14.04 中运行过。有些实验在两个系统中都运�
 
 让我们从在网络开始位置的右边插入一个卷积层开始。我们将使用 $5 \times 5$ 局部感受
 野，跨距为 $1$，$20$ 个特征映射。我们也会插入一个最大值混合层，它用一个 $2
-\times 2$ 的混合窗口来合并特征。所以总体的网络架构看起来很像上一节讨论的架构，
-但是有一个额外的全连接层：
+\times 2$ 的混合窗口来合并特征。所以总体的网络架构看起来很像上一节讨论的架构，但
+是有一个额外的全连接层：
 \begin{center}
   \includegraphics{simple_conv}  
 \end{center}
 
-在这个架构中，我们可以把卷积和混合层看作是在学习输入训练图像中的局部感受野，
-而后面的全连接层则在一个更抽象的层次学习，从整个图像整合全局信息。这是一种常见的
-卷积神经网络模式。
+在这个架构中，我们可以把卷积和混合层看作是在学习输入训练图像中的局部感受野，而后
+面的全连接层则在一个更抽象的层次学习，从整个图像整合全局信息。这是一种常见的卷积
+神经网络模式。
 
 让我们训练这样的一个网络，看看它表现怎样\footnote{I've continued to use a
   mini-batch size of $10$ here. In fact, as we
@@ -489,13 +489,17 @@ GPU 支持的 Ubuntu 14.04 中运行过。有些实验在两个系统中都运�
 输入图像的一个版本。这个版本是经过抽象和凝缩过的，但是仍然有大量的空间结构，所以
 使用第二个卷积--混合层是有意义的。
 
-这是一个令然满意的观点，但是引出了第二个问题。从前面层的输出涉及 $20$ 个独立的特征
-映射，所以对第二个卷积--混合层有 $20 \times 20 \times 12$ 个输入。就好像我们有
-$20$ 幅单独的图像输入给卷积--混合层，而不是第一个卷积--混合层情况下的单幅图像。第二
-个卷积--混合层里的神经元应该如何响应这些多重的输入图像呢？实际上，我们将允许这一层中的
-每个神经元从它的局部感受野中的\emph{所有} $20 \times 5 \times 5$ 输入神经元学习。
-更非正式的：第二个卷积--混合层中的特征检测器可访问\emph{所有}前面层的特征，但仅在其
-特定的局部感受野中\footnote{This issue would have arisen in the first layer if the input images were in color. In that case we'd have 3 input features for each pixel, corresponding to red, green and blue channels in the input image. So we'd allow the feature detectors to have access to all color information, but only within a given local receptive field.}。
+这是一个令然满意的观点，但是引出了第二个问题。从前面层的输出涉及 $20$ 个独立的特
+征映射，所以对第二个卷积--混合层有 $20 \times 20 \times 12$ 个输入。就好像我们
+有 $20$ 幅单独的图像输入给卷积--混合层，而不是第一个卷积--混合层情况下的单幅图像。
+第二个卷积--混合层里的神经元应该如何响应这些多重的输入图像呢？实际上，我们将允许
+这一层中的每个神经元从它的局部感受野中的\emph{所有} $20 \times 5 \times 5$ 输入神
+经元学习。更非正式的：第二个卷积--混合层中的特征检测器可访问\emph{所有}前面层的特
+征，但仅在其特定的局部感受野中\footnote{This issue would have arisen in the
+  first layer if the input images were in color. In that case we'd have 3 input
+  features for each pixel, corresponding to red, green and blue channels in the
+  input image. So we'd allow the feature detectors to have access to all color
+  information, but only within a given local receptive field.}。
 
 \subsection*{问题}
 
@@ -766,13 +770,58 @@ class Network(object):
 步了。这个跳跃暗示着神经网络也许能提供一个强大的方法来应对非常有挑战性的图像识别
 任务，比如 ImageNet。\\
 
-\textbf{2012 KSH 论文：} LRMD 的成果被一篇 Krizhevsky, Sutskever 和 Hinton 
-（KSH）\footnote{\href{http://www.cs.toronto.edu/~fritz/absps/imagenet.pdf}{ImageNet classification with deep convolutional neural networks}, by Alex Krizhevsky, Ilya Sutskever, and Geoffrey E. Hinton (2012).} 的 2012 年论文追随。KSH 训练和测试一个深度卷积神经网络，它使用 ImageNet
-数据的一个有限的子集。他们使用的子集来自一个流行的机器学习竞赛 —— the ImageNet Large-Scale Visual Recognition Challenge （ILSVRC）。使用一个竞赛用的数据集给了他们一个很好的和其它领先技术比较的方式。
-ILSVRC-2012 训练集包含有大约 1,200,000 幅 ImageNet 图像，取自 1,000 个种类。验证和
-测试集分别包含有 50,000 和 150,000 幅图像，各自取自同样的 1,000 个种类。
+\textbf{2012 KSH 论文：} LRMD 的成果被一篇 Krizhevsky,
+Sutskever 和 Hinton （KSH）
+\footnote{\href{http://www.cs.toronto.edu/~fritz/absps/imagenet.pdf}{ImageNet
+    classification with deep convolutional neural networks}, by Alex Krizhevsky,
+  Ilya Sutskever, and Geoffrey E. Hinton (2012).} 的 2012 年论文追随。KSH 训练和
+测试一个深度卷积神经网络，它使用 ImageNet数据的一个有限的子集。他们使用的子集来自
+一个流行的机器学习竞赛 —— ImageNet Large-Scale Visual Recognition Challenge
+（ILSVRC）。使用一个竞赛用的数据集给了他们一个很好的和其它领先技术比较的途径。
+ILSVRC-2012 训练集包含有大约 1,200,000 幅 ImageNet 图像，取自 1,000 个种类。
+验证和测试集分别包含有 50,000 和 150,000 幅图像，各自取自同样的 1,000 个种类。
 
-That's an overview of many of the core ideas in the KSH paper. I've omitted some details, for which you should look at the paper. You can also look at Alex Krizhevsky's cuda-convnet (and successors), which contains code implementing many of the ideas. A Theano-based implementation has also been developed\footnote{Theano-based large-scale visual recognition with multiple GPUs, by Weiguang Ding, Ruoyan Wang, Fei Mao, and Graham Taylor (2014).}, with the code available here. The code is recognizably along similar lines to that developed in this chapter, although the use of multiple GPUs complicates things somewhat. The Caffe neural nets framework also includes a version of the KSH network, see their Model Zoo for details.\\
+运行 ILSVRC 竞赛一个困难的地方是很多 ImageNet 图像包含了多个物体。假设一幅显示一
+条拉布拉多犬追逐一个足球的图像。这幅图像所谓“正确的” ImageNet 分类也许是一条拉
+布拉多犬。如果一个算法把这个图像标记为一个足球，它应该被扣分吗？由于
+这种歧义性，如果实际的 ImageNet 分类在一个算法认为最有可能的 $5$ 个分类中，那么这
+个算法就被认为是正确的。通过这个前 $5$ 标准，KSH 的深度卷积网络达到了一
+个 $84.7$\% 的准确率，大大好于次优的参赛者，后者取得了 $73.8$\% 的准确率。使用更
+严格的必需准确标记的标准，KSH 的网络达到了 $63.3$\% 的准确率。
+
+既然 KSH 网络激励了随后的成果，值得对它简要描述一下。正如我们看到的，尽管要更精细，
+它非常接近于这一章中我们之前训练的网络。KSH 使用一个深度卷积神经网络，在两个 GPU
+上训练。他们使用两块 GPU 是因为当时使用的特定的 GPU 型号（一块 NVIDIA GeForce
+GTX 580）没有足够的片上存储器来保存整个网络。所以他们用两块 GPU 把网络分成两个部
+分。
+
+KSH 网络有 $7$ 个隐藏神经元层。前 $5$ 个隐藏层是卷积层（有些具有最大值混合），而
+接下来的 $2$ 层是全连接层。输出层是一个 $1,000$ 个单元的柔性最大值层，对应于
+那$1,000$ 个图像类别。这是这个网络的一个草图，取自 KSH 论文\footnote{感谢 Ilya
+  Sutskever。}。细节在下面讨论。注意许多层被分成 $2$ 个部分，对应于 $2$ 块 GPU。
+\begin{center}
+\includegraphics[width=\textwidth]{KSH}
+\end{center}
+
+输入层包含 $3 \times 224 \times 224$ 个神经元，对应于一幅 $224 \times 224$ 图像
+的 RBG 值。回想前面提到的，ImageNet 包含有不同分辨率的图像。这引起了一个问题，因
+为一个神经网络的输入层通常是固定大小。KSH 通过缩放每幅图像使得长和宽中短的长度
+为 $256$ 来处理。然后他们从缩放后的图像中裁剪出一个 $256 \times 256$ 的区域。最
+后，KSH 从 $256 \times 256$ 的图像中随机提取出 $224 \times 224$ 的子图像（和水平
+反射）。他们把这个随机的裁剪用作扩展训练数据的方式，这样减少过度拟合。这在一个例
+如 KSH 的大的网络中尤其有帮助。正是这些 $224 \times 224$ 图像被用于网络的输入。在
+大多数情况下裁剪后的图像仍然包含有未改动图像的主要物体。
+
+That's an overview of many of the core ideas in the KSH paper. I've omitted some
+details, for which you should look at the paper. You can also look at Alex
+Krizhevsky's cuda-convnet (and successors), which contains code implementing
+many of the ideas. A Theano-based implementation has also been
+developed\footnote{Theano-based large-scale visual recognition with multiple
+  GPUs, by Weiguang Ding, Ruoyan Wang, Fei Mao, and Graham Taylor (2014).}, with
+the code available here. The code is recognizably along similar lines to that
+developed in this chapter, although the use of multiple GPUs complicates things
+somewhat. The Caffe neural nets framework also includes a version of the KSH
+network, see their Model Zoo for details.\\
 
 \textbf{2014 ILSVRC 竞赛：}
 

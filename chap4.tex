@@ -196,12 +196,12 @@ $x$ 取何值时阶跃会发生呢？换种方式，阶跃的位置如何取决�
   \includegraphics{two_hn_network}
 \end{center}
 
-右边的绘图是\emph{加权后}的隐藏层输出 $w_1 a_1 + w_2 a_2$。这里 $a_1$ 和 $a_2$
-各自是顶部和底部神经元的输出\footnote{顺便提一下，注意整个网络的输出是
-  $\sigma(w_1 a_1+w_2 a_2 + b)$，其中 $b$ 是隐藏层的偏差。很明显，这不同于隐藏层
-  加权后的输出，也就是我们这里的绘图。我们现在打算专注于隐藏层的加权输出，不一会
-  就会考虑如何把它关联到整个网络的输出。}。这些输出由 $a$ 表示，是因为它们通常被
-称为神经元的\emph{激活值}（\textit{activations}）。
+右边的绘图是\emph{加权后}的隐藏层输出 $w_1 a_1 + w_2 a_2$。这里 $a_1$ 和 $a_2$ 各
+自是顶部和底部神经元的输出\footnote{顺便提一下，注意整个网络的输出是 $\sigma(w_1
+  a_1+w_2 a_2 + b)$，其中 $b$ 是隐藏层的偏差。很明显，这不同于隐藏层加权后的输出，
+  也就是我们这里的绘图。我们现在打算专注于隐藏层的加权输出，不一会就会考虑如何把
+  它关联到整个网络的输出。}。这些输出由 $a$ 表示，是因为它们通常被称为神经元
+的\emph{激活值}（\textit{activations}）。
 
 试着增加和减小顶部隐藏神经元的阶跃点 $s_1$。感受下这如何改变隐藏层的加权输出。尤
 其值得去理解当 $s_1$ 经过 $s_2$ 时发生了什么。你会看到这时图形发生了变化，因为我
@@ -213,23 +213,23 @@ $x$ 取何值时阶跃会发生呢？换种方式，阶跃的位置如何取决�
 尝试增加和减少每一个输出权重。注意，这如何调整从各自的隐藏神经元的贡献值。当一个
 权重是 0 时会发生什么？
 
-最后，试着设置 $w_1$ 为 $0.8$，$w_2$ 为 $-0.8$。你得到一个“凸起”的函数，它从点
-$s_1$ 开始，到点 $s_2$ 结束，高为 $0.8$。例如，加权后的输出可能看起来像这样：
+最后，试着设置 $w_1$ 为 $0.8$，$w_2$ 为 $-0.8$。你得到一个“凸起”的函数，它从
+点 $s_1$ 开始，到点 $s_2$ 结束，高为 $0.8$。例如，加权后的输出可能看起来像这样：
 \begin{center}
   \includegraphics{bump_function}
 \end{center}
 
-当然，我们可以调整为任意的凸起高度。让我们用一个参数，$h$，来表示高度。为了减少
-混乱我也会移除“$s_1 = \ldots$”和“$w_1 = \ldots$”的标记。
+当然，我们可以调整为任意的凸起高度。让我们用一个参数，$h$，来表示高度。为了减少混
+乱我也会移除“$s_1 = \ldots$”和“$w_1 = \ldots$”的标记。
 \begin{center}
   \includegraphics{bump_fn}
 \end{center}
 
-试着将 $h$ 值改大或改小，看看凸起的高度如何改变。试着把高度值改为负数，观察发生
-了什么。并且试着改变阶跃点来看看如何改变凸起的形状。
+试着将 $h$ 值改大或改小，看看凸起的高度如何改变。试着把高度值改为负数，观察发生了
+什么。并且试着改变阶跃点来看看如何改变凸起的形状。
 
-顺便提一下，你会注意到，我们用神经元的方式，可以认为不只是在图形的角度，而且是更传
-统的编程形式，作为 {\serif if-then-else} 的一种声明，即：
+顺便提一下，你会注意到，我们用神经元的方式，可以认为不只是在图形的角度，而且是更
+传统的编程形式，作为 {\serif if-then-else} 的一种声明，即：
 \begin{lstlisting}[language=Python]
     if input >= step point:
         add 1 to the weighted output
@@ -237,10 +237,33 @@ $s_1$ 开始，到点 $s_2$ 结束，高为 $0.8$。例如，加权后的输出�
         add 0 to the weighted output  
 \end{lstlisting}
 
-对于大部分内容，我将坚持以图形的考虑角度。但在接下来的内容中，你有时可能会发现交换
-考虑角度是有帮助的，并且考虑 {\serif if-then-else} 的形式。
+对于大部分内容，我将坚持以图形的考虑角度。但在接下来的内容中，你有时可能会发现交
+换考虑角度是有帮助的，并且考虑 {\serif if-then-else} 的形式。
 
-我们可以用凸起制作的技巧来得到两个凸起，通过把两对隐藏神经元一起填充进同一个网络：
+我们可以用凸起制作的技巧来得到两个凸起，通过把两对隐藏神经元一起填充进同一个网
+络：
+\begin{center}
+  \includegraphics{double_bump}
+\end{center}
+
+这里我抑制了权重，只是简单地在每对隐藏神经元上写了 $h$ 的值。试着增加和减少两
+个 $h$ 值，观察它如何改变图形。通过修改节点来移动凸起。
+
+更普遍地，我们可以利用这个思想来取得我们想要的任何高度的峰值。尤其，我们可以把间
+隔 $[0, 1]$分成大量的子区间，用 $N$ 表示，并利用 $N$ 对隐藏神经元来设置任意期望高
+度的峰值。让我们看看 $N = 5$ 这如何工作。
+\begin{center}
+  \includegraphics{five_bumps}
+\end{center}
+
+\begin{center}
+  \includegraphics{function}
+\end{center}
+
+\begin{equation}
+f(x) = 0.2+0.4 x^2+0.3x \sin(15 x) + 0.05 \cos(50 x)
+\label{eq:113}\tag{113}
+\end{equation}
 
 \section{很多个输入变量}
 \label{sec:many_input_variables}
@@ -248,8 +271,37 @@ $s_1$ 开始，到点 $s_2$ 结束，高为 $0.8$。例如，加权后的输出�
 \section{S 型神经元的延伸}
 \label{sec:extension_beyond_sigmoid_neurons}
 
-\section{Fixing up the step functions}
+\section{修补阶跃函数}
 \label{sec:fixing_up_the_step_functions}
 
 \section{结论}
 \label{sec:conclusion}
+
+我们已经讨论的对于普遍性的解释当然不是如何使用神经网络计算的切实可行的用法！其更
+像是 {\serif NAND} 门或者其它类似的普遍性证明。因为这个原因，我主要专注于让解释更
+清晰和易于理解，而不是过于挖掘细节。然而，你可以发现如果你能改进这个解释是个很有
+趣和有教益的练习。
+
+尽管这个结果并不能直接用于解释网络，它还是是很重要的，因为它解开了是否使用一个神
+经网络可以计算任意特定函数的问题。对这个问题的答案总是“是”。所以需要问的正确问
+题，并不是是否任意函数可计算，而是计算函数的\emph{好的}方法是什么。
+
+我们建立的对于普遍性的解释只使用了两个隐藏层来计算一个任意的函数。而且，正如我们
+已经讨论过的，只使用单个的隐藏层来取得相同的结果是可能的。鉴于此，你可能想知道为
+什么我们会对深度网络感兴趣，即具有很多隐藏层的网络。我们不能简单地把这些网络用浅
+层的、单个隐藏层的网络替换吗？
+
+尽管在原理上这是可能的，使用深度网络仍然有实际的原因。正如
+在\hyperref[sec:toward_deep_learning]{第一章}中表明过，深度网络有一个分级结构，使
+其尤其适用于学习分级的知识，这看上去可用于解决现实世界的问题。但是更具体地，当攻
+克诸如图像识别的问题，使用一个不仅能理解单独的像素，还能理解越来越复杂的概念的系
+统是有帮助的，这里说的复杂的概念，可以从图像的边缘信息到简单的几何形状，以及所有
+复杂的、多物体场景的方式。在后面的章节中，我们将看到在学习这样的分级知识时，深度
+网络要比浅层网络做得更好。总结一下：普遍性告诉我们神经网络能计算任何函数；而实际
+经验依据提示深度网络最能适用于学习能够解决许多现实世界问题的函数。
+
+\textbf{Chapter acknowledgments:} Thanks to Jen Dodd and Chris Olah for many
+discussions about universality in neural networks. My thanks, in particular, to
+Chris for suggesting the use of a lookup table to prove universality. The
+interactive visual form of the chapter is inspired by the work of people such as
+Mike Bostock, Amit Patel, Bret Victor, and Steven Wittens.

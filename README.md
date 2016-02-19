@@ -22,7 +22,7 @@ Also, please make sure you have these font packages installed: roboto,
 sourcecodepro, as these fonts are required in typesetting. You can install them
 with `tlmgr` command.
 
-### Checkout source
+### Check out source code
 
 Use git to clone this repository and the code samples as a sub module:
 
