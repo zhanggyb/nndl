@@ -26,10 +26,10 @@
       \node (m1g2) [neuron,below=0.4 of m0g0] {$0.6$};
       \node (m0g2) [neuron,below=1mm] at (m1g2.south) {$0.8$};
 
-      \node (m0g3) [neuron,above=0.4 of m1g1] {$0.2$};
+      \node (m0g3) [circle,inner sep=0pt,minimum size=10mm,above=0.4 of m1g1] {$0.2$};
       \node (m1g3) [neuron,above=1mm] at (m0g3.north) {$0.0$};
 
-      \node (m1g4) [neuron,below=0.4 of m0g2] {$0.8$};
+      \node (m1g4) [circle,inner sep=0pt,minimum size=10mm,below=0.4 of m0g2] {$0.8$};
       \node (m0g4) [neuron,below=1mm] at (m1g4.south) {$1.0$};
 
       \foreach \x in {0,1}
@@ -37,6 +37,10 @@
           \draw[->] (l0) to (m\x g\y);
           \draw[->] (m\x g\y) to (r0);
       }
+
+			% cover the top and bottom neutrons for better look
+			\node (m0g3a) [neuron,fill=white] at (m0g3) {$0.2$};
+			\node (m1g4a) [neuron,fill=white] at (m1g4) {$0.8$};
 
       \draw[->] (r0) -- ++(1,0);
 
