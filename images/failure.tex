@@ -1,0 +1,40 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[11pt,tikz,border=1]{standalone}
+\usetikzlibrary{calc,positioning}
+\usepackage{pgfplots}
+
+\usepackage[mdseries=Light,bfseries=Medium,path=../fonts]{cjkfonts}
+
+\begin{document}
+
+  \begin{tikzpicture}
+
+      \begin{axis}[
+          width=6cm,
+          height=6cm,
+          xlabel={\normalsize $x$},
+          axis lines=left,
+          tick label style={font=\tiny},
+          label style={font=\tiny},
+          title style={font=\scriptsize},
+          xtick={0,1},
+          ytick={1},
+          % minor tick num=1,
+          title={顶部隐藏神经元的输出}
+        ]
+        \fill [fill=green!10] (axis cs:0.43,0.002) -- (axis cs:0.57,0.002) -- (axis cs:0.57,1) -- (axis cs:0.43,1);
+        \addplot[
+          orange,
+          thick,
+          domain=0:1,
+          samples=201
+        ] {
+          1/(1 + exp(-(100 * x + (-50))))        
+        };
+      \end{axis}
+
+  \end{tikzpicture}
+
+\end{document}

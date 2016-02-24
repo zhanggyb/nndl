@@ -1,0 +1,18 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[11pt,tikz,border=1]{standalone}
+\usepackage{pgfplots}
+
+\begin{document}
+
+\begin{tikzpicture}
+  
+  \draw[->] (-5,0) -- (5,0) node [right] {$z$};  
+  \draw[->] (0,0) -- (0,4) node [above] {$\sigma (z)$};
+  
+  \draw[orange,thick,domain=-5:5,samples=101,yscale=4] plot (\x, {1/(1 + exp(-\x))});
+  
+\end{tikzpicture} 
+
+\end{document}

@@ -1,0 +1,37 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[11pt,tikz,border=1]{standalone}
+\usetikzlibrary{calc,positioning}
+\usepackage{pgfplots}
+
+\usepackage[mdseries=Light,bfseries=Medium,path=../fonts]{cjkfonts}
+
+\begin{document}
+
+  \begin{tikzpicture}
+
+      \begin{axis}[
+          width=7cm,
+          height=7cm,
+          xlabel={\normalsize $x$},
+          axis lines=center,
+          tick label style={font=\tiny},
+          label style={font=\tiny},
+          title style={font=\scriptsize},
+          xtick={1},
+          ytick={-2,-1,0,1,2},
+          % minor tick num=1,
+          title={$\sigma^{-1} \circ f(x)$},
+          declare function={
+            sigmaInverse(\z)=ln(\z/(1-\z));
+            f(\x)=0.2+0.4*\x*\x+0.3*\x*sin(15*deg(\x))+0.05*cos(50*deg(\x));          },
+        ]
+        \addplot[blue,domain=0:1,samples=201] {
+          sigmaInverse(f(x))
+        };
+      \end{axis}
+
+  \end{tikzpicture}
+
+\end{document}
