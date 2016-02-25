@@ -184,8 +184,8 @@ $784$（$= 28 \times 28$）个输入神经元。我们然后训练网络的权�
   corners are likely to be useful across much of the input space.}。
 
 因为这个原因，我们有时候把从输入层到隐藏层的映射称为一个\emph{特征映射}。我们把
-定义特征映射的权重称为\emph{共享权重}。我们把以这种方式定义特征映射的偏置称为
-\emph{共享偏置}。共享权重和偏置经常被称为一个\emph{核}或者\emph{滤波器}。在文献
+定义特征映射的权重称为\emph{共享权重}。我们把以这种方式定义特征映射的偏置称为%
+\emph{共享偏置}。共享权重和偏置经常被称为一个\emph{卷积核}或者\emph{滤波器}。在文献
 中，人们有时以稍微不同的方式使用这些术语，对此我不打算去严格区分；稍后我们会看一
 些具体的例子。
 
@@ -505,19 +505,19 @@ GPU 支持的 Ubuntu 14.04 中运行过。有些实验在两个系统中都运�
 
 \begin{itemize}
 \item \textbf{使用 tanh 激活函数}\quad 在本书前面我已经几次提起
-  过\hyperref[subsec:other_models_of_artificial_neuron]{tanh 函数}可以是一个比 S
-  型函数更好的激活函数。我们还没有实际采用过这些建议，因为我们已经用 S 型取得了大
-  量进展。但现在让我们试试一些用 tanh 作为我们激活函数的实验。试着训练卷积和全连
-  接层中具有 tanh 激活值的网络\footnote{Note that you can pass
+  过\hyperref[subsec:other_models_of_artificial_neuron]{tanh 函数}可以是一个
+  比 S型函数更好的激活函数。我们还没有实际采用过这些建议，因为我们已经用 S 型取得
+  了大量进展。但现在让我们试试一些用 tanh 作为我们激活函数的实验。试着训练卷积和
+  全连接层中具有 tanh 激活值的网络\footnote{Note that you can pass
     \lstinline!activation_fn=tanh! as a parameter to the
     \lstinline!ConvPoolLayer! and \lstinline!FullyConnectedLayer! classes.}。开始
   时使用 S 型网络中使用的相同的超参数，但是训练 $20$ 个\epochs{}，而不是 $60$ 个。
-  你的网络表现得怎么样？如果你继续训练到 $60$ 个\epochs{}会怎样？试着将tanh 和 S
-  型网络的每个\epoch{}的验证准确率都绘制出来，都绘制到 $60$ 个\epochs{}。如果你的
-  结果和我的相似，你会发现 tanh 网络训练得稍微快些，但是最终的准确率非常相似。你
-  能否解释为什么 tanh 网络可以训练得更快？你能否用 S 型取得一个相似的训练速度，也
-  许通过改变\learningrate{}，或者做些调整\footnote{You may perhaps find
-    inspiration in recalling that
+  你的网络表现得怎么样？如果你继续训练到 $60$ 个\epochs{}会怎样？试着
+  将tanh 和 S型网络的每个\epoch{}的验证准确率都绘制出来，都绘制
+  到 $60$ 个\epochs{}。如果你的结果和我的相似，你会发现 tanh 网络训练得稍微快些，
+  但是最终的准确率非常相似。你能否解释为什么 tanh 网络可以训练得更快？你能否用 S
+  型取得一个相似的训练速度，也许通过改变\learningrate{}，或者做些调
+  整\footnote{You may perhaps find inspiration in recalling that
     $\sigma(z) = (1+\tanh(z/2))/2$.}？试着用五六个迭代学习超参数和网络架构，寻
   找 tanh 优于 S 型的方面。\emph{注意：这是一个开放式问题。就我个人而言，我并没有
     找到太多切换为 tanh 的优势，虽然我没全面地做过实验，也许你会找到一个方法。无
@@ -795,31 +795,31 @@ Sutskever 和 Hinton （KSH）
     classification with deep convolutional neural networks}, by Alex Krizhevsky,
   Ilya Sutskever, and Geoffrey E. Hinton (2012).} 的 2012 年论文追随。KSH 训练和
 测试一个深度卷积神经网络，它使用 ImageNet数据的一个有限的子集。他们使用的子集来自
-一个流行的机器学习竞赛 —— ImageNet Large-Scale Visual Recognition Challenge
-（ILSVRC）。使用一个竞赛用的数据集给了他们一个很好的和其它领先技术比较的途径。
-ILSVRC-2012 训练集包含有大约 1,200,000 幅 ImageNet 图像，取自 1,000 个种类。
+一个流行的机器学习竞赛 —— ImageNet Large-Scale Visual Recognition
+Challenge（ILSVRC）。使用一个竞赛用的数据集给了他们一个很好的和其它领先技术比较的
+途径。ILSVRC-2012 训练集包含有大约 1,200,000 幅 ImageNet 图像，取自 1,000 个种类。
 验证和测试集分别包含有 50,000 和 150,000 幅图像，各自取自同样的 1,000 个种类。
 
 运行 ILSVRC 竞赛一个困难的地方是很多 ImageNet 图像包含了多个物体。假设一幅显示一
 条拉布拉多犬追逐一个足球的图像。这幅图像所谓“正确的” ImageNet 分类也许是一条拉
-布拉多犬。如果一个算法把这个图像标记为一个足球，它应该被扣分吗？由于
-这种歧义性，如果实际的 ImageNet 分类在一个算法认为最有可能的 $5$ 个分类中，那么这
-个算法就被认为是正确的。通过这个前 $5$ 标准，KSH 的深度卷积网络达到了一
-个 $84.7$\% 的准确率，大大好于次优的参赛者，后者取得了 $73.8$\% 的准确率。使用更
-严格的必需准确标记的标准，KSH 的网络达到了 $63.3$\% 的准确率。
+布拉多犬。如果一个算法把这个图像标记为一个足球，它应该被扣分吗？由于这种歧义性，
+如果实际的 ImageNet 分类在一个算法认为最有可能的 $5$ 个分类中，那么这个算法就被认
+为是正确的。通过这个前 $5$ 标准，KSH 的深度卷积网络达到了一个 $84.7$\% 的准确率，
+大大好于次优的参赛者，后者取得了 $73.8$\% 的准确率。使用更严格的必需准确标记的标
+准，KSH 的网络达到了 $63.3$\% 的准确率。
 
 既然 KSH 网络激励了随后的成果，值得对它简要描述一下。正如我们看到的，尽管要更精细，
-它非常接近于这一章中我们之前训练的网络。KSH 使用一个深度卷积神经网络，在两个 GPU
-上训练。他们使用两块 GPU 是因为当时使用的特定的 GPU 型号（一块 NVIDIA GeForce
-GTX 580）没有足够的片上存储器来保存整个网络。所以他们用两块 GPU 把网络分成两个部
-分。
+它非常接近于这一章中我们之前训练的网络。KSH 使用一个深度卷积神经网络，在两
+个 GPU上训练。他们使用两块 GPU 是因为当时使用的特定的 GPU 型号（一块 NVIDIA
+GeForce GTX 580）没有足够的片上存储器来保存整个网络。所以他们用两块 GPU 把网络分
+成两个部分。
 
 KSH 网络有 $7$ 个隐藏神经元层。前 $5$ 个隐藏层是卷积层（有些具有最大值混合），而
 接下来的 $2$ 层是全连接层。输出层是一个 $1,000$ 个单元的柔性最大值层，对应于
 那$1,000$ 个图像类别。这是这个网络的一个草图，取自 KSH 论文\footnote{感谢 Ilya
   Sutskever。}。细节在下面讨论。注意许多层被分成 $2$ 个部分，对应于 $2$ 块 GPU。
 \begin{center}
-\includegraphics[width=\textwidth]{KSH}
+\includegraphics[width=.9\textwidth]{KSH}
 \end{center}
 
 输入层包含 $3 \times 224 \times 224$ 个神经元，对应于一幅 $224 \times 224$ 图像
@@ -831,18 +831,74 @@ KSH 网络有 $7$ 个隐藏神经元层。前 $5$ 个隐藏层是卷积层（有
 如 KSH 的大的网络中尤其有帮助。正是这些 $224 \times 224$ 图像被用于网络的输入。在
 大多数情况下裁剪后的图像仍然包含有未改动图像的主要物体。
 
-That's an overview of many of the core ideas in the KSH paper. I've omitted some
-details, for which you should look at the paper. You can also look at Alex
-Krizhevsky's cuda-convnet (and successors), which contains code implementing
-many of the ideas. A Theano-based implementation has also been
-developed\footnote{Theano-based large-scale visual recognition with multiple
-  GPUs, by Weiguang Ding, Ruoyan Wang, Fei Mao, and Graham Taylor (2014).}, with
-the code available here. The code is recognizably along similar lines to that
-developed in this chapter, although the use of multiple GPUs complicates things
-somewhat. The Caffe neural nets framework also includes a version of the KSH
-network, see their Model Zoo for details.\\
+这是 KSH 论文中许多核心思想一个总体概况。我已经忽略了一些细节，对此你可以看下论文。
+你也可以看下 Alex
+Krizhevsky 的 \href{https://code.google.com/p/cuda-convnet/}{cuda-convnet}（和接
+替版本），它包含有实现这许多思想的代码。一个基于 Theano 的实
+现\footnote{\href{http://arxiv.org/abs/1412.2302}{Theano-based large-scale
+    visual recognition with multiple GPUs}, by Weiguang Ding, Ruoyan Wang, Fei
+  Mao, and Graham Taylor (2014).}，代码可以
+在\href{https://github.com/uoguelph-mlrg/theano_alexnet}{这里}得到。尽管使用
+多 GPU 会让情况变得复杂，但代码本身还是类似于这章我们写出来的那些。Caffe 神经网络
+框架也包含一个 KSH 网络的版本，详细参
+见 \href{http://caffe.berkeleyvision.org/model_zoo.html}{Model Zoo}。\\
 
-\textbf{2014 ILSVRC 竞赛：}
+\textbf{2014 ILSVRC 竞赛：} 自 2012 年以来，研究一直在快速推进。看
+看 2014 年的 ILSVRC 竞赛。和 2012 一样，这次也包括了一个 $120,000$ 张图
+像，$1,000$ 种类别，而优值系数是前 $5$ 个预测是否包含正确的分类。获胜团队，主要来
+自谷歌\footnote{\href{http://arxiv.org/abs/1409.4842}{Going deeper with
+    convolutions}, by Christian Szegedy, Wei Liu, Yangqing Jia, Pierre Sermanet,
+  Scott Reed, Dragomir Anguelov, Dumitru Erhan, Vincent Vanhoucke, and Andrew
+  Rabinovich (2014).}，使用了包含 $22$ 层神经元的深度卷积网络。他们称此
+为 GoogLeNet，作为向 LeNet-5 的致敬。GoogLeNet 达到了 93.33\% 的前 $5$ 准确率，远
+超 2013 年的获胜者（\href{http://www.clarifai.com/}{Clarifai}，88.3\%）和 2012 年
+的获胜者（KSH，84.7\%）。
+
+那么 GoogLeNet 93.33\% 的准确率又是多好呢？在 2014 年，一个研究团队写了一篇关
+于 ILSVRC 竞赛的综述文章\footnote{\href{http://arxiv.org/abs/1409.0575}{ImageNet
+    large scale visual recognition challenge}, by Olga Russakovsky, Jia Deng,
+  Hao Su, Jonathan Krause, Sanjeev Satheesh, Sean Ma, Zhiheng Huang, Andrej
+  Karpathy, Aditya Khosla, Michael Bernstein, Alexander C. Berg, and Li Fei-Fei
+  (2014).}。其中有个问题是人类在这个竞赛中能表现得如何。为了做这件事，他们构建了
+一个系统让人类对 ILSVRC 图像进行分类。其作者之一 Andrej Karpathy 在一
+篇%
+\href{http://karpathy.github.io/2014/09/02/what-i-learned-from-competing-against-a-convnet-on-imagenet/}{%
+  博文}中解释道，让人类达到 GoogLeNet 的性能确实很困难：
+
+\begin{quote}
+  ...the task of labeling images with 5 out of 1000 categories quickly turned
+  out to be extremely challenging, even for some friends in the lab who have
+  been working on ILSVRC and its classes for a while. First we thought we would
+  put it up on [Amazon Mechanical Turk]. Then we thought we could recruit paid
+  undergrads. Then I organized a labeling party of intense labeling effort only
+  among the (expert labelers) in our lab. Then I developed a modified interface
+  that used GoogLeNet predictions to prune the number of categories from 1000 to
+  only about 100. It was still too hard - people kept missing categories and
+  getting up to ranges of 13-15\% error rates. In the end I realized that to get
+  anywhere competitively close to GoogLeNet, it was most efficient if I sat down
+  and went through the painfully long training process and the subsequent
+  careful annotation process myself... The labeling happened at a rate of about
+  1 per minute, but this decreased over time... Some images are easily
+  recognized, while some images (such as those of fine-grained breeds of dogs,
+  birds, or monkeys) can require multiple minutes of concentrated effort. I
+  became very good at identifying breeds of dogs... Based on the sample of
+  images I worked on, the GoogLeNet classification error turned out to be
+  6.8\%... My own error in the end turned out to be 5.1\%, approximately 1.7\%
+  better.
+\end{quote}
+
+换言之，一个专家级别的人类，非常细心地检查图像，付出很大的努力才能够微弱胜过深度
+神经网络。实际上，Karpathy 指出第二个人类专家，用小点的图像样本训练后，只能达
+到 12.0\% 的 top-5 错误率，明显弱于 GoogLeNet。大概有一半的错误都是专家“难以发现
+和认定正确的类别究竟是什么”。
+
+这些都是令人惊奇的结果。确实，在这项成果后，很多团队也报告 top-5 错误率实际
+上\emph{好}过 5.1\%。这有时候在媒体上被报道成系统有超过人类的视觉。尽管这些结构是
+很振奋人心的，但是这样的报道只能算是一种误解，认为系统在视觉上超过了人类，事实上
+并非这样。ILSVRC 竞赛问题在很多方面都是受限的 —— 在公开的网络上获得图像并不具备在
+实际应用中的代表性！而且 top-5 标准也是非常人工设定的。我们在图像识别，或者更宽泛
+地说，计算机视觉方面的研究，还有很长的路要走。当然看到近些年的这么多进展，还是很
+鼓舞人心的。\\
 
 \textbf{其它活动：}
 

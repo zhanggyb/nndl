@@ -2,6 +2,7 @@
 %!TEX encoding = UTF-8 Unicode
 
 \documentclass[11pt,tikz,border=1]{standalone}
+\usepackage[default,mdseries=Light,bfseries=Medium,path=../fonts]{cjkfonts}
 
 \begin{document}
   \begin{tikzpicture}[
@@ -49,8 +50,8 @@
 
     \draw (weight) -- node [above] {
       \begin{tabular}{c}
-        \footnotesize small change in any weight (or bias) \\
-        \footnotesize causes a small change in the output
+        \footnotesize 任何权重（或偏置）中的微小改变 \\
+        \footnotesize 引起一个输出的微小改变
       \end{tabular}
     } (6.35, 2.5);
     \draw [->] (6.35, 2.5) -- (6.35, 0.25);

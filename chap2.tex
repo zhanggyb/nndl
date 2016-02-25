@@ -6,7 +6,7 @@
 在\hyperref[ch:UsingNeuralNetsToRecognizeHandwrittenDigits]{上一章}，我们看到了神
 经网络如何使用梯度下降算法来学习他们自身的权重和偏置。但是，这里还留下了一个问题：
 我们并没有讨论如何计算代价函数的梯度。这是很大的缺失！在本章，我们会解释计算这些
-梯度的快速算法，也就是\emph{反向传播（backpropagation）}\index{反向传播}。
+梯度的快速算法，也就是\emph{反向传播}\index{反向传播}（\emph{backpropagation}\index{backpropagation}）。
 
 反向传播算法最初在 1970 年代被提及，但是人们直
 到 \href{http://en.wikipedia.org/wiki/David_Rumelhart}{David
@@ -23,7 +23,7 @@
 呢？
 
 答案当然是理解。反向传播的核心是一个对代价函数 $C$ 关于任何权重 $w$ （或者偏
-差 $b$ ）的偏导数 $\partial C/\partial w$ 的表达式。这个表达式告诉我们在改变权重
+置 $b$ ）的偏导数 $\partial C/\partial w$ 的表达式。这个表达式告诉我们在改变权重
 和偏置时，代价函数变化的快慢。尽管表达式会有点复杂，不过里面也包含一种美感，就是
 每个元素其实是拥有一种自然的直觉上的解释。所以反向传播不仅仅是一种学习的快速算法。
 实际上它让我们细致领悟如何通过改变权重和偏置来改变整个网络的行为。因此，这也是学
@@ -177,7 +177,7 @@ t_j$。给个例子，
   \label{eq:28}\tag{28}
 \end{equation}
 
-这种类型的按元素乘法有时候被称为\emph{Hadamard 乘积}或者\emph{Schur 乘积}。我们这
+这种类型的按元素乘法有时候被称为\emph{Hadamard 乘积}，或者\emph{Schur 乘积}。我们这
 里取前者。好的矩阵库通常会提供 Hadamard 乘积的快速实现，在实现反向传播的时候用起
 来很方便。
 
@@ -205,7 +205,7 @@ C/\partial w_{jk}^l$ 和 $\partial C/\partial b_j^l$ 上。
 进行传播，最终导致整个代价产生 $\frac{\partial C}{\partial z_j^l} \Delta z_j^l$
 的改变。
 
-现在，这个调皮鬼变好了，试着帮助你来优化代价，他们试着找到可以让代价更小的
+现在，这个调皮鬼变好了，试着帮助你来优化代价，它试着找到可以让代价更小的
 $\Delta z_j^l$。假设 $\frac{\partial C}{\partial z_j^l}$ 有一个很大的值（或正或
   负）。那么这个调皮鬼可以通过选择与 $\frac{\partial C}{\partial z_j^l}$ 相反符
 号的 $\Delta z_j^l$ 来降低代价。相反，如果 $\frac{\partial C}{\partial z_j^l}$
@@ -346,7 +346,7 @@ $a^{l-1}$ 这些量我们都已经知道如何计算了。方程也可以写成�
 \eqref{eq:bp4} 的一个结果就是来自低激活值神经元的权重学习会非常缓慢。
 
 这四个公式 \eqref{eq:bp1}--\eqref{eq:bp4} 同样还有其它可以理解的方面。让我们从输
-出层开始，先看看~\eqref{eq:bp1}中的项$\sigma'(z_k^l)$。回忆一下%
+出层开始，先看看~\eqref{eq:bp1} 中的项$\sigma'(z_k^l)$。回忆一下%
 \hyperref[fig:StepFunction]{上一章中S型函数的图形}，当 $\sigma(z^L_j)$ 近似为
 $0$ 或者 $1$ 的时候 $\sigma$ 函数变得非常平。这时 $\sigma'(z^L_j) \approx 0$。所
 以如果输出神经元处于或者低激活值（$\approx 0$）或者高激活值（$\approx 1$）时，最
