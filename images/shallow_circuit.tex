@@ -2,9 +2,9 @@
 %!TEX encoding = UTF-8 Unicode
 
 \documentclass[11pt,tikz,border=1]{standalone}
+\usepackage[default,mdseries=Light,bfseries=Medium,path=../fonts]{cjkfonts}
 \usetikzlibrary{calc,positioning}
 
-\usepackage{fontspec}
 \input{../westernfonts}
 
 \begin{document}
@@ -16,24 +16,24 @@
     \coordinate (layer1bottom) at (5.2,1);
     \coordinate (layer2top) at (5.2,0);
     \node(layer1) [above,rectangle,draw,minimum width=11cm,inner sep=6pt] at (layer1bottom) {
-      First layer of circuit elements (\texttt{AND}, \texttt{OR}, \texttt{NOT} etc)
+      电路元件（\texttt{AND}, \texttt{OR}, \texttt{NOT} 等）的第一层
     };
 
     \node(layer2) [below,rectangle,draw,minimum width=11cm,inner sep=6pt] at (layer2top) {
-      Second layer of circuit elements
+      电路元件的第二层
     };
     
     \node(input) [above=of layer1] {
       \begin{tabular}{c}
-        External inputs\\
-        (keyboard etc)
+        外部输入\\
+        （键盘等等）
       \end{tabular}
     };
     
     \node(output) [below=of layer2] {
       \begin{tabular}{c}
-        External outputs\\
-        (screen etc)
+        外部输出\\
+        （屏幕等等）
       \end{tabular}
     };
 

@@ -2,9 +2,9 @@
 %!TEX encoding = UTF-8 Unicode
 
 \documentclass[11pt,tikz,border=1]{standalone}
+\usepackage[default,mdseries=Light,bfseries=Medium,path=../fonts]{cjkfonts}
 \usetikzlibrary{calc,positioning}
 
-\usepackage{fontspec}
 \input{../westernfonts}
 
 \begin{document}
@@ -19,11 +19,11 @@
     \coordinate (layer1bottom) at (5.2,1);
     \coordinate (layer2top) at (5.2,0);
     \node(layer1) [above,rectangle,draw,minimum width=11cm,inner sep=6pt] at (layer1bottom) {
-      First layer, doing simple tasks, e.g. adding bits
+      第一层，处理些简单的任务，例如按位求和
     };
 
     \node(layer2) [below,rectangle,draw,minimum width=11cm,inner sep=6pt] at (layer2top) {
-      Integrated into more complex tasks, e.g. adding numbers
+      整合到更复杂的任务，例如数字相加
     };
     
     \coordinate (layer2bottom) at ($ (layer2top)-(layer2.north)+(layer2.south) $);
@@ -34,15 +34,15 @@
     \coordinate (layer3top) at ($ (layer2bottom)-(0,1) $);
 
     \node(layer3) [below,rectangle,draw,minimum width=11cm,inner sep=6pt] at (layer3top) {
-      Integrated into multiplication
+      整合成乘法
     };
 
     \node(input) [above=of layer1] {
-      Inputs: x and y
+      输入：x 和 y
     };
     
     \node(output) [below=of layer3] {
-      Output: x.y
+      输出：x.y
     };
 
     \coordinate (t0) at (layer1.north);

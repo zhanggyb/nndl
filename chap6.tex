@@ -238,14 +238,14 @@ $784$（$= 28 \times 28$）个输入神经元。我们然后训练网络的权�
 深网络。
 
 顺便提一下，\emph{卷积}（\textit{convolutional}）这一名称源自方
-程~\eqref{eq:125}中的操作符有时被称为一个\emph{卷积}（\textit{convolution}）。稍
+程~\eqref{eq:125} 中的操作符有时被称为一个\emph{卷积}（\textit{convolution}）。稍
 微更精确些，人们有时把这个方程写成 $a^1 = \sigma(b + w * a^0)$，其中 $a^1$ 表示出
 自一个特征映射的输出激活值集合，$a^0$ 是输入激活值的集合，而 $*$ 被称为一个卷积操
-作。我们不打
-算深入使用卷积数学，所以你不用对此太担心。但是至少值得知道这个名称从何而来。\\
+作。我们不打算深入使用卷积数学，所以你不用对此太担心。但是至少值得知道这个名称从何而来。
+\\
 
 \textbf{混合层：} 除了刚刚描述的卷积层，卷积神经网络也包含\emph{混合
-  层}（\textit{pooling layers}）。混合层通常紧接着在卷积层之后使用。它要做的
+  层}（\textit{pooling layers}）。混合层通常紧接着在卷积层之后使用。它要做的是
 简化从卷积层输出的信息。
 
 详细地说，一个混合层取得从卷积层输出的每一个特征映射\footnote{The
@@ -505,7 +505,7 @@ GPU 支持的 Ubuntu 14.04 中运行过。有些实验在两个系统中都运�
 
 \begin{itemize}
 \item \textbf{使用 tanh 激活函数}\quad 在本书前面我已经几次提起
-  过\hyperref[subsec:other_models_of_artificial_neuron]{tanh 函数}可以是一个
+  过 \hyperref[subsec:other_models_of_artificial_neuron]{tanh 函数}可以是一个
   比 S型函数更好的激活函数。我们还没有实际采用过这些建议，因为我们已经用 S 型取得
   了大量进展。但现在让我们试试一些用 tanh 作为我们激活函数的实验。试着训练卷积和
   全连接层中具有 tanh 激活值的网络\footnote{Note that you can pass
@@ -525,8 +525,14 @@ GPU 支持的 Ubuntu 14.04 中运行过。有些实验在两个系统中都运�
     用 tanh 函数。}。
 \end{itemize}
 
-\textbf{使用修正线性单元：} 到现在我们开发的网络实际上是一个在开创性的 1998 论文
-中使用的网络的变化形式。
+\textbf{使用修正线性单元：} 到现在为止，我们开发的网络实际上是一篇开创性的 1998 论文\footnote{"Gradient-based learning applied to document recognition", by Yann LeCun, Léon Bottou, Yoshua Bengio, and Patrick Haffner (1998). There are many differences of detail, but broadly speaking our network is quite similar to the networks described in the paper.}
+中使用的众多网络中一种的变化形式，这个网络被称为 LeNet-5，并引入了 MNIST 问题。
+这为进一步实验并构筑理解和直观感受打下很好的基础。特别是，有很多种我们可以改变网络
+来改善结果的方式。
+
+作为开始，让我们改变我们的神经元，我们使用\hyperref[sec:other_models_of_artificial_neuron]{修正线性单元}而不是 S 型激活函数。确切地说，我们将使用激活函数 $f(z) \equiv \max(0, z)$。
+我们将训练 $60$ 个\epochs{}，\learningrate{}为 $\eta = 0.03$。我也发现用一些%
+\hyperref[sec:overfitting_and_regularization]{L2 规范化}也有点帮助，使用规范化参数 $\lambda = 0.1$：
 
 \begin{lstlisting}[language=Python]
 >>> from network3 import ReLU
@@ -545,30 +551,202 @@ GPU 支持的 Ubuntu 14.04 中运行过。有些实验在两个系统中都运�
             validation_data, test_data, lmbda=0.1)
 \end{lstlisting}
 
-\textbf{扩展训练数据：}
+我得到一个 99.23\% 的分类准确率。它稍微超过了 S 型的结果（99.06）。然而，在我所有实验中
+我发现基于修正线性单元的网络，其性能始终优于基于 S 型激活函数的网络。似乎对于这个问题切换到
+修正线性单元确实有收益。
+
+是什么使得修正线性激活函数好于 S 型或者 tanh 函数？目前，我们对这个问题的答案有一个很差的理解。
+实际上，修正线性单元只在过去几年才开始被广泛使用。最近才采用的原因是以经验为依据的：一些人经常
+基于直觉或者启发式的理由试着用修正线性单元\footnote{A common justification is that $\max(0, z)$ doesn't saturate in the limit of large $z$, unlike sigmoid neurons, and this helps rectified linear units continue learning. The argument is fine, as far it goes, but it's hardly a detailed justification, more of a just-so story. Note that we discussed the problems with saturation back in \hyperref[saturation]{Chapter 2}.}。他们在分类基准数据集时取得了很好的结果，并且其实践传播开了。
+在一个理想的世界中，我们有一个理论告诉我们为什么样的应用选择什么样的激活函数。但目前我们
+我们离这样的理想世界还有一条很长的路。如果通过选择一个更好的激活函数来取得了进一步的重大改进，
+我一点也不会感到惊讶，我还期待在未来的几十年里，一个强大的激活函数理论将被开发。
+今天，我们仍然不得不依靠单凭经验的不足的理解。
+\\
+
+\textbf{扩展训练数据：} 另一种我们可能希望改进结果的方法是以算法形式扩展训练数据。
+扩展训练数据的一个简单的方法是将每个训练图像由一个像素来代替，无论是上一个像素，一个像素，左边一个像素，或右边一个像素。我们可以通过在 shell 提示符中运行程序 \lstinline!expand_mnist.py! 来这样做\footnote{The code for \lstinline!expand_mnist.py! 的代码可以从\href{https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/src/expand_mnist.py}{这里}获取。}：
+\begin{lstlisting}[language=Python]
+$ python expand_mnist.py
+\end{lstlisting}  
+
+运行这个程序取得 $50,000$ 幅 MNIST 训练图像并扩展为具有 $250,000$ 幅训练图像的训练集。
+然后我们可以使用这些训练图像来训练我们的网络。我们将使用和上面一样的具有修正线性单元的网络。
+在我初始的实验中我减少了训练\epochs{}的数量 —— 这讲得通，因为我们在训练 $5$ 倍的数据。
+但是实际上，扩展数据结果是相当多地减少了过度拟合的影响。所有，在做了一些实验后，我最终回到
+训练 $60$ 个\epochs{}。不管怎样，让我们训练：
+\begin{lstlisting}[language=Python]
+>>> expanded_training_data, _, _ = network3.load_data_shared(
+        "../data/mnist_expanded.pkl.gz")
+>>> net = Network([
+        ConvPoolLayer(image_shape=(mini_batch_size, 1, 28, 28), 
+                      filter_shape=(20, 1, 5, 5), 
+                      poolsize=(2, 2), 
+                      activation_fn=ReLU),
+        ConvPoolLayer(image_shape=(mini_batch_size, 20, 12, 12), 
+                      filter_shape=(40, 20, 5, 5), 
+                      poolsize=(2, 2), 
+                      activation_fn=ReLU),
+        FullyConnectedLayer(n_in=40*4*4, n_out=100, activation_fn=ReLU),
+        SoftmaxLayer(n_in=100, n_out=10)], mini_batch_size)
+>>> net.SGD(expanded_training_data, 60, mini_batch_size, 0.03, 
+            validation_data, test_data, lmbda=0.1)
+\end{lstlisting}
+
+使用扩展后的训练数据我取得了一个 99.37\% 的训练准确率。所以这个几乎是微不足道的改变在分类准确率上
+给出了一个显著的改进。事实上，正如我们\hyperref[sec:other_techniques_for_regularization]{前面所讨论的}，这种以算法形式扩展数据的想法可以更进一步。提醒你一些早期讨论的结果：在 2003 年，Simard，Steinkraus 和 Platt\footnote{\href{http://dx.doi.org/10.1109/ICDAR.2003.1227801}{Best Practices for Convolutional Neural Networks Applied to Visual Document Analysis}, by Patrice Simard, Dave Steinkraus, and John Platt (2003).} 使用一个神经网络改进了他们的 MNIST 性能，达到了 $99.6$\%，这个网络以其它方式和我们的
+非常相似，使用两个卷积--混合层，跟着一个具有 $100$ 个神经元的隐藏的全连接层。在他们的架构中
+有一些细节上的不同 —— 例如他们没有利用修正线性单元 —— 但是他们改进性能的关键是扩展训练数据。
+他们通过旋转，位移和扭曲 MNIST 训练图像来扩展。他们还开发了一个“弹性扭曲”的流程，一种模拟
+当一个人写字时手部肌肉随机振动的方式。通过组合所有这些流程，他们相当大地增加了训练数据的有效
+规模，而这就是他们如何达到 $99.6$\% 准确率的。
 
 \subsection*{问题}
 
-\textbf{插入一个额外的全连接层：}
+\begin{itemize}
+  \item 卷积层的想法是以一种横跨图像不变的方式作出反应。它看上去令人惊奇，然而，当我们做完所有
+  输入数据的转换，网络能学习得更多。你能否解释为什么这实际上很合理？
+\end{itemize}
 
-\textbf{使用一个整体网络：}
+\textbf{插入一个额外的全连接层：} 我们能做得更好吗？一种可能性是使用和上面完全相同的程序，但是
+扩展全连接层的规模。我试过 $300$ 和 $1,000$ 个神经元，分别取得了 $99.46$\% 和 $99.43$\%。
+这很有趣，但对于前面的结果（99.37\%）并不是一个令人信服的超越。
+
+增加一个额外的全连接层怎样？让我们试着插入一个全连接层，这样我们就有两个 $100$ 个隐藏神经元的全连接层：
+
+\begin{lstlisting}[language=Python]
+>>> net = Network([
+        ConvPoolLayer(image_shape=(mini_batch_size, 1, 28, 28), 
+                      filter_shape=(20, 1, 5, 5), 
+                      poolsize=(2, 2), 
+                      activation_fn=ReLU),
+        ConvPoolLayer(image_shape=(mini_batch_size, 20, 12, 12), 
+                      filter_shape=(40, 20, 5, 5), 
+                      poolsize=(2, 2), 
+                      activation_fn=ReLU),
+        FullyConnectedLayer(n_in=40*4*4, n_out=100, activation_fn=ReLU),
+        FullyConnectedLayer(n_in=100, n_out=100, activation_fn=ReLU),
+        SoftmaxLayer(n_in=100, n_out=10)], mini_batch_size)
+>>> net.SGD(expanded_training_data, 60, mini_batch_size, 0.03, 
+            validation_data, test_data, lmbda=0.1)
+\end{lstlisting}
+
+这样做我取得一个 99.43\% 的测试准确率。再一次，扩展后的网络并没有帮助太多。运行类似的试验，用包含
+$300$ 和 $1,000$ 个隐藏神经元的全连接层产生 $99.48$\% 和 $99.47$\% 的结果。
+这是令人鼓舞的，但仍然缺乏一个真正决定性的胜利。
+
+这里发生了什么事？扩展的，或者额外的全连接层真的对 MNIST 没帮助吗？
+或者说，我们的网络有能力做得更好，但我们在用错误的方式学习？例如，也许我们可以用更强有力
+的规范化技术来减小过度拟合的趋势。一种可能性是第三章介绍的\hyperref[sec:other_techniques_for_regularization]{弃权}技术。回想弃权的基本思想是在训练网络时随机地移除单独的激活值。
+这使得模型对单独依据的丢失更为强劲，因此不太可能依赖于训练数据的特质。让我们试着应用
+弃权到最终的全连接层：
+\begin{lstlisting}[language=Python]
+>>> net = Network([
+        ConvPoolLayer(image_shape=(mini_batch_size, 1, 28, 28), 
+                      filter_shape=(20, 1, 5, 5), 
+                      poolsize=(2, 2), 
+                      activation_fn=ReLU),
+        ConvPoolLayer(image_shape=(mini_batch_size, 20, 12, 12), 
+                      filter_shape=(40, 20, 5, 5), 
+                      poolsize=(2, 2), 
+                      activation_fn=ReLU),
+        FullyConnectedLayer(
+            n_in=40*4*4, n_out=1000, activation_fn=ReLU, p_dropout=0.5),
+        FullyConnectedLayer(
+            n_in=1000, n_out=1000, activation_fn=ReLU, p_dropout=0.5),
+        SoftmaxLayer(n_in=1000, n_out=10, p_dropout=0.5)], 
+        mini_batch_size)
+>>> net.SGD(expanded_training_data, 40, mini_batch_size, 0.03, 
+            validation_data, test_data)
+\end{lstlisting}
+
+使用它，我们取得了 $99.60$\% 的准确率，这是一个显著的超越我们前面结果的进步，尤其是我们
+主要的基准，具有 $100$ 个隐藏神经元的网络，其中我们达到了 $99.37$\%。
+
+有两个值得注意的变化。
+
+首先，我减少了训练\epochs{}的数量到 $40$：弃权减少了过度拟合，所以我们学习得更快。
+
+其次，全连接隐藏层有 $1,000$ 个神经元，不是之前使用的 $100$ 个。
+当然，在训练时弃权有效地忽略了很多神经元。所以一些扩充是可以预期的。实际上，我试过用 $300$ 和
+$1,000$ 个隐藏神经元的实验，用 $1,000$ 个隐藏神经元（非常略微地）取得了更好的验证性能。
+\\
+
+\textbf{使用一个整体网络：} An easy way to improve performance still further is to create several neural networks, and then get them to vote to determine the best classification. Suppose, for example, that we trained 5
+ different neural networks using the prescription above, with each achieving accuracies near to 99.6
+percent. Even though the networks would all have similar accuracies, they might well make different errors, due to the different random initializations. It's plausible that taking a vote amongst our 5
+ networks might yield a classification better than any individual network.
+
+This sounds too good to be true, but this kind of ensembling is a common trick with both neural networks and other machine learning techniques. And it does in fact yield further improvements: we end up with 99.67
+ percent accuracy. In other words, our ensemble of networks classifies all but 33
+ of the 10,000
+ test images correctly.
+
+The remaining errors in the test set are shown below. The label in the top right is the correct classification, according to the MNIST data, while in the bottom right is the label output by our ensemble of nets:
 
 \begin{center}
   \includegraphics[width=.75\textwidth]{ensemble_errors}
 \end{center}
 
+It's worth looking through these in detail. The first two digits, a 6 and a 5, are genuine errors by our ensemble. However, they're also understandable errors, the kind a human could plausibly make. That 6 really does look a lot like a 0, and the 5 looks a lot like a 3. The third image, supposedly an 8, actually looks to me more like a 9. So I'm siding with the network ensemble here: I think it's done a better job than whoever originally drew the digit. On the other hand, the fourth image, the 6, really does seem to be classified badly by our networks.
+
+And so on. In most cases our networks' choices seem at least plausible, and in some cases they've done a better job classifying than the original person did writing the digit. Overall, our networks offer exceptional performance, especially when you consider that they correctly classified 9,967 images which aren't shown. In that context, the few clear errors here seem quite understandable. Even a careful human makes the occasional mistake. And so I expect that only an extremely careful and methodical human would do much better. Our network is getting near to human performance.
+\\
+
 \textbf{为什么我们只对全连接层应用弃权：}
+If you look carefully at the code above, you'll notice that we applied dropout only to the fully-connected section of the network, not to the convolutional layers. In principle we could apply a similar procedure to the convolutional layers. But, in fact, there's no need: the convolutional layers have considerable inbuilt resistance to overfitting. The reason is that the shared weights mean that convolutional filters are forced to learn from across the entire image. This makes them less likely to pick up on local idiosyncracies in the training data. And so there is less need to apply other regularizers, such as dropout.
+\\
 
 \textbf{进一步：}
+It's possible to improve performance on MNIST still further. Rodrigo Benenson has compiled an informative summary page, showing progress over the years, with links to papers. Many of these papers use deep convolutional networks along lines similar to the networks we've been using. If you dig through the papers you'll find many interesting techniques, and you may enjoy implementing some of them. If you do so it's wise to start implementation with a simple network that can be trained quickly, which will help you more rapidly understand what is going on.
+
+For the most part, I won't try to survey this recent work. But I can't resist making one exception. It's a 2010 paper by Cireșan, Meier, Gambardella, and Schmidhuber\footnote{Deep, Big, Simple Neural Nets Excel on Handwritten Digit Recognition, by Dan Claudiu Cireșan, Ueli Meier, Luca Maria Gambardella, and Jürgen Schmidhuber (2010).}. What I like about this paper is how simple it is. The network is a many-layer neural network, using only fully-connected layers (no convolutions). Their most successful network had hidden layers containing $2,500$
+, $2,000$
+, $1,500$
+, $1,000$
+, and $500$
+ neurons, respectively. They used ideas similar to Simard et al to expand their training data. But apart from that, they used few other tricks, including no convolutional layers: it was a plain, vanilla network, of the kind that, with enough patience, could have been trained in the 1980s (if the MNIST data set had existed), given enough computing power(!) They achieved a classification accuracy of $99.65$
+ percent, more or less the same as ours. The key was to use a very large, very deep network, and to use a GPU to speed up training. This let them train for many epochs. They also took advantage of their long training times to gradually decrease the learning rate from $10^{-3}$ to $10^{-6}$
+. It's a fun exercise to try to match these results using an architecture like theirs.
+\\
 
 \textbf{为什么我们能够训练？}
+We saw in the last chapter that there are fundamental obstructions to training in deep, many-layer neural networks. In particular, we saw that the gradient tends to be quite unstable: as we move from the output layer to earlier layers the gradient tends to either vanish (the vanishing gradient problem) or explode (the exploding gradient problem). Since the gradient is the signal we use to train, this causes problems.
 
-\textbf{这些网络有多深？}
+How have we avoided those results?
 
-\textbf{A word on procedure:}
+Of course, the answer is that we haven't avoided these results. Instead, we've done a few things that help us proceed anyway. In particular: (1) Using convolutional layers greatly reduces the number of parameters in those layers, making the learning problem much easier; (2) Using more powerful regularization techniques (notably dropout and convolutional layers) to reduce overfitting, which is otherwise more of a problem in more complex networks; (3) Using rectified linear units instead of sigmoid neurons, to speed up training - empirically, often by a factor of $3$
+-$5$
+; (4) Using GPUs and being willing to train for a long period of time. In particular, in our final experiments we trained for $40$
+ epochs using a data set $5$
+times larger than the raw MNIST training data. Earlier in the book we mostly trained for $30$
+ epochs using just the raw training data. Combining factors (3) and (4) it's as though we've trained a factor perhaps $30$
+ times longer than before.
+
+Your response may be "Is that it? Is that all we had to do to train deep networks? What's all the fuss about?"
+
+Of course, we've used other ideas, too: making use of sufficiently large data sets (to help avoid overfitting); using the right cost function (to avoid a learning slowdown); using good weight initializations (also to avoid a learning slowdown, due to neuron saturation); algorithmically expanding the training data. We discussed these and other ideas in earlier chapters, and have for the most part been able to reuse these ideas with little comment in this chapter.
+
+With that said, this really is a rather simple set of ideas. Simple, but powerful, when used in concert. Getting started with deep learning has turned out to be pretty easy!
+\\
+
+\textbf{这些网络有多深？} Counting the convolutional-pooling layers as single layers, our final architecture has $4$
+ hidden layers. Does such a network really deserve to be called a deep network? Of course, $4$
+ hidden layers is many more than in the shallow networks we studied earlier. Most of those networks only had a single hidden layer, or occasionally $2$
+ hidden layers. On the other hand, as of 2015 state-of-the-art deep networks sometimes have dozens of hidden layers. I've occasionally heard people adopt a deeper-than-thou attitude, holding that if you're not keeping-up-with-the-Joneses in terms of number of hidden layers, then you're not really doing deep learning. I'm not sympathetic to this attitude, in part because it makes the definition of deep learning into something which depends upon the result-of-the-moment. The real breakthrough in deep learning was to realize that it's practical to go beyond the shallow $1$
+- and $2$
+-hidden layer networks that dominated work until the mid-2000s. That really was a significant breakthrough, opening up the exploration of much more expressive models. But beyond that, the number of layers is not of primary fundamental interest. Rather, the use of deeper networks is a tool to use to help achieve other goals - like better classification accuracies.
+\\
+
+\textbf{一些按部就班的话：} In this section, we've smoothly moved from single hidden-layer shallow networks to many-layer convolutional networks. It's all seemed so easy! We make a change and, for the most part, we get an improvement. If you start experimenting, I can guarantee things won't always be so smooth. The reason is that I've presented a cleaned-up narrative, omitting many experiments - including many failed experiments. This cleaned-up narrative will hopefully help you get clear on the basic ideas. But it also runs the risk of conveying an incomplete impression. Getting a good, working network can involve a lot of trial and error, and occasional frustration. In practice, you should expect to engage in quite a bit of experimentation. To speed that process up you may find it helpful to revisit Chapter 3's discussion of how to choose a neural network's hyper-parameters, and perhaps also to look at some of the further reading suggested in that section.
 
 \section{卷积网络的代码}
 \label{sec:the_code_for_our_convolutional_networks}
+
+好了，现在来看看我们的卷积网络代码，\lstinline!network3.py!。整体看来，程序结构类
+似于 \lstinline!network2.py!，尽管细节有差异，因为我们使用了 Theano。首先我们来
+看 \lstinline!FullyConnectedLayer! 类，这类似于我们之前讨论的那些神经网络层。下面
+是代码
 
 \begin{lstlisting}[language=Python]
 class FullyConnectedLayer(object):
@@ -606,6 +784,49 @@ class FullyConnectedLayer(object):
         return T.mean(T.eq(y, self.y_out))
 \end{lstlisting}
 
+\lstinline!__init__! 方法中的大部分都是可以自解释的，这里再给出一些解释。我们根据
+正态分布随机初始化了权重和偏差。代码中对应这个操作的一行看起来可能很吓人，但其实
+只在进行载入权重和偏差到 Theano 中所谓的共享变量中。这样可以确保这些变量可在 GPU
+中进行处理。对此不做过深的解释。如果感兴趣，可以查看[Theano
+documentation](http://deeplearning.net/software/theano/index.html)。而这种初始化
+的方式也是专门为 sigmoid 激活函数设计的（参
+见\hyperref[sec:weight_initialization]{这里}）。理想的情况是，我们初始化权重和偏
+差时会根据不同的激活函数（如 tanh 和 Rectified Linear Function）进行调整。这个在
+下面的问题中会进行讨论。初始方法 \lstinline!__init__! 以
+\lstinline!self.params = [self.W, self.b]! 结束。这样将该层所有需要学习的参数都
+归在一起。后面，\lstinline!Network.SGD! 方法会使用 \lstinline!params! 
+属性来确定网络实例中什么变量可以学习。
+
+\lstinline!set_inpt! 方法用来设置该层的输入，并计算相应的输出。我使
+用 \lstinline!inpt! 而非 \lstinline!input! 因为在python 中 \lstinline!input! 是一
+个内置函数。如果将两者混淆，必然会导致不可预测的行为，对出现的问题也难以定位。注
+意我们实际上用两种方式设置输入
+的：\lstinline!self.input! 和 \lstinline!self.inpt_dropout!。因为训练时我们可能要
+使用 dropout。如果使用 dropout，就需要设置对应丢弃的概
+率 \lstinline!self.p_dropout!。这就是在 \lstinline!set_inpt! 方法的倒数第二
+行 \lstinline!dropout_layer! 做的事。所
+以 \lstinline!self.inpt_dropout! 和 \lstinline!self.output_dropout! 在训练过程中
+使用，而 \lstinline!self.inpt! 和 \lstinline!self.output! 用作其他任务，比如衡量
+验证集和测试集模型的准确度。
+
+\lstinline!ConvPoolLayer! 和 \lstinline!SoftmaxLayer! 类定义
+和 \lstinline!FullyConnectedLayer! 定义差不多。所以我这儿不会给出代码。如果你感兴
+趣，可以参考本节后面的 \lstinline!network3.py! 的代码。
+
+尽管这样，我们还是指出一些重要的微弱的细节差别。明显一点的是，
+在 \lstinline!ConvPoolLayer! 和 \lstinline!SoftmaxLayer! 中，我们采用了相应的合适
+的计算输出激活值方式。幸运的是，Theano 提供了内置的操作让我们计算卷
+积、max-pooling 和 softmax 函数。
+
+不大明显的，在我们引入\hyperref[sec:softmax]{softmax layer} 时，我们没有讨论如何
+初始化权重和偏差。其他地方我们已经讨论过对 sigmoid 层，我们应当使用合适参数的正态
+分布来初始化权重。但是这个启发式的论断是针对 sigmoid 神经元的（做一些调整可以用
+于 tanh 神经元上）。但是，并没有特殊的原因说这个论断可以用在 softmax 层上。所以没
+有一个先验的理由应用这样的初始化。与其使用之前的方法初始化，我这里会将所有权值和
+偏差设置为 $0$。这是一个 ad hoc 的过程，但在实践使用过程中效果倒是很不错。
+
+好了，我们已经看过了所有关于层的类。那么 Network 类是怎样的呢？让我们看看 \lstinline!__init__! 方法：
+
 \begin{lstlisting}[language=Python]
 class Network(object):
     
@@ -629,6 +850,36 @@ class Network(object):
         self.output = self.layers[-1].output
         self.output_dropout = self.layers[-1].output_dropout
 \end{lstlisting}
+
+这段代码大部分是可以自解释的。\lstinline!self.params = [param for layer in ...]!
+此行代码对每层的参数捆绑到一个列表中。\lstinline!Network.SGD! 方法会使
+用 \lstinline!self.params! 来确定 \lstinline!Network! 中哪些变量需要学习。
+而 \lstinline!self.x = T.matrix("x")! 和 \lstinline!self.y = T.ivector("y")! 则定
+义了 Theano 符号变量 x 和 y。这些会用来表示输入和网络得到的输出。
+
+这儿不是 Theano 的教程，所以不会深度讨论这些变量指代什么东西。但是粗略的想法就是
+这些代表了数学变量，而非显式的值。我们可以对这些变量做通常需要的操作：加减乘除，
+作用函数等等。实际上，Theano 提供了很多对符号变量进行操作方法，如卷
+积、max-pooling等等。但是最重要的是能够进行快速符号微分运算，使用 BP 算法一种通用
+的形式。这对于应用随机梯度下降在若干种网络结构的变体上特别有效。特别低，接下来几
+行代码定义了网络的符号输出。我们通过下面这行
+
+\begin{lstlisting}[language=Python]
+init_layer.set_inpt(self.x, self.x, self.mini_batch_size)
+\end{lstlisting}
+
+设置初始层的输入。
+
+请注意输入是以每次一个 mini-batch 的方式进行的，这就是 mini-batch size 为何要指定
+的原因。还需要注意的是，我们将输入 \lstinline!self.x! 传了两次：这是因为我们我们
+可能会以两种方式（有dropout和无dropout）使用网络。\lstinline!for! 循环将符号变
+量 \lstinline!self.x! 通过 \lstinline!Network! 的层进行前向传播。这样我们可以定义
+最终的输出 \lstinline!output! 和 \lstinline!output_dropout! 属性，这些都
+是 \lstinline!Network! 符号式输出。
+
+现在我们理解了 \lstinline!Network! 是如何初始化了，让我们看看它如何使
+用 \lstinline!SGD! 方法进行训练的。代码看起来很长，但是它的结构实际上相当简单。代
+码后面也有一些注解。
 
 \begin{lstlisting}[language=Python]
     def SGD(self, training_data, epochs, mini_batch_size, eta, 
@@ -712,6 +963,10 @@ class Network(object):
         print("Corresponding test accuracy of {0:.2
 \end{lstlisting}
 
+前面几行很直接，将数据集分解成 x 和 y 两部分，并计算在每个数据集中 mini-batch 的
+数量。接下来的几行更加有意思，这也体现了 Theano 有趣的特性。那么我们就摘录详解一
+下：
+
 \begin{lstlisting}[language=Python]
   # define the (regularized) cost function, symbolic gradients, and updates
   l2_norm_squared = sum([(layer.w**2).sum() for layer in self.layers])
@@ -722,12 +977,59 @@ class Network(object):
              for param, grad in zip(self.params, grads)]
 \end{lstlisting}
 
+这几行，我们符号化地给出了规范化的 log-likelihood 代价函数，在梯度函数中计算了对
+应的导数，以及对应参数的更新方式。Theano 让我们通过这短短几行就能够获得这些效果。
+唯一隐藏的是计算 \lstinline!cost! 包含一个对输出层 \lstinline!cost! 方法的调用；
+该代码在 \lstinline!network3.py! 中其他地方。但是，总之代码很短而且简单。有了所有
+这些定义好的东西，下面就是定义 \lstinline!train_mini_batch! 函数，该 Theano 符号
+函数在给定 minibatch 索引的情况下使用 \lstinline!updates! 来更
+新 \lstinline!Network! 的参数。类似
+地，\lstinline!validate_mb_accuracy! 和 \lstinline!test_mb_accuracy! 计算在任意给
+定的 minibatch 的验证集和测试集合上 \lstinline!Network! 的准确度。通过对这些函数
+进行平均，我们可以计算整个验证集和测试数据集上的准确度。
+
+\lstinline!SGD! 方法剩下的就是可以自解释的了 —— 我们对次数进行迭代，重复使用 训练
+数据的 minibatch 来训练网络，计算验证集和测试集上的准确度。
+
+好了，我们已经理解了 \lstinline!network3.py! 代码中大多数的重要部分。让我们看看整
+个程序，你不需过分仔细地读下这些代码，但是应该享受粗看的过程，并随时深入研究那些
+激发出你好奇地代码段。理解代码的最好的方法就是通过修改代码，增加额外的特征或者重
+新组织那些你认为能够更加简洁地完成的代码。代码后面，我们给出了一些对初学者的建议。
+这儿是代码\footnote{在 GPU 上使用 Theano 可能会有点难度。特别地，很容在从 GPU 中
+  拉取数据时出现错误，这可能会让运行变得相当慢。我已经试着避免出现这样的情况，但
+  是也不能肯定在代码扩充后出现一些问题。对于你们遇到的问题或者给出的意见我洗耳恭
+  听（mn@michaelnielsen.org）。}：
+
 \lstinputlisting[language=Python]{code_samples/src/network3.py}
 
 \subsection*{问题}
 
 \begin{itemize}
-\item 目前，\lstinline!SGD! 方法要求用户手动选择用于训练\epochs{}的数量。
+\item 目前，\lstinline!SGD! 方法要求用户手动选择用于训练\epochs{}的数量。早先在本
+  书中，我们讨论了一种自动选择训练次数的方法，也就
+  是\hyperref[early_stopping]{early stopping}。修改 \lstinline!network3.py! 以实
+  现 Early stopping。
+\item 增加一个 \lstinline!Network! 方法来返回在任意数据集上的准确度。
+\item 修改 \lstinline!SGD! 方法来允许学习率 $\eta$ 可以是训练次数的函数。\emph{提
+    示：在思考这个问题一段时间后，你可能会在 this link 找到有用的信息。}
+\item 在本章前面我曾经描述过一种通过应用微小的旋转、扭曲和变化来扩展训练数据的方
+  法。改变 \lstinline!network3.py! 来加入这些技术。注意：除非你有充分多的内存，否
+  则显式地产生整个扩展数据集是不大现实的。所以要考虑一些变通的方法。
+\item 在 \lstinline!network3.py! 中增加 \lstinline!load! 和 \lstinline!save! 方
+  法。
+\item 当前的代码缺点就是只有很少的用来诊断的工具。你能想出一些诊断方法告诉我们网
+  络过匹配到什么程度么？加上这些方法。
+\item 我们已经对rectified linear unit 及 sigmoid 和 tanh 函数神经元使用了同样的初
+  始方法。正如\hyperref[sec:weight_initialization]{这里所说}，这种初始化方法只是
+  适用于 sigmoid 函数。假设我们使用一个全部使用 RLU 的网络。试说明以常数 $c$ 倍调
+  整网络的权重最终只会对输出有常数 $c$ 倍的影响。如果最后一层是 softmax，则会发生
+  什么样的变化？对 RLU 使用 sigmoid 函数的初始化方法会怎么样？有没有更好的初始化
+  方法？\emph{注意：这是一个开放的问题，并不是说有一个简单的自包含答案。还有，思
+    考这个问题本身能够帮助你更好地理解包含 RLU 的神经网络。}
+\item 我们对于不稳定梯度问题的分析实际上是针对 sigmoid 神经元的。如果是 RLU，那分
+  析又会有什么差异？你能够想出一种使得网络不太会受到不稳定梯度问题影响的**好**方
+  法么？\emph{注意：“好”实际上就是一个研究性问题。实际上有很多容易想到的修改方
+    法。但我现在还没有研究足够深入，能告诉你们什么是真正的好技术。}
 \end{itemize}
 
 \section{图像识别领域中的近期进展}
@@ -900,14 +1202,350 @@ Krizhevsky 的 \href{https://code.google.com/p/cuda-convnet/}{cuda-convnet}（�
 地说，计算机视觉方面的研究，还有很长的路要走。当然看到近些年的这么多进展，还是很
 鼓舞人心的。\\
 
-\textbf{其它活动：}
+\textbf{其它活动：} 上面关注于 ImageNet，但是也还有一些其他的使用神经网络进行图像
+识别的工作。我们也介绍一些进展。
+
+一个鼓舞人心的应用上的结果就是 Google 的一个团队做出来的，他们应用深度卷积网络在
+识别 Google 的街景图像库中街景数字上\footnote{Multi-digit Number Recognition
+  from Street View Imagery using Deep Convolutional Neural Networks, by Ian
+  J. Goodfellow, Yaroslav Bulatov, Julian Ibarz, Sacha Arnoud, and Vinay Shet
+  (2013).}。在他们的论文中，对接近 $100,000,000$ 街景数字的自动检测和自动转述已经
+能打到与人类不相上下的程度。系统速度很快：在一个小时内将法国所有的街景数字都转述
+了。他们说道：“拥有这种新数据集能够显著提高 Google Maps 在一些国家的地理精准度，
+尤其是那些缺少地理编码的地区。”他们还做了一个更一般的论断：“我们坚信这个模型，
+已经解决了很多应用中字符短序列的 OCR 问题。 ”
+
+我可能已经留下了印象——所有的结果都是令人兴奋的正面结果。当然，目前一些有趣的研究
+工作也报道了一些我们还没能够真的理解的根本性的问题。例如，2013 年一篇论
+文\footnote{Intriguing properties of neural networks, by Christian Szegedy,
+  Wojciech Zaremba, Ilya Sutskever, Joan Bruna, Dumitru Erhan, Ian Goodfellow,
+  and Rob Fergus (2013)}指出，深度网络可能会受到有效忙点的影响。看看下面的图示。
+左侧是被网络正确分类的 ImageNet 图像。右边是一幅稍受干扰的图像（使用中间的噪声进
+行干扰）结果就没有能够正确分类。作者发现对每幅图片都存在这样的“对手”图像，而非
+少量的特例。
 
 \begin{center}
-	\includegraphics[width=.75\textwidth]{adversarial.jpg}
+  \includegraphics[width=.75\textwidth]{adversarial.jpg}
 \end{center}
+
+这是一个令人不安的结果。论文使用了基于同样的被广泛研究使用的 KSH 代码。尽管这样的
+神经网络计算的函数在理论上都是连续的，结果表明在实际应用中，可能会碰到很多非常不
+连续的函数。更糟糕的是，他们将会以背离我们直觉的方式变得不连续。真是烦心啊。另外，
+现在对这种不连续性出现的原因还没有搞清楚：是跟损失函数有关么？或者激活函数？又或
+是网络的架构？还是其他？我们一无所知。
+
+现在，这些问题也没有听起来这么吓人。尽管对手图像会出现，但是在实际场景中也不常见。
+正如论文指出的那样：
+
+\begin{quote}
+  对手反例的存在看起来和网络能获得良好的泛化性能相违背。实际上，如果网络可以很好
+  地泛化，会受到这些难以区分出来的对手反例怎么样的影响？解释是，对手反例集以特别
+  低的概率出现，因此在测试集中几乎难以发现，然而对手反例又是密集的（有点像有理数
+  那样），所以会在每个测试样本附近上出现。
+\end{quote}
+
+我们对神经网络的理解还是太少了，这让人觉得很沮丧，上面的结果仅仅是近期的研究成果。
+当然了，这样结果带来一个主要好处就是，催生出一系列的研究工作。例如，最近一篇文
+章\footnote{Deep Neural Networks are Easily Fooled: High Confidence Predictions
+  for Unrecognizable Images, by Anh Nguyen, Jason Yosinski, and Jeff Clune
+  (2014).} 说明，给定一个训练好的神经网络，可以产生对人类来说是白噪声的图像，但是
+网络能够将其确信地分类为某一类。这也是我们需要追寻的理解神经网络和图像识别应用上
+的研究方向。
+
+虽然遇到这么多的困难，前途倒还是光明的。我们看到了在众多相当困难的基准任务上快速
+的研究进展。同样还有实际问题的研究进展，例如前面提到的街景数字的识别。但是需要注
+意的是，仅仅看到在那些基准任务，乃至实际应用的进展，是不够的。因为还有很多根本性
+的现象，我们对其了解甚少，就像对手图像的存在问题。当这样根本性的问题还亟待发现
+（或者解决）时，盲目地说我们已经接近最终图像识别问题的答案就很不合适了。这样的根
+本问题当然也会催生出不断的后续研究。
 
 \section{其他的深度学习模型}
 \label{sec:other_approaches_to_deep_neural_nets}
 
+在整本书中，我们聚焦在解决 MNIST 数字分类问题上。这一“下金蛋的”问题让我们深入理
+解了一些强大的想法：随机梯度下降，BP，卷积网络，正规化等等。但是该问题却也是相当
+狭窄的。如果你研读过神经网络的研究论文，那么会遇到很多这本书中未曾讨论的想
+法：RNN，Boltzmann Machine，生成式模型，迁移学习，强化学习等等……等等！（太多了）
+神经网络是一个广阔的领域。然而，很多重要的想法都是我们书中探讨过的那些想法的变种，
+在有了本书的知识基础上，可能需要一些额外的努力，便可以理解这些新的想法了。所以在
+本节，我们给出这些想法的一些介绍。介绍本身不会非常细节化，可能也不会很深入——倘若
+要达成这两点，这本书就得扩展相当多内容了。因此，我们接下来的讨论是偏重思想性的启
+发，尝试去激发这个领域的产生丰富的概念，并将一些丰富的想法关联于前面已经介绍过的
+概念。我也会提供一些其他学习资源的连接。当然，链接给出的很多想法也会很快被超过，
+所以推荐你学会搜索最新的研究成果。尽管这样，我还是很期待众多本质的想法能够受到足
+够久的关注。\\
+
+\textbf{Recurrent Neural Networks (RNNs)：} 在前馈神经网络中，单独的输入完全确定
+了剩下的层上的神经元的激活值。可以想象，这是一幅静态的图景：网络中的所有事物都被
+固定了，处于一种“冰冻结晶”的状态。但假如，我们允许网络中的元素能够以动态方式不
+断地比那话。例如，隐藏神经元的行为不是完全由前一层的隐藏神经元，而是同样受制于更
+早的层上的神经元的激活值。这样肯定会带来跟前馈神经网络不同的效果。也可能隐藏和输
+出层的神经元的激活值不会单单由当前的网络输入决定，而且包含了前面的输入的影响。
+
+拥有之类时间相关行为特性的神经网络就是递归神经网络，常写作 RNN。当然有不同的方式
+来从数学上给出 RNN 的形式定义。你可以参
+考\href{http://en.wikipedia.org/wiki/Recurrent_neural_network}{维基百科上的RNN介
+  绍}来看看 RNN。在我写作本书的时候，维基百科上介绍了超过 13 种不同的模型。但除了
+数学细节，更加一般的想法是，RNN 是某种体现出了随时间动态变化的特性的神经网络。也
+毫不奇怪，RNN 在处理时序数据和过程上效果特别不错。这样的数据和过程正是语音识别和
+自然语言处理中常见的研究对象。
+
+RNN 被用来将传统的算法思想，比如说 Turing 机或者编程语言，和神经网络进行联系
+上。\href{http://arxiv.org/abs/1410.4615}{这篇 2014 年的论文}提出了一种 RNN 可以
+以 python 程序的字符级表达作为输入，用这个表达来预测输出。简单说，网络通过学习来
+理解某些 python 的程序。\href{http://arxiv.org/abs/1410.5401}{第二篇论文}同样
+是 2014 年的，使用 RNN 来设计一种称之为 “神经 Turing 机” 的模型。这是一种通用机
+器整个结构可以使用梯度下降来训练。作者训练 NTM 来推断对一些简单问题的算法，比如说
+排序和复制。
+
+不过正如在文中提到的，这些例子都是极其简单的模型。学会执
+行 \lstinline!print(398345+42598)!  并不能让网络称为一个正常的python解释器！对于
+这些想法，我们能推进得多远也是未知的。结果都充满了好奇。历史上，神经网络已经在传
+统算法上失败的模式识别问题上取得了一些成功。另外，传统的算法也在神经网络并不擅长
+的领域里占据上风。今天没有人会使用神经网络来实现 Web 服务器或者数据库程序。研究出
+将神经网络和传统的算法结合的模型一定是非常棒的。RNN 和 RNN 给出的启发可能会给我们
+不少帮助。RNN 同样也在其他问题的解决中发挥着作用。在语音识别中，RNN 是特别有效的。
+例如，基于 RNN 的方法，已经在音位识别中取得了准确度的领先。同样在开发人类语言的上
+改进模型中得到应用。更好的语言模型意味着能够区分出发音相同的那些词。例如，好的语
+言模型，可以告诉我们“to infinity and beyond”比“two infinity and beyond”更可能
+出现，尽管两者的发音是相同的。RNN 在某些语言的标准测试集上刷新了记录。
+
+在语音识别中的这项研究其实是包含于更宽泛的不仅仅是 RNN而是所有类型的深度神经网络
+的应用的一部分。例如，基于神经网络的方法在大规模词汇的连续语音识别中获得极佳的结
+果。另外，一个基于深度网络的系统已经用在了 Google 的 Android 操作系统中（详
+见\href{http://research.google.com/pubs/VincentVanhoucke.html}{Vincent
+  Vanhoucke's 2012-2015 papers}）。
+
+我刚刚讲完了 RNN 能做的一小部分，但还未提及他们如何工作。可能你并不诧异在前馈神经
+网络中的很多想法同样可以用在 RNN 中。尤其是，我们可以使用梯度下降和 BP 的直接的修
+改来训练 RNN。还有其他一些在前馈神经网络中的想法，如正规化技术，卷积和代价函数等
+都在 RNN 中非常有效。还有我们在书中讲到的很多技术都可以适配一下 RNN 场景。\\
+
+\textbf{Long Short-term Memory units(LSTMs)：} 影响 RNN 的一个挑战是前期的模型会
+很难训练，甚至比前馈神经网络更难。原因就是我们在\hyperref[ch:WhyHardToTrain]{上一
+  章}提到的不稳定梯度的问题。回想一下，这个问题的通常表现就是在反向传播的时候梯度
+越变越小。这就使得前期的层学习非常缓慢。在 RNN 中这个问题更加糟糕，因为梯度不仅仅
+通过层反向传播，还会根据时间进行反向传播。如果网络运行了一段很长的时间，就会使得
+梯度特别不稳定，学不到东西。幸运的是，可以引入一个成为 long short-term memory 的
+单元进入 RNN 中。LSTM 最早是
+由 \href{http://dx.doi.org/10.1162/neco.1997.9.8.1735}{Hochreiter 和 Schmidhuber
+  在 1997 年提出}，就是为了解决这个不稳定梯度的问题。LSTM 让 RNN 训练变得相当简
+单，
+很多近期的论文（包括我在上面给出的那些）都是用了 LSTM 或者相关的想法。\\
+
+\textbf{深度信念网络，生成式模型和 Boltzmann 机：} 对深度学习的兴趣产生于 2006 年，
+最早的论文就是解释如何训练称为 深度信念网络 （DBN）的网络\footnote{参见 Geoffrey
+  Hinton, Simon Osindero 和 Yee-Whye
+  Teh 在 2006 年的 \href{http://www.cs.toronto.edu/~hinton/absps/fastnc.pdf}{A
+    fast learning algorithm for deep belief nets}, 及 Geoffrey Hinton 和 Ruslan
+  Salakhutdinov 在 2006 年的相关工
+  作 \href{http://www.sciencemag.org/content/313/5786/504.short}{Reducing the
+    dimensionality of data with neural networks}}。DBN 在之后一段时间内很有影响力，
+但近些年前馈网络和 RNN 的流行，盖过了 DBN 的风头。尽管如此，DBN 还是有几个有趣的
+特性。
+
+一个就是 DBN 是一种生成式模型。在前馈网络中，我们指定了输入的激活函数，然后这些激
+活函数便决定了网络中后面的激活值。而像 DBN 这样的生成式模型可以类似这样使用，但是
+更加有用的可能就是指定某些特征神经元的值，然后进行“反向运行”，产生输入激活的值。
+具体讲，DBN 在手写数字图像上的训练同样可以用来生成和手写数字很像的图像。换句话
+说，DBN 可以学习写字的能力。所以，生成式模型更像人类的大脑：不仅可以读数字，还能
+够写出数字。用 Geoffrey Hinton 本人的话就是：“要识别对象的形状，先学会生成图
+像。” （to recognize shapes，first learn to generate images）另一个是 DBN 可以进
+行无监督和半监督的学习。例如，在使用 图像数据学习时，DBN 可以学会有用的特征来理解
+其他的图像，即使，训练图像是无标记的。这种进行非监督学习的能力对于根本性的科学理
+由和实用价值（如果完成的足够好的话）来说都是极其有趣的。
+
+所以，为何 DBN 在已经获得了这些引人注目的特性后，仍然逐渐消失在深度学习的浪潮中呢？
+部分原因在于，前馈网络和 RNN 已经获得了很多很好的结果，例如在图像和语音识别的标准
+测试任务上的突破。所以大家把注意力转到这些模型上并不奇怪，这其实也是很合理的。然
+而，这里隐藏着一个推论。研究领域里通常是赢者通吃的规则，所以，几乎所有的注意力集
+中在最流行的领域中。这会给那些进行目前还不很流行方向上的研究人员很大的压力，虽然
+他们的研究长期的价值非常重要。我个人的观点是 DBN 和其他的生成式模型应该获得更多的
+注意。并且我对今后如果 DBN 或者相关的模型超过目前流行的模型也毫不诧异。欲了
+解 DBN，参考这
+个\href{http://www.scholarpedia.org/article/Deep_belief_networks}{DBN 综述}。还
+有\href{http://www.cs.toronto.edu/~hinton/absps/guideTR.pdf}{这篇文章}也很有用。
+虽然没有主要地将 DBN，但是已经包含了很多关于 DBN 核心组件的受限 Boltzmann 机的有
+价值的信息。\\
+
+\textbf{其他想法：} 在神经网络和深度学习中还有其他哪些正在进行的研究？恩，其实还
+有很多大量的其他美妙的工作。热门的领域包含使用神经网络来
+做\href{http://machinelearning.org/archive/icml2008/papers/391.pdf}{自然语言处
+  理 natural language processing}(see \href{http://arxiv.org/abs/1103.0398}{also
+  this informative review
+  paper})、
+\href{http://papers.nips.cc/paper/5346-information-based-learning-by-agents-in-unbounded-state-spaces}{
+  机器翻译 machine translation}，和更加惊喜的应用
+如\href{http://yann.lecun.com/exdb/publis/pdf/humphrey-jiis-13.pdf}{音乐信息
+  学 music informatics}。当然其他还有不少。在读者完成本书的学习后，应该可以跟上其
+中若干领域的近期工作，可能你还需要填补一些背景知识的缺漏。在本节的最后，我再提一
+篇特别有趣的论文。这篇文章将深度卷积网络和一种称为强化学习的技术来学
+习\href{http://www.cs.toronto.edu/~vmnih/docs/dqn.pdf}{玩电子游戏 play video
+  games well}（参
+考\href{http://www.nature.com/nature/journal/v518/n7540/abs/nature14236.html}{这
+  里 this followup}）。其想法是使用卷积网络来简化游戏界面的像素数据，将数据转化成
+一组特征的简化集合，最终这些信息被用来确定采用什么样的操作：“上”、“下”、“开
+火”等。特别有趣的是单一的网络学会 7 款中不同的经典游戏，其中 3 款网络的表现已经
+超过了人类专家。现在，这听起来是噱头，当然他们的标题也挺抓眼球的——“Playing
+Atari with reinforcement learning”。但是透过表象，想想系统以原始像素数据作为输入，
+它甚至不知道游戏规则！从数据中学会在几种非常不同且相当敌对的场景中做出高质量的决
+策，这些场景每个都有自己复杂的规则集合。所以这的解决是非常干净利落的。
+
 \section{神经网络的未来}
 \label{sec:on_the_future_of_neural_networks}
+
+\textbf{意图驱动的用户接口：} 有个很古老的笑话是这么说的：“一位不耐烦的教授对一
+个困惑的学生说道，‘不要光听我说了什么，要听懂我说的**含义**。’”。历史上，计算
+机通常是扮演了笑话中困惑的学生这样的角色，对用户表示的完全不知晓。而现在这个场景
+发生了变化。我仍然记得自己在 Google 搜索的打错了一个查询，搜索引擎告诉了我“你是
+否要的是[这个正确的查询]?”，然后给出了对应的搜索结果。Google 的 CEO Larry Page
+曾经描述了最优搜索引擎就是准确理解用户查询的**含义**，并给出对应的结果。
+
+这就是\emph{意图驱动的用户接口}的愿景。在这个场景中，不是直接对用户的查询词进行结
+果的反馈，搜索引擎使用机器学习技术对大量的用户输入数据进行分析，研究查询本身的含
+义，并通过这些发现来进行合理的动作以提供最优的搜索结果。
+
+而意图驱动接口这样的概念也不仅仅用在搜索上。在接下来的数十年，数以千计的公司会将
+产品建立在机器学习来设计满足更高的准确率的用户接口上，准确地把握用户的意图。现在
+我们也看到了一些早期的例子：如苹果的Siri；Wolfram Alpha；IBM 的 Watson；可以对照
+片和视频进行注解的系统；还有更多的。
+
+大多数这类产品会失败。启发式用户接口设计非常困难，我期望有更多的公司会使用强大的
+机器学习技术来构建无聊的用户接口。最优的机器学习并不会在你自己的用户接口设计很糟
+糕时发挥出作用。但是肯定也会有能够胜出的产品。随着时间推移，人类与计算机的关系也
+会发生重大的改变。不久以前，比如说，2005 年——用户从计算机那里得到的是准确度。因
+此，**很大程度上计算机很古板的**；一个小小的分号放错便会完全改变和计算机的交互含
+义。但是在以后数十年内，我们期待着创造出意图驱动的用户借款购，这也会显著地改变我
+们在与计算机交互的期望体验。\\
+
+\textbf{机器学习，数据科学和创新的循环：} 当然，机器学习不仅仅会被用来建立意图驱
+动的接口。另一个有趣的应用是数据科学中，机器学习可以找到藏在数据中的“确知的未
+知”。这已经是非常流行的领域了，也有很多的文章和书籍介绍了这一点，所以本文不会涉
+及太多。但我想谈谈比较少讨论的一点，这种流行的后果：长期看来，很可能机器学习中最
+大的突破并不会任何一种单一的概念突破。更可能的情况是，最大的突破是，机器学习研究
+会获得丰厚的成果，从应用到数据科学及其他领域。如果公司在机器学习研究中投入 1 美元，
+则有 1 美元加 10 美分的回报，那么机器学习研究会有很充足的资金保证。换言之，机器学
+习是驱动几个主要的新市场和技术成长的领域出现的引擎。结果就是出现拥有精通业务的的
+大团队，能够获取足够的资源。这样就能够将机器学习推向更新的高度，创造出更多市场和
+机会，一种高级创新的循坏。\\
+
+\textbf{神经网络和深度学习的角色：} 我已经探讨过机器学习会成为一个技术上的新机遇
+创建者。那么神经网络和深度学习作为一种技术又会有什么样独特的贡献呢？
+
+为了更好地回答这个问题，我们来来看看历史。早在 1980 年代，人们对神经网络充满了兴
+奋和乐观，尤其是在 BP 被大家广泛知晓后。而在 1990 年代，这样的兴奋逐渐冷却，机器
+学习领域的注意力转移到了其他技术上，如 SVM。现在，神经网络卷土重来，刷新了几乎所
+有的记录，在很多问题上也都取得了胜利。但是谁又能说，明天不会有一种新的方法能够击
+败神经网络？或者可能神经网络研究的进程又会阻滞，等不来没有任何的进展？
+
+所以，可能更好的方式是看看机器学习的未来而不是单单看神经网络。还有个原因是我们对
+神经网络的理解还是太少了。为何神经网络能够这么好地泛化？为何在给定大规模的学习的
+参数后，采取了一些方法后可以避免过匹配？为何神经网络中随机梯度下降很有效？在数据
+集扩展后，神经网络又能达到什么样的性能？如，如果 ImageNet 扩大 10 倍，神经网络的
+性能会比其他的机器学习技术好多少？这些都是简单，根本的问题。当前，我们都对它们理
+解的很少。所以，要说神经网络在机器学习的未来要扮演什么样的角色，很难回答。
+
+我会给出一个预测：我相信，深度学习会继续发展。学习概念的层次特性、构建多层抽象的
+能力，看起来能够从根本上解释世界。这也并不是说未来的深度学习研究者的想法发生变化。
+我们看到了，在那些使用的神经单元、网络的架构或者学习算法上，都出现了重大转变。如
+果我们不再将最终的系统限制在神经网络上时，这些转变将会更加巨大。但人们还是在进行
+深度学习的研究。\\
+
+\textbf{神经网络和深度学习将会主导人工智能？} 本书集中在使用神经网络来解决具体的
+任务，如图像分类。现在更进一步，问：通用思维机器会怎么样？神经网络和深度学习能够
+帮助我们解决（通用）人工智能（AI）的问题么？如果可以，以目前深度学习领域的发展速
+度，我们能够期待通用 AI 在未来的发展么？认真探讨这个问题可能又需要另写一本书。不
+过，我们可以给点意见。其想法基于 \href{http://en.wikipedia.org/wiki/Conway%27s_law}{Conway's law}：
+
+\begin{quote}
+任何设计了一个系统的组织…… 最终会不可避免地产生一个设计，其结构本身是这个组织
+的交流结构
+\end{quote}
+
+所以，打个比方，Conway 法则告诉我们波音 747 客机的设计会镜像在设计波音 747 那时的
+波音及其承包商的组织结构。或者，简单举例，假设一个公司开发一款复杂的软件应用。如
+果应用的 dashboard 会集成一些机器学习算法，设计 dashboard 的人员最好去找公司的机
+器学习专家讨论一下。Conway 法则就是这种观察的描述，可能更加宏大。第一次听
+到 Conway 法则，很多人的反应是：“好吧，这不是很显然么？” 或者 “这是不是不对
+啊？” 让我来对第二个观点进行分析。作为这个反对的例子，我们可以看看波音的例子：波
+音的审计部门会在哪里展示 747 的设计？他们的清洁部门会怎么样？内部的食品供应？结果
+就是组织的这些部门可能不会显式地出现在 747 所在的任何地方。所以我们应该理
+解 Conway 法则就是仅仅指那些显式地设计和工程的组织部门。
+
+而对另一个反对观点，就是 Conway 法则是很肤浅，显而易见的？对那些常常违背 Conway
+法则运行的组织来说，可能是这样子，但我认为并非如此。构建新产品的团队通常会被不合
+适的员工挤满或者缺乏具备关键能力的人员。想想那些包含无用却复杂特征的产品，或者那
+些有明显重大缺陷的产品——例如，糟糕的用户界面。这两种情况的问题通常都是因所需构建
+好产品的团队和实际上组成的团队之间的不匹配产生的。Conway 法则可能是显而易见的，但
+是并不是说就可以随随便便忽略这个法则。
+
+Conway 法则应用在系统的设计和工程中，我们需要很好地理解可能的系统的组成结构，以及
+如何来构建这些部件。由于 AI 还不具备这样的特性：我们不知道组成部分究竟是哪些，所
+以 Conway 法则不能直接应用在 AI 的开发过程中。因此，我们甚至不能确定哪些是最为根
+本的问题。换言之，AI 更是一个科学问题而非工程问题。想像我们开始设计 747，并不了解
+喷气引擎和空气动力学的原理。也就难以确定自己团队需要哪种类型的专家。正如 Werner
+von Braun 指出的，“基础研究就是我们并不知道自己正在做的研究究竟是什么”。那么有
+没有 Conway 法则在更为科学而非工程的问题上的版本呢？
+
+为了正好地回答这个问题，我们可以看看医学的历史。在人类早期，医学是
+像 Galen 和 Hippocrates 这样的实践者的领域，他们研究整个人体。但是随着我们知识的
+增长，人类便被强迫进行专业分工了。我们发现很多深刻（deep）的新观点\footnote{深刻
+  （deep）这里并没有给出关于这个概念的严格定义，粗略地指对于整个丰富研究领域来说
+  基础性的概念和想法。BP 算法和疾病的微生物理论就是关于**深刻**很好的例子。}：如
+疾病的微生物理论，或者对抗体工作机制的理解，又或者心脏、肺、血管和动脉的理解，所
+有这些知识形成了完整的心血管疾病系统。这样深刻的理解形成了诸如流行病学、免疫学和
+围绕在心血管疾病系统交叉关联的领域的集群。所以我们的知识结构形成了医学的社会结构。
+这点在免疫学上显现的尤其明显：认识到免疫系统的存在和具备研究的价值是非凡的洞察。
+这样，我们就有了医学的完整领域——包含专家、会议、奖项等等——围绕在某种不可见的事物
+周围，可以说，这并非一个清晰的概念。
+
+这种特点也在不同的科学分支上广泛存在：不仅仅是医学，在物理学、数学、化学等等领域
+都存在这样的情况。这些领域开始时显现出一整块的知识，只有一点点深刻的观点。早期的
+专家可以掌握所有的知识。但随着时间流逝，这种一整块的特性就发生的演变。我们发现很
+多深刻的新想法，对任何一个人来说都是太多以至于难以掌握所有的想法。所以，这个领域
+的社会结构就开始重新组织，围绕着这些想法分离。我们现在看到的就是领域被不断地细分，
+子领域按照一种复杂的、递归的、自指的社会结构进行分解，而这些组织关系也反映了最深
+刻的那些想法之间的联系。**因此，知识结构形成了科学的社会组织关系。但这些社会关系
+反过来也会限制和帮助决定那些可以发现的事物**。这就是 Conway 法则在科学上变体版
+本。
+
+那么，这又会对深度学习或者 AI 有什么影响呢？
+
+因为在 AI 发展早期，存在对它的争论，一方认为，“这并不是很难的一件事，我们已经
+有[超级武器]了。”，反对方认为，“超级武器并不足够”。深度学习就是最新的超级武
+器\footnote{Interestingly, often not by leading experts in deep learning, who
+  have been quite restrained. See, for example, this thoughtful post by Yann
+  LeCun. This is a difference from many earlier incarnations of the argument.}，
+更早的有逻辑、Prolog或者专家系统，或者当时最牛的技术。这些论点的问题就是他们并没
+有以较好的方式告诉你这些给定的候选超级武器如何强大。当然，我们已经花了一章来回顾
+深度学习可以解决具备相当挑战性的问题的证据。看起来令人兴奋，前景光明。但是那些
+像 Prolog 或者 \href{http://en.wikipedia.org/wiki/Eurisko}{Eurisko} 或者专家系统
+在它们的年代也同样如此。所以，那些观点或者方法看起来很有前景并没有什么用。我们如
+何区分出深度学习和早期的方法的本质差异呢？Conway 法则给出了一个粗略和启发性的度量，
+也就是评价和这些方法相关的社会关系的复杂性。
+
+所以，这就带来了两个需要回答的问题。第一，根据这种社会复杂性度量，方法集和深度学
+习关联的强度是怎么样的？第二，我们需要多么强大的理论来构建一个通用的人工智能？
+
+对第一个问题：我们现在看深度学习，这是一个激情澎湃却又相对单一的领域。有一些深刻
+的想法，一些主要的学术会议，其中若干会议之间也存在着很多重叠。然后，一篇篇的论文
+在不断地提升和完善同样的一些基本想法：使用 SGD（或者类似的变体）来优化一个代价函
+数。这些想法非常成功。但是我们现在还没有看到子领域的健康发展，每个人在研究自己的
+深刻想法，将深度学习推向很多的方向。所以，根据社会复杂性度量，忽略文字游戏，深度
+学习仍然是一个相当粗浅的领域。现在还是可以完全地掌握该领域大多数的深刻想法的。
+
+第二个问题：一个想法集合需要如何复杂和强大才能达到 AI？当然，对这个问题的答案是：
+无人知晓。但在[附录]部分，我讨论了一些已有的观点。我比较乐观地认为，将会使用很多
+很多深刻的观点来构建 AI。所以，Conway 法则告诉我们，为了达到这样的目标，我们必需
+看到很多交叉关联的学科，以一种复杂和可能会很奇特的结构的出现，这种结构也映射出了
+那些最深刻洞察之间的关系。目前在使用神经网络和深度学习中，这样的社会结构还没有出
+现。并且，我也坚信离真正使用深度学习来发展通用 AI 还有至少几十年的距离。
+
+催生这个可能看起来很易见的试探性的并不确定的论断已经带给我很多的困扰。毫无疑问，
+这将会让那些寄望于获得确定性的人们变得沮丧。读了很多网络上的观点，我发现很多人在
+大声地下结论，对 AI 持有非常乐观的态度，但很多是缺少确凿证据和站不住脚的推断的。
+我很坦白的观点是：现在下这样乐观的结论还为之过早。正如一个笑话所讲，如果你问一个
+科学家，某个发现还有多久才会出现，他们会说 10 年（或者更多），其实真正的含义就
+是“我不知道”。AI，像受控核聚变和其他技术一样，已经发展远超 10 年已经 60 多年了。
+另一方面，我们在深度学习中确确实实在做的其实就是还没有发现极限的强大技术，还有哪
+些相当开放的根本性问题。这是令人兴奋异常的创造新事物的机遇。
