@@ -450,23 +450,23 @@ GPU 支持的 Ubuntu 14.04 中运行过。有些实验在两个系统中都运�
 我们得到了 $98.78$\% 的准确率，这是相当大的改善，超过了我们以前结构的任何一个。事
 实上，我们已经减少了超过三分之一的错误率，这是一个很大的进步。
 
-在指定网络结构时，我把卷积和混合层作为一个单一层对待。不管他们是被视为分开的
-层还是作为一个单一的层在一定程度上是一个个人喜好的问题。\lstinline!network3.py!
-视他们为单个层，因为它使得 \lstinline!network3.py! 的代码更紧凑。然而，如果需要的
-话，很容易修改 \lstinline!network3.py! 使得这些层可以单独指定。
+在指定网络结构时，我把卷积和混合层作为一个单一层对待。不管他们是被视为分开的层还
+是作为一个单一的层在一定程度上是一个个人喜好的问题。\lstinline!network3.py! 视他
+们为单个层，因为它使得 \lstinline!network3.py! 的代码更紧凑。然而，如果需要的话，
+很容易修改 \lstinline!network3.py! 使得这些层可以单独指定。
 
 \subsection*{练习}
 
 \begin{itemize}
-\item 如果你删除了全连接层，只使用卷积--混合层和柔性最大值层，你得到了什么样的分类准确率？
-全连接层的加入有帮助吗？
+\item 如果你删除了全连接层，只使用卷积--混合层和柔性最大值层，你得到了什么样的分
+  类准确率？全连接层的加入有帮助吗？
 \end{itemize}
 
 我们能改进 $98.78$\% 的分类准确率吗？
 
-让我们试着插入第二个卷积--混合层。把它插在已有的卷积--混合层和全连接隐藏
-层之间。我们再次使用一个 $5 \times 5$ 局部感受野，混合 $2 \times 2$ 的区域。
-让我们看看用前面相似的超参数训练会发生什么：
+让我们试着插入第二个卷积--混合层。把它插在已有的卷积--混合层和全连接隐藏层之间。
+我们再次使用一个 $5 \times 5$ 局部感受野，混合 $2 \times 2$ 的区域。让我们看看用
+前面相似的超参数训练会发生什么：
 \begin{lstlisting}[language=Python]
 >>> net = Network([
         ConvPoolLayer(image_shape=(mini_batch_size, 1, 28, 28), 
@@ -483,11 +483,11 @@ GPU 支持的 Ubuntu 14.04 中运行过。有些实验在两个系统中都运�
 
 再一次，我们得到了改善：现在我们达到了 $99.06$\% 的分类准确率。
 
-在这里有两个很自然想到的问题。第一个问题是：应用第二个卷积--混合层意味着什么？
-实际上，你可以认为第二个卷积--混合层输入 $12 \times 12$ 幅“图像”，其“像素”
-代表原始输入图像中特定的局部特征的存在（或不存在）。所以你可以认为这一层输入原始
-输入图像的一个版本。这个版本是经过抽象和凝缩过的，但是仍然有大量的空间结构，所以
-使用第二个卷积--混合层是有意义的。
+在这里有两个很自然想到的问题。第一个问题是：应用第二个卷积--混合层意味着什么？实
+际上，你可以认为第二个卷积--混合层输入 $12 \times 12$ 幅“图像”，其“像素”代表
+原始输入图像中特定的局部特征的存在（或不存在）。所以你可以认为这一层输入原始输入
+图像的一个版本。这个版本是经过抽象和凝缩过的，但是仍然有大量的空间结构，所以使用
+第二个卷积--混合层是有意义的。
 
 这是一个令然满意的观点，但是引出了第二个问题。从前面层的输出涉及 $20$ 个独立的特
 征映射，所以对第二个卷积--混合层有 $20 \times 20 \times 12$ 个输入。就好像我们
@@ -525,14 +525,20 @@ GPU 支持的 Ubuntu 14.04 中运行过。有些实验在两个系统中都运�
     用 tanh 函数。}。
 \end{itemize}
 
-\textbf{使用修正线性单元：} 到现在为止，我们开发的网络实际上是一篇开创性的 1998 论文\footnote{"Gradient-based learning applied to document recognition", by Yann LeCun, Léon Bottou, Yoshua Bengio, and Patrick Haffner (1998). There are many differences of detail, but broadly speaking our network is quite similar to the networks described in the paper.}
-中使用的众多网络中一种的变化形式，这个网络被称为 LeNet-5，并引入了 MNIST 问题。
-这为进一步实验并构筑理解和直观感受打下很好的基础。特别是，有很多种我们可以改变网络
-来改善结果的方式。
+\textbf{使用修正线性单元：} 到现在为止，我们开发的网络实际上是一篇开创性的 1998
+论文\footnote{"Gradient-based learning applied to document recognition", by Yann
+  LeCun, Léon Bottou, Yoshua Bengio, and Patrick Haffner (1998). There are many
+  differences of detail, but broadly speaking our network is quite similar to
+  the networks described in the paper.} 中使用的众多网络中一种的变化形式，这个网
+络被称为 LeNet-5，并引入了 MNIST 问题。这为进一步实验并构筑理解和直观感受打下很好
+的基础。特别是，有很多种我们可以改变网络来改善结果的方式。
 
-作为开始，让我们改变我们的神经元，我们使用\hyperref[sec:other_models_of_artificial_neuron]{修正线性单元}而不是 S 型激活函数。确切地说，我们将使用激活函数 $f(z) \equiv \max(0, z)$。
-我们将训练 $60$ 个\epochs{}，\learningrate{}为 $\eta = 0.03$。我也发现用一些%
-\hyperref[sec:overfitting_and_regularization]{L2 规范化}也有点帮助，使用规范化参数 $\lambda = 0.1$：
+作为开始，让我们改变我们的神经元，我们使
+用\hyperref[sec:other_models_of_artificial_neuron]{修正线性单元}而不是 S 型激活函
+数。确切地说，我们将使用激活函数 $f(z) \equiv \max(0, z)$。我们将训
+练 $60$ 个\epochs{}，\learningrate{}为
+$\eta = 0.03$。我也发现用一些\hyperref[sec:overfitting_and_regularization]{L2 规
+  范化}也有点帮助，使用规范化参数 $\lambda = 0.1$：
 
 \begin{lstlisting}[language=Python]
 >>> from network3 import ReLU
@@ -551,30 +557,43 @@ GPU 支持的 Ubuntu 14.04 中运行过。有些实验在两个系统中都运�
             validation_data, test_data, lmbda=0.1)
 \end{lstlisting}
 
-我得到一个 99.23\% 的分类准确率。它稍微超过了 S 型的结果（99.06）。然而，在我所有实验中
-我发现基于修正线性单元的网络，其性能始终优于基于 S 型激活函数的网络。似乎对于这个问题切换到
-修正线性单元确实有收益。
+我得到一个 99.23\% 的分类准确率。它稍微超过了 S 型的结果（99.06）。然而，在我所有
+实验中我发现基于修正线性单元的网络，其性能始终优于基于 S 型激活函数的网络。似乎对
+于这个问题切换到修正线性单元确实有收益。
 
-是什么使得修正线性激活函数好于 S 型或者 tanh 函数？目前，我们对这个问题的答案有一个很差的理解。
-实际上，修正线性单元只在过去几年才开始被广泛使用。最近才采用的原因是以经验为依据的：一些人经常
-基于直觉或者启发式的理由试着用修正线性单元\footnote{A common justification is that $\max(0, z)$ doesn't saturate in the limit of large $z$, unlike sigmoid neurons, and this helps rectified linear units continue learning. The argument is fine, as far it goes, but it's hardly a detailed justification, more of a just-so story. Note that we discussed the problems with saturation back in \hyperref[saturation]{Chapter 2}.}。他们在分类基准数据集时取得了很好的结果，并且其实践传播开了。
-在一个理想的世界中，我们有一个理论告诉我们为什么样的应用选择什么样的激活函数。但目前我们
-我们离这样的理想世界还有一条很长的路。如果通过选择一个更好的激活函数来取得了进一步的重大改进，
-我一点也不会感到惊讶，我还期待在未来的几十年里，一个强大的激活函数理论将被开发。
-今天，我们仍然不得不依靠单凭经验的不足的理解。
+是什么使得修正线性激活函数好于 S 型或者 tanh 函数？目前，我们对这个问题的答案有一
+个很差的理解。实际上，修正线性单元只在过去几年才开始被广泛使用。最近才采用的原因
+是以经验为依据的：一些人经常基于直觉或者启发式的理由试着用修正线性单
+元\footnote{A common justification is that $\max(0, z)$ doesn't saturate in the
+  limit of large $z$, unlike sigmoid neurons, and this helps rectified linear
+  units continue learning. The argument is fine, as far it goes, but it's hardly
+  a detailed justification, more of a just-so story. Note that we discussed the
+  problems with saturation back in \hyperref[saturation]{Chapter 2}.}。他们在分类
+基准数据集时取得了很好的结果，并且其实践传播开了。在一个理想的世界中，我们有一个
+理论告诉我们为什么样的应用选择什么样的激活函数。但目前我们我们离这样的理想世界还
+有一条很长的路。如果通过选择一个更好的激活函数来取得了进一步的重大改进，我一点也
+不会感到惊讶，我还期待在未来的几十年里，一个强大的激活函数理论将被开发。今天，我
+们仍然不得不依靠单凭经验的不足的理解。
 \\
 
 \textbf{扩展训练数据：} 另一种我们可能希望改进结果的方法是以算法形式扩展训练数据。
-扩展训练数据的一个简单的方法是将每个训练图像由一个像素来代替，无论是上一个像素，一个像素，左边一个像素，或右边一个像素。我们可以通过在 shell 提示符中运行程序 \lstinline!expand_mnist.py! 来这样做\footnote{The code for \lstinline!expand_mnist.py! 的代码可以从\href{https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/src/expand_mnist.py}{这里}获取。}：
+扩展训练数据的一个简单的方法是将每个训练图像由一个像素来代替，无论是上一个像素，
+一个像素，左边一个像素，或右边一个像素。我们可以通过在 shell 提示符中运行程
+序 \lstinline!expand_mnist.py! 来这样做\footnote{The code for
+  \lstinline!expand_mnist.py! 的代码可以
+  从%
+  \href{https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/src/expand_mnist.py}{%
+    这里}获取。}：
 \begin{lstlisting}[language=Python]
 $ python expand_mnist.py
-\end{lstlisting}  
+\end{lstlisting}
 
-运行这个程序取得 $50,000$ 幅 MNIST 训练图像并扩展为具有 $250,000$ 幅训练图像的训练集。
-然后我们可以使用这些训练图像来训练我们的网络。我们将使用和上面一样的具有修正线性单元的网络。
-在我初始的实验中我减少了训练\epochs{}的数量 —— 这讲得通，因为我们在训练 $5$ 倍的数据。
-但是实际上，扩展数据结果是相当多地减少了过度拟合的影响。所有，在做了一些实验后，我最终回到
-训练 $60$ 个\epochs{}。不管怎样，让我们训练：
+运行这个程序取得 $50,000$ 幅 MNIST 训练图像并扩展为具有
+$250,000$ 幅训练图像的训练集。然后我们可以使用这些训练图像来训练我们的网络。我们
+将使用和上面一样的具有修正线性单元的网络。在我初始的实验中我减少了训练\epochs{}的
+数量 —— 这讲得通，因为我们在训练 $5$ 倍的数据。但是实际上，扩展数据结果是相当多地
+减少了过度拟合的影响。所有，在做了一些实验后，我最终回到训练
+$60$ 个\epochs{}。不管怎样，让我们训练：
 \begin{lstlisting}[language=Python]
 >>> expanded_training_data, _, _ = network3.load_data_shared(
         "../data/mnist_expanded.pkl.gz")
@@ -593,26 +612,36 @@ $ python expand_mnist.py
             validation_data, test_data, lmbda=0.1)
 \end{lstlisting}
 
-使用扩展后的训练数据我取得了一个 99.37\% 的训练准确率。所以这个几乎是微不足道的改变在分类准确率上
-给出了一个显著的改进。事实上，正如我们\hyperref[sec:other_techniques_for_regularization]{前面所讨论的}，这种以算法形式扩展数据的想法可以更进一步。提醒你一些早期讨论的结果：在 2003 年，Simard，Steinkraus 和 Platt\footnote{\href{http://dx.doi.org/10.1109/ICDAR.2003.1227801}{Best Practices for Convolutional Neural Networks Applied to Visual Document Analysis}, by Patrice Simard, Dave Steinkraus, and John Platt (2003).} 使用一个神经网络改进了他们的 MNIST 性能，达到了 $99.6$\%，这个网络以其它方式和我们的
-非常相似，使用两个卷积--混合层，跟着一个具有 $100$ 个神经元的隐藏的全连接层。在他们的架构中
-有一些细节上的不同 —— 例如他们没有利用修正线性单元 —— 但是他们改进性能的关键是扩展训练数据。
-他们通过旋转，位移和扭曲 MNIST 训练图像来扩展。他们还开发了一个“弹性扭曲”的流程，一种模拟
-当一个人写字时手部肌肉随机振动的方式。通过组合所有这些流程，他们相当大地增加了训练数据的有效
-规模，而这就是他们如何达到 $99.6$\% 准确率的。
+使用扩展后的训练数据我取得了一个 99.37\% 的训练准确率。所以这个几乎是微不足道的改
+变在分类准确率上给出了一个显著的改进。事实上，正如我
+们\hyperref[sec:other_techniques_for_regularization]{前面所讨论的}，这种以算法形
+式扩展数据的想法可以更进一步。提醒你一些早期讨论的结果：
+在 2003 年，Simard，Steinkraus 和
+Platt\footnote{\href{http://dx.doi.org/10.1109/ICDAR.2003.1227801}{Best
+    Practices for Convolutional Neural Networks Applied to Visual Document
+    Analysis}, by Patrice Simard, Dave Steinkraus, and John Platt (2003).} 使用一
+个神经网络改进了他们的 MNIST 性能，达到了 $99.6$\%，这个网络以其它方式和我们的非
+常相似，使用两个卷积--混合层，跟着一个具有 $100$ 个神经元的隐藏的全连接层。在他们
+的架构中有一些细节上的不同 —— 例如他们没有利用修正线性单元 —— 但是他们改进性能的
+关键是扩展训练数据。他们通过旋转，位移和扭曲 MNIST 训练图像来扩展。他们还开发了一
+个“弹性扭曲”的流程，一种模拟当一个人写字时手部肌肉随机振动的方式。通过组合所有
+这些流程，他们相当大地增加了训练数据的有效规模，而这就是他们如何达到 $99.6$\% 准
+确率的。
 
 \subsection*{问题}
 
 \begin{itemize}
-  \item 卷积层的想法是以一种横跨图像不变的方式作出反应。它看上去令人惊奇，然而，当我们做完所有
-  输入数据的转换，网络能学习得更多。你能否解释为什么这实际上很合理？
+\item 卷积层的想法是以一种横跨图像不变的方式作出反应。它看上去令人惊奇，然而，当
+  我们做完所有输入数据的转换，网络能学习得更多。你能否解释为什么这实际上很合理？
 \end{itemize}
 
-\textbf{插入一个额外的全连接层：} 我们能做得更好吗？一种可能性是使用和上面完全相同的程序，但是
-扩展全连接层的规模。我试过 $300$ 和 $1,000$ 个神经元，分别取得了 $99.46$\% 和 $99.43$\%。
-这很有趣，但对于前面的结果（99.37\%）并不是一个令人信服的超越。
+\textbf{插入一个额外的全连接层：} 我们还能做得更好吗？一种可能性是使用和上面完全
+相同的程序，但是扩展全连接层的规模。我试过 $300$ 和 $1,000$ 个神经元，分别取得
+了 $99.46$\% 和 $99.43$\%。这很有趣，但对于前面的结果（99.37\%）并不是一个令人信
+服的超越。
 
-增加一个额外的全连接层怎样？让我们试着插入一个全连接层，这样我们就有两个 $100$ 个隐藏神经元的全连接层：
+增加一个额外的全连接层怎样？让我们试着插入一个全连接层，这样我们就有两个 $100$ 个
+隐藏神经元的全连接层：
 
 \begin{lstlisting}[language=Python]
 >>> net = Network([
@@ -631,15 +660,17 @@ $ python expand_mnist.py
             validation_data, test_data, lmbda=0.1)
 \end{lstlisting}
 
-这样做我取得一个 99.43\% 的测试准确率。再一次，扩展后的网络并没有帮助太多。运行类似的试验，用包含
-$300$ 和 $1,000$ 个隐藏神经元的全连接层产生 $99.48$\% 和 $99.47$\% 的结果。
-这是令人鼓舞的，但仍然缺乏一个真正决定性的胜利。
+这样做我取得一个 99.43\% 的测试准确率。再一次，扩展后的网络并没有帮助太多。运行类
+似的试验，用包含$300$ 和 $1,000$ 个隐藏神经元的全连接层产
+生 $99.48$\% 和 $99.47$\% 的结果。这是令人鼓舞的，但仍然缺乏一个真正决定性的胜
+利。
 
-这里发生了什么事？扩展的，或者额外的全连接层真的对 MNIST 没帮助吗？
-或者说，我们的网络有能力做得更好，但我们在用错误的方式学习？例如，也许我们可以用更强有力
-的规范化技术来减小过度拟合的趋势。一种可能性是第三章介绍的\hyperref[sec:other_techniques_for_regularization]{弃权}技术。回想弃权的基本思想是在训练网络时随机地移除单独的激活值。
-这使得模型对单独依据的丢失更为强劲，因此不太可能依赖于训练数据的特质。让我们试着应用
-弃权到最终的全连接层：
+这里发生了什么事？扩展的，或者额外的全连接层真的对 MNIST 没帮助吗？或者说，我们的
+网络有能力做得更好，但我们在用错误的方式学习？例如，也许我们可以用更强有力的规范
+化技术来减小过度拟合的趋势。一种可能性是第三章介绍
+的\hyperref[sec:other_techniques_for_regularization]{弃权}技术。回想弃权的基本思
+想是在训练网络时随机地移除单独的激活值。这使得模型对单独依据的丢失更为强劲，因此
+不太可能依赖于训练数据的特质。让我们试着应用弃权到最终的全连接层：
 \begin{lstlisting}[language=Python]
 >>> net = Network([
         ConvPoolLayer(image_shape=(mini_batch_size, 1, 28, 28), 
@@ -660,85 +691,153 @@ $300$ 和 $1,000$ 个隐藏神经元的全连接层产生 $99.48$\% 和 $99.47$\
             validation_data, test_data)
 \end{lstlisting}
 
-使用它，我们取得了 $99.60$\% 的准确率，这是一个显著的超越我们前面结果的进步，尤其是我们
-主要的基准，具有 $100$ 个隐藏神经元的网络，其中我们达到了 $99.37$\%。
+使用它，我们取得了 $99.60$\% 的准确率，这是一个显著的超越我们前面结果的进步，尤其
+是我们主要的基准，具有 $100$ 个隐藏神经元的网络，其中我们达到了 $99.37$\%。
 
 有两个值得注意的变化。
 
-首先，我减少了训练\epochs{}的数量到 $40$：弃权减少了过度拟合，所以我们学习得更快。
+首先，我减少了训练\epochs{}的数量到 $40$：弃权减少了过度拟合，所以我们学习得更
+快。
 
-其次，全连接隐藏层有 $1,000$ 个神经元，不是之前使用的 $100$ 个。
-当然，在训练时弃权有效地忽略了很多神经元。所以一些扩充是可以预期的。实际上，我试过用 $300$ 和
-$1,000$ 个隐藏神经元的实验，用 $1,000$ 个隐藏神经元（非常略微地）取得了更好的验证性能。
+其次，全连接隐藏层有 $1,000$ 个神经元，不是之前使用的 $100$ 个。当然，在训练时弃
+权有效地忽略了很多神经元。所以一些扩充是可以预期的。实际上，我试过
+用 $300$ 和$1,000$ 个隐藏神经元的实验，用 $1,000$ 个隐藏神经元（非常略微地）取得
+了更好的验证性能。
 \\
 
-\textbf{使用一个整体网络：} An easy way to improve performance still further is to create several neural networks, and then get them to vote to determine the best classification. Suppose, for example, that we trained 5
- different neural networks using the prescription above, with each achieving accuracies near to 99.6
-percent. Even though the networks would all have similar accuracies, they might well make different errors, due to the different random initializations. It's plausible that taking a vote amongst our 5
- networks might yield a classification better than any individual network.
+\textbf{使用一个组合的网络：} 一个简单的进一步提高性能的方法是创建几个神经网络，
+然后让它们投票来决定最好的分类。例如，假设我们使用上述的方式训练了 $5$ 个不同的神
+经网络，每个达到了接近于 $99.6$\% 的准确率。尽管网络都会有相似的准确率，他们很可
+能因为不同的随机初始化产生不同的错误。在这 $5$ 个网络中进行一次投票来取得一个优于
+单个网络的分类，似乎是合理的。
 
-This sounds too good to be true, but this kind of ensembling is a common trick with both neural networks and other machine learning techniques. And it does in fact yield further improvements: we end up with 99.67
- percent accuracy. In other words, our ensemble of networks classifies all but 33
- of the 10,000
- test images correctly.
+这听上去太好了，不像是真的，但是这种组合的方式是神经网络和其它机器学习技术都惯用
+的伎俩。而它确实产生了更进一步的改善：我们最终得到了 99.67\% 的准确率。换句话说，
+我们的网络组合正确分类了除了 $33$ 个之外所有的 $10,000$ 个测试图像。
 
-The remaining errors in the test set are shown below. The label in the top right is the correct classification, according to the MNIST data, while in the bottom right is the label output by our ensemble of nets:
-
+剩余的测试集中的错误显示在下面。右上角的标签是按照 NMIST 数据的正确的分类，而右下
+角的标签是我们集成网络的输出。
 \begin{center}
   \includegraphics[width=.75\textwidth]{ensemble_errors}
 \end{center}
 
-It's worth looking through these in detail. The first two digits, a 6 and a 5, are genuine errors by our ensemble. However, they're also understandable errors, the kind a human could plausibly make. That 6 really does look a lot like a 0, and the 5 looks a lot like a 3. The third image, supposedly an 8, actually looks to me more like a 9. So I'm siding with the network ensemble here: I think it's done a better job than whoever originally drew the digit. On the other hand, the fourth image, the 6, really does seem to be classified badly by our networks.
+值得去仔细看看这些。开头两个数字，一个 6 和一个 5，是我们的组合犯的真正的错误。
+然而，它们也是可以理解的错误，人类也会犯。那个 6 确实看上去更像一个 0，而那
+个 5 看上去更像一个 3。第三幅图像，据称是一个 8，在我看来实际上更像一
+个 9。所以这里我站在网络组合这边：我认为它比最初画出这些数字的人做得更好。另一
+方面，第四幅图像，那个 6，确实看上去是我们网络分类错了。
 
-And so on. In most cases our networks' choices seem at least plausible, and in some cases they've done a better job classifying than the original person did writing the digit. Overall, our networks offer exceptional performance, especially when you consider that they correctly classified 9,967 images which aren't shown. In that context, the few clear errors here seem quite understandable. Even a careful human makes the occasional mistake. And so I expect that only an extremely careful and methodical human would do much better. Our network is getting near to human performance.
+如此等等。在大多数情况下我们网络的选择看上去至少是合理的，而在一些情况下我们比最
+初写这些数字的人做得更好。总体而言，我们的网络提供卓越的性能，特别是当你认为它们
+正确分类的 9,967 张图片，这是没有显示。在这种背景下，这里的不清晰的错误似乎是可以
+理解的。甚至一个细心的人也会偶尔犯错误。因此我认为只有一个非常细心和有条理的人才会
+做得更好。我们的网络正在接近人类的性能。
 \\
 
-\textbf{为什么我们只对全连接层应用弃权：}
-If you look carefully at the code above, you'll notice that we applied dropout only to the fully-connected section of the network, not to the convolutional layers. In principle we could apply a similar procedure to the convolutional layers. But, in fact, there's no need: the convolutional layers have considerable inbuilt resistance to overfitting. The reason is that the shared weights mean that convolutional filters are forced to learn from across the entire image. This makes them less likely to pick up on local idiosyncracies in the training data. And so there is less need to apply other regularizers, such as dropout.
+\textbf{为什么我们只对全连接层应用弃权：} 如果你仔细看上面的代码，你会注意到我们
+只在网络的全链接部分应用了弃权，而不是卷积层。原则上我们可以在卷积层上应用一个类
+似的程序。但是，实际上那没必要：卷积层有相当大的先天的对于过度拟合的抵抗。原因是
+共享权重意味着卷积滤波器被强制从整个图像中学习。这使他们不太可能去选择在训练数据
+中的局部特质。于是就很少有必要来应用其它规范化，例如弃权。
 \\
 
-\textbf{进一步：}
-It's possible to improve performance on MNIST still further. Rodrigo Benenson has compiled an informative summary page, showing progress over the years, with links to papers. Many of these papers use deep convolutional networks along lines similar to the networks we've been using. If you dig through the papers you'll find many interesting techniques, and you may enjoy implementing some of them. If you do so it's wise to start implementation with a simple network that can be trained quickly, which will help you more rapidly understand what is going on.
+\textbf{进一步：} 仍然有可能在 MNIST 上来提高性能。Rodrigo Benenson 汇编了一份%
+\href{http://rodrigob.github.io/are_we_there_yet/build/classification_datasets_results.html}{%
+  信息汇总页面}，显示这几年的进展，提供了论文的链接。这些论文许多使用深度卷积网络，
+与我们已经使用的网络相似。如果你深入挖掘这些论文你会发现许多有趣的技术，并且你可
+能乐于实现其中一些。如果你这样做，明智的做法是从一个简单的能被快速训练的网络开始
+实现，这将有助于你更快地了解正在发生的事。
 
-For the most part, I won't try to survey this recent work. But I can't resist making one exception. It's a 2010 paper by Cireșan, Meier, Gambardella, and Schmidhuber\footnote{Deep, Big, Simple Neural Nets Excel on Handwritten Digit Recognition, by Dan Claudiu Cireșan, Ueli Meier, Luca Maria Gambardella, and Jürgen Schmidhuber (2010).}. What I like about this paper is how simple it is. The network is a many-layer neural network, using only fully-connected layers (no convolutions). Their most successful network had hidden layers containing $2,500$
-, $2,000$
-, $1,500$
-, $1,000$
-, and $500$
- neurons, respectively. They used ideas similar to Simard et al to expand their training data. But apart from that, they used few other tricks, including no convolutional layers: it was a plain, vanilla network, of the kind that, with enough patience, could have been trained in the 1980s (if the MNIST data set had existed), given enough computing power(!) They achieved a classification accuracy of $99.65$
- percent, more or less the same as ours. The key was to use a very large, very deep network, and to use a GPU to speed up training. This let them train for many epochs. They also took advantage of their long training times to gradually decrease the learning rate from $10^{-3}$ to $10^{-6}$
-. It's a fun exercise to try to match these results using an architecture like theirs.
+For the most part, I won't try to survey this recent work. But I can't resist
+making one exception. It's a 2010 paper by Cireșan, Meier, Gambardella, and
+Schmidhuber\footnote{Deep, Big, Simple Neural Nets Excel on Handwritten Digit
+  Recognition, by Dan Claudiu Cireșan, Ueli Meier, Luca Maria Gambardella, and
+  Jürgen Schmidhuber (2010).}. What I like about this paper is how simple it
+is. The network is a many-layer neural network, using only fully-connected
+layers (no convolutions). Their most successful network had hidden layers
+containing $2,500$ , $2,000$ , $1,500$ , $1,000$ , and $500$ neurons,
+respectively. They used ideas similar to Simard et al to expand their training
+data. But apart from that, they used few other tricks, including no
+convolutional layers: it was a plain, vanilla network, of the kind that, with
+enough patience, could have been trained in the 1980s (if the MNIST data set had
+existed), given enough computing power(!) They achieved a classification
+accuracy of $99.65$ percent, more or less the same as ours. The key was to use a
+very large, very deep network, and to use a GPU to speed up training. This let
+them train for many epochs. They also took advantage of their long training
+times to gradually decrease the learning rate from $10^{-3}$ to $10^{-6}$ . It's
+a fun exercise to try to match these results using an architecture like theirs.
 \\
 
-\textbf{为什么我们能够训练？}
-We saw in the last chapter that there are fundamental obstructions to training in deep, many-layer neural networks. In particular, we saw that the gradient tends to be quite unstable: as we move from the output layer to earlier layers the gradient tends to either vanish (the vanishing gradient problem) or explode (the exploding gradient problem). Since the gradient is the signal we use to train, this causes problems.
+\textbf{为什么我们能够训练？} We saw in the last chapter that there are
+fundamental obstructions to training in deep, many-layer neural networks. In
+particular, we saw that the gradient tends to be quite unstable: as we move from
+the output layer to earlier layers the gradient tends to either vanish (the
+vanishing gradient problem) or explode (the exploding gradient problem). Since
+the gradient is the signal we use to train, this causes problems.
 
 How have we avoided those results?
 
-Of course, the answer is that we haven't avoided these results. Instead, we've done a few things that help us proceed anyway. In particular: (1) Using convolutional layers greatly reduces the number of parameters in those layers, making the learning problem much easier; (2) Using more powerful regularization techniques (notably dropout and convolutional layers) to reduce overfitting, which is otherwise more of a problem in more complex networks; (3) Using rectified linear units instead of sigmoid neurons, to speed up training - empirically, often by a factor of $3$
--$5$
-; (4) Using GPUs and being willing to train for a long period of time. In particular, in our final experiments we trained for $40$
- epochs using a data set $5$
-times larger than the raw MNIST training data. Earlier in the book we mostly trained for $30$
- epochs using just the raw training data. Combining factors (3) and (4) it's as though we've trained a factor perhaps $30$
- times longer than before.
+Of course, the answer is that we haven't avoided these results. Instead, we've
+done a few things that help us proceed anyway. In particular: (1) Using
+convolutional layers greatly reduces the number of parameters in those layers,
+making the learning problem much easier; (2) Using more powerful regularization
+techniques (notably dropout and convolutional layers) to reduce overfitting,
+which is otherwise more of a problem in more complex networks; (3) Using
+rectified linear units instead of sigmoid neurons, to speed up training -
+empirically, often by a factor of $3$ -$5$ ; (4) Using GPUs and being willing to
+train for a long period of time. In particular, in our final experiments we
+trained for $40$ epochs using a data set $5$ times larger than the raw MNIST
+training data. Earlier in the book we mostly trained for $30$ epochs using just
+the raw training data. Combining factors (3) and (4) it's as though we've
+trained a factor perhaps $30$ times longer than before.
 
-Your response may be "Is that it? Is that all we had to do to train deep networks? What's all the fuss about?"
+Your response may be "Is that it? Is that all we had to do to train deep
+networks? What's all the fuss about?"
 
-Of course, we've used other ideas, too: making use of sufficiently large data sets (to help avoid overfitting); using the right cost function (to avoid a learning slowdown); using good weight initializations (also to avoid a learning slowdown, due to neuron saturation); algorithmically expanding the training data. We discussed these and other ideas in earlier chapters, and have for the most part been able to reuse these ideas with little comment in this chapter.
+Of course, we've used other ideas, too: making use of sufficiently large data
+sets (to help avoid overfitting); using the right cost function (to avoid a
+learning slowdown); using good weight initializations (also to avoid a learning
+slowdown, due to neuron saturation); algorithmically expanding the training
+data. We discussed these and other ideas in earlier chapters, and have for the
+most part been able to reuse these ideas with little comment in this chapter.
 
-With that said, this really is a rather simple set of ideas. Simple, but powerful, when used in concert. Getting started with deep learning has turned out to be pretty easy!
+With that said, this really is a rather simple set of ideas. Simple, but
+powerful, when used in concert. Getting started with deep learning has turned
+out to be pretty easy!
 \\
 
-\textbf{这些网络有多深？} Counting the convolutional-pooling layers as single layers, our final architecture has $4$
- hidden layers. Does such a network really deserve to be called a deep network? Of course, $4$
- hidden layers is many more than in the shallow networks we studied earlier. Most of those networks only had a single hidden layer, or occasionally $2$
- hidden layers. On the other hand, as of 2015 state-of-the-art deep networks sometimes have dozens of hidden layers. I've occasionally heard people adopt a deeper-than-thou attitude, holding that if you're not keeping-up-with-the-Joneses in terms of number of hidden layers, then you're not really doing deep learning. I'm not sympathetic to this attitude, in part because it makes the definition of deep learning into something which depends upon the result-of-the-moment. The real breakthrough in deep learning was to realize that it's practical to go beyond the shallow $1$
-- and $2$
--hidden layer networks that dominated work until the mid-2000s. That really was a significant breakthrough, opening up the exploration of much more expressive models. But beyond that, the number of layers is not of primary fundamental interest. Rather, the use of deeper networks is a tool to use to help achieve other goals - like better classification accuracies.
+\textbf{这些网络有多深？} Counting the convolutional-pooling layers as single
+layers, our final architecture has $4$ hidden layers. Does such a network really
+deserve to be called a deep network? Of course, $4$ hidden layers is many more
+than in the shallow networks we studied earlier. Most of those networks only had
+a single hidden layer, or occasionally $2$ hidden layers. On the other hand, as
+of 2015 state-of-the-art deep networks sometimes have dozens of hidden
+layers. I've occasionally heard people adopt a deeper-than-thou attitude,
+holding that if you're not keeping-up-with-the-Joneses in terms of number of
+hidden layers, then you're not really doing deep learning. I'm not sympathetic
+to this attitude, in part because it makes the definition of deep learning into
+something which depends upon the result-of-the-moment. The real breakthrough in
+deep learning was to realize that it's practical to go beyond the shallow $1$ -
+and $2$ -hidden layer networks that dominated work until the mid-2000s. That
+really was a significant breakthrough, opening up the exploration of much more
+expressive models. But beyond that, the number of layers is not of primary
+fundamental interest. Rather, the use of deeper networks is a tool to use to
+help achieve other goals - like better classification accuracies.
 \\
 
-\textbf{一些按部就班的话：} In this section, we've smoothly moved from single hidden-layer shallow networks to many-layer convolutional networks. It's all seemed so easy! We make a change and, for the most part, we get an improvement. If you start experimenting, I can guarantee things won't always be so smooth. The reason is that I've presented a cleaned-up narrative, omitting many experiments - including many failed experiments. This cleaned-up narrative will hopefully help you get clear on the basic ideas. But it also runs the risk of conveying an incomplete impression. Getting a good, working network can involve a lot of trial and error, and occasional frustration. In practice, you should expect to engage in quite a bit of experimentation. To speed that process up you may find it helpful to revisit Chapter 3's discussion of how to choose a neural network's hyper-parameters, and perhaps also to look at some of the further reading suggested in that section.
+\textbf{一些按部就班的话：} In this section, we've smoothly moved from single
+hidden-layer shallow networks to many-layer convolutional networks. It's all
+seemed so easy! We make a change and, for the most part, we get an
+improvement. If you start experimenting, I can guarantee things won't always be
+so smooth. The reason is that I've presented a cleaned-up narrative, omitting
+many experiments - including many failed experiments. This cleaned-up narrative
+will hopefully help you get clear on the basic ideas. But it also runs the risk
+of conveying an incomplete impression. Getting a good, working network can
+involve a lot of trial and error, and occasional frustration. In practice, you
+should expect to engage in quite a bit of experimentation. To speed that process
+up you may find it helpful to revisit Chapter 3's discussion of how to choose a
+neural network's hyper-parameters, and perhaps also to look at some of the
+further reading suggested in that section.
 
 \section{卷积网络的代码}
 \label{sec:the_code_for_our_convolutional_networks}
