@@ -2215,8 +2215,9 @@ Genevieve Orr 和 Klaus-Robert Müller 的。这些论文搜集在 2012年的一
 \subsection{随机梯度下降的变化形式}
 
 通过反向传播进行的随机梯度下降已经在 MNIST 数字分类问题上有了很好的表现。然而，
-还有很多其他的观点来优化代价函数，有时候，这些方法能够带来比 minibatch 随机梯度
+还有很多其他的观点来优化代价函数，有时候，这些方法能够带来比在小批量的随机梯度
 下降更好的效果。本节，我会介绍两种观点，Hessian 和 momentum 技术。
+\\
 
 \textbf{Hessian 技术：} 为了更好地讨论这个技术，我们先把神经网络放在一边。相反，
 我直接思考最小化代价函数 $C$ 的抽象问题，其中 $C$ 是多个参数的函数，
@@ -2242,7 +2243,8 @@ $C$，
   \label{eq:105}\tag{105}
 \end{equation}
 
-使用微积分，我们可证明右式表达式可以进行最小化，选择：
+使用微积分，我们可证明右式表达式可以进行最小化\footnote{Strictly speaking, for this to be a minimum, and not merely an extremum, we need to assume that the Hessian matrix is positive definite. Intuitively, this means that the function $C$
+ looks like a valley locally, not a mountain or a saddle.}，选择：
 \begin{equation}
   \Delta w = -H^{-1} \nabla C
   \label{eq:106}\tag{106}
@@ -2264,7 +2266,7 @@ $w+\Delta w = w - H^{-1}\nabla C$ 可以显著地降低代价函数的值。这�
 地使用改变量 $\Delta w = -\eta H^{-1} \nabla C$ 来 改变 $w$，其中 $\eta$ 就是
 \learningrate{}。
 
-这个最小化代价函数的方法常常被称为 **Hessian 技术** 或者 **Hessian 优化**。在理
+这个最小化代价函数的方法常常被称为 \emph{Hessian 技术}或者 \emph{Hessian 优化}。在理
 论上和实践中的结果都表明 Hessian 方法比标准的梯度下降方法收敛速度更快。特别地，
 通过引入代价函数的二阶变化信息，可以让 Hessian 方法避免在梯度下降中常碰到的多路
 径（pathologies）问题。而且，反向传播算法的有些版本也可以用于计算 Hessian。
@@ -2276,6 +2278,7 @@ Hessian 矩阵会有 $10^7 \times 10^7=10^14$ 个元素。这真的是太大了�
 计算 $H^{-1}\nabla C$ 就极其困难。不过，这并不表示学习理解它没有用了。实际上，有
 很多受到 Hessian 优化启发的梯度下降的变种，能避免产生太大矩阵的问题。让我们看看
 其中一个称为基于 momentum 梯度下降的方法。
+\\
 
 \textbf{基于 momentum 的梯度下降：} 直觉上看，Hessian 优化的优点是它不仅仅考虑了
 梯度，而且还包含梯度如何变化的信息。基于 momentum 的梯度下降就基于这个直觉，但是
@@ -2305,10 +2308,10 @@ C$ 改变了速度，$v$，速度随后再控制 $w$ 变化率。直觉上看，
 每一步速度都不断增大，所以我们会越来越快地达到谷底。这样就能够确保 momentum 技术
 比标准的梯度下降运行得更快。当然，这里也会有问题，一旦达到谷底，我们就会跨越过去。
 或者，如果梯度本该快速改变而没有改变，那么我们会发现自己在错误的方向上移动太多了。
-这就是在(107)式中使用 $\mu$ 这个超参数的原因了。前面提到，$\mu$ 可以控制系统中的
+这就是在 \eqref{eq:107} 中使用 $\mu$ 这个超参数的原因了。前面提到，$\mu$ 可以控制系统中的
 摩擦力大小；更加准确地说，你应该将 $1-\mu$ 看成是摩擦力的量。当 $\mu=1$ 时，没有
 摩擦，速度完全由梯度 $\nabla C$ 决定。相反，若是 $\mu=0$，就存在很大的摩擦，速度
-无法叠加，公式(107)(108)就变成了通常的梯度下降，$w\rightarrow w'=w-\eta \nabla
+无法叠加，公式 \eqref{eq:107} \eqref{eq:108} 就变成了通常的梯度下降，$w\rightarrow w'=w-\eta \nabla
 C$。在实践中，使用 $0$ 和 $1$ 之间的 $\mu$ 值可以给我们避免过量而又能够叠加速度
 的好处。我们可以使用 hold out 验证数据集来选择合适的 $\mu$ 值，就像我们之前选择
 $\eta$ 和 $\lambda$ 那样。

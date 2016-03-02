@@ -75,7 +75,7 @@
 $784$（$= 28 \times 28$）个输入神经元。我们然后训练网络的权重和偏置，使得网络输出
 能够 —— 如我们希望地 —— 正确地辨认输入图像：'0', '1', '2', ..., '8', or '9'。
 
-我们之前地网络工作得相当好：我们已经\hyperref[98percent]{得到了超过 98\% 的分类
+我们之前的网络工作得相当好：我们已经\hyperref[98percent]{得到了超过 98\% 的分类
   准确率}，使用来自 \hyperref[sec:learning_with_gradient_descent]{MNIST 手写数字
   数据集}的训练和测试数据。但是仔细推敲，使用全连接层的网络来分类图像是很奇怪的。
 原因是这样的一个网络架构不考虑图像的空间结构。例如，它在完全相同的基础上去对待相
@@ -501,33 +501,32 @@ $20$ 幅单独的图像输入给卷积--混合层，而不是第一个卷积--�
 \subsection*{问题}
 
 \begin{itemize}
-\item \textbf{使用 tanh 激活函数}\quad 在本书前面我已经几次提起过
-  \hyperref[subsec:other_models_of_artificial_neuron]{tanh 函数}可以是一个比 S型
-  函数更好的激活函数。我们还没有实际采用过这些建议，因为我们已经用 S 型取得了大
-  量进展。但现在让我们试试一些用 tanh 作为我们激活函数的实验。试着训练卷积和全连
-  接层中具有 tanh 激活值的网络\footnote{Note that you can pass
-    \lstinline!activation_fn=tanh! as a parameter to the
-    \lstinline!ConvPoolLayer! and \lstinline!FullyConnectedLayer! classes.}。开
-  始时使用 S 型网络中使用的相同的超参数，但是训练 $20$ 个\epochs{}，而不是 $60$
-  个。你的网络表现得怎么样？如果你继续训练到 $60$ 个\epochs{}会怎样？试着将tanh
-  和 S型网络的每个\epoch{}的验证准确率都绘制出来，都绘制到 $60$ 个\epochs{}。如
-  果你的结果和我的相似，你会发现 tanh 网络训练得稍微快些，但是最终的准确率非常相
-  似。你能否解释为什么 tanh 网络可以训练得更快？你能否用 S型取得一个相似的训练速
-  度，也许通过改变\learningrate{}，或者做些调整\footnote{You may perhaps find
-    inspiration in recalling that $\sigma(z) = (1+\tanh(z/2))/2$.}？试着用五六个
-  迭代学习超参数和网络架构，寻找 tanh 优于 S 型的方面。\emph{注意：这是一个开放
-    式问题。就我个人而言，我并没有找到太多切换为 tanh 的优势，虽然我没全面地做过
-    实验，也许你会找到一个方法。无论如何，我们马上会发现切换到修正线性激活函数的
-    一个优势，所以我们不会去深入使用 tanh 函数。}。
+\item \textbf{使用 tanh 激活函数}\quad 在本书前面我已经几次提起
+  过\hyperref[subsec:other_models_of_artificial_neuron]{tanh 函数}可以是一个
+  比 S型函数更好的激活函数。我们还没有实际采用过这些建议，因为我们已经用 S 型取得
+  了大量进展。但现在让我们试试一些用 tanh 作为我们激活函数的实验。试着训练卷积和
+  全连接层中具有 tanh 激活值的网络\footnote{注意你可以
+    将 \lstinline!activation_fn=tanh! 作为一个参数传递
+    给 \lstinline!ConvPoolLayer! 和 \lstinline!FullyConnectedLayer! 类。}。开始时
+  使用 S 型网络中使用的相同的超参数，但是训练 $20$ 个\epochs{}，而不是 $60$个。你
+  的网络表现得怎么样？如果你继续训练到 $60$ 个\epochs{}会怎样？试着将tanh和 S型网
+  络的每个\epoch{}的验证准确率都绘制出来，都绘制到 $60$ 个\epochs{}。如果你的结果
+  和我的相似，你会发现 tanh 网络训练得稍微快些，但是最终的准确率非常相似。你能否
+  解释为什么 tanh 网络可以训练得更快？你能否用 S型取得一个相似的训练速度，也许通
+  过改变\learningrate{}，或者做些调整\footnote{你也许可以回想 $\sigma(z) =
+    (1+\tanh(z/2))/2$ 来找灵感。}？试着用五六个迭代学习超参数和网络架构，寻
+  找 tanh 优于 S 型的方面。\emph{注意：这是一个开放式问题。就我个人而言，我并没有
+    找到太多切换为 tanh 的优势，虽然我没全面地做过实验，也许你会找到一个方法。无
+    论如何，我们马上会发现切换到修正线性激活函数的一个优势，所以我们不会去深入使
+    用 tanh 函数。}。
 \end{itemize}
 
-\textbf{使用修正线性单元：} 到现在为止，我们开发的网络实际上是一篇开创性的 1998
-论文\footnote{"Gradient-based learning applied to document recognition", by Yann
-  LeCun, Léon Bottou, Yoshua Bengio, and Patrick Haffner (1998). There are many
-  differences of detail, but broadly speaking our network is quite similar to
-  the networks described in the paper.} 中使用的众多网络中一种的变化形式，这个网
-络被称为 LeNet-5，并引入了 MNIST 问题。这为进一步实验并构筑理解和直观感受打下很
-好的基础。特别是，有很多种我们可以改变网络来改善结果的方式。
+\textbf{使用修正线性单元：} 到现在为止，我们开发的网络实际上是一篇开创性的 1998论
+文\footnote{"Gradient-based learning applied to document recognition", by Yann
+  LeCun, Léon Bottou, Yoshua Bengio, and Patrick Haffner (1998). 细节上有很多不
+  同，但大体上讲，我们的网络和论文中描述的网络非常相似。} 中使用的众多网络中一种
+的变化形式，这个网络被称为 LeNet-5，并引入了 MNIST 问题。这为进一步实验并构筑理解
+和直观感受打下很好的基础。特别是，有很多种我们可以改变网络来改善结果的方式。
 
 作为开始，让我们改变我们的神经元，我们使用%
 \hyperref[sec:other_models_of_artificial_neuron]{修正线性单元}而不是 S 型激活函
@@ -573,9 +572,8 @@ $20$ 幅单独的图像输入给卷积--混合层，而不是第一个卷积--�
 \textbf{扩展训练数据：} 另一种我们可能希望改进结果的方法是以算法形式扩展训练数据。
 扩展训练数据的一个简单的方法是将每个训练图像由一个像素来代替，无论是上一个像素，
 一个像素，左边一个像素，或右边一个像素。我们可以通过在 shell 提示符中运行程
-序 \lstinline!expand_mnist.py! 来这样做\footnote{The code for
-  \lstinline!expand_mnist.py! 的代码可以
-  从%
+序 \lstinline!expand_mnist.py! 来这样做\footnote{\lstinline!expand_mnist.py! 的代
+  码可以从%
   \href{https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/src/expand_mnist.py}{%
     这里}获取。}：
 \begin{lstlisting}[language=Python]
@@ -705,7 +703,7 @@ $1,000$ 个隐藏神经元的实验，用 $1,000$ 个隐藏神经元（非常略
 我们的网络组合正确分类了除了 $33$ 个之外所有的 $10,000$ 个测试图像。
 
 剩余的测试集中的错误显示在下面。右上角的标签是按照 NMIST 数据的正确的分类，而右
-下角的标签是我们集成网络的输出。
+下角的标签是我们组合网络的输出。
 \begin{center}
   \includegraphics[width=.75\textwidth]{ensemble_errors}
 \end{center}
@@ -762,8 +760,8 @@ Meier、 Gambardella、 和 Schmidhuber 所著的 2010 年论
 使用更多强有力的规范化技术（尤其是弃权和卷积层）来减少过度拟合，否则它在更复杂的
 网络中是更多的问题；（3）使用修正线性单元而不是 S 型神经元，来加速训练 —— 依据经
 验通常是 $3$--$5$ 倍；（4）使用 GPU 并愿意长时间的训练。特别是，在我们最后的实验
-中，我们训练了 $40$ 个\epochs{}，使用一个 $5$ 倍于未经处理的 MNIST 训练数据的数
-据集。在本书前面，我们主要用原始训练数据训练了 $30$ 个\epochs{}。结合因素（3）和
+中，我们训练了 $40$ 个\epochs{}，使用一个 $5$ 倍于未经处理的 MNIST 训练数据的数据
+集。在本书前面，我们主要用原始训练数据训练了 $30$ 个\epochs{}。结合因素（3）和
 （4），仿佛我们训练了比以前 $30$ 倍长的时间。
 
 你的反应可能是：“就这样？这就是我们为了训练深度网络所要做的全部事情？为什么要小
@@ -771,8 +769,8 @@ Meier、 Gambardella、 和 Schmidhuber 所著的 2010 年论
 
 当然，我们也已经使用了其它主意：利用充分大的数据集（为了避免过度拟合）；使用正确
 的代价函数（为了避免\hyperref[sec:the_cross-entropy_cost_function]{学习减速}）；
-使用\hyperref[how_to_choose_a_neural_network's_hyper-parameters]{好的权重初始化}
-（也是为了避免因为神经元饱和引起的学习减速）；%
+使用\hyperref[how_to_choose_a_neural_network's_hyper-parameters]{好的权重初始
+  化}（也是为了避免因为神经元饱和引起的学习减速）；%
 \hyperref[sec:other_techniques_for_regularization]{以算法形式扩展训练数据}。我们
 在前面章节中讨论了这些和其它想法，并在本章中的大部分已经可以重用这些想法了，而不
 需要太多注解。
@@ -780,38 +778,27 @@ Meier、 Gambardella、 和 Schmidhuber 所著的 2010 年论
 有了这样说法，这真的是一套相当简单的想法。在组合使用时简单，但功能强大。入门深度
 学习变得非常容易！\\
 
-\textbf{这些网络有多深？} Counting the convolutional-pooling layers as single
-layers, our final architecture has $4$ hidden layers. Does such a network really
-deserve to be called a deep network? Of course, $4$ hidden layers is many more
-than in the shallow networks we studied earlier. Most of those networks only had
-a single hidden layer, or occasionally $2$ hidden layers. On the other hand, as
-of 2015 state-of-the-art deep networks sometimes have dozens of hidden
-layers. I've occasionally heard people adopt a deeper-than-thou attitude,
-holding that if you're not keeping-up-with-the-Joneses in terms of number of
-hidden layers, then you're not really doing deep learning. I'm not sympathetic
-to this attitude, in part because it makes the definition of deep learning into
-something which depends upon the result-of-the-moment. The real breakthrough in
-deep learning was to realize that it's practical to go beyond the shallow $1$ -
-and $2$ -hidden layer networks that dominated work until the mid-2000s. That
-really was a significant breakthrough, opening up the exploration of much more
-expressive models. But beyond that, the number of layers is not of primary
-fundamental interest. Rather, the use of deeper networks is a tool to use to
-help achieve other goals - like better classification accuracies.
+\textbf{这些网络有多深？} 把卷积--混合层算作一个层，我们最终的架构有 $4$ 个隐藏层。
+这样的一个真的应该被称为一个深度网络吗？当然，$4$ 个隐藏层远远多于我们前面学习的
+浅层网络。那些网络大部分只有一个隐藏层，或者偶尔有 $2$ 个隐藏层。另一方面，2015
+年使用最先进技术的深度网络有时候有几十个隐藏层。我偶尔听到有人采取“更比你更
+深”的态度，认为如果你没有跟上在隐层数目方面的攀比，那么你真的没有在做深度学习。
+我不赞同这样的态度，部分因为它使得深度学习的定义像是时刻就有结果的事。深度学习中
+实际的突破是认识到它超过浅的 $1$、$2$ 层的网络是切实可行的，这样的浅层网络直
+到 2000 年中都占据优势。这确实是一个重大的突破，开启了更多有特殊意义的模型的探索。
+但除这之外，层的数目并不是主要的基本利益关系。更确切地说，使用更深层的网络是一种
+用来帮助实现其他目标工具 —— 例如更好的分类精确率。
 \\
 
-\textbf{一些按部就班的话：} In this section, we've smoothly moved from single
-hidden-layer shallow networks to many-layer convolutional networks. It's all
-seemed so easy! We make a change and, for the most part, we get an
-improvement. If you start experimenting, I can guarantee things won't always be
-so smooth. The reason is that I've presented a cleaned-up narrative, omitting
-many experiments - including many failed experiments. This cleaned-up narrative
-will hopefully help you get clear on the basic ideas. But it also runs the risk
-of conveying an incomplete impression. Getting a good, working network can
-involve a lot of trial and error, and occasional frustration. In practice, you
-should expect to engage in quite a bit of experimentation. To speed that process
-up you may find it helpful to revisit Chapter 3's discussion of how to choose a
-neural network's hyper-parameters, and perhaps also to look at some of the
-further reading suggested in that section.
+\textbf{一些按部就班的话：} 在这一节中，我们从单个隐藏层的浅层网络顺利转换到多层
+卷积网络。这一切似乎很容易！我们做了一个改变，其中大部分，我们得到了改进。如果你
+开始尝试，我可以保证事情不会总是那么顺利。原因是，我呈现的是一个清理过的叙述，省
+略了许多实验 —— 包括许多失败的实验。这个清理过的叙述，希望能帮助你清楚认识基本思
+想。但它也有风险，传达着不完整的感觉。取得一个好的，可工作的网络会涉及到大量的试
+验和错误，偶尔有挫折。在实践中，你应该预计会处理相当多的实验。为了加快这一进程，
+你可能会发现回顾第三章关
+于\hyperref[sec:how_to_choose_a_neural_network's_hyper-parameters]{如何选择一个神
+  经网络的超参数}的讨论会有帮助，或许也看一些那一小节中的进一步阅读的建议。
 
 \section{卷积网络的代码}
 \label{sec:the_code_for_our_convolutional_networks}
@@ -1348,14 +1335,14 @@ Krizhevsky 的 \href{https://code.google.com/p/cuda-convnet/}{cuda-convnet}（�
 所以推荐你学会搜索最新的研究成果。尽管这样，我还是很期待众多本质的想法能够受到足
 够久的关注。\\
 
-\textbf{Recurrent Neural Networks (RNNs)：} 在前馈神经网络中，单独的输入完全确定
+\textbf{递归神经网络（RNN）：} 在前馈神经网络中，单独的输入完全确定
 了剩下的层上的神经元的激活值。可以想象，这是一幅静态的图景：网络中的所有事物都被
 固定了，处于一种“冰冻结晶”的状态。但假如，我们允许网络中的元素能够以动态方式不
 断地比那话。例如，隐藏神经元的行为不是完全由前一层的隐藏神经元，而是同样受制于更
 早的层上的神经元的激活值。这样肯定会带来跟前馈神经网络不同的效果。也可能隐藏和输
 出层的神经元的激活值不会单单由当前的网络输入决定，而且包含了前面的输入的影响。
 
-拥有之类时间相关行为特性的神经网络就是递归神经网络，常写作 RNN。当然有不同的方式
+拥有这类时间相关行为特性的神经网络就是\emph{递归神经网络}，常写作 \emph{RNN}。当然有不同的方式
 来从数学上给出 RNN 的形式定义。你可以参
 考\href{http://en.wikipedia.org/wiki/Recurrent_neural_network}{维基百科上的RNN介
   绍}来看看 RNN。在我写作本书的时候，维基百科上介绍了超过 13 种不同的模型。但除了
@@ -1386,20 +1373,20 @@ RNN 被用来将传统的算法思想，比如说 Turing 机或者编程语言�
 在语音识别中的这项研究其实是包含于更宽泛的不仅仅是 RNN而是所有类型的深度神经网络
 的应用的一部分。例如，基于神经网络的方法在大规模词汇的连续语音识别中获得极佳的结
 果。另外，一个基于深度网络的系统已经用在了 Google 的 Android 操作系统中（详
-见\href{http://research.google.com/pubs/VincentVanhoucke.html}{Vincent
-  Vanhoucke's 2012-2015 papers}）。
+见 \href{http://research.google.com/pubs/VincentVanhoucke.html}{Vincent
+  Vanhoucke 的 2012-2015 论文}）。
 
 我刚刚讲完了 RNN 能做的一小部分，但还未提及他们如何工作。可能你并不诧异在前馈神经
 网络中的很多想法同样可以用在 RNN 中。尤其是，我们可以使用梯度下降和 BP 的直接的修
 改来训练 RNN。还有其他一些在前馈神经网络中的想法，如正规化技术，卷积和代价函数等
 都在 RNN 中非常有效。还有我们在书中讲到的很多技术都可以适配一下 RNN 场景。\\
 
-\textbf{Long Short-term Memory units(LSTMs)：} 影响 RNN 的一个挑战是前期的模型会
+\textbf{长短期记忆单元（Long short-term memory units，LSTMs）：} 影响 RNN 的一个挑战是前期的模型会
 很难训练，甚至比前馈神经网络更难。原因就是我们在\hyperref[ch:WhyHardToTrain]{上一
   章}提到的不稳定梯度的问题。回想一下，这个问题的通常表现就是在反向传播的时候梯度
 越变越小。这就使得前期的层学习非常缓慢。在 RNN 中这个问题更加糟糕，因为梯度不仅仅
 通过层反向传播，还会根据时间进行反向传播。如果网络运行了一段很长的时间，就会使得
-梯度特别不稳定，学不到东西。幸运的是，可以引入一个成为 long short-term memory 的
+梯度特别不稳定，学不到东西。幸运的是，可以引入一个称为长短期记忆（long short-term memory）的
 单元进入 RNN 中。LSTM 最早是
 由 \href{http://dx.doi.org/10.1162/neco.1997.9.8.1735}{Hochreiter 和 Schmidhuber
   在 1997 年提出}，就是为了解决这个不稳定梯度的问题。LSTM 让 RNN 训练变得相当简
