@@ -454,6 +454,52 @@ $f(x) = 0.2+0.4 x^2+0.3 \sin(15 x) + 0.05 \cos(50 x)$，没有什么特别的。
         output 0
 \end{lstlisting}
 
+这是一个只有单个输入的神经元。我们想要的是将一个类似的想法应用到隐藏神经元的组合
+输出：
+\begin{lstlisting}[language=Python]
+    if combined output from hidden neurons >= threshold:
+        output 1
+    else:
+        output 0
+\end{lstlisting}
+
+如果我们选择适当的阈值 —— 比如，$3h/2$，这是高原的高度和中央塔的高度中间的值 ——
+我们可以把高原下降到零，并且依旧矗立着塔。
+
+你能明白怎么做吗？试着用下面的网络做实验来解决。请注意，我们现在正在绘制整个网络
+的输出，而不是只从隐藏层的加权输出。这意味着我们增加了一个偏置项到隐藏层的加权输
+出，并应用 S 型函数。你能找到 $h$ 和 $b$ 的值，能产生一个塔型吗？这有点难，所以
+如果你想了一会儿还是困住，这是有两个提示：（1）为了让输出神经元显示正确的
+{\serif if-then-else} 行为，我们需要输入的权重（所有 $h$ 或 $-h$）变得很大；（2）
+$b$ 的值决定了 {\serif if-then-else} 阈值的大小。
+\begin{center}
+  \includegraphics{ti_graph}
+\end{center}
+
+在初始参数时，输出看起来像一个前面图形在它的塔型和高原上的平坦的版本。为了得到期
+望的行为，我们增加参数 $h$ 直到它变得很大。这就给出了 {\serif if-then-else} 做阈
+值的行为。其次，为了得到正确的阈值，我们选择 $b \approx -3h/2$。尝试一下，看看它
+是如何工作的！
+
+这是它看起来的样子，我们使用 $h = 10$：
+\begin{center}
+  \includegraphics{ti_graph}
+\end{center}
+
+甚至对于这个相对适中的 $h$ 值，我们得到了一个相当好的塔型函数。当然，我们可以通
+过更进一步增加 $h$ 并保持偏置$b = -3h/2$ 来使它如我们所希望的那样。
+
+让我们尝试将两个这样的网络中，为了计算不同塔的功能。为了使这两家子网的各自的作用，
+我把它们放在单独的盒子中，下面是：每个盒子计算一个塔的功能，使用上面描述的技术。
+右边的图上显示了二次隐藏层的加权输出，即，它是一个加权组合的塔函数。
+
+Let's try gluing two such networks together, in order to compute two different
+tower functions. To make the respective roles of the two sub-networks clear I've
+put them in separate boxes, below: each box computes a tower function, using the
+technique described above. The graph on the right shows the weighted output from
+the second hidden layer, that is, it's a weighted combination of tower
+functions.
+
 \begin{center}
   \includegraphics{tower_n_dim}
 \end{center}
