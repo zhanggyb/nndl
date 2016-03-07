@@ -13,26 +13,35 @@
     \begin{scope}
       \node(n) [neuron] {};
       
-      \node(h0) [neuron,left=of n,yshift=1.5cm] {};
-      \node(h1) [neuron,left=of n,yshift=-1.5cm] {};
+      \node(h0) [neuron,left=of n,yshift=1.2cm] {};
+      \node(h1) [neuron,above] at (h0.north) {};
+      \node(h2) [neuron,left=of n,yshift=-1.2cm] {};
+      \node(h3) [neuron,below] at (h2.south) {};
       
-      \node(x) [neuron,left=of h0] {$x$};
-      \node(y) [neuron,left=of h1] {$y$};
+      \node(x) [neuron,left=of h0,yshift=5mm] {$x$};
+      \node(y) [neuron,left=of h2,yshift=-5mm] {$y$};
     
       \draw[->] (x) to (h0);
       \draw[->] (x) to (h1);
-      \draw[->] (y) to (h0);
-      \draw[->] (y) to (h1);
+      \draw[->] (y) to (h2);
+      \draw[->] (y) to (h3);
   
-      \node (s0) [blue] at (h0.center) {$0.30$};
+      \node (s0) at (h0.center) {$0.60$};
       \node at (s0.north) {\tiny $x$};
-      \node (s1) [blue] at (h1.center) {$0.70$};
+      \node (s1) at (h1.center) {$0.40$};
       \node at (s1.north) {\tiny $x$};
+      \node (s2) at (h2.center) {$0.30$};
+      \node at (s2.north) {\tiny $y$};
+      \node (s3) at (h3.center) {$0.70$};
+      \node at (s3.north) {\tiny $y$};
       
-      \node [blue,right=5mm of h0] {$h = 0.6$};
+      \node [blue,right=5mm of h1] {$h = 0.30$};
+      \node [blue,above] at (n.north) {$b = -0.5$};
 
-      \draw[->] (h0) -- node [xshift=2mm,yshift=2mm] {\scriptsize $0.6$} (n);
-      \draw[->] (h1) -- node [xshift=2mm,yshift=-2mm] {\scriptsize $-0.6$} (n);
+      \draw[->] (h0) -- node [yshift=-2mm] {\scriptsize $-0.3$} (n);
+      \draw[->] (h1) -- node [yshift=2mm] {\scriptsize $0.3$} (n);
+      \draw[->] (h2) -- node [yshift=2mm] {\scriptsize $0.3$} (n);
+      \draw[->] (h3) -- node [yshift=-2mm] {\scriptsize $-0.3$} (n);
       
       \draw[->] (n) -- ++(1cm, 0);
     \end{scope}
@@ -47,11 +56,12 @@
         title=$Output$,
         colormap={simple}{rgb255=(235,95,95) rgb255=(255,155,145)},
         declare function={
-          sigmaInverse(\z)=ln(\z/(1-\z));
-          f(\x)=0.2+0.4*\x*\x+0.3*\x*sin(15*deg(\x))+0.05*cos(50*deg(\x));
+          sigma(\z)=1/(1 + exp(-\z));
+ 		  f(\x,\y)=sigma(-0.5 + 0.3 * (sigma(1000 * (\x - 0.4)) - sigma(1000 * (\x - 0.6)))	+ 0.3 * (sigma(1000 * (\y - 0.3)) - sigma(1000 * (\y - 0.7))));
+     	  % f(x,y) = sigma(b + h * (sigma(1000*(x-0.4))-sigma(1000*(x-0.6))) + h*(sigma(1000*(y-0.3))-sigma(1000*(y-0.7))));
         }]
         \addplot3[surf,domain=0:1] {
-          1 / (1 + exp(-(1000) * y - (-0.5 * 1000)))
+          f(x,y)
         };
       \end{axis}
     \end{scope}
