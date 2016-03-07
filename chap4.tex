@@ -489,20 +489,49 @@ $b$ 的值决定了 {\serif if-then-else} 阈值的大小。
 甚至对于这个相对适中的 $h$ 值，我们得到了一个相当好的塔型函数。当然，我们可以通
 过更进一步增加 $h$ 并保持偏置$b = -3h/2$ 来使它如我们所希望的那样。
 
-让我们尝试将两个这样的网络中，为了计算不同塔的功能。为了使这两家子网的各自的作用，
-我把它们放在单独的盒子中，下面是：每个盒子计算一个塔的功能，使用上面描述的技术。
-右边的图上显示了二次隐藏层的加权输出，即，它是一个加权组合的塔函数。
-
-Let's try gluing two such networks together, in order to compute two different
-tower functions. To make the respective roles of the two sub-networks clear I've
-put them in separate boxes, below: each box computes a tower function, using the
-technique described above. The graph on the right shows the weighted output from
-the second hidden layer, that is, it's a weighted combination of tower
-functions.
-
+让我们尝试将两个这样的网络组合在一起，来计算两个不同的塔型函数。为了使这两个子网
+络更清楚，我把它们放在如下所示的分开的方形区域：每个方块计算一个塔型函数，使用上
+面描述的技术。右边的图上显示了\emph{第二个}隐藏层的加权输出，即，它是一个加权组合
+的塔型函数。
 \begin{center}
-  \includegraphics{tower_n_dim}
+  \includegraphics{ti_graph}
 \end{center}
+
+尤其你能看到通过修改最终层的权重能改变输出塔型的高度。
+
+同样的想法可以用在计算我们想要的任意多的塔型。我们也可以让它们变得任意细，任意高。
+结果，我们可以确保第二个隐藏层的加权输出近似与任意期望的二元函数：
+\begin{center}
+  \includegraphics{ti_graph}
+\end{center}
+
+尤其通过使第二个隐藏层的加权输出为 $\sigma^{-1} \circ f$ 的近似，我们可以确保网络
+的输出可以是任意期望函数 $f$ 的近似。
+
+超过两个变量的函数会怎样？
+
+让我们试试三个变量 $x_1, x_2, x_3$。下面的网络可以用来计算一个四维的塔型函数：
+\begin{center}
+  \includegraphics{tower_n_dim}}
+\end{center}
+
+这里，$x_1, x_2, x_3$ 表示网络的输入。$s_1, t_1$ 等等是神经元的阶跃点 —— 即，第一
+层中所有的权重是很大的，而偏置被设置为给出阶跃点 $s_1, t_1, s_2, \ldots$。第二层
+中的权重交替设置为 $+h, -h$，其中 $h$ 是一个非常大的数。输出偏置为 $-5h/2$。
+
+这个网络计算这样一个函数，当三个条件满足时：$x_1$ 在 $s_1$ 和 $t_1$ 之间；$x_2$
+在$s_2$ 和 $t_2$ 之间；$x_3$ 在 $s_3$ 和 $t_3$ 之间，输出为 $1$。其它情况网络输出
+为 $0$。即，这个塔型在输入空间的一个小的区域输出为 $1$，其它情况输出 $0$。
+
+通过组合许多个这样的网络我们能得到任意多的塔型，如此可近似一个任意的三元函数。对
+于 $m$ 维可用完全相同的思想。唯一需要改变的是将输出偏置设为 $(-m+1/2)h$，为了得到
+正确的夹在中间的行为来弄平高原。% 翻译成稳定平面？
+
+好了，所以现在我们知道如何用神经网络来近似一个多元的实值函数。对于 $f(x_1,
+\ldots, x_m) \in R^n$ 的向量函数怎么样？当然，这样一个函数可以被视为 $n$ 个单独的
+实值函数：$f^1(x_1, \ldots, x_m), f^2(x_1, \ldots, x_m)$ 等等。所以我们创建一个网
+络来近似 $f^1$，另一个来近似 $f^2$，如此等等。然后简单地把这些网络都组合起来。 所
+以这也很容易应付。
 
 \subsection*{问题}
 
