@@ -25,7 +25,8 @@
           title={$\sigma^{-1} \circ f(x)$},
           declare function={
             sigmaInverse(\z)=ln(\z/(1-\z));
-            f(\x)=0.2+0.4*\x*\x+0.3*\x*sin(15*deg(\x))+0.05*cos(50*deg(\x));          },
+            f(\x)=0.2+0.4*\x*\x+0.3*\x*sin(15*deg(\x))+0.05*cos(50*deg(\x));
+          },
         ]
         \addplot[blue,domain=0:1,samples=201] {
           sigmaInverse(f(x))
