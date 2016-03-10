@@ -617,6 +617,9 @@ $s(z)$ 需要什么样的性质来满足这样的结果呢？我们确实需要�
 
 如果我们要使用前面描述的技术做到这一点，我们会使用隐藏神经元产生一系列的凹凸函
 数：
+\begin{center}
+  \includegraphics[width=.5\textwidth]{series_of_bumps}
+\end{center}
 
 再说一下，我夸大了图上的故障窗口大小，好让它们更容易看到。很明显如果我们把所有这
 些凹凸函数加起来，我们最终会得到一个合理的 $\sigma^{-1} \circ f(x)$ 的近似，除了
@@ -625,9 +628,15 @@ $s(z)$ 需要什么样的性质来满足这样的结果呢？我们确实需要�
 假设我们使用一系列隐藏神经元来计算我们最初的目标函数的一半，即
 $\sigma^{-1} \circ f(x) / 2$，而不是使用刚刚描述的近似。当然，这看上去就像上一个
 图像的缩小的版本：
+\begin{center}
+  \includegraphics[width=.5\textwidth]{half_bumps}
+\end{center}
 
 并且假设我们使用令一系列隐藏神经元来计算一个 $\sigma^{-1} \circ f(x) / 2$ 的近似，
 但是用将凹凸图形偏移一半宽度：
+\begin{center}
+  \includegraphics[width=.5\textwidth]{shifted_bumps}
+\end{center}
 
 现在我们有两个不同的 $\sigma^{-1} \circ f(x) / 2$ 的近似。如果我们把这两个近似图
 形加起来，我们会得到一个 $\sigma^{-1} \circ f(x)$ 的整体近似。这个整体的近似仍然

@@ -53,7 +53,9 @@
         axis background/.style={fill=blue!5},
         xlabel=$x$,
         ylabel=$y$,
-        title=$Output$,
+        zmin=0,
+        zmax=1,
+        title=Output,
         colormap={simple}{rgb255=(235,95,95) rgb255=(255,155,145)},
         declare function={
           sigma(\z)=1/(1 + exp(-\z));

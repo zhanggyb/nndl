@@ -20,6 +20,7 @@ $(TARGET): $(SOURCES) $(IMAGEDEPS)
 	$(TEX) $(basename $@)
 	$(MKIDX) $(basename $@)
 	$(TEX) $(basename $@)
+	$(TEX) $(basename $@)
 
 graphics:
 	$(MAKE) -C images

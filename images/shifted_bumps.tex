@@ -1,0 +1,40 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[11pt,tikz,border=1]{standalone}
+\usepackage{pgfplots}
+
+\begin{document}
+\begin{tikzpicture}
+  
+    \begin{axis}[
+        axis x line=middle,
+        axis y line=left,
+        ymin=-2.2,
+        ymax=2.2,
+        xmax=1.1,
+        xlabel=$x$,
+        xtick distance=1,
+        declare function={
+          sigma(\z) = 1/(1 + exp(-\z));
+          f(\x,\h,\s,\e) = \h * (sigma(300 * (\x - \s)) - sigma(300 * (\x - \e)));
+        }]
+        \addplot[red!50,thick,domain=0.08:0.32,samples=51] {
+          f(x, -1.55/2, 0.1, 0.3)
+        };
+        \addplot[green!50,thick,domain=0.28:0.52,samples=51] {
+          f(x, -1.15/2, 0.3, 0.5)
+        };
+        \addplot[blue!50,thick,domain=0.48:0.72,samples=51] {
+          f(x, -0.7/2, 0.5, 0.7)
+        };
+        \addplot[violet!50,thick,domain=0.68:0.92,samples=51] {
+          f(x, -0.6/2, 0.7, 0.9)
+        };
+        \addplot[orange!50,thick,domain=0.88:0.99,samples=51] {
+          f(x, 0.3, 0.9, 1.1)
+        };
+      \end{axis}
+  
+\end{tikzpicture} 
+\end{document}

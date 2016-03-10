@@ -18,9 +18,15 @@ It's recommended to install
 - [Tex Live](http://tug.org/texlive/) 2015 or later for Linux
 - [MacTex](http://tug.org/mactex/) 2015 or later for Mac OS X
 
-Also, please make sure you have these font packages installed: roboto,
-sourcecodepro, as these fonts are required in typesetting. You can install them
+Also, please make sure you have these font packages installed: `roboto`,
+`sourcecodepro`, `sourceserifpro`, as these fonts are required in typesetting. You can install them
 with `tlmgr` command.
+
+**Note:** If your TeX system is not installed in the default `/usr/local`, you need to change the `fontdir` macro in `westernfonts.tex`, default is:
+
+```shell
+\newcommand{\fontdir}[0]{/usr/local/texlive/2015/texmf-dist/fonts/}
+```
 
 ### Check out source code
 
