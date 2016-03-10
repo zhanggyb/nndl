@@ -7,47 +7,10 @@
 
 \usepackage[mdseries=Light,bfseries=Medium,path=../fonts]{cjkfonts}
 
+\input{../plots}
+
 \begin{document}
 
-  \begin{tikzpicture}[
-    neuron/.style={circle,draw,inner sep=0pt,minimum size=10mm}
-    ]
-
-    \begin{scope}
-      \node(x) [neuron] {$x$};
-      \node(n) [neuron,right=2 of x] {};
-      \draw[->] (n) -- ++(1,0);
-      \draw[->] (x) to node (w) [blue,above] {$w = 6$} (n);
-      \node(b) [blue,above] at (n.north) {$b = -3$};
-    \end{scope}
-
-    \begin{scope}[xshift=5cm,yshift=-2cm]
-
-      \begin{axis}[
-          width=6cm,
-          height=6cm,
-          xlabel={\normalsize $x$},
-          axis lines=left,
-          tick label style={font=\tiny},
-          label style={font=\tiny},
-          title style={font=\scriptsize},
-          xtick={0,1},
-          ytick={1},
-          % minor tick num=1,
-          title={顶部隐藏神经元的输出}
-        ]
-        \addplot[
-          orange,
-          thick,
-          domain=0:1,
-          samples=301
-        ] {
-          1/(1 + exp(-(6 * x + (-3)))) + 0.2 * sin(10 * deg(6 * x + (-3))) * exp(-abs(6 * x + (-3)))
-        };
-      \end{axis}
-      
-    \end{scope}
-    
-  \end{tikzpicture}
+  \manipulateRamping{6}{-3}
 
 \end{document}

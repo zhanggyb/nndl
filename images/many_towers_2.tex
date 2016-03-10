@@ -10,13 +10,18 @@
     neuron/.style={circle,draw,inner sep=0pt,minimum size=10mm}
     ]
     
-      % FIXME: rotate the zlabel, change plot color, and move z axis to right
       \begin{axis}[
         view={-30}{15},        
         axis background/.style={fill=blue!5},
         xlabel=$x$,
         ylabel=$y$,
-        title=$Output$,
+        xtick distance=1,
+        ytick distance=1,
+        ztick distance=1,
+        xtick={1},
+        ytick={1},
+        ztick={2},  % big number to disable
+        title={Many towers},
         colormap={simple}{rgb255=(235,95,95) rgb255=(255,155,145)},
         declare function={
         	g(\z)=floor(\z * 4.999);
