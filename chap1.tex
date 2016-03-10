@@ -276,8 +276,8 @@ $w_1,w_2,\ldots$，和偏置 $b$ 的S型神经元的输出是：
 为了理解和感知器模型的相似性，假设 $z \equiv w \cdot x + b$ 是一个很大的正数。那
 么 $e^{-z} \approx 0$ 而 $\sigma(z) \approx 1$。即，当 $z = w \cdot x+b$ 很大
 并且为正，S型神经元的输出近似为 $1$，正好和感知器一样。相反地，假设 $z = w \cdot
-x+b$ 是一个很小的负数。那么 $e^{-z} \rightarrow \infty$，$\sigma(z) \approx 0$。
-所以当 $z = w \cdot x +b$ 是一个很小的负数，S型神经元的行为也非常近似一个感知器。
+x+b$ 是一个很大的负数。那么 $e^{-z} \rightarrow \infty$，$\sigma(z) \approx 0$。
+所以当 $z = w \cdot x +b$ 是一个很大的负数，S型神经元的行为也非常近似一个感知器。
 只有在 $w \cdot x+b$ 取中间值时，和感知器模型有比较大的偏离。
 
 $\sigma$ 的代数形式又是什么？我们怎样去理解它呢？实际上，$\sigma$ 的精确形式不重
