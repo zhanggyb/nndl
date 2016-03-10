@@ -3,6 +3,12 @@
 \chapter{神经网络可以计算任何函数的可视化证明}
 \label{ch:VisualProof}
 
+（\emph{译注：} 本章的部分内容
+和\href{http://neuralnetworksanddeeplearning.com/chap4.html}{原文}略有不同，原文
+的部分图形提供了交互式的形式，而在这本中文版中则全部换成了静态图形。你可以
+在\href{http://neuralnetworksanddeeplearning.com/chap4.html}{网页}上试试调节对应
+图像的可操作的参数加深理解，但仅阅读中文版本也不会有任何障碍。）\\
+
 神经网络的一个最显著的事实就是它可以计算任何的函数。也就是说，假设某个人给你某种
 复杂而奇特的函数，$f(x)$：
 \begin{center}
@@ -30,14 +36,13 @@
 普遍性定理在使用神经网络的人群中是众所周知的。但是它为何正确却不被广泛地理解。现
 有的大多数的解释都具有很强的技术性。例如，有一篇原始的论
 文\footnote{\href{http://www.dartmouth.edu/~gvc/Cybenko_MCSS.pdf}{Approximation
-    by superpositions of a sigmoidal function}, by George Cybenko (1989). The
-  result was very much in the air at the time, and several groups proved closely
-  related results. Cybenko's paper contains a useful discussion of much of that
-  work. Another important early paper is
-  \href{http://www.sciencedirect.com/science/article/pii/0893608089900208}{Multilayer
-    feedforward networks are universal approximators}, by Kurt Hornik, Maxwell
-  Stinchcombe, and Halbert White (1989). This paper uses the Stone-Weierstrass
-  theorem to arrive at similar results.}使用了%
+    by superpositions of a sigmoidal function}，作者为 George Cybenko (1989)。其结论在当时非常流行，
+    并且几个研究小组证明了密切相关的结果。Cybenko 的论文包含了很多关于那些成果非常有用的讨论。    
+    另一篇重要的早期论文是
+    \href{http://www.sciencedirect.com/science/article/pii/0893608089900208}{Multilayer
+    feedforward networks are universal approximators}，作者为 Kurt Hornik，Maxwell
+  Stinchcombe，和 Halbert White (1989)。这篇论文采用了 Stone-Weierstrass
+  定理来取得相似的结果。}使用了%
 \href{https://zh.wikipedia.org/wiki/哈恩－巴拿赫定理}{哈恩－巴拿赫定理定理}、%
 \href{https://zh.wikipedia.org/wiki/里斯表示定理}{里斯表示定理}和一些傅里叶分析证
 明了这个结果。如果你是数学家，这个证明应该不大难理解，但对于大多数人还是很困难的。
@@ -74,7 +79,7 @@
 
 第一点，这句话不是说一个网络可以被用来\emph{准确地}计算任何函数。而是说，我们可以
 获得尽可能好的一个\emph{近似}。通过增加隐藏元的数量，我们可以提升近似的精度。例
-如，\hyperref[basic_network_precursor]{之前}我举例说明一个使用了三个隐藏元的网络
+如，\hyperref[basic_network_precursor]{前面}我举例说明一个使用了三个隐藏元的网络
 来计算 $f(x)$。对于大多数函数使用三个隐藏元仅仅能得到一个低质量的近似。通过增加隐
 藏神经元的数量（比如说，五个），我们能够明显地得到更好的近似：
 \begin{center}
@@ -151,8 +156,6 @@ $\sigma(wx + b)$，这里 $\sigma(z) \equiv 1/(1+e^{-z})$ 是 S 型函数。目�
   \includegraphics{create_step_function}
 \end{center}
 
-% insert video
-
 你能给权重增加很大的值来简化我们的分析，使得输出实际上是个非常接近的阶跃函数。下
 面我画出了当权重为 $w = 999$ 时从顶部隐藏神经元的输出。注意这个图是静态的，你不能
 改动如权重等参数。
@@ -195,7 +198,7 @@ $x$ 取何值时阶跃会发生呢？换种方式，阶跃的位置如何取决�
   \includegraphics{two_hn_network}
 \end{center}
 
-右边的绘图是\emph{加权后}的隐藏层输出 $w_1 a_1 + w_2 a_2$。这里 $a_1$ 和 $a_2$ 各
+右边的绘图是隐藏层的\emph{加权输出} $w_1 a_1 + w_2 a_2$。这里 $a_1$ 和 $a_2$ 各
 自是顶部和底部神经元的输出\footnote{顺便提一下，注意整个网络的输出是 $\sigma(w_1
   a_1+w_2 a_2 + b)$，其中 $b$ 是隐藏层的偏置。很明显，这不同于隐藏层加权后的输出，
   也就是我们这里的绘图。我们现在打算专注于隐藏层的加权输出，不一会就会考虑如何把
@@ -313,8 +316,9 @@ $\sum_j w_j a_j$。我们现在知道如何在这个量上获得大量的控制�
 一旦你完成了，点击“重置”，随机重新初始化凹凸形状。你第二次解决问题时，忍住在图
 形上点击的冲动。相反，修改左边的 $h$ 值，并再次尝试将平均偏差争取到 $0.40$ 或以
 下。
-
-% TODO: insert graph
+\begin{center}
+  \includegraphics{design_function}
+\end{center}
 
 你现在已经解决了所有网络的必要元素来近似计算函数
 $f(x)$！这只是一个粗略的近似，但我们可以很容易地做得更好，仅仅通过增加隐藏神经元
@@ -618,7 +622,7 @@ $s(z)$ 需要什么样的性质来满足这样的结果呢？我们确实需要�
 如果我们要使用前面描述的技术做到这一点，我们会使用隐藏神经元产生一系列的凹凸函
 数：
 \begin{center}
-  \includegraphics[width=.5\textwidth]{series_of_bumps}
+  \includegraphics{series_of_bumps}
 \end{center}
 
 再说一下，我夸大了图上的故障窗口大小，好让它们更容易看到。很明显如果我们把所有这
@@ -629,13 +633,13 @@ $s(z)$ 需要什么样的性质来满足这样的结果呢？我们确实需要�
 $\sigma^{-1} \circ f(x) / 2$，而不是使用刚刚描述的近似。当然，这看上去就像上一个
 图像的缩小的版本：
 \begin{center}
-  \includegraphics[width=.5\textwidth]{half_bumps}
+  \includegraphics{half_bumps}
 \end{center}
 
-并且假设我们使用令一系列隐藏神经元来计算一个 $\sigma^{-1} \circ f(x) / 2$ 的近似，
+并且假设我们使用另一系列隐藏神经元来计算一个 $\sigma^{-1} \circ f(x) / 2$ 的近似，
 但是用将凹凸图形偏移一半宽度：
 \begin{center}
-  \includegraphics[width=.5\textwidth]{shifted_bumps}
+  \includegraphics{shifted_bumps}
 \end{center}
 
 现在我们有两个不同的 $\sigma^{-1} \circ f(x) / 2$ 的近似。如果我们把这两个近似图

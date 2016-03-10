@@ -33,16 +33,17 @@
     \begin{scope}[xshift=6cm]
 
       \begin{axis}[
-          width=5.5cm,
-          height=5.5cm,
+          width=5.6cm,
+          height=5.6cm,
           xlabel={\normalsize $x$},
           axis lines=left,
           tick label style={font=\tiny},
           label style={font=\tiny},
           title style={font=\scriptsize},
-          % xtick={0,1},
-          % ytick={0,1},
-          % minor tick num=1,
+          xtick distance=1,
+          ytick distance=1,
+          xmax=1.1,
+          ymax=1.1,
           title={顶部隐藏神经元的输出}
         ]
         \addplot[

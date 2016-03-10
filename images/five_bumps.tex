@@ -7,78 +7,10 @@
 
 \usepackage[mdseries=Light,bfseries=Medium,path=../fonts]{cjkfonts}
 
+\input{../plots}
+
 \begin{document}
 
-  \begin{tikzpicture}[
-    neuron/.style={circle,draw,inner sep=0pt,minimum size=10mm}
-    ]
-
-    \begin{scope}
-      
-      \node (l0) [neuron] {$x$};
-      \node (m0g0) [neuron,right=1.5 of l0,yshift=-5.5mm] {$0.6$};
-      \node (m1g0) [neuron,right=1.5 of l0,yshift=5.5mm] {$0.4$};
-      \node (r0) [neuron,right=1.5 of m0g0,yshift=5.5mm] {};
-
-      \node (m0g1) [neuron,above=0.4 of m1g0] {$0.4$};
-      \node (m1g1) [neuron,above=1mm] at (m0g1.north) {$0.2$};
-
-      \node (m1g2) [neuron,below=0.4 of m0g0] {$0.6$};
-      \node (m0g2) [neuron,below=1mm] at (m1g2.south) {$0.8$};
-
-      \node (m0g3) [circle,inner sep=0pt,minimum size=10mm,above=0.4 of m1g1] {$0.2$};
-      \node (m1g3) [neuron,above=1mm] at (m0g3.north) {$0.0$};
-
-      \node (m1g4) [circle,inner sep=0pt,minimum size=10mm,below=0.4 of m0g2] {$0.8$};
-      \node (m0g4) [neuron,below=1mm] at (m1g4.south) {$1.0$};
-
-      \foreach \x in {0,1}
-        \foreach \y in {0,...,4} {
-          \draw[->] (l0) to (m\x g\y);
-          \draw[->] (m\x g\y) to (r0);
-      }
-
-			% cover the top and bottom neutrons for better look
-			\node (m0g3a) [neuron,fill=white] at (m0g3) {$0.2$};
-			\node (m1g4a) [neuron,fill=white] at (m1g4) {$0.8$};
-
-      \draw[->] (r0) -- ++(1,0);
-
-      \draw[->] (l0) to (m0g0);
-      \draw[->] (l0) to (m1g0);
-      \draw[->] (m0g0) to (r0);
-      \draw[->] (m1g0) to (r0);
-
-%      \node(b) [blue,above] at (m1g0.north) {$s = 0.49$};
-    \end{scope}
-
-    \begin{scope}[xshift=7cm]
-
-      \begin{axis}[
-          width=5.5cm,
-          height=5.5cm,
-          xlabel={\normalsize $x$},
-          axis lines=left,
-          tick label style={font=\tiny},
-          label style={font=\tiny},
-          title style={font=\scriptsize},
-          % xtick={0,1},
-          % ytick={0,1},
-          % minor tick num=1,
-          title={隐藏层的带权输出}
-        ]
-        \addplot[
-          orange,
-          thick,
-          domain=0:1,
-          samples=101
-        ] {
-          1/(1 + exp(-(100 * x + (-0.49 * 100))))        
-        };
-      \end{axis}
-      
-    \end{scope}
-    
-  \end{tikzpicture}
+  \manipulateFiveBumps{-0.3}{-1.3}{-0.5}{1.3}{-0.2}
 
 \end{document}

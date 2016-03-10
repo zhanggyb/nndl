@@ -2417,8 +2417,8 @@ $\delta_j^{l+1}$ 为正，那么所有的权重 $w_{jk}^{l+1}$ 都会在梯度�
 
 另一个变化形式就是\emph{修正线性神经元\index{修正线性神经元}（rectified linear
     neuron\index{rectified linear neuron}）}或者\emph{修正线性单元\index{修正线
-    性单元}（rectified linear unit\index{rectified linear unit}）}，简记为 RLU。
-输入为 $x$，权重向量为 $w$，偏置为 $b$ 的 RLU 神经元的输出是：
+    性单元}（rectified linear unit\index{rectified linear unit}）}，简记为 ReLU。
+输入为 $x$，权重向量为 $w$，偏置为 $b$ 的 ReLU 神经元的输出是：
 \begin{equation}
   \max(0, w \cdot x+b)
   \label{eq:112}\tag{112}
@@ -2428,17 +2428,17 @@ $\delta_j^{l+1}$ 为正，那么所有的权重 $w_{jk}^{l+1}$ 都会在梯度�
   \includegraphics{max_function}
 \end{center}
 
-显然，这样的神经元和 sigmoid 和 $\tanh$ 都不一样。然而，RLU 也是能够用来计算任何
+显然，这样的神经元和 sigmoid 和 $\tanh$ 都不一样。然而，ReLU 也是能够用来计算任何
 函数的，也可以使用反向传播算法和随机梯度下降进行训练。
 
-什么时候应该使用 RLU 而非其他神经元呢？一些近期的图像识别上的研究工作\footnote{See, for example, What is the Best Multi-Stage Architecture for Object Recognition?, by Kevin Jarrett, Koray Kavukcuoglu, Marc'Aurelio Ranzato and Yann LeCun (2009), Deep Sparse Rectiﬁer Neural Networks, by Xavier Glorot, Antoine Bordes, and Yoshua Bengio (2011), and ImageNet Classification with Deep Convolutional Neural Networks, by Alex Krizhevsky, Ilya Sutskever, and Geoffrey Hinton (2012). Note that these papers fill in important details about how to set up the output layer, cost function, and regularization in networks using rectified linear units. I've glossed over all these details in this brief account. The papers also discuss in more detail the benefits and drawbacks of using rectified linear units. Another informative paper is Rectified Linear Units Improve Restricted Boltzmann Machines, by Vinod Nair and Geoffrey Hinton (2010), which demonstrates the benefits of using rectified linear units in a somewhat different approach to neural networks.}找到了使用
-RLU 所带来的好处。然而，就像 $\tanh$ 神经元那样，我们还没有一个关于什么时候 什么
-原因 RLU 表现更好的深度的理解。为了让你感受一下这个问题，回想起 sigmoid 神经元在
+什么时候应该使用 ReLU 而非其他神经元呢？一些近期的图像识别上的研究工作\footnote{See, for example, What is the Best Multi-Stage Architecture for Object Recognition?, by Kevin Jarrett, Koray Kavukcuoglu, Marc'Aurelio Ranzato and Yann LeCun (2009), Deep Sparse Rectiﬁer Neural Networks, by Xavier Glorot, Antoine Bordes, and Yoshua Bengio (2011), and ImageNet Classification with Deep Convolutional Neural Networks, by Alex Krizhevsky, Ilya Sutskever, and Geoffrey Hinton (2012). Note that these papers fill in important details about how to set up the output layer, cost function, and regularization in networks using rectified linear units. I've glossed over all these details in this brief account. The papers also discuss in more detail the benefits and drawbacks of using rectified linear units. Another informative paper is Rectified Linear Units Improve Restricted Boltzmann Machines, by Vinod Nair and Geoffrey Hinton (2010), which demonstrates the benefits of using rectified linear units in a somewhat different approach to neural networks.}找到了使用
+ReLU 所带来的好处。然而，就像 $\tanh$ 神经元那样，我们还没有一个关于什么时候 什么
+原因 ReLU 表现更好的深度的理解。为了让你感受一下这个问题，回想起 sigmoid 神经元在
 饱和时停止学习的问题，也就是输出接近 $0$ 或者 $1$ 的时候。在这章我们也反复看到了
 问题就是 $\sigma'$ 降低了梯度，减缓了学习。$\tanh$ 神经元也有类似的问题。对比一
-下，提高 RLU 的带权输入并不会导致其饱和，所以就不存在前面那样的学习速度下降。另
+下，提高 ReLU 的带权输入并不会导致其饱和，所以就不存在前面那样的学习速度下降。另
 外，当带权输入是负数的时候，梯度就消失了，所以神经元就完全停止了学习。这就是很多
-有关理解 RLU 何时何故更优的问题中的两个。
+有关理解 ReLU 何时何故更优的问题中的两个。
 
 我已经给出了一些不确定性的描述，指出我们现在还没有一个坚实的理论来解释如何选择激
 活函数。实际上，这个问题比我已经讲过的还要困难，因为其实是有无穷多的可能的激活函

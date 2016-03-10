@@ -6,58 +6,10 @@
 \usepackage{pgfplots}
 
 \usepackage[mdseries=Light,bfseries=Medium,path=../fonts]{cjkfonts}
+\input{../plots}
 
 \begin{document}
 
-  \begin{tikzpicture}[
-    neuron/.style={circle,draw,inner sep=0pt,minimum size=10mm}
-    ]
-
-    \begin{scope}
-      
-      \node (l0) [neuron] {$x$};
-      \node (m0) [neuron,right=of l0,yshift=-1.5cm] {};
-      \node (m1) [neuron,right=of l0,yshift=1.5cm] {};
-      \node (r0) [neuron,right=of m0,yshift=1.5cm] {};
-
-      \draw[->] (r0) -- ++(1,0);
-
-      \draw[->] (l0) to (m0);
-      \draw[->] (l0) to (m1);
-      \draw[->] (m0) to node [blue,xshift=5mm,yshift=-4mm] {$w_2 = -0.8$} (r0);
-      \draw[->] (m1) to node [blue,xshift=5mm,yshift=4mm] {$w_1 = 0.8$} (r0);
-
-      \node[blue,above] at (m1.north) {$s_1 = 0.40$};
-      \node[blue,above] at (m0.north) {$s_2 = 0.60$};
-    \end{scope}
-
-    \begin{scope}[xshift=6cm]
-
-      \begin{axis}[
-          width=5.5cm,
-          height=5.5cm,
-          xlabel={\normalsize $x$},
-          axis lines=left,
-          tick label style={font=\tiny},
-          label style={font=\tiny},
-          title style={font=\scriptsize},
-          % xtick={0,1},
-          % ytick={0,1},
-          % minor tick num=1,
-          title={隐藏层的加权输出}
-        ]
-        \addplot[
-          orange,
-          thick,
-          domain=0:1,
-          samples=101
-        ] {
-          1/(1 + exp(-(1000 * x + (-0.4 * 1000))))        
-        };
-      \end{axis}
-      
-    \end{scope}
-    
-  \end{tikzpicture}
+  \manipulateTwoHNNetwork{0.40}{0.8}{0.60}{-0.8}
 
 \end{document}

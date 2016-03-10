@@ -7,57 +7,8 @@
 
 \usepackage[mdseries=Light,bfseries=Medium,path=../fonts]{cjkfonts}
 
+\input{../plots}
+
 \begin{document}
-
-  \begin{tikzpicture}[
-    neuron/.style={circle,draw,inner sep=0pt,minimum size=10mm}
-    ]
-
-    \begin{scope}
-      
-      \node (l0) [neuron] {$x$};
-      \node (m0) [neuron,blue,right=of l0,yshift=-1.5cm] {$0.60$};
-      \node (m1) [neuron,blue,right=of l0,yshift=1.5cm] {$0.40$};
-      \node (r0) [neuron,right=of m0,yshift=1.5cm] {};
-
-      \draw[->] (r0) -- ++(1,0);
-
-      \draw[->] (l0) to (m0);
-      \draw[->] (l0) to (m1);
-      \draw[->] (m0) to node [xshift=3mm,yshift=-3mm] {$-0.6$} (r0);
-      \draw[->] (m1) to node (w1) [xshift=3mm,yshift=3mm] {$0.6$} (r0);
-      
-      \node [above=.5 of w1,blue] {$h = 0.6$};
-      
-    \end{scope}
-
-    \begin{scope}[xshift=6cm]
-
-      \begin{axis}[
-          width=5.5cm,
-          height=5.5cm,
-          xlabel={\normalsize $x$},
-          axis lines=left,
-          tick label style={font=\tiny},
-          label style={font=\tiny},
-          title style={font=\scriptsize},
-          % xtick={0,1},
-          % ytick={0,1},
-          % minor tick num=1,
-          title={隐藏层的加权输出}
-        ]
-        \addplot[
-          orange,
-          thick,
-          domain=0:1,
-          samples=101
-        ] {
-          1/(1 + exp(-(1000 * x + (-0.4 * 1000))))        
-        };
-      \end{axis}
-      
-    \end{scope}
-    
-  \end{tikzpicture}
-
+  \manipulateBumpFunction{0.4}{0.6}{0.6}
 \end{document}

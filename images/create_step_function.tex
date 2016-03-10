@@ -22,20 +22,26 @@
         label style={font=\tiny},
         title style={font=\scriptsize},
         legend style={font=\tiny},
-        % xtick={0,1},
-        % ytick={0,1},
+        xtick distance=1,
+        ytick distance=1,
+        xtick={0},
+        ytick={1},
         % minor tick num=1,
         legend entries={$w=8,b=-4$\\$w=8,b=4$\\$w=3,b=4$\\$w=105,b=4$\\},
-        title={\RobotoLight 顶部隐藏神经元的输出}
+        title={顶部隐藏神经元的输出},
+        declare function={
+          sigma(\z) = 1/(1 + exp(-\z));
+          f(\x,\w,\b) = sigma(\w * \x + \b);
+        }
       ]
       \addplot[
-        black,
+        gray,
         thick,
         dotted,
         domain=-5:5,
         samples=101
       ] {
-        1/(1 + exp(-(8 * x + -4)))
+        f(x, 8, -4)
       };
       \addplot[
         orange!60,
@@ -44,7 +50,7 @@
         domain=-5:5,
         samples=101
       ] {
-        1/(1 + exp(-(8 * x + 4)))
+        f(x, 8, 4)
       };
       \addplot[
         orange!80,
@@ -53,15 +59,15 @@
         domain=-5:5,
         samples=101
       ] {
-        1/(1 + exp(-(3 * x + 4)))
-      };      
+        f(x, 3, 4)
+      };
       \addplot[
         orange,
         thick,
         domain=-5:5,
         samples=401
       ] {
-        1/(1 + exp(-(105 * x + 4)))
+        f(x, 105, 4)
       };
     \end{axis}
     
