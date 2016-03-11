@@ -370,9 +370,13 @@ $f(x) = 0.2+0.4 x^2+0.3 \sin(15 x) + 0.05 \cos(50 x)$，没有什么特别的。
 
 鉴于此，你认为当我们增加权重 $w_1$ 到 $w_1 = 100$，同时 $w_2$ 保持 $0$ 不变时会发
 生什么？如果你没有立即明白答案，思考一下问题，看看你能否知道会发生什么。然后尝试
-一下，看看你是否是对的。我在下面的视频中展示了会发生什么：
+一下，看看你是否是对的。下面的图形序列展示了会发生什么：
 \begin{center}
-  \includegraphics{ti_graph}
+  \begin{tabular}{c c}
+  \includegraphics{ti_graph-0} & \includegraphics{ti_graph-1}\\
+  \includegraphics{ti_graph-2} & \includegraphics{ti_graph-3}\\
+  \includegraphics{ti_graph-4} & \\
+  \end{tabular}
 \end{center}
 
 正如我们前面讨论的那样，随着输入权重变大，输出接近一个阶跃函数。不同的是，现在的
@@ -487,7 +491,7 @@ $b$ 的值决定了 {\serif if-then-else} 阈值的大小。
 
 这是它看起来的样子，我们使用 $h = 10$：
 \begin{center}
-  \includegraphics{ti_graph}
+  \includegraphics{tower_construction_2}
 \end{center}
 
 甚至对于这个相对适中的 $h$ 值，我们得到了一个相当好的塔型函数。当然，我们可以通
@@ -533,7 +537,7 @@ $b$ 的值决定了 {\serif if-then-else} 阈值的大小。
 
 好了，所以现在我们知道如何用神经网络来近似一个多元的实值函数。对于 $f(x_1,
 \ldots, x_m) \in R^n$ 的向量函数怎么样？当然，这样一个函数可以被视为 $n$ 个单独的
-实值函数：$f^1(x_1, \ldots, x_m), f^2(x_1, \ldots, x_m)$ 等等。所以我们创建一个网
+实值函数： $f^1(x_1, \ldots, x_m)$， $f^2(x_1, \ldots, x_m)$ 等等。所以我们创建一个网
 络来近似 $f^1$，另一个来近似 $f^2$，如此等等。然后简单地把这些网络都组合起来。 所
 以这也很容易应付。
 
@@ -566,9 +570,14 @@ $b$ 的值决定了 {\serif if-then-else} 阈值的大小。
 
 更确切地说，我们假定如果神经元有输入 $x_1, x_2, \ldots$，权重 $w_1, w_2, \ldots$
 和偏置 $b$，那么输出为 $s(\sum_j w_j x_j + b)$。我们可以使用这个激活函数来得到一
-个阶跃函数，正如用 S 型函数做过的一样。试着加大下图中的权重，比如 $w = 100$：
+个阶跃函数，正如用 S 型函数做过的一样。
 \begin{center}
   \includegraphics{ramping}
+\end{center}
+
+试着加大上图中的权重，比如 $w = 100$，你将得到：
+\begin{center}
+  \includegraphics{create_ramping}
 \end{center}
 
 正如使用 S 型函数的时候，这导致激活函数收缩，并最终变成一个阶跃函数的很好的近似。

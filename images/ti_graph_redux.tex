@@ -25,13 +25,18 @@
     \end{scope}
     
     \begin{scope}[xshift=2cm,yshift=-2.5cm]    
-      % FIXME: rotate the zlabel, change plot color, and move z axis to right
       \begin{axis}[
         view={-30}{15},        
         axis background/.style={fill=blue!5},
         xlabel=$x$,
         ylabel=$y$,
-        title=$Output$,
+        xtick distance=1,
+        ytick distance=1,
+        ztick distance=1,
+        xtick={1},
+        ytick={1},
+        ztick={2},
+        title=Output,
         colormap={simple}{rgb255=(235,95,95) rgb255=(255,155,145)}
         ]
         \addplot3[surf,domain=0:1] {
