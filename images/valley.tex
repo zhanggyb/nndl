@@ -6,15 +6,20 @@
 
 \begin{document}
   \begin{tikzpicture}
-    % FIXME: rotate the zlabel, change plot color, and move z axis to right
     \begin{axis}[
       %title={$x^2 + y^2$},
-      3d box=complete,
+      %3d box=complete,
       grid=major,
       axis background/.style={fill=blue!5},
       xlabel=$v_1$,
       ylabel=$v_2$,
       zlabel=$C$,
+      xtick distance=1,
+      ytick distance=1,
+      ztick distance=1,
+      xtick={-1,0,1},
+      ytick={-1,0,1},
+      ztick={0,1,2},
       colormap={cool}{rgb255(0cm)=(255,0,255); rgb255(1cm)=(0,128,255); rgb255(2cm)=(255,255,255)}]
       \addplot3[surf,domain=-1:1] {
         x*x + y*y
