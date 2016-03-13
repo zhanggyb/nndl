@@ -1081,9 +1081,11 @@ $\lambda = 5.0$。我们就突破了 98\%，达到了98.04\% 的分类准确率\
 来个简单的：用一个多项式来拟合数据。这样做的原因其实是多项式相比神经网络能够让事
 情变得更加清楚。一旦我们理解了多项式的场景，对于神经网络可以如法炮制。现在，图中
 有十个点，我们就可以找到唯一的 $9$ 阶多项式 $y=a_0x^9 + a_1x^8 + ... + a_9$ 来完
-全拟合数据。下面是多项式的图像\footnote{这里我不明确列出这些系数，它们很容易用一个例如 Numpy 
-的 \lstinline!polyfit! 程序就能找到。如果你对此好奇，可以从\href{http://neuralnetworksanddeeplearning.com/js/polynomial_model.js}{这个图形的源码}中查看准确的多项式形式。
-其中的第 14 行的函数 \lstinline!p(x)! 生成这个图形。}：
+全拟合数据。下面是多项式的图像\footnote{这里我不明确列出这些系数，它们很容易用一
+  个例如 Numpy 的 \lstinline!polyfit! 程序就能找到。如果你对此好奇，可以从%
+  \href{http://neuralnetworksanddeeplearning.com/js/polynomial_model.js}{这个图
+    形的源码}中查看准确的多项式形式。其中的第 14 行的函数 \lstinline!p(x)! 生成
+  这个图形。}：
 \begin{center}
 	\includegraphics[width=.55\textwidth]{polynomial_fit.eps}
 \end{center}
@@ -1097,16 +1099,16 @@ $\lambda = 5.0$。我们就突破了 98\%，达到了98.04\% 的分类准确率\
 哪个是更好的模型？哪个更可能是真的？还有哪个模型更可能泛化到其他的拥有同样现象的
 样本上？
 
-这些都是很难回答的问题。实际上，我们如果没有更多关于真实现象背后的信息的话，并不能确定给
-出上面任何一个问题的答案。但是让我们考虑两种可能的情况：（1）9 阶多项式实际上是
-完全描述了真实情况的模型，最终它能够很好地泛化；（2）正确的模型是 $y=2x$，但是存
-在着由于测量误差导致的额外的噪声，使得模型不能够准确拟合。
+这些都是很难回答的问题。实际上，我们如果没有更多关于真实现象背后的信息的话，并不
+能确定给出上面任何一个问题的答案。但是让我们考虑两种可能的情况：（1）9 阶多项式
+实际上是完全描述了真实情况的模型，最终它能够很好地泛化；（2）正确的模型是 $y=2x$，
+但是存在着由于测量误差导致的额外的噪声，使得模型不能够准确拟合。
 
 先验假设无法说出哪个是正确的（或者，如果还有其他的情况出现）。逻辑上讲，这些都可
-能出现。并且这不是微不足道的差异。在给出的数据上，两个模型的表现其实是差不多的。但是
-假设我们想要预测对应于某个超过了图中所有的 $x$ 的 $y$ 的值，在两个模型给出的结果
-之间肯定有一个极大的差距，因为 9 阶多项式模型肯定会被 $x^9$ 主导，而线性模型只
-是线性的增长。
+能出现。并且这不是微不足道的差异。在给出的数据上，两个模型的表现其实是差不多的。
+但是假设我们想要预测对应于某个超过了图中所有的 $x$ 的 $y$ 的值，在两个模型给出的
+结果之间肯定有一个极大的差距，因为 9 阶多项式模型肯定会被 $x^9$ 主导，而线性模型
+只是线性的增长。
 
 在科学中，一种观点是我们除非不得已应该追随更简单的解释。当我们找到一个简单模型似
 乎能够解释很多数据样本的时候，我们都会激动地认为发现了规律！总之，这看起来简单的
@@ -1462,23 +1464,24 @@ $\lambda$ 值\footnote{这个以及下两个图形由程序
 
 创建了神经网络后，我们需要进行权重和偏置的初始化。到现在，我们一直是根据在%
 \hyperref[ch:UsingNeuralNetsToRecognizeHandwrittenDigits]{第一章中}介绍的那样进
-行初始化。提醒你一下，之前的方式就是根据独立高斯随机变量来选择权重和偏置，其被归一化为均值为 $0$，标准差 $1$。这个方法工作的还不错，但是非常\emph{特别}，
-所以值得去重新探讨它，看看是否能寻找一些更好的方式来设置初始的权重和偏置，这也许能帮助我们的网络学
-习得更快。
+行初始化。提醒你一下，之前的方式就是根据独立高斯随机变量来选择权重和偏置，其被归
+一化为均值为 $0$，标准差 $1$。这个方法工作的还不错，但是非常\emph{特别}，所以值
+得去重新探讨它，看看是否能寻找一些更好的方式来设置初始的权重和偏置，这也许能帮助
+我们的网络学习得更快。
 
 结果表明，我们可以比使用归一化的高斯分布做得更好。为什么？假设我们使用一个有大量
-输入神经元的网络，比如说 $1,000$ 个。假设，我们已经使用归一化的高斯分布初始化了连接第一个隐
-藏层的权重。现在我将注意力集中在这一层的连接权重上，忽略网络其他部分：
+输入神经元的网络，比如说 $1,000$ 个。假设，我们已经使用归一化的高斯分布初始化了
+连接第一个隐藏层的权重。现在我将注意力集中在这一层的连接权重上，忽略网络其他部分：
 \begin{center}
   \includegraphics{tikz32}
 \end{center}
 
 为了简化，假设我们使用训练输入 $x$，其中一半的输入神经元值为 $1$，另一半为 $0$。
-以下的论点更普遍适用，但你可以从这种特殊情况得到要点。让我们考虑隐藏神经元输入的带
-权和 $z=\sum_j w_j x_j + b$。其中 $500$ 个项消去了，因为对应的输入
-$x_j$ 为 $0$。所以 $z$ 是遍历总共 $501$ 个归一化的高斯随机变量的和，包含 $500$ 个权重项和额外
-的 $1$ 个偏置项。因此 $z$ 本身是一个均值为 $0$ 标准差为 $\sqrt{501} \approx 22.4$
-的高斯分布。$z$ 其实有一个非常宽的高斯分布，完全不是非常尖的形状：
+以下的论点更普遍适用，但你可以从这种特殊情况得到要点。让我们考虑隐藏神经元输入的
+带权和 $z=\sum_j w_j x_j + b$。其中 $500$ 个项消去了，因为对应的输入$x_j$ 为 $0$。
+所以 $z$ 是遍历总共 $501$ 个归一化的高斯随机变量的和，包含 $500$ 个权重项和额外
+的 $1$ 个偏置项。因此 $z$ 本身是一个均值为 $0$ 标准差为 $\sqrt{501} \approx
+22.4$的高斯分布。$z$ 其实有一个非常宽的高斯分布，完全不是非常尖的形状：
 \begin{center}
   \includegraphics{wide_gaussian}
 \end{center}
@@ -1488,13 +1491,12 @@ $x_j$ 为 $0$。所以 $z$ 是遍历总共 $501$ 个归一化的高斯随机变�
 们的隐藏神经元会饱和。所以当出现这样的情况时，在权重中进行微小的调整仅仅会给隐藏
 神经元的激活值带来极其微弱的改变。而这种微弱的改变也会影响网络中剩下的神经元，然
 后会带来相应的代价函数的改变。结果就是，这些权重在我们进行梯度下降算法时会学习得
-非常缓慢\footnote{We discussed this in more detail in
-  \hyperref[sec:the_four_fundamental_equations_behind_backpropagation]{Chapter
-    2}, where we used the equations of backpropagation to show that weights
-  input to saturated neurons learned slowly.}。这其实和我们在本章前面讨论的问题
-差不多，前面的情况是输出神经元在错误的值上饱和导致学习的下降。我们之前通过代价函
-数的选择解决了前面的问题。不幸的是，尽管那种方式在输出神经元上有效，但对于隐藏神
-经元的饱和却一点作用都没有。
+非常缓慢\footnote{我们在第二章详细讨论过这个问题，其中我们用%
+  \hyperref[sec:the_four_fundamental_equations_behind_backpropagation]{反向传播
+    的方程}来显示输入到饱和神经元的权重学习得缓慢。}。这其实和我们在本章前面讨论
+的问题差不多，前面的情况是输出神经元在错误的值上饱和导致学习的下降。我们之前通过
+代价函数的选择解决了前面的问题。不幸的是，尽管那种方式在输出神经元上有效，但对于
+隐藏神经元的饱和却一点作用都没有。
 
 我已经讨论了第一个隐藏层的权重输入。当然，类似的论证也适用于后面的隐藏层：如果后
 面隐藏层的权重也是用归一化的高斯分布进行初始化，那么激活值将会非常接近 $0$ 或者
@@ -1529,9 +1531,9 @@ $1$ 的高斯分布来对偏置进行初始化。这其实是可行的，因为�
 们后面还会按照前面的方式来进行初始化。
 
 让我们在 MNIST 数字分类任务上比较一下新旧两种权重初始化方式。同样，还是使用 $30$
-个隐藏元，\minibatch 的大小为 $10$，规范化参数 $\lambda = 5.0$，然后是交叉熵代价函
-数。我们将\learningrate{}从 $\eta=0.5$ 降到 $0.1$，因为这样会让结果在图像中表现得更加明
-显。我们先使用旧的权重初始化方法训练：
+个隐藏元，\minibatch 的大小为 $10$，规范化参数 $\lambda = 5.0$，然后是交叉熵代价
+函数。我们将\learningrate{}从 $\eta=0.5$ 降到 $0.1$，因为这样会让结果在图像中表
+现得更加明显。我们先使用旧的权重初始化方法训练：
 
 \begin{lstlisting}[language=Python]
 “`python
@@ -1557,10 +1559,9 @@ $1$ 的高斯分布来对偏置进行初始化。这其实是可行的，因为�
 ... monitor_evaluation_accuracy=True)
 \end{lstlisting}
 
-将结果用图展示出来\footnote{The program used to generate this and the next graph
-  is
-  \href{https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/fig/weight_initialization.py}{\lstinline!weight_initialization.py!}.}
-，我们得到：
+将结果用图展示出来\footnote{用来生成这幅以及下一幅图形的程序是
+  \href{https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/fig/weight_initialization.py}{\lstinline!weight_initialization.py!}
+  。} ，我们得到：
 \begin{center}
     \includegraphics[width=.6\textwidth]{weight_initialization_30}
 \end{center}
@@ -1580,13 +1581,13 @@ $1$ 的高斯分布来对偏置进行初始化。这其实是可行的，因为�
 些例子里面使用 $1/\sqrt{n_{\rm in}}$ 权重初始化的长期运行的结果要显著更优。因此，不
 仅仅能够带来训练速度的加快，有时候在最终性能上也有很大的提升。
 
-$1/\sqrt{n_{\rm in}}$ 的权重初始化方法帮助我们提升了神经网络学习的方式。其他的权重初
-始化技术同样也被提出，很多都是基于这个基本的思想。我不会在这里回顾其他的方法，因为
-$1/\sqrt{n_{\rm in}}$ 已经可以工作得很好了。如果你感兴趣的话，我推荐你看看在
+$1/\sqrt{n_{\rm in}}$ 的权重初始化方法帮助我们提升了神经网络学习的方式。其他的权
+重初始化技术同样也被提出，很多都是基于这个基本的思想。我不会在这里回顾其他的方法，
+因为$1/\sqrt{n_{\rm in}}$ 已经可以工作得很好了。如果你感兴趣的话，我推荐你看看在
 2012 年的 Yoshua Bengio 的论
 文\footnote{\href{http://arxiv.org/pdf/1206.5533v2.pdf}{Practical
-    Recommendations for Gradient-Based Training of Deep Architectures}, by
-  Yoshua Bengio (2012).  }的 14 和 15 页，以及相关的参考文献。
+    Recommendations for Gradient-Based Training of Deep Architectures}，作者为
+  Yoshua Bengio （2012）。}的 14 和 15 页，以及相关的参考文献。
 
 \subsection*{问题}
 
@@ -1621,8 +1622,8 @@ class Network(object):
         self.cost=cost
 \end{lstlisting}
 
-最开始几行里的 \lstinline!__init__! 方法的和 \lstinline!network.py! 中一样，可以轻易弄懂。但是
-下面两行是新的，我们需要知道他们到底做了什么。
+最开始几行里的 \lstinline!__init__! 方法的和 \lstinline!network.py! 中一样，可以
+轻易弄懂。但是下面两行是新的，我们需要知道他们到底做了什么。
 
 我们先看看 \lstinline!default_weight_initializer! 方法，使用了我们%
 \hyperref[sec:weight_initialization]{新式改进后的初始化权重方法}。如我们已经看到
@@ -1655,12 +1656,11 @@ def large_weight_initializer(self):
 
 初始化方法 \lstinline!__init__! 中的第二个新的东西就是我们初始化了
 \lstinline!cost! 属性。为了理解这个工作的原理，让我们看一下用来表示交叉熵代价的
-类\footnote{If you're not familiar with Python's static methods you can ignore
-  the @staticmethod decorators, and just treat fn and delta as ordinary
-  methods. If you're curious about details, all @staticmethod does is tell the
-  Python interpreter that the method which follows doesn't depend on the object
-  in any way. That's why self isn't passed as a parameter to the fn and delta
-  methods.}：
+类\footnote{如果你不熟悉 Python 的静态方法，你可以忽略 \lstinline!@staticmethod!
+  装饰符，仅仅把 \lstinline!fn! 和 \lstinline!delta! 看作普通方法。如果你想知道
+  细节，所有的 \lstinline!@staticmethod! 所做的是告诉 Python 解释器其随后的方法
+  完全不依赖于对象。这就是为什么 \lstinline!self! 没有作为参数传入
+  \lstinline!fn!  和 \lstinline!delta!。}：
 \begin{lstlisting}[language=Python]
 class CrossEntropyCost(object):
 
@@ -1777,11 +1777,12 @@ pickle 对象，会导致 \lstinline!load! 函数出错。使用 JSON 进行序�
 \section{如何选择神经网络的超参数}
 \label{sec:how_to_choose_a_neural_network's_hyper-parameters}
 
-直到现在，我们还没有解释对诸如\learningrate{} $\eta$，规范化参数 $\lambda$ 等等超参数选择
-的方法。我只是给出那些效果很好的值而已。实践中，当你使用神经网络解决问题时，寻找
-好的超参数其实是很困难的一件事。例如，我们要解决 MNIST 问题，开始时对于选择什么
-样的超参数一无所知。假设，刚开始的实验中选择前面章节的参数都是运气较好。但在使用
-\learningrate{} $\eta=10.0$ 而规范化参数 $\lambda=1000.0$。下面是我们的一个尝试：
+直到现在，我们还没有解释对诸如\learningrate{} $\eta$，规范化参数 $\lambda$ 等等
+超参数选择的方法。我只是给出那些效果很好的值而已。实践中，当你使用神经网络解决问
+题时，寻找好的超参数其实是很困难的一件事。例如，我们要解决 MNIST 问题，开始时对
+于选择什么样的超参数一无所知。假设，刚开始的实验中选择前面章节的参数都是运气较好。
+但在使用\learningrate{} $\eta=10.0$ 而规范化参数 $\lambda=1000.0$。下面是我们的
+一个尝试：
 
 \begin{lstlisting}[language=Python]
 >>> import mnist_loader
@@ -1814,25 +1815,25 @@ Accuracy on evaluation data: 967 / 10000
 
 我们分类准确率并不比随机选择更好。网络就像随机噪声产生器一样。
 
-你可能会说，“这好办，降低\learningrate{}和规范化参数就好了。”不幸的是，你并不先验地知道
-这些就是需要调整的超参数。可能真正的问题出在 $30$ 个隐藏元中，本身就不能很有效，
-不管我们如何调整其他的超参数都没有作用的？可能我们真的需要至少 $100$ 个隐藏神经
-元？或者是 $300$ 个隐藏神经元？或者更多层的网络？或者不同输出编码方式？可能我们
-的网络一直在学习，只是学习的回合还不够？可能 minibatch 的太小了？可能我们需要切
-换成二次代价函数？可能我们需要尝试不同的权重初始化方法？等等。很容易就在超参数的
-选择中迷失了方向。如果你的网络规模很大，或者使用了很多的训练数据，这种情况就很令
-人失望了，因为一次训练可能就要几个小时甚至几天乃至几周，最终什么都没有获得。如果
-这种情况一直发生，就会打击你的自信心。可能你会怀疑神经网络是不是适合你所遇到的问
-题？可能就应该放弃这种尝试了？
+你可能会说，“这好办，降低\learningrate{}和规范化参数就好了。”不幸的是，你并不
+先验地知道这些就是需要调整的超参数。可能真正的问题出在 $30$ 个隐藏元中，本身就不
+能很有效，不管我们如何调整其他的超参数都没有作用的？可能我们真的需要至少 $100$
+个隐藏神经元？或者是 $300$ 个隐藏神经元？或者更多层的网络？或者不同输出编码方式？
+可能我们的网络一直在学习，只是学习的回合还不够？可能 minibatch 的太小了？可能我
+们需要切换成二次代价函数？可能我们需要尝试不同的权重初始化方法？等等。很容易就在
+超参数的选择中迷失了方向。如果你的网络规模很大，或者使用了很多的训练数据，这种情
+况就很令人失望了，因为一次训练可能就要几个小时甚至几天乃至几周，最终什么都没有获
+得。如果这种情况一直发生，就会打击你的自信心。可能你会怀疑神经网络是不是适合你所
+遇到的问题？可能就应该放弃这种尝试了？
 
 本节，我会给出一些用于设定超参数的启发式想法。目的是帮你发展出一套工作流来确保很
 好地设置超参数。当然，我不会覆盖超参数优化的每个方法。那是太繁重的问题，而且也不
 会是一个能够完全解决的问题，也不存在一种通用的关于正确策略的共同认知。总是会有一
-些新的技巧可以帮助你提高一点性能。但是本节的启发式想法能帮你开个好头。
+些新的技巧可以帮助你提高一点性能。但是本节的启发式想法能帮你开个好头。\\
 
-\textbf{宽的策略：} 在使用神经网络来解决新的问题时，一个挑战就是获得**任何**一种非寻常
-的学习，也就是说，达到比随机的情况更好的结果。这个实际上会很困难，尤其是遇到一种
-新类型的问题时。让我们看看有哪些策略可以在面临这类困难时候尝试。
+\textbf{宽的策略：} 在使用神经网络来解决新的问题时，一个挑战就是获得\emph{任何}
+一种非寻常的学习，也就是说，达到比随机的情况更好的结果。这个实际上会很困难，尤其
+是遇到一种新类型的问题时。让我们看看有哪些策略可以在面临这类困难时候尝试。
 
 假设，我们第一次遇到 MNIST 分类问题。刚开始，你很有激情，但是当第一个神经网络完
 全失效时，你会就得有些沮丧。此时就可以将问题简化。丢开训练和验证集合中的那些除了
@@ -1963,7 +1964,7 @@ hold out 验证数据集来评价性能，使用这些度量来找到越来越�
 好了，上面就是宽泛的策略。现在我们看看一些具体的设置超参数的推荐。我会聚焦在学习
 率 $\eta$，L2 规范化参数 $\lambda$，和 minibatch 大小。然而，很多的观点同样可以
 应用在其他的超参数的选择上，包括一些关于网络架构的、其他类型的规范化和一些本书后
-面遇到的如 momentum co-efficient 这样的超参数。
+面遇到的如 momentum co-efficient 这样的超参数。\\
 
 \textbf{\learningrate{}：} 假设我们运行了三个不同\learningrate{}（$\eta=0.025$、
   $\eta=0.25$、$\eta=2.5$）的 MNIST 网络。我们会像前面介绍的实验那样设置其他的超
@@ -1984,10 +1985,11 @@ $\eta=2.5$ 代价从始至终都震荡得非常明显。为了理解震荡的原
 然而，如果 $\eta$ 太大的话，步长也会变大可能会使得算法在接近最小值时候又越过了谷
 底。这在 $\eta=2.5$ 时非常可能发生。当我们选择 $\eta=0.25$ 时，初始几步将我们带
 到了谷底附近，但一旦到达了谷底，又很容易跨越过去。而在我们选择 $\eta=0.025$ 时，
-在前 $30$ 回合的训练中不再受到这个情况的影响。当然，选择太小的\learningrate{}，也会带来另
-一个问题——随机梯度下降算法变慢了。一种更加好的策略其实是，在开始时使用
-$\eta=0.25$，随着越来越接近谷底，就换成 $\eta=0.025$。这种可变\learningrate{}的方法我们后
-面会介绍。现在，我们就聚焦在找出一个单独的好的\learningrate{}的选择，$\eta$。
+在前 $30$ 回合的训练中不再受到这个情况的影响。当然，选择太小的\learningrate{}，
+也会带来另一个问题——随机梯度下降算法变慢了。一种更加好的策略其实是，在开始时使用
+$\eta=0.25$，随着越来越接近谷底，就换成 $\eta=0.025$。这种可变\learningrate{}的
+方法我们后面会介绍。现在，我们就聚焦在找出一个单独的好的\learningrate{}的选择，
+$\eta$。
 
 所以，有了这样的想法，我们可以如下设置 $\eta$。首先，我们选择在训练数据上的代价
 立即开始下降而非震荡或者增加时作为 $\eta$ 的阈值的估计。这个估计并不需要太过精确。
@@ -1995,17 +1997,19 @@ $\eta=0.25$，随着越来越接近谷底，就换成 $\eta=0.025$。这种可�
 开始下降，你就可以逐步地尝试 $\eta=0.1, 1.0,...$，直到你找到一个 $\eta$ 的值使得
 在开始若干回合代价就开始震荡或者增加。相反，如果代价在 $\eta=0.01$ 时就开始震荡
 或者增加，那就尝试 $\eta=0.001, 0.0001,...$ 直到你找到代价在开始回合就下降的设定。
-按照这样的方法，我们可以掌握\learningrate{}的阈值的量级的估计。你可以选择性地优化估计，选
-择那些最大的 $\eta$，比方说 $\eta=0.5$ 或者 $\eta=0.2$（这里也不需要过于精确）。
+按照这样的方法，我们可以掌握\learningrate{}的阈值的量级的估计。你可以选择性地优
+化估计，选择那些最大的 $\eta$，比方说 $\eta=0.5$ 或者 $\eta=0.2$（这里也不需要过
+  于精确）。
 
 显然，$\eta$ 实际值不应该比阈值大。实际上，如果 $\eta$ 的值重复使用很多回合的话，
 你更应该使用稍微小一点的值，例如，阈值的一半这样的选择。这样的选择能够允许你训练
 更多的回合，不会减慢学习的速度。
 
-在 MNIST 数据中，使用这样的策略会给出一个关于\learningrate{} $\eta$ 的一个量级的估计，大
-概是 $0.1$。在一些改良后，我们得到了阈值 $\eta=0.5$。所以，我们按照刚刚的取一半
-的策略就确定了\learningrate{}为 $\eta=0.25$。实际上，我发现使用 $\eta=0.5$ 在 $30$ 回合内
-表现是很好的，所以选择更低的\learningrate{}，也没有什么问题。
+在 MNIST 数据中，使用这样的策略会给出一个关于\learningrate{} $\eta$ 的一个量级的
+估计，大概是 $0.1$。在一些改良后，我们得到了阈值 $\eta=0.5$。所以，我们按照刚刚
+的取一半的策略就确定了\learningrate{}为 $\eta=0.25$。实际上，我发现使用
+$\eta=0.5$ 在 $30$ 回合内表现是很好的，所以选择更低的\learningrate{}，也没有什么
+问题。
 
 这看起来相当直接。然而，使用训练代价函数来选择 $\eta$ 看起来和我们之前提到的通过
 验证集来确定超参数的观点有点矛盾。实际上，我们会使用验证准确率来选择规范化超参数，
@@ -2015,7 +2019,7 @@ minibatch 大小，和层数及隐藏元个数这些网络参数，等等。为�
 理一些。然而，\learningrate{}仅仅是偶然地影响最终的分类准确率的。\learningrate{}%
 主要的目的是控制梯度下降的步长，监控训练代价是最好的检测步长过大的方法。所以，这
 其实就是个人的偏好。在学习的前期，如果验证准确率提升，训练代价通常都在下降。所以
-在实践中使用那种衡量方式并不会对判断的影响太大。
+在实践中使用那种衡量方式并不会对判断的影响太大。\\
 
 \textbf{使用 Early stopping 来确定训练的\epochs{}数量：} 正如我们在本章前面讨论
 的那样，Early stopping 表示在每个回合的最后，我们都要计算验证集上的分类准确率。
@@ -2104,7 +2108,7 @@ $\lambda=1.0$ 开始，然后根据验证集上的性能按照因子 $10$增加�
 相较于这样的折衷，其实我本可以尝试优化每个单一的观点的超参数选择。理论上，这可能
 是更好更公平的方式，因为那样的话我们可以看到每个观点的最优性能。但是，我们现在依
 照目前的规范进行了众多的比较，实践上，我觉得要做到需要过多的计算资源了。这也是我
-使用折衷方式来采用尽可能好（却不一定最优）的超参数选择。
+使用折衷方式来采用尽可能好（却不一定最优）的超参数选择。\\
 
 \label{mini_batch_size}
 \textbf{\minibatch{}大小：} 我们应该如何设置 minibatch 的大小？为了回答这个问题，
@@ -2157,18 +2161,22 @@ minibatch 更新快速方法。就是简单使用了 minibatch 大小为 $10$。
 通过降低 minibatch 大小来进行提速。我也没有这样做，因为我希望展示 minibatch 大于
 $1$ 的使用，也因为我实践经验表示提升效果其实不明显。在实践中，我们大多数情况肯定
 是要实现更快的 minibatch 更新策略，然后花费时间精力来优化 minibatch 大小，来达到
-总体的速度提升。
+总体的速度提升。\\
 
 \textbf{自动技术：} 我已经给出很多在手动进行超参数优化时的启发式规则。手动选择当
 然是种理解网络行为的方法。不过，现实是，很多工作已经使用自动化过程进行。通常的技
-术就是**网格搜索**（grid search），可以系统化地对超参数的参数空间的网格进行搜索。
-网格搜索的成就和限制（易于实现的变体）在 James Bergstra 和 Yoshua Bengio $2012$
-年的
-\href{http://papers.nips.cc/paper/4522-practical-bayesian-optimization-of-machine-learning-algorithms.pdf}{
-  论文}中已经给出了综述。很多更加精细的方法也被大家提出来了。我这里不会给出介绍，
-但是想指出 2012 年使用贝叶斯观点自动优化超参数的论文。
-\href{https://github.com/jaberg/hyperopt}{代码可以获得}，也已经被其他的研究人员
-使用了。
+术就是\emph{网格搜索}（\emph{grid search}），可以系统化地对超参数的参数空间的网
+格进行搜索。网格搜索的成就和限制（易于实现的变体）在 James Bergstra 和 Yoshua
+Bengio $2012$年的论
+文\footnote{\href{http://dl.acm.org/citation.cfm?id=2188395}{Random search for
+    hyper-parameter optimization}，作者为 James Bergstra 和 Yoshua Bengio
+  （2012）。}中已经给出了综述。很多更加精细的方法也被大家提出来了。我这里不会给
+出介绍，但是想指出 2012 年使用贝叶斯观点自动优化超参
+数\footnote{\href{http://papers.nips.cc/paper/4522-practical-bayesian-optimization-of-machine-learning-algorithms.pdf}{Practical
+    Bayesian optimization of machine learning algorithms}，作者为 Jasper Snoek，
+  Hugo Larochelle，和 Ryan Adams。}的论文。代码可以从%
+\href{https://github.com/jaberg/hyperopt}{这里}获得，也已经被其他的研究人员使用
+了。\\
 
 \textbf{总结：} 跟随上面的经验并不能帮助你的网络给出绝对最优的结果。但是很可能给
 你一个好的开始和一个改进的基础。特别地，我已经非常独立地讨论了超参数的选择。实践
@@ -2243,8 +2251,10 @@ $C$，
   \label{eq:105}\tag{105}
 \end{equation}
 
-使用微积分，我们可证明右式表达式可以进行最小化\footnote{Strictly speaking, for this to be a minimum, and not merely an extremum, we need to assume that the Hessian matrix is positive definite. Intuitively, this means that the function $C$
- looks like a valley locally, not a mountain or a saddle.}，选择：
+使用微积分，我们可证明右式表达式可以进行最小化\footnote{Strictly speaking, for
+  this to be a minimum, and not merely an extremum, we need to assume that the
+  Hessian matrix is positive definite. Intuitively, this means that the function
+  $C$ looks like a valley locally, not a mountain or a saddle.}，选择：
 \begin{equation}
   \Delta w = -H^{-1} \nabla C
   \label{eq:106}\tag{106}
@@ -2277,8 +2287,7 @@ $w+\Delta w = w - H^{-1}\nabla C$ 可以显著地降低代价函数的值。这�
 Hessian 矩阵会有 $10^7 \times 10^7=10^14$ 个元素。这真的是太大了！所以在实践中，
 计算 $H^{-1}\nabla C$ 就极其困难。不过，这并不表示学习理解它没有用了。实际上，有
 很多受到 Hessian 优化启发的梯度下降的变种，能避免产生太大矩阵的问题。让我们看看
-其中一个称为基于 momentum 梯度下降的方法。
-\\
+其中一个称为基于 momentum 梯度下降的方法。\\
 
 \textbf{基于 momentum 的梯度下降：} 直觉上看，Hessian 优化的优点是它不仅仅考虑了
 梯度，而且还包含梯度如何变化的信息。基于 momentum 的梯度下降就基于这个直觉，但是
@@ -2308,13 +2317,13 @@ C$ 改变了速度，$v$，速度随后再控制 $w$ 变化率。直觉上看，
 每一步速度都不断增大，所以我们会越来越快地达到谷底。这样就能够确保 momentum 技术
 比标准的梯度下降运行得更快。当然，这里也会有问题，一旦达到谷底，我们就会跨越过去。
 或者，如果梯度本该快速改变而没有改变，那么我们会发现自己在错误的方向上移动太多了。
-这就是在 \eqref{eq:107} 中使用 $\mu$ 这个超参数的原因了。前面提到，$\mu$ 可以控制系统中的
-摩擦力大小；更加准确地说，你应该将 $1-\mu$ 看成是摩擦力的量。当 $\mu=1$ 时，没有
-摩擦，速度完全由梯度 $\nabla C$ 决定。相反，若是 $\mu=0$，就存在很大的摩擦，速度
-无法叠加，公式 \eqref{eq:107} \eqref{eq:108} 就变成了通常的梯度下降，$w\rightarrow w'=w-\eta \nabla
-C$。在实践中，使用 $0$ 和 $1$ 之间的 $\mu$ 值可以给我们避免过量而又能够叠加速度
-的好处。我们可以使用 hold out 验证数据集来选择合适的 $\mu$ 值，就像我们之前选择
-$\eta$ 和 $\lambda$ 那样。
+这就是在 \eqref{eq:107} 中使用 $\mu$ 这个超参数的原因了。前面提到，$\mu$ 可以控
+制系统中的摩擦力大小；更加准确地说，你应该将 $1-\mu$ 看成是摩擦力的量。当
+$\mu=1$ 时，没有摩擦，速度完全由梯度 $\nabla C$ 决定。相反，若是 $\mu=0$，就存在
+很大的摩擦，速度无法叠加，公式 \eqref{eq:107} \eqref{eq:108} 就变成了通常的梯度
+下降，$w\rightarrow w'=w-\eta \nabla C$。在实践中，使用 $0$ 和 $1$ 之间的 $\mu$
+值可以给我们避免过量而又能够叠加速度的好处。我们可以使用 hold out 验证数据集来选
+择合适的 $\mu$ 值，就像我们之前选择$\eta$ 和 $\lambda$ 那样。
 
 我到现在也没有把 $\mu$ 看成是超参数。原因在于 $\mu$ 的标准命名不大好：它叫做
 \emph{moment co-efficient}。这其实很让人困惑，因为 $\mu$ 并不是物理学那个叫做动
@@ -2342,12 +2351,19 @@ $\eta$ 和 $\lambda$ 那样。
 
 \textbf{其他优化代价函数的方法：} 很多其他的优化代价函数的方法也被提出来了，并没
 有关于哪种最好的统一意见。当你越来越深入了解神经网络时，值得去尝试其他的优化技术，
-理解他们工作的原理，优势劣势，以及在实践中如何应用。前面我提到的一篇论文\footnote{\href{http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf}{Efficient BackProp}, by Yann LeCun, Léon Bottou, Genevieve Orr and Klaus-Robert Müller (1998).}，介绍并
-对比了这些技术，包含共轭梯度下降和 BFGS 方法（也可以看看 limited memory BFGS，
+理解他们工作的原理，优势劣势，以及在实践中如何应用。前面我提到的一篇论
+文\footnote{\href{http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf}{Efficient
+    BackProp}, by Yann LeCun, Léon Bottou, Genevieve Orr and Klaus-Robert
+  Müller (1998).}，介绍并对比了这些技术，包含共轭梯度下降和 BFGS 方法（也可以看
+  看 limited memory BFGS，
   \href{http://en.wikipedia.org/wiki/Limited-memory_BFGS}{L-BFGS}。另一种近期效
-  果很不错技术\footnote{例如，看看 \href{http://www.cs.toronto.edu/~hinton/absps/momentum.pdf}{On the importance of initialization and momentum in deep learning}, by Ilya Sutskever, James Martens, George Dahl, and Geoffrey Hinton (2012).}是 Nesterov 的加速梯度技术，这个技术对 momentum 技术进行了改进。然
-  而，对很多问题，标准的随机梯度下降算法，特别当 momentum 用起来后就可以工作得很
-  好了，所以我们会继续在本书后面使用随机梯度下算法。
+  果很不错技术\footnote{例如，看看
+    \href{http://www.cs.toronto.edu/~hinton/absps/momentum.pdf}{On the
+      importance of initialization and momentum in deep learning}, by Ilya
+    Sutskever, James Martens, George Dahl, and Geoffrey Hinton (2012).}是
+  Nesterov 的加速梯度技术，这个技术对 momentum 技术进行了改进。然而，对很多问题，
+  标准的随机梯度下降算法，特别当 momentum 用起来后就可以工作得很好了，所以我们会
+  继续在本书后面使用随机梯度下算法。
 
 \subsection{人工神经元的其他模型}
 \label{subsec:other_models_of_artificial_neuron}
@@ -2385,9 +2401,13 @@ $\tanh$ 的形状：
 1)$。这意味着如果你构建基于 $\tanh$ 神经元，你可能需要正规化最终的输出（取决于应
   用的细节，还有你的输入），跟 sigmoid 网络略微不同。
 
-类似于 S 型神经元，基于 tanh 神经元的网络可以在理论上，计算任何将输入映射到
-$(-1, 1)$ 的函数\footnote{There are some technical caveats to this statement for both tanh and sigmoid neurons, as well as for the rectified linear neurons discussed below. However, informally it's usually fine to think of neural networks as being able to approximate any function to arbitrary accuracy.}。而且，诸如反向传播和随机梯度下降这样的想法也能够轻松地用在
-tanh 神经元构成的网络上的。
+类似于 S 型神经元，基于 tanh 神经元的网络可以在理论上，计算任何将输入映射到$(-1,
+1)$ 的函数\footnote{There are some technical caveats to this statement for both
+  tanh and sigmoid neurons, as well as for the rectified linear neurons
+  discussed below. However, informally it's usually fine to think of neural
+  networks as being able to approximate any function to arbitrary accuracy.}。而
+且，诸如反向传播和随机梯度下降这样的想法也能够轻松地用在tanh 神经元构成的网络上
+的。
 
 \subsection*{练习}
 
@@ -2395,19 +2415,22 @@ tanh 神经元构成的网络上的。
 \item 证明公式~\eqref{eq:111}。
 \end{itemize}
 
-那么你应该在网络中使用什么类型的神经元呢，tanh 还是 S 型？实话讲，确实并没
-有先验的答案！然而，存在一些理论论点和实践证据表明 tanh 有时候表现更好\footnote{See, for example, Efficient BackProp, by Yann LeCun, Léon Bottou, Genevieve Orr and Klaus-Robert Müller (1998), and Understanding the difficulty of training deep feedforward networks, by Xavier Glorot and Yoshua Bengio (2010).}。
-让我简要介绍一下其中关于 tanh 的一个理论观点。假设我们使用 S 型神经元，所
-有激活值都是正数。让我们考虑一下权重 $w_{jk}^{l+1}$ 输入到第 $l+1$ 层的第 $j$ 个
-神经元上。反向传播的规则告诉我们相关的梯度是 $a_k^l\delta_j^{l+1}$。因为所有的激
-活值都是正数，所以梯度的符号就和 $\delta_j^{l+1}$ 一致。这意味着如果
-$\delta_j^{l+1}$ 为正，那么所有的权重 $w_{jk}^{l+1}$ 都会在梯度下降时减少，而如
-果 $\delta_j^{l+1}$ 为负，那么所有的权重 $w_{jk}^{l+1}$ 都会在梯度下降时增加。换
-言之，针对同一的神经元的所有权重都会或者一起增加或者一起减少。这就有问题了，因为
-某些权重可能需要有相反的变化。这样的话，只能是某些输入激活值有相反的符号才可能出
-现。所以，我们用 $\tanh$ 替换就能够达到这个目的。因此，因为 $\tanh$ 是关于 $0$
-对称的，$tanh(-z)=-tanh(z)$，我们甚至期望，大概地，隐藏层的激活值能够在正负间保
-持平衡。这样其实可以保证对权重更新没有系统化的单方面的偏置。
+那么你应该在网络中使用什么类型的神经元呢，tanh 还是 S 型？实话讲，确实并没有先验
+的答案！然而，存在一些理论论点和实践证据表明 tanh 有时候表现更好\footnote{See,
+  for example, Efficient BackProp, by Yann LeCun, Léon Bottou, Genevieve Orr
+  and Klaus-Robert Müller (1998), and Understanding the difficulty of training
+  deep feedforward networks, by Xavier Glorot and Yoshua Bengio (2010).}。让我简
+要介绍一下其中关于 tanh 的一个理论观点。假设我们使用 S 型神经元，所有激活值都是
+正数。让我们考虑一下权重 $w_{jk}^{l+1}$ 输入到第 $l+1$ 层的第 $j$ 个神经元上。反
+向传播的规则告诉我们相关的梯度是 $a_k^l\delta_j^{l+1}$。因为所有的激活值都是正数，
+所以梯度的符号就和 $\delta_j^{l+1}$ 一致。这意味着如果$\delta_j^{l+1}$ 为正，那
+么所有的权重 $w_{jk}^{l+1}$ 都会在梯度下降时减少，而如果 $\delta_j^{l+1}$ 为负，
+那么所有的权重 $w_{jk}^{l+1}$ 都会在梯度下降时增加。换言之，针对同一的神经元的所
+有权重都会或者一起增加或者一起减少。这就有问题了，因为某些权重可能需要有相反的变
+化。这样的话，只能是某些输入激活值有相反的符号才可能出现。所以，我们用 $\tanh$
+替换就能够达到这个目的。因此，因为 $\tanh$ 是关于 $0$对称的，$tanh(-z)=-tanh(z)$，
+我们甚至期望，大概地，隐藏层的激活值能够在正负间保持平衡。这样其实可以保证对权重
+更新没有系统化的单方面的偏置。
 
 我们应当如何看待这个论点？尽管论点是建设性的，但它还只是一个启发式的规则，而非严
 格证明说 $\tanh$ 就一定超过 sigmoid 函数。可能 sigmoid 神经元还有其他的特性能够
@@ -2431,14 +2454,27 @@ $\delta_j^{l+1}$ 为正，那么所有的权重 $w_{jk}^{l+1}$ 都会在梯度�
 显然，这样的神经元和 sigmoid 和 $\tanh$ 都不一样。然而，ReLU 也是能够用来计算任何
 函数的，也可以使用反向传播算法和随机梯度下降进行训练。
 
-什么时候应该使用 ReLU 而非其他神经元呢？一些近期的图像识别上的研究工作\footnote{See, for example, What is the Best Multi-Stage Architecture for Object Recognition?, by Kevin Jarrett, Koray Kavukcuoglu, Marc'Aurelio Ranzato and Yann LeCun (2009), Deep Sparse Rectiﬁer Neural Networks, by Xavier Glorot, Antoine Bordes, and Yoshua Bengio (2011), and ImageNet Classification with Deep Convolutional Neural Networks, by Alex Krizhevsky, Ilya Sutskever, and Geoffrey Hinton (2012). Note that these papers fill in important details about how to set up the output layer, cost function, and regularization in networks using rectified linear units. I've glossed over all these details in this brief account. The papers also discuss in more detail the benefits and drawbacks of using rectified linear units. Another informative paper is Rectified Linear Units Improve Restricted Boltzmann Machines, by Vinod Nair and Geoffrey Hinton (2010), which demonstrates the benefits of using rectified linear units in a somewhat different approach to neural networks.}找到了使用
-ReLU 所带来的好处。然而，就像 $\tanh$ 神经元那样，我们还没有一个关于什么时候 什么
-原因 ReLU 表现更好的深度的理解。为了让你感受一下这个问题，回想起 sigmoid 神经元在
-饱和时停止学习的问题，也就是输出接近 $0$ 或者 $1$ 的时候。在这章我们也反复看到了
-问题就是 $\sigma'$ 降低了梯度，减缓了学习。$\tanh$ 神经元也有类似的问题。对比一
-下，提高 ReLU 的带权输入并不会导致其饱和，所以就不存在前面那样的学习速度下降。另
-外，当带权输入是负数的时候，梯度就消失了，所以神经元就完全停止了学习。这就是很多
-有关理解 ReLU 何时何故更优的问题中的两个。
+什么时候应该使用 ReLU 而非其他神经元呢？一些近期的图像识别上的研究工
+作\footnote{See, for example, What is the Best Multi-Stage Architecture for
+  Object Recognition?, by Kevin Jarrett, Koray Kavukcuoglu, Marc'Aurelio Ranzato
+  and Yann LeCun (2009), Deep Sparse Rectiﬁer Neural Networks, by Xavier Glorot,
+  Antoine Bordes, and Yoshua Bengio (2011), and ImageNet Classification with
+  Deep Convolutional Neural Networks, by Alex Krizhevsky, Ilya Sutskever, and
+  Geoffrey Hinton (2012). Note that these papers fill in important details about
+  how to set up the output layer, cost function, and regularization in networks
+  using rectified linear units. I've glossed over all these details in this
+  brief account. The papers also discuss in more detail the benefits and
+  drawbacks of using rectified linear units. Another informative paper is
+  Rectified Linear Units Improve Restricted Boltzmann Machines, by Vinod Nair
+  and Geoffrey Hinton (2010), which demonstrates the benefits of using rectified
+  linear units in a somewhat different approach to neural networks.}找到了使用
+ReLU 所带来的好处。然而，就像 $\tanh$ 神经元那样，我们还没有一个关于什么时候 什
+么原因 ReLU 表现更好的深度的理解。为了让你感受一下这个问题，回想起 sigmoid 神经
+元在饱和时停止学习的问题，也就是输出接近 $0$ 或者 $1$ 的时候。在这章我们也反复看
+到了问题就是 $\sigma'$ 降低了梯度，减缓了学习。$\tanh$ 神经元也有类似的问题。对
+比一下，提高 ReLU 的带权输入并不会导致其饱和，所以就不存在前面那样的学习速度下降。
+另外，当带权输入是负数的时候，梯度就消失了，所以神经元就完全停止了学习。这就是很
+多有关理解 ReLU 何时何故更优的问题中的两个。
 
 我已经给出了一些不确定性的描述，指出我们现在还没有一个坚实的理论来解释如何选择激
 活函数。实际上，这个问题比我已经讲过的还要困难，因为其实是有无穷多的可能的激活函
@@ -2487,14 +2523,16 @@ ReLU 所带来的好处。然而，就像 $\tanh$ 神经元那样，我们还没
 有新的证据出现时，也需要进行调整甚至丢弃。
 
 对这种情况的一种观点是——任何启发式的关于神经网络的论点会带来一个挑战。例如，考虑
-之前我引用的语句，解释 dropout 工作的原因\footnote{From ImageNet Classification with Deep Convolutional Neural Networks by Alex Krizhevsky, Ilya Sutskever, and Geoffrey Hinton (2012).}：“这个技术减少了复杂的神经元之间的互
-适应，因为一个神经元不能够依赖于特定其他神经元的存在。因此，这个就强制性地让我们
-学习更加健壮的在很多不同的神经元的随机子集的交集中起到作用的那些特征。”这是一个
-丰富而又争议的假说，我们可以根据这个观点发展出一系列的研究项目，搞清楚哪些部分真
-的，哪些是假的，那个需要变化和改良。实际上，有一小部分研究人员正在调查
-dropout（和其他变体）试着理解其工作的机制，还有 dropout 的极限所在。所以，这些研
-究也跟随着那些我们已经讨论过的启发式想法。每个启发式想法不仅仅是一个（潜在的）解
-释，同样也是一种更加细化地调查和理解的挑战。
+之前我引用的语句，解释 dropout 工作的原因\footnote{From ImageNet Classification
+  with Deep Convolutional Neural Networks by Alex Krizhevsky, Ilya Sutskever,
+  and Geoffrey Hinton (2012).}：“这个技术减少了复杂的神经元之间的互适应，因为一
+个神经元不能够依赖于特定其他神经元的存在。因此，这个就强制性地让我们学习更加健壮
+的在很多不同的神经元的随机子集的交集中起到作用的那些特征。”这是一个丰富而又争议
+的假说，我们可以根据这个观点发展出一系列的研究项目，搞清楚哪些部分真的，哪些是假
+的，那个需要变化和改良。实际上，有一小部分研究人员正在调查dropout（和其他变体）
+试着理解其工作的机制，还有 dropout 的极限所在。所以，这些研究也跟随着那些我们已
+经讨论过的启发式想法。每个启发式想法不仅仅是一个（潜在的）解释，同样也是一种更加
+细化地调查和理解的挑战。
 
 当然，对某个单独的人去研究所有这些启发式想法其实在时间上是不允许的。需要神经网络
 的研究群体花费数十年（或者更多）来发展出一个相当强大，基于证据的关于神经网络工作

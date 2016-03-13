@@ -6,7 +6,7 @@ TARGETS := $(patsubst %.tex,%.pdf,$(wildcard *.tex))
 
 .PHONY: clean
 
-all: $(TARGETS)
+all: $(TARGETS) ../plots.tex
 
 %.pdf: %.tex
 	$(TEX) $(basename $<)
