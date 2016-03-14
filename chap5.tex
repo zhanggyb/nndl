@@ -67,8 +67,8 @@
     architectures for AI} 的第二部分。}。
  
 那我们如何训练这样的深度神经网络呢？在本章中，我们尝试使用我们犹如苦力般的学习算
-法 —— 基于\hyperref[ch:HowTheBackpropagationAlgorithmWorks]{反向传播}的%
-\hyperref[sec:learning_with_gradient_descent]{随机梯度下降} —— 来训练深度网络。
+法~——~基于\hyperref[ch:HowTheBackpropagationAlgorithmWorks]{反向传播}的%
+\hyperref[sec:learning_with_gradient_descent]{随机梯度下降}~——~来训练深度网络。
 但是这会产生问题，因为我们的深度神经网络并不能比浅层网络性能好太多。
  
 这个失败的结果好像与上面的讨论相悖。这就能让我们退缩么，不，我们要深入进去试着理
@@ -212,7 +212,7 @@ git clone https://github.com/mnielsen/neural-networks-and-deep-learning.git
 随着训练的推移发生什么样的变化呢？让我们看看只有两个隐藏层。学习速度变化如下：
  
 为了产生这些结果，我在 $1000$ 个训练图像上进行了 $500$ 轮 batch 梯度下降。这
-和我们通常训练方式还是不同的 —— 我没有使用 minibatch，仅仅使用了 $1000$ 个训练
+和我们通常训练方式还是不同的~——~我没有使用 minibatch，仅仅使用了 $1000$ 个训练
 图像，而不是全部的 $50,000$ 幅图。我并不是想做点新鲜的尝试，或者蒙蔽你们的双眼，
 但因为使用 minibatch 随机梯度下降会在结果中带来更多的噪声（尽管在平均噪声的时候
   结果很相似）。使用我已经确定的参数可以对结果进行平滑，这样我们可以看清楚真正的
@@ -237,7 +237,7 @@ git clone https://github.com/mnielsen/neural-networks-and-deep-learning.git
  
 为何消失的梯度问题会出现呢？我们可以通过什么方式避免它？还有在训练深度神经网络时
 如何处理好这个问题？实际上，这个问题是可以避免的，尽管替代方法并不是那么有效，同
-样会产生问题 —— 在前面的层中的梯度会变得非常大！这也叫做 爆炸的梯度问题
+样会产生问题~——~在前面的层中的梯度会变得非常大！这也叫做 爆炸的梯度问题
 （exploding gradient problem），这也没比消失的梯度问题更好处理。更加一般地说，在
 深度神经网络中的梯度是**不稳定**的，在前面的层中或会消失，或会爆炸。这种不稳定性
 才是深度神经网络中基于梯度学习的根本问题。这就是我们需要理解的东西，如果可能的话，

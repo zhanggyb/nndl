@@ -47,61 +47,41 @@
 手工找到合适的权重和偏置就可以了，不需要什么学习算法。然而，看起来使用梯度下降的
 方式来学习权重和偏置是很有启发的。所以，我们来看看神经元如何学习。
 
-为了让这个例子更明确，我会首先将权重和偏置初始化为 $0.6$ 和 $0.9$。这些就是一般
-的开始学习的选择，并没有任何刻意的想法。一开始的神经元的输出是 $0.82$，所以这离
-我们的目标输出 $0.0$ 还差得很远。点击%
-\href{http://neuralnetworksanddeeplearning.com/chap3.html#the_cross-entropy_cost_function}{
-  网页上图形右下角的“运行”按钮}来看看神经元如何学习到让输出接近 $0.0$ 的。注意
-这并不是一个已经录好的动画，你的浏览器实际上是正在进行梯度的计算，然后使用梯度更
-新来对权重和偏置进行更新，并且展示结果。设置\learningrate{} $\eta=0.15$ 进行学习一方面足
-够慢的让我们跟随学习的过程，另一方面也保证了学习的时间不会太久，几秒钟应该就足够
-了。代价函数是我们在第一章用到的二次函数，$C$。这里我也会给出准确的形式，所以不
-需要翻到前面查看定义了。注意，你可以通过点击%
-\href{http://neuralnetworksanddeeplearning.com/chap3.html#the_cross-entropy_cost_function}{
-  网页上图形中的“Run”按钮}重复运行动画多次。
-% checkout https://github.com/mnielsen/nnadl_site/tree/gh-pages/js/saturation1.js to get the JS code
-% The macro \quadraticCostLearning is defined in plots.tex
+为了让这个例子更明确，我会首先将权重和偏置初始化为 $0.6$ 和 $0.9$。这些就是一般的
+开始学习的选择，并没有任何刻意的想法。一开始的神经元的输出是 $0.82$，所以这离我们
+的目标输出 $0.0$ 还差得很远。从下图来看看神经元如何学习到让输出接近 $0.0$ 的。注
+意这些图像实际上是正在进行梯度的计算，然后使用梯度更新来对权重和偏置进行更新，并
+且展示结果。设置\learningrate{} $\eta=0.15$ 进行学习一方面足够慢的让我们跟随学习
+的过程，另一方面也保证了学习的时间不会太久，几秒钟应该就足够了。代价函数是我们在
+第一章用到的二次函数，$C$。这里我也会给出准确的形式，所以不需要翻到前面查看定义
+了。
 \begin{center}
   \includegraphics{saturation1-0}
 \end{center}
 随着\epochs{}的增加，神经元的输出、权重、偏置和代价的变化如下面一系列图形所示：
 \begin{center}
-  \begin{tabular}{ll}
-    \includegraphics{saturation1-50} & \includegraphics{saturation1-100}\\
-  \end{tabular}
-  \begin{tabular}{ll}
-    \includegraphics{saturation1-150} & \includegraphics{saturation1-200}\\
-  \end{tabular}
-  \begin{tabular}{ll}
-    \includegraphics{saturation1-250} & \includegraphics{saturation1-300}
-  \end{tabular}
+    \includegraphics{saturation1-50}\includegraphics{saturation1-100}\\
+    \includegraphics{saturation1-150}\includegraphics{saturation1-200}\\
+    \includegraphics{saturation1-250}\includegraphics{saturation1-300}
 \end{center}
 
-正如你所见，神经元快速地学到了使得代价函数下降的权重和偏置，给出了最终的输出为
-$0.09$。这虽然不是我们的目标输出 $0.0$，但是已经挺好了。假设我们现在将初始权重和
-偏置都设置为 $2.0$。此时初始输出为 $0.98$，这是和目标值的差距相当大的。现在看看
+正如你所见，神经元快速地学到了使得代价函数下降的权重和偏置，给出了最终的输出
+为 $0.09$。这虽然不是我们的目标输出 $0.0$，但是已经挺好了。假设我们现在将初始权重
+和偏置都设置为 $2.0$。此时初始输出为 $0.98$，这是和目标值的差距相当大的。现在看看
 神经元学习的过程。
 \begin{center}
   \includegraphics{saturation2-0}
 \end{center}
-点击%
-\href{http://neuralnetworksanddeeplearning.com/chap3.html#the_cross-entropy_cost_function}{
-  网页上的“Run”按钮}，你将看到如下的一系列变化：
-  \begin{center}
-    \begin{tabular}{ll}
-      \includegraphics{saturation2-50} & \includegraphics{saturation2-100}\\
-    \end{tabular}
-    \begin{tabular}{ll}
-      \includegraphics{saturation2-150} & \includegraphics{saturation2-200}\\
-    \end{tabular}
-    \begin{tabular}{ll}
-      \includegraphics{saturation2-250} & \includegraphics{saturation2-300}
-    \end{tabular}
-  \end{center}
+你将看到如下的一系列变化：\label{saturation2_anchor}
+\begin{center}
+  \includegraphics{saturation2-50}\includegraphics{saturation2-100}\\
+  \includegraphics{saturation2-150}\includegraphics{saturation2-200}\\
+  \includegraphics{saturation2-250}\includegraphics{saturation2-300}
+\end{center}
 
-虽然这个例子使用的了同样的\learningrate{}（$\eta=0.15$），我们可以看到刚开始的学习速度是
-比较缓慢的。对前 $150$ 左右的学习次数，权重和偏置并没有发生太大的变化。随后学习速
-度加快，与上一个例子中类似了，神经网络的输出也迅速接近 $0.0$。
+虽然这个例子使用的了同样的\learningrate{}（$\eta=0.15$），我们可以看到刚开始的学
+习速度是比较缓慢的。对前 $150$ 左右的学习次数，权重和偏置并没有发生太大的变化。随
+后学习速度加快，与上一个例子中类似了，神经网络的输出也迅速接近 $0.0$。
 
 这种行为看起来和人类学习行为差异很大。正如我在此节开头所说，我们通常是在犯错比较
 明显的时候学习的速度最快。但是我们已经看到了人工神经元在其犯错较大的情况下其实学
@@ -109,34 +89,34 @@ $0.09$。这虽然不是我们的目标输出 $0.0$，但是已经挺好了。�
 出现。为何学习如此缓慢？我们能够找到避免这种情况的方法吗？
 
 为了理解这个问题的源头，想想我们的神经元是通过改变权重和偏置，并以一个代价函数的
-偏导数（$\partial C/\partial w$ 和$\partial C/\partial b$）决定的速度学习。所以，
-我们在说“学习缓慢”时，实际上就是说这些偏导数很小。理解他们为何这么小就是我们面
-临的挑战。为了理解这些，让我们计算偏导数看看。我们一直在用的是方程~\eqref{eq:6}
-表示的二次代价函数，定义如下
+偏导数（$\partial C/\partial w$ 和
+$\partial C/\partial b$）决定的速度学习。所以，我们在说“学习缓慢”时，实际上就是
+说这些偏导数很小。理解他们为何这么小就是我们面临的挑战。为了理解这些，让我们计算
+偏导数看看。我们一直在用的是方程~\eqref{eq:6}表示的二次代价函数，定义如下
 \begin{equation}
   C = \frac{(y-a)^2}{2}
 \label{eq:54}\tag{54}
 \end{equation}
 
-其中 $a$ 是神经元的输出，训练输入为 $x=1$，$y=0$ 则是目标输出。显式地使用权重和
-偏置来表达这个，我们有 $a = \sigma(z)$，其中 $z = wx+b$。使用链式法则来求权重和
-偏置的偏导数就有：
+其中 $a$ 是神经元的输出，训练输入为 $x=1$，$y=0$ 则是目标输出。显式地使用权重和偏
+置来表达这个，我们有 $a = \sigma(z)$，其中 $z = wx+b$。使用链式法则来求权重和偏置
+的偏导数就有：
 \begin{align}
   \frac{\partial C}{\partial w} &= (a-y)\sigma'(z) x = a \sigma'(z)\label{eq:55}\tag{55}\\
   \frac{\partial C}{\partial b} &= (a-y)\sigma'(z) = a \sigma'(z)\label{eq:56}\tag{56}
 \end{align}
 
-其中我已经将 $x = 1$ 和 $y = 0$ 代入了。为了理解这些表达式的行为，让我们仔细看
-$\sigma'(z)$ 这一项。首先回忆一下 $\sigma$ 函数图像：
+其中我已经将 $x = 1$ 和 $y = 0$ 代入了。为了理解这些表达式的行为，让我们仔细
+看 $\sigma'(z)$ 这一项。首先回忆一下 $\sigma$ 函数图像：
 \begin{center}
   \includegraphics{sigmoid_function}
 \end{center}
 
-我们可以从这幅图看出，当神经元的输出接近 $1$ 的时候，曲线变得相当平，所以
-$\sigma'(z)$ 就很小了。方程~\eqref{eq:55} 和~\eqref{eq:56} 也告诉我们 $\partial
-C/\partial w$ 和 $\partial C/\partial b$ 会非常小。这其实就是学习缓慢的原因所在。
-而且，我们后面也会提到，这种学习速度下降的原因实际上也是更加一般的神经网络学习缓
-慢的原因，并不仅仅是在这个特例中特有的。
+我们可以从这幅图看出，当神经元的输出接近 $1$ 的时候，曲线变得相当平，所
+以 $\sigma'(z)$ 就很小了。方程~\eqref{eq:55} 和~\eqref{eq:56} 也告诉我
+们 $\partial C/\partial w$ 和 $\partial C/\partial b$ 会非常小。这其实就是学习缓
+慢的原因所在。而且，我们后面也会提到，这种学习速度下降的原因实际上也是更加一般的
+神经网络学习缓慢的原因，并不仅仅是在这个特例中特有的。
 
 \subsection{引入交叉熵代价函数}
 \label{sec:introducing_the_cross-entropy_cost_function}
@@ -160,27 +140,28 @@ C/\partial w$ 和 $\partial C/\partial b$ 会非常小。这其实就是学习�
 其中 $n$ 是训练数据的总数，求和是在所有的训练输入 $x$ 上进行的，$y$ 是对应的目标
 输出。
 
-表达式~\eqref{eq:57} 是否解决学习缓慢的问题并不明显。实际上，甚至将这个定义看做
-是代价函数也不是显而易见的！在解决学习缓慢前，我们来看看交叉熵为何能够解释成一个
-代价函数。
+表达式~\eqref{eq:57} 是否解决学习缓慢的问题并不明显。实际上，甚至将这个定义看做是
+代价函数也不是显而易见的！在解决学习缓慢前，我们来看看交叉熵为何能够解释成一个代
+价函数。
 
-将交叉熵看做是代价函数有两点原因。第一，它是非负的，$C > 0$。可以看出：（a）
-\eqref{eq:57} 中的求和中的所有独立的项都是负数的，因为对数函数的定义域是 $(0,1)$；
-      （b）求和前面有一个负号。
+将交叉熵看做是代价函数有两点原因。第一，它是非负的，$C > 0$。可以看出：
+（a）\eqref{eq:57} 中的求和中的所有独立的项都是负数的，因为对数函数的定义域
+是 $(0,1)$；（b）求和前面有一个负号。
 
-第二，如果对于所有的训练输入 $x$，神经元实际的输出接近目标值，那么交叉熵将接近
-$0$\footnote{为了证明它我需要假设目标输出 $y$ 都是 $0$ 或$1$。这通常是解决分类问
-  题的情况，例如，当计算布尔函数时。要了解当我们不做这个假设时会发生什么，看看在
-  本节结束时的练习。}。假设在这个例子中，$y=0$ 而 $a\approx 0$。这是我们想到得到
-的结果。我们看到公式 \eqref{eq:57} 中第一个项就消去了，因为 $y=0$，而第二项实际
-上就是 $-\ln (1-a)\approx 0$。反之，$y=1$ 而 $a\approx 1$。所以在实际输出和目标
-输出之间的差距越小，最终的交叉熵的值就越低了。
+第二，如果对于所有的训练输入 $x$，神经元实际的输出接近目标值，那么交叉熵将接
+近 $0$\footnote{为了证明它我需要假设目标输出 $y$ 都是 $0$
+  或$1$。这通常是解决分类问题的情况，例如，当计算布尔函数时。要了解当我们不做这个
+  假设时会发生什么，看看在本节结束时的练习。}。假设在这个例子
+中，$y=0$ 而 $a\approx 0$。这是我们想到得到的结果。我们看到公式 \eqref{eq:57} 中
+第一个项就消去了，因为 $y=0$，而第二项实际上就是 $-\ln (1-a)\approx 0$。反
+之，$y=1$ 而 $a\approx 1$。所以在实际输出和目标输出之间的差距越小，最终的交叉熵的
+值就越低了。
 
-综上所述，交叉熵是非负的，在神经元达到很好的正确率的时候会接近 $0$。这些其实就是
-我们想要的代价函数的特性。其实这些特性也是二次代价函数具备的。所以，交叉熵就是很
-好的选择了。但是交叉熵代价函数有一个比二次代价函数更好的特性就是它避免了学习速度
-下降的问题。为了弄清楚这个情况，我们来算算交叉熵函数关于权重的偏导数。我们将
-$a=\sigma(z)$ 代入到 \eqref{eq:57} 中应用两次链式法则，得到：
+综上所述，交叉熵是非负的，在神经元达到很好的正确率的时候会接近
+$0$。这些其实就是我们想要的代价函数的特性。其实这些特性也是二次代价函数具备的。所
+以，交叉熵就是很好的选择了。但是交叉熵代价函数有一个比二次代价函数更好的特性就是
+它避免了学习速度下降的问题。为了弄清楚这个情况，我们来算算交叉熵函数关于权重的偏
+导数。我们将 $a=\sigma(z)$ 代入到 \eqref{eq:57} 中应用两次链式法则，得到：
 \begin{align}
   \frac{\partial C}{\partial w_j} &= -\frac{1}{n} \sum_x \left(
   \frac{y }{\sigma(z)} -\frac{(1-y)}{1-\sigma(z)} \right)
@@ -197,21 +178,22 @@ $a=\sigma(z)$ 代入到 \eqref{eq:57} 中应用两次链式法则，得到：
 \label{eq:60}\tag{60}
 \end{equation}
 
-根据 $\sigma(z) = 1/(1+e^{-z})$ 的定义，和一些运算，我们可以得到 $\sigma'(z) =
-\sigma(z)(1-\sigma(z))$。后面在练习中会要求你计算这个，现在可以直接使用这个结果。
-我们看到 $\sigma'(z)$ 和 $\sigma(z)(1-\sigma(z))$ 这两项在方程中直接约去了，所以
-最终形式就是：
+根据 $\sigma(z) = 1/(1+e^{-z})$ 的定义，和一些运算，我们可以得到
+$\sigma'(z) = \sigma(z)(1-\sigma(z))$。后面在练习中会要求你计算这个，现在可以直接
+使用这个结果。我们看到 $\sigma'(z)$ 和 $\sigma(z)(1-\sigma(z))$ 这两项在方程中直
+接约去了，所以最终形式就是：
 \begin{equation}
   \frac{\partial C}{\partial w_j} =  \frac{1}{n} \sum_x x_j(\sigma(z)-y)
 \label{eq:61}\tag{61}
 \end{equation}
 
-这是一个优美的公式。它告诉我们权重学习的速度受到 $\sigma(z)-y$，也就是输出中的误
-差的控制。更大的误差，更快的学习速度。这是我们直觉上期待的结果。特别地，这个代价
-函数还避免了像在二次代价函数中类似方程中 $\sigma'(z)$ 导致的学习缓慢，见方
-程~\eqref{eq:55}。当我们使用交叉熵的时候，$\sigma'(z)$ 被约掉了，所以我们不再需
-要关心它是不是变得很小。这种约除就是交叉熵带来的特效。实际上，这也并不是非常奇迹
-的事情。我们在后面可以看到，交叉熵其实只是满足这种特性的一种选择罢了。
+这是一个优美的公式。它告诉我们权重学习的速度受到
+$\sigma(z)-y$，也就是输出中的误差的控制。更大的误差，更快的学习速度。这是我们直觉
+上期待的结果。特别地，这个代价函数还避免了像在二次代价函数中类似方程
+中 $\sigma'(z)$ 导致的学习缓慢，见方程~\eqref{eq:55}。当我们使用交叉熵的时
+候，$\sigma'(z)$ 被约掉了，所以我们不再需要关心它是不是变得很小。这种约除就是交叉
+熵带来的特效。实际上，这也并不是非常奇迹的事情。我们在后面可以看到，交叉熵其实只
+是满足这种特性的一种选择罢了。
 
 根据类似的方法，我们可以计算出关于偏置的偏导数。我这里不再给出详细的过程，你可以
 轻易验证得到
@@ -234,37 +216,24 @@ $a=\sigma(z)$ 代入到 \eqref{eq:57} 中应用两次链式法则，得到：
 \begin{center}
   \includegraphics{saturation3-0}
 \end{center}
-点击“Run”按钮看看在换成交叉熵之后网络的学习情况，你将看到如下变化的曲线：
+看看在换成交叉熵之后网络的学习情况，你将看到如下变化的曲线：
 \begin{center}
-  \begin{tabular}{ll}
-    \includegraphics{saturation3-50} & \includegraphics{saturation3-100}\\
-  \end{tabular}
-  \begin{tabular}{ll}
-    \includegraphics{saturation3-150} & \includegraphics{saturation3-200}\\
-  \end{tabular}
-  \begin{tabular}{ll}
-    \includegraphics{saturation3-250} & \includegraphics{saturation3-300}
-  \end{tabular}
+  \includegraphics{saturation3-50}\includegraphics{saturation3-100}\\
+  \includegraphics{saturation3-150}\includegraphics{saturation3-200}\\
+  \includegraphics{saturation3-250}\includegraphics{saturation3-300}
 \end{center}
 
 毫不奇怪，在这个例子中，神经元学习得相当出色，跟之前差不多。现在我们再看看之前出
-问题的那个例子
-（\href{http://neuralnetworksanddeeplearning.com/chap3.html#saturation2_anchor}{
-  链接}），权重和偏置都初始化为 $2.0$：
+问题的那个例子（\hyperref[saturation2_anchor]{链接}），权重和偏置都初始化
+为 $2.0$：
 \begin{center}
   \includegraphics{saturation4-0}
 \end{center}
-点击“Run”按钮，你将看到如下变化的曲线：
+你将看到如下变化的曲线：
 \begin{center}
-  \begin{tabular}{ll}
-    \includegraphics{saturation4-50} & \includegraphics{saturation4-100}\\
-  \end{tabular}
-  \begin{tabular}{ll}
-    \includegraphics{saturation4-150} & \includegraphics{saturation4-200}\\
-  \end{tabular}
-  \begin{tabular}{ll}
-    \includegraphics{saturation4-250} & \includegraphics{saturation4-300}
-  \end{tabular}
+  \includegraphics{saturation4-50}\includegraphics{saturation4-100}\\
+  \includegraphics{saturation4-150}\includegraphics{saturation4-200}\\
+  \includegraphics{saturation4-250}\includegraphics{saturation4-300}
 \end{center}
 
 成功了！这次神经元的学习速度相当快，跟我们预期的那样。如果你观测的足够仔细，你可
@@ -304,7 +273,7 @@ $a^L_1, a^L_2, \ldots$ 是实际输出值。那么我们定义交叉熵如下
 那么我们应该在什么时候用交叉熵来替换二次代价函数？实际上，如果在输出神经元是 S
 型神经元时，交叉熵一般都是更好的选择。为什么？考虑一下我们初始化网络的权重和偏置
 时时候通常使用某种随机方法。可能会发生这样的情况，这些初始选择会对某些训练输入误
-差相当明显 —— 比如说，目标输出是 $1$，而实际值是 $0$，或者完全反过来。如果我们使
+差相当明显~——~比如说，目标输出是 $1$，而实际值是 $0$，或者完全反过来。如果我们使
 用二次代价函数，那么这就会导致学习速度的下降。它并不会完全终止学习的过程，因为这
 些权重会持续从其他的样本中进行学习，但是显然这不是我们想要的效果。
 
@@ -431,13 +400,13 @@ $a^L_1, a^L_2, \ldots$ 是实际输出值。那么我们定义交叉熵如下
 底的调研。相反，我采用上面进行的那些不正式的测试来达成目标。然而你要记住这样的测
 试仍然缺乏权威的证明，需要注意那些使得论断失效的迹象。
 
-至此，我们已经花了大量篇幅介绍交叉熵。为何对一个只能给我们的 MNIST 结果带来一点
-点性能提升的技术花费这么多的精力？后面，我们会看到其他的技术 ——
-\hyperref[sec:overfitting_and_regularization]{规范化}，会带来更大的提升效果。所
-以为何要这么细致地讨论交叉熵？部分原因在于交叉熵是一种广泛使用的代价函数，值得深
-入理解。但是更加重要的原因是神经元的饱和是神经网络中一个关键的问题，整本书都会不
-断回归到这个问题上。因此我现在深入讨论交叉熵就是因为这是一种开始理解神经元饱和以
-及如何解决这个问题的很好的实验。
+至此，我们已经花了大量篇幅介绍交叉熵。为何对一个只能给我们的 MNIST 结果带来一点点
+性能提升的技术花费这么多的精力？后面，我们会看到其他的技术 ——
+\hyperref[sec:overfitting_and_regularization]{规范化}，会带来更大的提升效果。所以
+为何要这么细致地讨论交叉熵？部分原因在于交叉熵是一种广泛使用的代价函数，值得深入
+理解。但是更加重要的原因是神经元的饱和是神经网络中一个关键的问题，整本书都会不断
+回归到这个问题上。因此我现在深入讨论交叉熵就是因为这是一种开始理解神经元饱和以及
+如何解决这个问题的很好的实验。
 
 \subsection{交叉熵的含义？源自哪里？}
 
@@ -446,9 +415,10 @@ $a^L_1, a^L_2, \ldots$ 是实际输出值。那么我们定义交叉熵如下
 的方法吗？我们如何想到这个概念？
 
 让我们从最后一个问题开始回答：什么能够激发我们想到交叉熵？假设我们发现学习速度下
-降了，并理解其原因是因为在公式~\eqref{eq:55} 和~\eqref{eq:56} 中的 $\sigma'(z)$
-那一项。在研究了这些公式后，我们可能就会想到选择一个不包含 $\sigma'(z)$ 的代价函
-数。所以，这时候对一个训练样本 $x$，其代价 $C = C_x$ 满足：
+降了，并理解其原因是因为在公式~\eqref{eq:55} 和~\eqref{eq:56} 中的
+$\sigma'(z)$那一项。在研究了这些公式后，我们可能就会想到选择一个不包
+含 $\sigma'(z)$ 的代价函数。所以，这时候对一个训练样本 $x$，其代价 $C = C_x$ 满
+足：
 \begin{align}
   \frac{\partial C}{\partial w_j} &= x_j(a-y) \label{eq:71}\tag{71}\\
   \frac{\partial C}{\partial b } &= (a-y) \label{eq:72}\tag{72}
@@ -541,20 +511,35 @@ w^L_{jk} a^{L-1}_k + b^L_j$。不过，这里我们不会使用 S 型函数来�
 如果你不熟悉这个柔性最大值函数，方程~\eqref{eq:78} 可能看起来会比较难理解。因为
 对于使用这个函数的原因你不清楚。这能帮我们解决学习缓慢的问题也不明显。为了更好地
 理解方程~\eqref{eq:78}，假设我们有一个包含四个输出神经元的神经网络，对应四个带权
-输入，表示为 $z^L_1, z^L_2, z^L_3$ 和 $z^L_4$。下面的例子中的可调整的滑块显示带
-权输入的可取值，和对应输出激活值的图形。要探索它，一个好的开始的地方是用底部的滑
-块来增加 $z^L_4$：
-
+输入，表示为 $z^L_1, z^L_2, z^L_3$ 和 $z^L_4$。下面的例子中的条块显示带
+权输入的可取值，和对应输出激活值的图形。要探索它，一个好的开始的地方是增加 $z^L_4$：
 \begin{center}
   \includegraphics{softmax}
 \end{center}
 
-在\href{http://neuralnetworksanddeeplearning.com/chap3.html#softmax}{原文的网页}%
-上有交互式的 JavaScript 控件。
-
 当你增加 $z^L_4$ 的时候，你可以看到对应激活值 $a^L_4$ 的增加，而其他的激活值就在
-下降。类似地，如果你降低 $z^L_4$ 那么 $a^L_4$ 就随之下降，而其它激活值则增加。实
-际上，如果你仔细看，你会发现在两种情形下，其他激活值的整个改变恰好填补了 $a^L_4$
+下降。例如下图显示 $z^L_4$ 为 $2$ 时：
+\begin{center}
+  \includegraphics{softmax-1}
+\end{center}
+
+下图显示 $z^L_4$ 为 $5$ 时：
+\begin{center}
+  \includegraphics{softmax-2}
+\end{center}
+
+类似地，如果你降低 $z^L_4$ 那么 $a^L_4$ 就随之下降，而其它激活值则增加。例如下图显示
+ $z^L_4$ 为 $-2$ 时：
+\begin{center}
+  \includegraphics{softmax-3}
+\end{center}
+
+下图显示 $z^L_4$ 为 $-5$ 时：
+\begin{center}
+  \includegraphics{softmax-4}
+\end{center}
+
+实际上，如果你仔细看，你会发现在两种情形下，其他激活值的整个改变恰好填补了 $a^L_4$
 的变化的空白。原因很简单，根据定义，输出的激活值加起来正好为 $1$，使用公
 式~\eqref{eq:78} 我们可以证明：
 \begin{equation}
@@ -627,7 +612,7 @@ a_7^L$ 随之增大。所以对数似然代价函数也是满足我们期待的�
 
 那关于学习缓慢问题呢？为了分析它，回想一下学习缓慢的关键就是量 $\partial C /
 \partial w^L_{jk}$ 和 $\partial C / \partial b^L_j$ 的变化情况。我不会显式地给出
-详细的推导 —— 我会在下面的问题中要求你们完成推导 —— 但是通过一点代数运算你会得
+详细的推导~——~我会在下面的问题中要求你们完成推导~——~但是通过一点代数运算你会得
 到\footnote{注意这里的表示上的差异，这里的 $y$ 和上一段中的不同。在上一段中我们
   用 $y$ 来表示网络的目标输出，例如，如果输入是 7 的图像输出一个 $7$。但是接下来
   的方程中，我用 $y$ 表示对应于 $7$ 的输出激活值的向量，即，它是一个除了第 7 位
@@ -778,7 +763,7 @@ a_7^L$ 随之增大。所以对数似然代价函数也是满足我们期待的�
 大。为了高效地训练，我们需要一种检测过度拟合是不是发生的技术，这样我们不会过度训练。
 并且我们也想要找到一些技术来降低过度拟合的影响。
 
-检测过度拟合的明显方法是使用上面的方法 —— 跟踪测试数据集合上的准确率随训练变化情况。
+检测过度拟合的明显方法是使用上面的方法~——~跟踪测试数据集合上的准确率随训练变化情况。
 如果我们看到测试数据上的准确率不再提升，那么我们就停止训练。当然，严格地说，这其
 实并非是过度拟合的一个必要现象，因为测试集和训练集上的准确率可能会同时停止提升。当
 然，采用这样的策略是可以阻止过度拟合的。
@@ -830,7 +815,7 @@ $10,000$ 幅都不相同。我们会使用 \lstinline!validation_data! 而不是
 \lstinline!traning_data! 训练集中留出或者“拿出”的一部分。
 
 在实际应用中，甚至在衡量了 \lstinline!test_data! 的性能后，我们可能也会改变想法
-并去尝试另外的方法 —— 也许是一种不同的网络架构 —— 这将会引入寻找新的超参数的的过
+并去尝试另外的方法~——~也许是一种不同的网络架构~——~这将会引入寻找新的超参数的的过
 程。如果我们这样做，难道不会产生过度拟合于 \lstinline!test_data! 的困境么？我们是
 不是需要一种数据集的潜在无限回归，这样才能够确信模型能够泛化？去除这样的疑惑其实
 是一个深刻而困难的问题。但是对我们实际应用的目标，我们不会担心太多。相反，我们会
@@ -859,7 +844,7 @@ $10,000$ 幅都不相同。我们会使用 \lstinline!validation_data! 而不是
 
 幸运的是，还有其他的技术能够缓解过度拟合，即使我们只有一个固定的网络和固定的训练集
 合。这种技术就是\emph{规范化}\index{规范化}。本节，我会给出一种最为常用的规范化
-手段 —— 有时候被称为\emph{权重衰减\index{权重衰减}（weight decay\index{weight
+手段~——~有时候被称为\emph{权重衰减\index{权重衰减}（weight decay\index{weight
   decay}）}或者 \emph{L2 规范化}\index{L2 规范化}。L2 规范化的想法是增加一个额外的
 项到代价函数上，这个项叫做\emph{规范化项}\index{规范化项}。下面是规范化的交叉熵：
 \begin{equation}
@@ -1258,7 +1243,7 @@ $|w|$ 很大时，L1 规范化的权重缩小得远比 L2 规范化要小得多�
 L1 规范化倾向于聚集网络的权重在相对少量的高重要度连接上，而其他权重就会被驱使向
 $0$ 接近。
 
-我在上面的讨论中其实忽略了一个问题 —— 在 $w=0$ 的时候，偏导数 $\partial
+我在上面的讨论中其实忽略了一个问题~——~在 $w=0$ 的时候，偏导数 $\partial
 C/\partial w$ 未定义。原因在于函数 $|w|$ 在 $w=0$ 时有个“直角”，事实上，导数是
 不存在的。不过也没有关系。我们下面要做的就是应用通常的（无规范化的）随机梯度下降
 的规则在 $w=0$ 处。这应该不会有什么问题，凭直觉地看，规范化的效果就是缩小权重，
@@ -1352,7 +1337,7 @@ $\lambda$ 值\footnote{这个以及下两个图形由程序
 \end{center}
 
 这看起来到了后面结束的地方，增加仍旧明显。这表明如果我们使用大量更多的训练数据
-—— 不妨设百万或者十亿级的手写样本，而不是仅仅 50,000个 —— 那么，我们可能会得到更
+—— 不妨设百万或者十亿级的手写样本，而不是仅仅 50,000个~——~那么，我们可能会得到更
 好的性能，即使是用这样的简单网络。
 
 获取更多的训练样本其实是很好的想法。不幸的是，这个方法代价很大，在实践中常常是很
@@ -1377,7 +1362,7 @@ $\lambda$ 值\footnote{这个以及下两个图形由程序
     for Convolutional Neural Networks Applied to Visual Document Analysis}, by
   Patrice Simard, Dave Steinkraus, and John Platt (2003)}看看一些结果，这片论文
 中，作者在 MNIST 上使用了几个的这种想法的变化方式。其中一种他们考虑的网络结构其
-实和我们已经使用过的类似 —— 一个拥有 800 个隐藏元的前馈神经网络，使用了交叉熵代
+实和我们已经使用过的类似~——~一个拥有 800 个隐藏元的前馈神经网络，使用了交叉熵代
 价函数。在标准的 MNIST 训练数据上运行这个网络，得到了 98.4\% 的分类准确率。他们
 不只旋转，还转换和扭曲图像来扩展训练数据。通过在这个扩展后的数据集上的训练，他们
 提升到了 98.9\% 的准确率。然后还在“弹性扭曲”的数据上进行了实验，这是一种特殊的
@@ -1389,7 +1374,7 @@ $\lambda$ 值\footnote{这个以及下两个图形由程序
 过应用反映真实世界变化的操作来扩展训练数据。找到这些方法其实并不困难。例如，你要
 构建一个神经网络来进行语音识别。我们人类甚至可以在有背景噪声的情况下识别语音。所
 以你可以通过增加背景噪声来扩展你的训练数据。我们同样能够对其进行加速和减速来获得
-相应的扩展数据。所以这是另外的一些扩展训练数据的方法。这些技术并不总是有用 —— 例
+相应的扩展数据。所以这是另外的一些扩展训练数据的方法。这些技术并不总是有用~——~例
 如，其实与其在数据中加入噪声，倒不如先对数据进行噪声的清理，这样可能更加有效。当
 然，记住可以进行数据的扩展，寻求应用的机会还是相当有价值的一件事。
 
@@ -1428,7 +1413,7 @@ $\lambda$ 值\footnote{这个以及下两个图形由程序
 
 还有更加有趣的现象也出现了。假设我们试着用两种机器学习算法去解决问题，算法 A 和
 算法 B。有时候出现，算法 A 在一个训练集合上超过算法 B，却在另一个训练集上弱于算
-法 B。上面我们并没有看到这个情况 —— 因为这要求两幅图有交叉的点 —— 这里并没
+法 B。上面我们并没有看到这个情况~——~因为这要求两幅图有交叉的点~——~这里并没
 有\footnote{显著的例子参见
   \href{http://dx.doi.org/10.3115/1073012.1073017}{Scaling to very very large
     corpora for natural language disambiguation}, by Michele Banko and Eric
