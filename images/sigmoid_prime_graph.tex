@@ -1,0 +1,45 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[11pt,tikz,border=1]{standalone}
+\usetikzlibrary{calc,positioning}
+\usepackage{pgfplots}
+
+\usepackage[default,mdseries=Light,bfseries=Medium,path=../fonts]{cjkfonts}
+
+\begin{document}
+
+\begin{tikzpicture}
+  
+    \begin{axis}[
+        axis lines=left,
+        xscale=1.5,
+%        xlabel=$Z$,
+        xtick distance=1,
+        ytick distance=0.05,
+        xtick={-4,-3,-2,-1,0,1,2,3,4},
+        ytick={0.00,0.05,0.10,0.15,0.20,0.25},
+%        xmax=5.1,
+        ymax=0.255,
+%        title={S 型函数的导数},
+        declare function={
+          sigmoid(\x) = 1 / (1 + exp(-\x));
+          f(\x) = sigmoid(\x) * (1 - sigmoid(\x));
+        }
+      ]
+      \addplot[
+        blue,
+        thick,
+        domain=-5:5,
+        samples=201
+      ] {
+        f(x)
+      };
+    \end{axis}    
+
+    \node [above] at (5, 6) {S 型函数的导数};
+    \node at (5, -1) {$Z$};
+  
+\end{tikzpicture} 
+
+\end{document}
