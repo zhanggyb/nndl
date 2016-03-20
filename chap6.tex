@@ -81,30 +81,26 @@ $784$（$= 28 \times 28$）个输入神经元。我们然后训练网络的权�
 原因是这样的一个网络架构不考虑图像的空间结构。例如，它在完全相同的基础上去对待相
 距很远和彼此接近的输入像素。这样的空间结构的概念必须从训练数据中推断。但是如果我
 们使用一个设法利用空间结构的架构，而不是从一个\emph{白板状态}的网络架构开始，会
-怎样？在这一节中，我会描述\emph{卷积神经网络}\index{卷积神经网络}\footnote{The
-  origins of convolutional neural networks go back to the 1970s. But the seminal
-  paper establishing the modern subject of convolutional networks was a 1998
-  paper, "Gradient-based learning applied to document recognition", by Yann
-  LeCun, Léon Bottou, Yoshua Bengio, and Patrick Haffner. LeCun has since made
-  an interesting remark on the terminology for convolutional nets: "The
-  [biological] neural inspiration in models like convolutional nets is very
-  tenuous. That's why I call them 'convolutional nets' not 'convolutional neural
-  nets', and why we call the nodes 'units' and not 'neurons' ". Despite this
-  remark, convolutional nets use many of the same ideas as the neural networks
-  we've studied up to now: ideas such as backpropagation, gradient descent,
-  regularization, non-linear activation functions, and so on. And so we will
-  follow common practice, and consider them a type of neural network. I will use
-  the terms "convolutional neural network" and "convolutional net(work)"
-  interchangeably. I will also use the terms "[artificial] neuron" and "unit"
-  interchangeably.}。这些网络使用一个特别适用于分类图像的特殊架构。使用这个架构
-使得卷积网络能跟快训练。相应的，这帮助我们训练深度的、多层的网络，它非常擅长于分
-类图像。今天，深度卷积网络或者一些近似的变化形式，被用在大多数图像识别的神经网络
-中。
+怎样？在这一节中，我会描述\emph{卷积神经网络}\index{卷积神经网络}\footnote{最初
+  的卷积神经网络要追溯到 1970 年代。但是建立起现代卷积网络学科的开创性论文是一篇
+  1998 年的
+  “\href{http://yann.lecun.com/exdb/publis/pdf/lecun-98.pdf}{Gradient-based
+    learning applied to document recognition}”，作者为 Yann LeCun， Léon
+  Bottou， Yoshua Bengio， 和 Patrick Haffner。LeCun 自那以后做了一个关于卷积网
+  络术语的有趣评论：“以类似卷积网络模型的［生物学上的］神经系统原型是非常牵强的。
+  这正是为什么我把它们称为‘卷积网络’而不是‘卷积神经网络’，以及为什么我们称这
+  些节点为‘单元’而不是‘神经元’”。尽管有这样的评论，卷积网络使用许多我们目前
+  为止学习到的神经网络相同的思想：诸如反向传播，梯度下降，规范化，非线性激活函数
+  等等。所以我们会遵循常规惯例，认为它们是神经网络的一种类型。我会交换地使用术语
+  “卷积神经网络”和“卷积网络（行为）”。我也会交换地使用术语“［人工］神经元”
+  和“单元”。}。这些网络使用一个特别适用于分类图像的特殊架构。使用这个架构使得
+卷积网络能跟快训练。相应的，这帮助我们训练深度的、多层的网络，它非常擅长于分类图
+像。今天，深度卷积网络或者一些近似的变化形式，被用在大多数图像识别的神经网络中。
 
-卷积神经网络采用了三种基本概念：\emph{局部感受野（local receptive
-    fields\index{local receptive fields}）}，\emph{共享权重（shared
-    weights\index{shared weights}）}，和\emph{混合（pooling\index{pooling}）}。
-让我们逐个看下：\\
+卷积神经网络采用了三种基本概念：\emph{局部感受野}（\emph{local receptive
+    fields}\index{local receptive fields}），\emph{共享权重}（\emph{shared
+    weights}\index{shared weights}），和\emph{混
+  合}（\emph{pooling}\index{pooling}）。让我们逐个看下：\\
 
 \textbf{局部感受野\index{局部感受野}：} 在之前看到的全连接层的网络中，输入被描绘
 成纵向排列的神经元。但在一个卷积网络中，把输入看作是一个 $28 \times 28$ 的方形排
@@ -146,16 +142,12 @@ $784$（$= 28 \times 28$）个输入神经元。我们然后训练网络的权�
 我显示的局部感受野每次移动一个像素。实际上，有时候会使用不同的\emph{跨距}。例如，
 我可以往右（或下）移动 $2$ 个像素的局部感受野，这种情况下我们使用了 $2$ 个跨距。
 在这章里我们大部分时候会固定使用 $1$ 的跨距，但是值得知道人们有时用不同的跨距试
-验\footnote{As was done in earlier chapters, if we're interested in trying
-  different stride lengths then we can use validation data to pick out the
-  stride length which gives the best performance. For more details, see the
-  \hyperref[sec:how_to_choose_a_neural_network's_hyper-parameters]{earlier
-    discussion} of how to choose hyper-parameters in a neural network. The same
-  approach may also be used to choose the size of the local receptive field -
-  there is, of course, nothing special about using a $5 \times 5$ local
-  receptive field. In general, larger local receptive fields tend to be helpful
-  when the input images are significantly larger than the $28 \times 28$ pixel
-  MNIST images.}。\\
+验\footnote{正如在前面章节中做过的，如果我们对尝试不同跨距感兴趣，那么我们可以使用
+验证数据来挑选可以提供最佳性能的跨距。详细内容参见前面关于如何选择神经网络的超参数的%
+\hyperref[sec:how_to_choose_a_neural_network's_hyper-parameters]{讨论}。
+相同的方法也可以用来选择局部感受野的大小~——~当然，对于使用一个 $5 \times 5$
+的局部感受野没有什么特别的。通常，当输入图像显著大于 $28 \times 28$ 像素的 MNIST 图像时，
+更大的局部感受野往往是有益的。}。\\
 
 \textbf{共享权重\index{共享权重}和偏置：} 我已经说过每个隐藏神经元具有一个偏置和
 连接到它的局部感受野的 $5 \times 5$ 权重。我没有提及的是我们打算对 $24 \times
@@ -177,11 +169,10 @@ $784$（$= 28 \times 28$）个输入神经元。我们然后训练网络的权�
 要明白为什么是这个道理，把权重和偏置设想成隐藏神经元可以挑选的东西，例如，在一个
 特定的局部感受野的垂直边缘。这种能力在图像的其它位置也很可能是有用的。因此，在图
 像中应用相同的特征检测器是非常有用的。用稍微更抽象的术语，卷积网络能很好地适应图
-像的平移不变性：例如稍稍移动一幅猫的图像，它仍然是一幅猫的图像\footnote{In fact,
-  for the MNIST digit classification problem we've been studying, the images are
-  centered and size-normalized. So MNIST has less translation invariance than
-  images found "in the wild", so to speak. Still, features like edges and
-  corners are likely to be useful across much of the input space.}。
+像的平移不变性：例如稍稍移动一幅猫的图像，它仍然是一幅猫的图像\footnote{
+实际上，对于我们已经在学习的 MNIST 数字分类问题，这些图像被置于中心，而且大小被归一化。
+所以 MNIST 比“在自然环境中”找到的图像有更少的平移不变性。很多输入空间中的诸如边缘
+和角点的特征仍然可能是有用的。}。
 
 因为这个原因，我们有时候把从输入层到隐藏层的映射称为一个\emph{特征映射}。我们把
 定义特征映射的权重称为\emph{共享权重}。我们把以这种方式定义特征映射的偏置称为%
@@ -203,8 +194,8 @@ $784$（$= 28 \times 28$）个输入神经元。我们然后训练网络的权�
 用很多（也许多得多）的特征映射。一种早期的识别 MNIST 数字的卷积网络，LeNet-5，使
 用 $6$ 个特征映射，每个关联到一个 $5 \times 5$ 的局部感受野。所以上面的插图例子实
 际和 LeNet-5 很接近。而在我们在本章后面要开发的例子里，我们将使用具有 20 和40 个
-特征映射的卷积层。让我们快速看下已经学到的一些特征\footnote{The feature maps
-  illustrated come from the final convolutional network we train, see here.}：
+特征映射的卷积层。让我们快速看下已经学到的一些特征\footnote{图示说明的特征映射来自
+我们最后的训练卷积网络，参见\hyperref[final_conv]{这里}。}：
 \begin{center}
   \includegraphics[width=.65\textwidth]{net_full_layer_0}
 \end{center}
@@ -248,11 +239,9 @@ $784$（$= 28 \times 28$）个输入神经元。我们然后训练网络的权�
   层}（\textit{pooling layers}）。混合层通常紧接着在卷积层之后使用。它要做的是
 简化从卷积层输出的信息。
 
-详细地说，一个混合层取得从卷积层输出的每一个特征映射\footnote{The
-  nomenclature is being used loosely here. In particular, I'm using "feature
-  map" to mean not the function computed by the convolutional layer, but rather
-  the activation of the hidden neurons output from the layer. This kind of mild
-  abuse of nomenclature is pretty common in the research literature.}并且从它们准
+详细地说，一个混合层取得从卷积层输出的每一个特征映射\footnote{这里使用的术语是不严格的。
+特别地，我用“特征映射”表示的意思不是通过卷积层计算出的函数，而是隐藏神经元从该层输出的激活值。
+这种术语的轻度滥用在研究文献中是相当普遍的。}并且从它们准
 备一个凝缩的特征映射。例如，混合层的每个单元可能概括了前一层的一个（比如）$2
 \times 2$ 的区域。作为一个具体的例子，一个常见的混合的程序被称为\emph{最大值混
   合}（\textit{max-pooling}）。在最大值混合中，一个混合单元简单地输出
@@ -309,7 +298,7 @@ $784$（$= 28 \times 28$）个输入神经元。我们然后训练网络的权�
 原因是我们之前的\hyperref[ch:HowThebackpropagationalgorithmworks]{反向传播的推导}是
 针对全连接层的网络。幸运的是，针对卷积和最大值混合层的推导是简单的。如果你想理解
 细节，那么我请你完成下面的问题。注意这个问题会花费些时间来完成，除非你确实已经吸
-收了\hyperref[ch:HowThebackpropagationalgorithmworks]{之前的反向传播的推导}（这
+收了\hyperref[ch:HowThebackpropagationalgorithmworks]{前面的反向传播的推导}（这
   种情况下是容易的）。
 
 \subsection*{问题}
@@ -327,10 +316,10 @@ $784$（$= 28 \times 28$）个输入神经元。我们然后训练网络的权�
 我们现在已经明白了卷积神经网络后面的核心思想。让我们通过实现一些卷积网络，并将它
 们应用于 MNIST 数字分类问题，来看看它们如何在实践中工作。我们将使用的程序是
 \lstinline!network3.py!，它是前面章节开发的 \lstinline!network.py! 和
-\lstinline!network2.py! 的强化版本\footnote{Note also that network3.py
-  incorporates ideas from the Theano library's documentation on convolutional
-  neural nets (notably the implementation of LeNet-5), from Misha Denil's
-  implementation of dropout, and from Chris Olah.}。如果你想跟着学，代码可以从
+\lstinline!network2.py! 的强化版本\footnote{注意 \lstinline!network3.py!
+  包含了源自 Theano 库文档中关于卷积神经网络（尤其是 \href{http://deeplearning.net/tutorial/lenet.html}{LeNet-5} 的实现）
+	，Misha Denil 的\href{https://github.com/mdenil/dropout}{弃权的实现}，以及
+	\href{http://colah.github.io/}{Chris Olah} 的概念。}。如果你想跟着学，代码可以从
 \href{https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/src/network3.py}{GitHub}
 上下载。注意我们将在下一节中解决 \lstinline!network3.py! 需要的代码。在这一节中，
 我们将把 \lstinline!network3.py! 作为库来构建卷积网络。
@@ -339,12 +328,12 @@ $784$（$= 28 \times 28$）个输入神经元。我们然后训练网络的权�
 Numpy 实现的。这些程序从最初的原理工作，并致力于反向传播、随即梯度下降等细节。但
 是现在我们已经理解了这些细节，对于 \lstinline!network3.py! 我们打算使用一个称为
 \href{http://deeplearning.net/software/theano/}{Theano} 的机器学习
-库\footnote{See Theano: A CPU and GPU Math Expression Compiler in Python, by
-  James Bergstra, Olivier Breuleux, Frederic Bastien, Pascal Lamblin, Ravzan
-  Pascanu, Guillaume Desjardins, Joseph Turian, David Warde-Farley, and Yoshua
-  Bengio (2010). Theano is also the basis for the popular Pylearn2 and Keras
-  neural networks libraries. Other popular neural nets libraries at the time of
-  this writing include Caffe and Torch.}。使用 Theano 使得实现针对卷积神经网络的
+库\footnote{参见 \href{http://www.iro.umontreal.ca/~lisa/pointeurs/theano_scipy2010.pdf}{Theano: A CPU and GPU Math Expression Compiler in Python}，
+作者为 James Bergstra， Olivier Breuleux， Frederic Bastien， Pascal Lamblin， Ravzan
+  Pascanu， Guillaume Desjardins， Joseph Turian， David Warde-Farley， 和 Yoshua
+  Bengio （2010）。 Theano 也是流行的 \href{http://deeplearning.net/software/pylearn2/}{Pylearn2} 和
+	 \href{http://keras.io/}{Keras} 神经网络库的基础。其它在本文写作时流行的神经网路库包括
+  \href{http://caffe.berkeleyvision.org/}{Caffe} 和 \href{http://torch.ch/}{Torch}。}。使用 Theano 使得实现针对卷积神经网络的
 反向传播很容易，因为它自动计算涉及到的映射。Theano 也比我们前面代码更快（那些代
   码是为了容易理解，不是为了运行速度），这使它可实际用于训练更复杂的网络。特别地，
 Theano 的一个非常好的特性是它能够运行于 CPU 或者，如果可以，GPU 上。运行于 GPU
@@ -352,10 +341,9 @@ Theano 的一个非常好的特性是它能够运行于 CPU 或者，如果可�
 
 如果你想要跟着学，你需要可运行在你的系统上的 Theano。按照项
 目\href{http://deeplearning.net/software/theano/}{主页}上的说明来安装 Theano。接
-下来的例子使用 Theano 0.6\footnote{As I release this chapter, the current
-  version of Theano has changed to version 0.7. I've actually rerun the examples
-  under Theano 0.7 and get extremely similar results to those reported in the
-  text.} 运行过。有些在没有 GPU 支持的 Mac OS X Yosemite 运行过。有些在有 NVIDIA
+下来的例子使用 Theano 0.6\footnote{当我发布这一章时，Theano 的当前版本变成了 0.7。
+我实际上已经在 Theano 0.7 版本中重新运行过这些例子并取得了和文中非常相似的结果。} 运行过。
+有些在没有 GPU 支持的 Mac OS X Yosemite 运行过。有些在有 NVIDIA
 GPU 支持的 Ubuntu 14.04 中运行过。有些实验在两个系统中都运行过。为了
 让 \lstinline!networks3.py! 运行，你需要（适当地）把 \lstinline!networks3.py! 源
 码中的 \lstinline!GPU! 标志设置为 \lstinline!True! 或者 \lstinline!False!。此外，
@@ -371,9 +359,9 @@ GPU 支持的 Ubuntu 14.04 中运行过。有些实验在两个系统中都运�
 
 为了取得一个基线，我们将从一个浅层架构开始，它仅仅使用一个隐藏层，包含 $100$ 个
 隐藏神经元。我们会训练 $60$ \epochs{}，使用\learningrate{}为：$\eta = 0.1$，
-\minibatch{} 大小为 $10$，没有规范化。这样运行\footnote{Code for the experiments
-  in this section may be found in this script. Note that the code in the script
-  simply duplicates and parallels the discussion in this section.}：
+\minibatch{} 大小为 $10$，没有规范化。这样运行\footnote{本节中的实验代码可以在
+\href{https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/src/conv.py}{这个脚本中}找到。
+注意，脚本中的代码只是简单地重复并相对于本节中的讨论。}：
 \begin{lstlisting}[language=Python]
 >>> import network3
 >>> from network3 import Network
@@ -392,13 +380,10 @@ GPU 支持的 Ubuntu 14.04 中运行过。有些实验在两个系统中都运�
 最好的分类准确率。使用验证数据来决定在何时对测试准确率估值有助于避免测试数据上的
 过度拟合（见前面关于验证数据使用的\hyperref[validation_explanation]{讨论}）。我
 们将在下面遵循这个习惯。你的结构可能稍有不同，因为网络的权重和偏置是随机初始化
-的\footnote{In fact, in this experiment I actually did three separate runs
-  training a network with this architecture. I then reported the test accuracy
-  which corresponded to the best validation accuracy from any of the three
-  runs. Using multiple runs helps reduce variation in results, which is useful
-  when comparing many architectures, as we are doing. I've followed this
-  procedure below, except where noted. In practice, it made little difference to
-  the results obtained.}。
+的\footnote{实际上，在这个实验中我其实对这个架构的网络运行了三次独立的训练。然后我从
+这三次运行中报告了对应于最佳验证准确率的测试准确率。利用多次运行有助于减少结果中的变动，
+它在比较许多个架构时是很有用的，正如我们正在做的。除非明确指出，我在下面已经遵循了这个
+程序。在实践中，它对于所获得的结果不会带来什么区别。}。
 
 这个 $97.80$\% 的准确率接近于\hyperref[chap3_98_04_percent]{第三章}中获得的
 $98.04$\% 的准确率，使用一个相似的网络架构和学习超参数。特别地，两个例子都使用一
@@ -428,11 +413,10 @@ $98.04$\% 的准确率，使用一个相似的网络架构和学习超参数。�
 面的全连接层则在一个更抽象的层次学习，从整个图像整合全局信息。这是一种常见的卷积
 神经网络模式。
 
-让我们训练这样的一个网络，看看它表现怎样\footnote{I've continued to use a
-  mini-batch size of $10$ here. In fact, as we
-  \hyperref[mini_batch_size]{discussed earlier} it may be possible to speed up
-  training using larger mini-batches. I've continued to use the same mini-batch
-  size mostly for consistency with the experiments in earlier chapters.}：
+让我们训练这样的一个网络，看看它表现怎样\footnote{这里我继续使用一个大小为 
+$10$ 的\minibatch{}。正如我们\hyperref[mini_batch_size]{前面讨论过的}，
+使用更大的\minibatch{}可能提高训练速度。我继续使用相同的\minibatch{}，主要是
+为了和前面章节中的实验保持一致。}：
 \begin{lstlisting}[language=Python]
 >>> net = Network([
         ConvPoolLayer(image_shape=(mini_batch_size, 1, 28, 28), 
@@ -492,11 +476,10 @@ $20$ 幅单独的图像输入给卷积--混合层，而不是第一个卷积--�
 第二个卷积--混合层里的神经元应该如何响应这些多重的输入图像呢？实际上，我们将允许
 这一层中的每个神经元从它的局部感受野中的\emph{所有} $20 \times 5 \times 5$ 输入
 神经元学习。更非正式的：第二个卷积--混合层中的特征检测器可访问\emph{所有}前面层
-的特征，但仅在其特定的局部感受野中\footnote{This issue would have arisen in the
-  first layer if the input images were in color. In that case we'd have 3 input
-  features for each pixel, corresponding to red, green and blue channels in the
-  input image. So we'd allow the feature detectors to have access to all color
-  information, but only within a given local receptive field.}。
+的特征，但仅在其特定的局部感受野中\footnote{
+如果输入图像是有颜色的，这个问题会在第一层中出现。在这种情况下，对于每一个像素我们会有 3 
+个输入特征，对应于输入图像中的红色、绿色和蓝色通道。因此我们将允许特征检测器可访问所有颜色信息，
+但仅仅在一个给定的局部感受野中。}。
 
 \subsection*{问题}
 
@@ -522,8 +505,8 @@ $20$ 幅单独的图像输入给卷积--混合层，而不是第一个卷积--�
 \end{itemize}
 
 \textbf{使用修正线性单元：} 到现在为止，我们开发的网络实际上是一篇开创性的 1998论
-文\footnote{"Gradient-based learning applied to document recognition", by Yann
-  LeCun, Léon Bottou, Yoshua Bengio, and Patrick Haffner (1998). 细节上有很多不
+文\footnote{\href{http://yann.lecun.com/exdb/publis/pdf/lecun-98.pdf}{"Gradient-based learning applied to document recognition"}，作者为 Yann
+  LeCun， Léon Bottou， Yoshua Bengio， 和 Patrick Haffner （1998）。细节上有很多不
   同，但大体上讲，我们的网络和论文中描述的网络非常相似。} 中使用的众多网络中一种
 的变化形式，这个网络被称为 LeNet-5，并引入了 MNIST 问题。这为进一步实验并构筑理解
 和直观感受打下很好的基础。特别是，有很多种我们可以改变网络来改善结果的方式。
@@ -558,11 +541,9 @@ $20$ 幅单独的图像输入给卷积--混合层，而不是第一个卷积--�
 是什么使得修正线性激活函数好于 S 型或者 tanh 函数？目前，我们对这个问题的答案有
 一个很差的理解。实际上，修正线性单元只在过去几年才开始被广泛使用。最近才采用的原
 因是以经验为依据的：一些人经常基于直觉或者启发式的理由试着用修正线性单
-元\footnote{A common justification is that $\max(0, z)$ doesn't saturate in the
-  limit of large $z$, unlike sigmoid neurons, and this helps rectified linear
-  units continue learning. The argument is fine, as far it goes, but it's hardly
-  a detailed justification, more of a just-so story. Note that we discussed the
-  problems with saturation back in \hyperref[saturation]{Chapter 2}.}。他们在分
+元\footnote{一个通常的理由是 $\max(0, z)$ 在 $z$ 取最大极限时不会饱和，不像 S 型神经元，
+而这有助于修正线性单元持续学习。到目前为止，这一辩解很好，但不是一个详细的理由，更多的是一个“就这样”
+的故事。注意我们在\hyperref[saturation]{第二章}里讨论过饱和的问题。}。他们在分
 类基准数据集时取得了很好的结果，并且其实践传播开了。在一个理想的世界中，我们有一
 个理论告诉我们为什么样的应用选择什么样的激活函数。但目前我们我们离这样的理想世界
 还有一条很长的路。如果通过选择一个更好的激活函数来取得了进一步的重大改进，我一点
@@ -610,7 +591,7 @@ $ python expand_mnist.py
 Steinkraus 和
 Platt\footnote{\href{http://dx.doi.org/10.1109/ICDAR.2003.1227801}{Best
     Practices for Convolutional Neural Networks Applied to Visual Document
-    Analysis}, by Patrice Simard, Dave Steinkraus, and John Platt (2003).} 使用
+    Analysis}，作者为 Patrice Simard， Dave Steinkraus， 和 John Platt （2003）。} 使用
 一个神经网络改进了他们的 MNIST 性能，达到了 $99.6$\%，这个网络以其它方式和我们的
 非常相似，使用两个卷积--混合层，跟着一个具有 $100$ 个神经元的隐藏的全连接层。在
 他们的架构中有一些细节上的不同~——~例如他们没有利用修正线性单元~——~但是他们改进性
@@ -654,6 +635,7 @@ $99.46$\% 和 $99.43$\%。这很有趣，但对于前面的结果（99.37\%）�
 类似的试验，用包含$300$ 和 $1,000$ 个隐藏神经元的全连接层产生 $99.48$\% 和
 $99.47$\% 的结果。这是令人鼓舞的，但仍然缺乏一个真正决定性的胜利。
 
+\label{final_conv}
 这里发生了什么事？扩展的，或者额外的全连接层真的对 MNIST 没帮助吗？或者说，我们
 的网络有能力做得更好，但我们在用错误的方式学习？例如，也许我们可以用更强有力的规
 范化技术来减小过度拟合的趋势。一种可能性是第三章介绍的%
@@ -736,8 +718,8 @@ $1,000$ 个隐藏神经元的实验，用 $1,000$ 个隐藏神经元（非常略
 我不会概述这份近期成果的大部分内容。但是我忍不住有一个例外。它是一篇 Cireșan、
 Meier、 Gambardella、 和 Schmidhuber 所著的 2010 年论
 文\footnote{\href{http://arxiv.org/abs/1003.0358}{Deep, Big, Simple Neural Nets
-    Excel on Handwritten Digit Recognition}, by Dan Claudiu Cireșan, Ueli Meier,
-  Luca Maria Gambardella, and Jürgen Schmidhuber (2010).}。我喜欢这篇论文的地方
+    Excel on Handwritten Digit Recognition}，作者为 Dan Claudiu Cireșan， Ueli Meier，
+  Luca Maria Gambardella， 和 Jürgen Schmidhuber （2010）。}。我喜欢这篇论文的地方
 是它是如此简单。其中的网络是一个许多层的神经网络，仅使用全连接层（没有卷积层）。
 他们最成功的网络有分别包含有 $2,500$，$2,000$，$1,500$，$1,000$ 和 $500$ 神经元
 的隐藏层。他们使用和 Simard 等人类似的想法来扩展他们的训练数据。除了这些，他们没
@@ -869,23 +851,24 @@ documentation](http://deeplearning.net/software/theano/index.html)。而这种�
 使用，而 \lstinline!self.inpt! 和 \lstinline!self.output! 用作其他任务，比如衡量
 验证集和测试集模型的准确度。
 
-\lstinline!ConvPoolLayer! 和 \lstinline!SoftmaxLayer! 类定义
-和 \lstinline!FullyConnectedLayer! 定义差不多。所以我这儿不会给出代码。如果你感兴
-趣，可以参考本节后面的 \lstinline!network3.py! 的代码。
+\lstinline!ConvPoolLayer! 和 \lstinline!SoftmaxLayer! 类定义和
+\lstinline!FullyConnectedLayer! 定义差不多。所以我这儿不会给出代码。如果你感兴趣，
+可以参考本节后面的 \lstinline!network3.py! 的代码。
 
-尽管这样，我们还是指出一些重要的微弱的细节差别。明显一点的是，
-在 \lstinline!ConvPoolLayer! 和 \lstinline!SoftmaxLayer! 中，我们采用了相应的合适
-的计算输出激活值方式。幸运的是，Theano 提供了内置的操作让我们计算卷
-积、max-pooling 和 softmax 函数。
+尽管这样，我们还是指出一些重要的微弱的细节差别。明显一点的是，在
+\lstinline!ConvPoolLayer! 和 \lstinline!SoftmaxLayer! 中，我们采用了相应的合适的
+计算输出激活值方式。幸运的是，Theano 提供了内置的操作让我们计算卷积、max-pooling
+和 softmax 函数。
 
 不大明显的，在我们引入\hyperref[sec:softmax]{softmax layer} 时，我们没有讨论如何
-初始化权重和偏差。其他地方我们已经讨论过对 sigmoid 层，我们应当使用合适参数的正态
-分布来初始化权重。但是这个启发式的论断是针对 sigmoid 神经元的（做一些调整可以用
-于 tanh 神经元上）。但是，并没有特殊的原因说这个论断可以用在 softmax 层上。所以没
-有一个先验的理由应用这样的初始化。与其使用之前的方法初始化，我这里会将所有权值和
-偏差设置为 $0$。这是一个 ad hoc 的过程，但在实践使用过程中效果倒是很不错。
+初始化权重和偏差。其他地方我们已经讨论过对 sigmoid 层，我们应当使用合适参数的正
+态分布来初始化权重。但是这个启发式的论断是针对 sigmoid 神经元的（做一些调整可以
+  用于 tanh 神经元上）。但是，并没有特殊的原因说这个论断可以用在 softmax 层上。
+所以没有一个先验的理由应用这样的初始化。与其使用之前的方法初始化，我这里会将所有
+权值和偏差设置为 $0$。这是一个 ad hoc 的过程，但在实践使用过程中效果倒是很不错。
 
-好了，我们已经看过了所有关于层的类。那么 Network 类是怎样的呢？让我们看看 \lstinline!__init__! 方法：
+好了，我们已经看过了所有关于层的类。那么 Network 类是怎样的呢？让我们看看
+\lstinline!__init__! 方法：
 
 \begin{lstlisting}[language=Python]
 class Network(object):
@@ -912,17 +895,17 @@ class Network(object):
 \end{lstlisting}
 
 这段代码大部分是可以自解释的。\lstinline!self.params = [param for layer in ...]!
-此行代码对每层的参数捆绑到一个列表中。\lstinline!Network.SGD! 方法会使
-用 \lstinline!self.params! 来确定 \lstinline!Network! 中哪些变量需要学习。
-而 \lstinline!self.x = T.matrix("x")! 和 \lstinline!self.y = T.ivector("y")! 则定
-义了 Theano 符号变量 x 和 y。这些会用来表示输入和网络得到的输出。
+此行代码对每层的参数捆绑到一个列表中。\lstinline!Network.SGD! 方法会使用
+\lstinline!self.params! 来确定 \lstinline!Network! 中哪些变量需要学习。而
+\lstinline!self.x = T.matrix("x")! 和 \lstinline!self.y = T.ivector("y")! 则定义
+了 Theano 符号变量 x 和 y。这些会用来表示输入和网络得到的输出。
 
 这儿不是 Theano 的教程，所以不会深度讨论这些变量指代什么东西。但是粗略的想法就是
 这些代表了数学变量，而非显式的值。我们可以对这些变量做通常需要的操作：加减乘除，
-作用函数等等。实际上，Theano 提供了很多对符号变量进行操作方法，如卷
-积、max-pooling等等。但是最重要的是能够进行快速符号微分运算，使用 BP 算法一种通用
-的形式。这对于应用随机梯度下降在若干种网络结构的变体上特别有效。特别低，接下来几
-行代码定义了网络的符号输出。我们通过下面这行
+作用函数等等。实际上，Theano 提供了很多对符号变量进行操作方法，如卷积、最大值混
+合等等。但是最重要的是能够进行快速符号微分运算，使用反向传播算法一种通用的形式。
+这对于应用随机梯度下降在若干种网络结构的变体上特别有效。特别低，接下来几行代码定
+义了网络的符号输出。我们通过下面这行
 
 \begin{lstlisting}[language=Python]
 init_layer.set_inpt(self.x, self.x, self.mini_batch_size)
@@ -930,16 +913,16 @@ init_layer.set_inpt(self.x, self.x, self.mini_batch_size)
 
 设置初始层的输入。
 
-请注意输入是以每次一个 mini-batch 的方式进行的，这就是 mini-batch size 为何要指定
+请注意输入是以每次一个 mini-batch 的方式进行的，这就是\minibatch{}大小为何要指定
 的原因。还需要注意的是，我们将输入 \lstinline!self.x! 传了两次：这是因为我们我们
-可能会以两种方式（有dropout和无dropout）使用网络。\lstinline!for! 循环将符号变
-量 \lstinline!self.x! 通过 \lstinline!Network! 的层进行前向传播。这样我们可以定义
-最终的输出 \lstinline!output! 和 \lstinline!output_dropout! 属性，这些都
-是 \lstinline!Network! 符号式输出。
+可能会以两种方式（有dropout和无dropout）使用网络。\lstinline!for! 循环将符号变量
+\lstinline!self.x! 通过 \lstinline!Network! 的层进行前向传播。这样我们可以定义最
+终的输出 \lstinline!output! 和 \lstinline!output_dropout! 属性，这些都是
+\lstinline!Network! 符号式输出。
 
-现在我们理解了 \lstinline!Network! 是如何初始化了，让我们看看它如何使
-用 \lstinline!SGD! 方法进行训练的。代码看起来很长，但是它的结构实际上相当简单。代
-码后面也有一些注解。
+现在我们理解了 \lstinline!Network! 是如何初始化了，让我们看看它如何使用
+\lstinline!SGD! 方法进行训练的。代码看起来很长，但是它的结构实际上相当简单。代码
+后面也有一些注解。
 
 \begin{lstlisting}[language=Python]
     def SGD(self, training_data, epochs, mini_batch_size, eta, 
@@ -1023,7 +1006,7 @@ init_layer.set_inpt(self.x, self.x, self.mini_batch_size)
         print("Corresponding test accuracy of {0:.2
 \end{lstlisting}
 
-前面几行很直接，将数据集分解成 x 和 y 两部分，并计算在每个数据集中 mini-batch 的
+前面几行很直接，将数据集分解成 x 和 y 两部分，并计算在每个数据集中\minibatch{}的
 数量。接下来的几行更加有意思，这也体现了 Theano 有趣的特性。那么我们就摘录详解一
 下：
 
@@ -1037,53 +1020,53 @@ init_layer.set_inpt(self.x, self.x, self.mini_batch_size)
              for param, grad in zip(self.params, grads)]
 \end{lstlisting}
 
-这几行，我们符号化地给出了规范化的 log-likelihood 代价函数，在梯度函数中计算了对
-应的导数，以及对应参数的更新方式。Theano 让我们通过这短短几行就能够获得这些效果。
-唯一隐藏的是计算 \lstinline!cost! 包含一个对输出层 \lstinline!cost! 方法的调用；
-该代码在 \lstinline!network3.py! 中其他地方。但是，总之代码很短而且简单。有了所有
-这些定义好的东西，下面就是定义 \lstinline!train_mini_batch! 函数，该 Theano 符号
-函数在给定 minibatch 索引的情况下使用 \lstinline!updates! 来更
-新 \lstinline!Network! 的参数。类似
-地，\lstinline!validate_mb_accuracy! 和 \lstinline!test_mb_accuracy! 计算在任意给
-定的 minibatch 的验证集和测试集合上 \lstinline!Network! 的准确度。通过对这些函数
-进行平均，我们可以计算整个验证集和测试数据集上的准确度。
+这几行，我们符号化地给出了规范化的对数似然代价函数，在梯度函数中计算了对应的导数，
+以及对应参数的更新方式。Theano 让我们通过这短短几行就能够获得这些效果。唯一隐藏
+的是计算 \lstinline!cost! 包含一个对输出层 \lstinline!cost! 方法的调用；该代码在
+\lstinline!network3.py! 中其他地方。但是，总之代码很短而且简单。有了所有这些定义
+好的东西，下面就是定义 \lstinline!train_mini_batch! 函数，该 Theano 符号函数在给
+定 minibatch 索引的情况下使用 \lstinline!updates! 来更新 \lstinline!Network! 的
+参数。类似地，\lstinline!validate_mb_accuracy! 和 \lstinline!test_mb_accuracy!
+计算在任意给定的 minibatch 的验证集和测试集合上 \lstinline!Network! 的准确度。通
+过对这些函数进行平均，我们可以计算整个验证集和测试数据集上的准确度。
 
-\lstinline!SGD! 方法剩下的就是可以自解释的了~——~我们对次数进行迭代，重复使用 训练
-数据的 minibatch 来训练网络，计算验证集和测试集上的准确度。
+\lstinline!SGD! 方法剩下的就是可以自解释的了~——~我们对次数进行迭代，重复使用 训
+练数据的 minibatch 来训练网络，计算验证集和测试集上的准确度。
 
-好了，我们已经理解了 \lstinline!network3.py! 代码中大多数的重要部分。让我们看看整
-个程序，你不需过分仔细地读下这些代码，但是应该享受粗看的过程，并随时深入研究那些
-激发出你好奇地代码段。理解代码的最好的方法就是通过修改代码，增加额外的特征或者重
-新组织那些你认为能够更加简洁地完成的代码。代码后面，我们给出了一些对初学者的建议。
-这儿是代码\footnote{在 GPU 上使用 Theano 可能会有点难度。特别地，很容在从 GPU 中
-  拉取数据时出现错误，这可能会让运行变得相当慢。我已经试着避免出现这样的情况，但
-  是也不能肯定在代码扩充后出现一些问题。对于你们遇到的问题或者给出的意见我洗耳恭
-  听（mn@michaelnielsen.org）。}：
+好了，我们已经理解了 \lstinline!network3.py! 代码中大多数的重要部分。让我们看看
+整个程序，你不需过分仔细地读下这些代码，但是应该享受粗看的过程，并随时深入研究那
+些激发出你好奇地代码段。理解代码的最好的方法就是通过修改代码，增加额外的特征或者
+重新组织那些你认为能够更加简洁地完成的代码。代码后面，我们给出了一些对初学者的建
+议。这儿是代码\footnote{在 GPU 上使用 Theano 可能会有点难度。特别地，很容易在从
+  GPU 中拉取数据时出现错误，这可能会让运行变得相当慢。我已经试着避免出现这样的情
+  况，但是也不能肯定在代码扩充后出现一些问题。对于你们遇到的问题或者给出的意见我
+  洗耳恭听（mn@michaelnielsen.org）。}：
 
 \lstinputlisting[language=Python]{code_samples/src/network3.py}
 
 \subsection*{问题}
 
 \begin{itemize}
-\item 目前，\lstinline!SGD! 方法要求用户手动选择用于训练\epochs{}的数量。早先在本
-  书中，我们讨论了一种自动选择训练次数的方法，也就
-  是\hyperref[early_stopping]{early stopping}。修改 \lstinline!network3.py! 以实
-  现 Early stopping。
+\item 目前，\lstinline!SGD! 方法要求用户手动选择用于训练\epochs{}的数量。早先在
+  本书中，我们讨论了一种自动选择训练次数的方法，也就是
+  \hyperref[early_stopping]{提前停止}。修改 \lstinline!network3.py! 以实现
+  提前停止。
 \item 增加一个 \lstinline!Network! 方法来返回在任意数据集上的准确度。
-\item 修改 \lstinline!SGD! 方法来允许学习率 $\eta$ 可以是训练次数的函数。\emph{提
-    示：在思考这个问题一段时间后，你可能会在 this link 找到有用的信息。}
+\item 修改 \lstinline!SGD! 方法来允许学习率 $\eta$ 可以是训练次数的函数。
+  \emph{提示：在思考这个问题一段时间后，你可能会在%
+    \href{https://groups.google.com/forum/\#!topic/theano-users/NQ9NYLvleGc}{这个链接}找到有用的信息。}
 \item 在本章前面我曾经描述过一种通过应用微小的旋转、扭曲和变化来扩展训练数据的方
-  法。改变 \lstinline!network3.py! 来加入这些技术。注意：除非你有充分多的内存，否
-  则显式地产生整个扩展数据集是不大现实的。所以要考虑一些变通的方法。
+  法。改变 \lstinline!network3.py! 来加入这些技术。\emph{注意：除非你有充分多的内存，
+  否则显式地产生整个扩展数据集是不大现实的。所以要考虑一些变通的方法。}
 \item 在 \lstinline!network3.py! 中增加 \lstinline!load! 和 \lstinline!save! 方
   法。
 \item 当前的代码缺点就是只有很少的用来诊断的工具。你能想出一些诊断方法告诉我们网
   络过匹配到什么程度么？加上这些方法。
-\item 我们已经对rectified linear unit 及 sigmoid 和 tanh 函数神经元使用了同样的初
-  始方法。正如\hyperref[sec:weight_initialization]{这里所说}，这种初始化方法只是
-  适用于 sigmoid 函数。假设我们使用一个全部使用 ReLU 的网络。试说明以常数 $c$ 倍调
-  整网络的权重最终只会对输出有常数 $c$ 倍的影响。如果最后一层是 softmax，则会发生
-  什么样的变化？对 ReLU 使用 sigmoid 函数的初始化方法会怎么样？有没有更好的初始化
+\item 我们已经对修正线性单元及 S 型和 tanh 函数神经元使用了同样的初始方法。正如
+  \hyperref[sec:weight_initialization]{这里所说}，这种初始化方法只是适用于
+  sigmoid 函数。假设我们使用一个全部使用 ReLU 的网络。试说明以常数 $c$ 倍调整网
+  络的权重最终只会对输出有常数 $c$ 倍的影响。如果最后一层是 softmax，则会发生什
+  么样的变化？对 ReLU 使用 sigmoid 函数的初始化方法会怎么样？有没有更好的初始化
   方法？\emph{注意：这是一个开放的问题，并不是说有一个简单的自包含答案。还有，思
     考这个问题本身能够帮助你更好地理解包含 ReLU 的神经网络。}
 \item 我们对于不稳定梯度问题的分析实际上是针对 sigmoid 神经元的。如果是 ReLU，那分
@@ -1095,11 +1078,11 @@ init_layer.set_inpt(self.x, self.x, self.mini_batch_size)
 \section{图像识别领域中的近期进展}
 \label{sec:recent_progress_in_image_recognition}
 
-在 1998 年，那年 MNIST 被初次提出，训练一个使用最先进技术的工作站，来达到明显差于
-我们使用 GPU 并且训练少于一小时就能达到的准确率，要花费几周时间。因此，MNIST 不再
-是一个推动现有技术限制的问题；相反，训练的速度意味着它是个用于教授和学习目的的很
-好的问题。与此同时，研究的重点已经转移，现代的工作涉及到更具挑战性的图像识别问题。
-在这一节中，我简要介绍一些最近的使用神经网络的图像识别成果。
+在 1998 年，那年 MNIST 被初次提出，训练一个使用最先进技术的工作站，来达到明显差
+于我们使用 GPU 并且训练少于一小时就能达到的准确率，要花费几周时间。因此，MNIST
+不再是一个推动现有技术限制的问题；相反，训练的速度意味着它是个用于教授和学习目的
+的很好的问题。与此同时，研究的重点已经转移，现代的工作涉及到更具挑战性的图像识别
+问题。在这一节中，我简要介绍一些最近的使用神经网络的图像识别成果。
 
 这一节和本书的大部分内容不同。贯穿本书我集中在可能引起持久兴趣的思想~——~如反向传
 播、规范化、卷积网络。正如我写过的，我曾试图避免那些流行一时的成绩，但其长期价值
@@ -1111,28 +1094,27 @@ init_layer.set_inpt(self.x, self.x, self.mini_batch_size)
 这样的一个怀疑论者是对的，最近论文的一些出色的细节，其被认为的重要性会逐渐减弱。
 但过去几年已经看到了使用深度网络攻克极度困难的图像识别任务的非凡的进步。想象一下
 一个科学历史学家在 2100 年写关于计算机视觉的东西。它们会把 2011 年至 2015 年（也
-许超过几年）鉴定为由卷积神经网络驱动的取得重大突破的时间。那并不意味着深度卷积网
-络在 2100 年仍然被使用，更不用提诸如弃权、修正线性单元等细节概念。但是它确实意味
-着一个重要的变革正在发生，就现在，在知识的历史中。它有点像观察原子的发现，或者抗
-生素的发明：具有历史意义的发明和探索。所以尽管我们不会深入挖掘细节，了解一些目前
-正在进行的令人兴奋的探索是值得的。\\
+  许超过几年）鉴定为由卷积神经网络驱动的取得重大突破的时间。那并不意味着深度卷积
+网络在 2100 年仍然被使用，更不用提诸如弃权、修正线性单元等细节概念。但是它确实意
+味着一个重要的变革正在发生，就现在，在知识的历史中。它有点像观察原子的发现，或者
+抗生素的发明：具有历史意义的发明和探索。所以尽管我们不会深入挖掘细节，了解一些目
+前正在进行的令人兴奋的探索是值得的。\\
 
 \textbf{2012 LRMD 论文：} 让我从一篇源自斯坦福和谷歌的研究小组的 2012 年论
-文\footnote{Building high-level features using large scale unsupervised
-  learning, by Quoc Le, Marc'Aurelio Ranzato, Rajat Monga, Matthieu Devin, Kai
-  Chen, Greg Corrado, Jeff Dean, and Andrew Ng (2012). Note that the detailed
-  architecture of the network used in the paper differed in many details from
-  the deep convolutional networks we've been studying. Broadly speaking,
-  however, LRMD is based on many similar ideas.}开始。我把这篇论文称为 LRMD，取自
-前四位作者的姓。LRMD 使用一个神经网络来分
-类 \href{http://www.image-net.org/}{ImageNet} 的图像，一个非常具有挑战性的图像识
-别问题。他们使用的 2011 年 ImageNet 数据包含 16,000,000 幅全彩色图像，有 20,000
-个种类。这些图像收集自开放的网络，由亚马逊的 Mechanical Turk 服务部门的员工分类。
-这里有一些 ImageNet 图像\footnote{These are from the 2014 dataset, which is
-  somewhat changed from 2011. Qualitatively, however, the dataset is extremely
-  similar. Details about ImageNet are available in the original ImageNet paper,
-  ImageNet: a large-scale hierarchical image database, by Jia Deng, Wei Dong,
-  Richard Socher, Li-Jia Li, Kai Li, and Li Fei-Fei (2009).}：
+文\footnote{\href{http://research.google.com/pubs/pub38115.html}{Building
+    high-level features using large scale unsupervised learning}，作者为 Quoc Le，
+  Marc'Aurelio Ranzato， Rajat Monga， Matthieu Devin， Kai Chen， Greg Corrado，
+  Jeff Dean， 和 Andrew Ng （2012）。注意这篇论文中使用的网络架构在很多细节上和
+  我们已经学习的深度卷积网络不同。然而，一般地说，LRMD 基于很多类似的思想。}开始。
+我把这篇论文称为 LRMD，取自前四位作者的姓。LRMD 使用一个神经网络来分类
+\href{http://www.image-net.org/}{ImageNet} 的图像，一个非常具有挑战性的图像识别
+问题。他们使用的 2011 年 ImageNet 数据包含 16,000,000 幅全彩色图像，有 20,000个
+种类。这些图像收集自开放的网络，由亚马逊的 Mechanical Turk 服务部门的员工分类。
+这里有一些 ImageNet 图像\footnote{这些取自 2014 年的数据集，其相比 2011 年的有点
+  改变。然而在质的方面，这个数据集是非常相似的。关于 ImageNet 的详情可以在原始的
+  ImageNet 论文 \href{http://www.image-net.org/papers/imagenet_cvpr09.pdf}{
+    ImageNet: a large-scale hierarchical image database} 中找到，作者为 Jia Deng，
+  Wei Dong，Richard Socher， Li-Jia Li， Kai Li， 和 Li Fei-Fei （2009）。}：
 
 \begin{center}
 	\includegraphics[height=80pt]{imagenet1.jpg}%
@@ -1154,13 +1136,14 @@ init_layer.set_inpt(self.x, self.x, self.mini_batch_size)
 \textbf{2012 KSH 论文：} LRMD 的成果被一篇 Krizhevsky,
 Sutskever 和 Hinton （KSH）
 \footnote{\href{http://www.cs.toronto.edu/~fritz/absps/imagenet.pdf}{ImageNet
-    classification with deep convolutional neural networks}, by Alex Krizhevsky,
-  Ilya Sutskever, and Geoffrey E. Hinton (2012).} 的 2012 年论文追随。KSH 训练和
-测试一个深度卷积神经网络，它使用 ImageNet数据的一个有限的子集。他们使用的子集来自
-一个流行的机器学习竞赛~——~ImageNet Large-Scale Visual Recognition
-Challenge（ILSVRC）。使用一个竞赛用的数据集给了他们一个很好的和其它领先技术比较的
-途径。ILSVRC-2012 训练集包含有大约 1,200,000 幅 ImageNet 图像，取自 1,000 个种类。
-验证和测试集分别包含有 50,000 和 150,000 幅图像，各自取自同样的 1,000 个种类。
+    classification with deep convolutional neural networks}，作者为 Alex
+  Krizhevsky，Ilya Sutskever， 和 Geoffrey E. Hinton （2012）。} 的 2012 年论文
+追随。KSH 训练和测试一个深度卷积神经网络，它使用 ImageNet数据的一个有限的子集。
+他们使用的子集来自一个流行的机器学习竞赛~——~ImageNet Large-Scale Visual
+Recognition Challenge（ILSVRC）。使用一个竞赛用的数据集给了他们一个很好的和其它
+领先技术比较的途径。ILSVRC-2012 训练集包含有大约 1,200,000 幅 ImageNet 图像，取
+自 1,000 个种类。验证和测试集分别包含有 50,000 和 150,000 幅图像，各自取自同样的
+1,000 个种类。
 
 运行 ILSVRC 竞赛一个困难的地方是很多 ImageNet 图像包含了多个物体。假设一幅显示一
 条拉布拉多犬追逐一个足球的图像。这幅图像所谓“正确的” ImageNet 分类也许是一条拉
@@ -1193,36 +1176,37 @@ KSH 网络有 $7$ 个隐藏神经元层。前 $5$ 个隐藏层是卷积层（有
 如 KSH 的大的网络中尤其有帮助。正是这些 $224 \times 224$ 图像被用于网络的输入。在
 大多数情况下裁剪后的图像仍然包含有未改动图像的主要物体。
 
-这是 KSH 论文中许多核心思想一个总体概况。我已经忽略了一些细节，对此你可以看下论文。
-你也可以看下 Alex
-Krizhevsky 的 \href{https://code.google.com/p/cuda-convnet/}{cuda-convnet}（和接
-替版本），它包含有实现这许多思想的代码。一个基于 Theano 的实
+这是 KSH 论文中许多核心思想一个总体概况。我已经忽略了一些细节，对此你可以看下论
+文。你也可以看下 Alex Krizhevsky 的
+\href{https://code.google.com/p/cuda-convnet/}{cuda-convnet}（和接替版本），它包
+含有实现这许多思想的代码。一个基于 Theano 的实
 现\footnote{\href{http://arxiv.org/abs/1412.2302}{Theano-based large-scale
-    visual recognition with multiple GPUs}, by Weiguang Ding, Ruoyan Wang, Fei
-  Mao, and Graham Taylor (2014).}，代码可以
-在\href{https://github.com/uoguelph-mlrg/theano_alexnet}{这里}得到。尽管使用
-多 GPU 会让情况变得复杂，但代码本身还是类似于这章我们写出来的那些。Caffe 神经网络
-框架也包含一个 KSH 网络的版本，详细参
-见 \href{http://caffe.berkeleyvision.org/model_zoo.html}{Model Zoo}。\\
+    visual recognition with multiple GPUs}，作者为 Weiguang Ding， Ruoyan Wang，
+  Fei Mao， 和 Graham Taylor （2014）。}，代码可以在%
+\href{https://github.com/uoguelph-mlrg/theano_alexnet}{这里}得到。尽管使用多 GPU
+会让情况变得复杂，但代码本身还是类似于这章我们写出来的那些。Caffe 神经网络框架也
+包含一个 KSH 网络的版本，详细参见
+\href{http://caffe.berkeleyvision.org/model_zoo.html}{Model Zoo}。\\
 
-\textbf{2014 ILSVRC 竞赛：} 自 2012 年以来，研究一直在快速推进。看
-看 2014 年的 ILSVRC 竞赛。和 2012 一样，这次也包括了一个 $120,000$ 张图
-像，$1,000$ 种类别，而优值系数是前 $5$ 个预测是否包含正确的分类。获胜团队，主要来
-自谷歌\footnote{\href{http://arxiv.org/abs/1409.4842}{Going deeper with
-    convolutions}, by Christian Szegedy, Wei Liu, Yangqing Jia, Pierre Sermanet,
-  Scott Reed, Dragomir Anguelov, Dumitru Erhan, Vincent Vanhoucke, and Andrew
-  Rabinovich (2014).}，使用了包含 $22$ 层神经元的深度卷积网络。他们称此
-为 GoogLeNet，作为向 LeNet-5 的致敬。GoogLeNet 达到了 93.33\% 的前 $5$ 准确率，远
-超 2013 年的获胜者（\href{http://www.clarifai.com/}{Clarifai}，88.3\%）和 2012 年
-的获胜者（KSH，84.7\%）。
+\textbf{2014 ILSVRC 竞赛：} 自 2012 年以来，研究一直在快速推进。看看 2014 年的
+ILSVRC 竞赛。和 2012 一样，这次也包括了一个 $120,000$ 张图像，$1,000$ 种类别，而
+优值系数是前 $5$ 个预测是否包含正确的分类。获胜团队，主要来自谷
+歌\footnote{\href{http://arxiv.org/abs/1409.4842}{Going deeper with
+    convolutions}，作者为 Christian Szegedy， Wei Liu， Yangqing Jia， Pierre
+  Sermanet，Scott Reed， Dragomir Anguelov， Dumitru Erhan， Vincent Vanhoucke，
+  和 Andrew Rabinovich （2014）。}，使用了包含 $22$ 层神经元的深度卷积网络。他们
+称此为 GoogLeNet，作为向 LeNet-5 的致敬。GoogLeNet 达到了 93.33\% 的前 $5$ 准确
+率，远超 2013 年的获胜者（\href{http://www.clarifai.com/}{Clarifai}，88.3\%）和
+2012 年的获胜者（KSH，84.7\%）。
 
-那么 GoogLeNet 93.33\% 的准确率又是多好呢？在 2014 年，一个研究团队写了一篇关
-于 ILSVRC 竞赛的综述文章\footnote{\href{http://arxiv.org/abs/1409.0575}{ImageNet
-    large scale visual recognition challenge}, by Olga Russakovsky, Jia Deng,
-  Hao Su, Jonathan Krause, Sanjeev Satheesh, Sean Ma, Zhiheng Huang, Andrej
-  Karpathy, Aditya Khosla, Michael Bernstein, Alexander C. Berg, and Li Fei-Fei
-  (2014).}。其中有个问题是人类在这个竞赛中能表现得如何。为了做这件事，他们构建了
-一个系统让人类对 ILSVRC 图像进行分类。其作者之一 Andrej Karpathy 在一
+那么 GoogLeNet 93.33\% 的准确率又是多好呢？在 2014 年，一个研究团队写了一篇关于
+ILSVRC 竞赛的综述文章\footnote{\href{http://arxiv.org/abs/1409.0575}{ImageNet
+    large scale visual recognition challenge}，作者为 Olga Russakovsky， Jia
+  Deng，Hao Su， Jonathan Krause， Sanjeev Satheesh， Sean Ma， Zhiheng Huang，
+  Andrej Karpathy， Aditya Khosla， Michael Bernstein， Alexander C. Berg， 和
+  Li Fei-Fei（2014）。}。其中有个问题是人类在这个竞赛中能表现得如何。为了做这件
+事，他们构建了一个系统让人类对 ILSVRC 图像进行分类。其作者之一 Andrej Karpathy
+在一
 篇%
 \href{http://karpathy.github.io/2014/09/02/what-i-learned-from-competing-against-a-convnet-on-imagenet/}{%
   博文}中解释道，让人类达到 GoogLeNet 的性能确实很困难：
@@ -1266,10 +1250,10 @@ Krizhevsky 的 \href{https://code.google.com/p/cuda-convnet/}{cuda-convnet}（�
 识别的工作。我们也介绍一些进展。
 
 一个鼓舞人心的应用上的结果就是 Google 的一个团队做出来的，他们应用深度卷积网络在
-识别 Google 的街景图像库中街景数字上\footnote{Multi-digit Number Recognition
-  from Street View Imagery using Deep Convolutional Neural Networks, by Ian
-  J. Goodfellow, Yaroslav Bulatov, Julian Ibarz, Sacha Arnoud, and Vinay Shet
-  (2013).}。在他们的论文中，对接近 $100,000,000$ 街景数字的自动检测和自动转述已经
+识别 Google 的街景图像库中街景数字上\footnote{\href{http://arxiv.org/abs/1312.6082}{Multi-digit Number Recognition
+  from Street View Imagery using Deep Convolutional Neural Networks}，作者为 Ian
+  J. Goodfellow， Yaroslav Bulatov， Julian Ibarz， Sacha Arnoud， 和 Vinay Shet
+  （2013）。}。在他们的论文中，对接近 $100,000,000$ 街景数字的自动检测和自动转述已经
 能打到与人类不相上下的程度。系统速度很快：在一个小时内将法国所有的街景数字都转述
 了。他们说道：“拥有这种新数据集能够显著提高 Google Maps 在一些国家的地理精准度，
 尤其是那些缺少地理编码的地区。”他们还做了一个更一般的论断：“我们坚信这个模型，
@@ -1277,9 +1261,9 @@ Krizhevsky 的 \href{https://code.google.com/p/cuda-convnet/}{cuda-convnet}（�
 
 我可能已经留下了印象——所有的结果都是令人兴奋的正面结果。当然，目前一些有趣的研究
 工作也报道了一些我们还没能够真的理解的根本性的问题。例如，2013 年一篇论
-文\footnote{Intriguing properties of neural networks, by Christian Szegedy,
-  Wojciech Zaremba, Ilya Sutskever, Joan Bruna, Dumitru Erhan, Ian Goodfellow,
-  and Rob Fergus (2013)}指出，深度网络可能会受到有效忙点的影响。看看下面的图示。
+文\footnote{\href{http://arxiv.org/abs/1312.6199}{Intriguing properties of neural networks}，作者为 Christian Szegedy，
+  Wojciech Zaremba， Ilya Sutskever， Joan Bruna， Dumitru Erhan， Ian Goodfellow，
+  和 Rob Fergus （2013）}指出，深度网络可能会受到有效忙点的影响。看看下面的图示。
 左侧是被网络正确分类的 ImageNet 图像。右边是一幅稍受干扰的图像（使用中间的噪声进
 行干扰）结果就没有能够正确分类。作者发现对每幅图片都存在这样的“对手”图像，而非
 少量的特例。
@@ -1306,9 +1290,9 @@ Krizhevsky 的 \href{https://code.google.com/p/cuda-convnet/}{cuda-convnet}（�
 
 我们对神经网络的理解还是太少了，这让人觉得很沮丧，上面的结果仅仅是近期的研究成果。
 当然了，这样结果带来一个主要好处就是，催生出一系列的研究工作。例如，最近一篇文
-章\footnote{Deep Neural Networks are Easily Fooled: High Confidence Predictions
-  for Unrecognizable Images, by Anh Nguyen, Jason Yosinski, and Jeff Clune
-  (2014).} 说明，给定一个训练好的神经网络，可以产生对人类来说是白噪声的图像，但是
+章\footnote{\href{http://arxiv.org/abs/1412.1897}{Deep Neural Networks are Easily Fooled: High Confidence Predictions
+  for Unrecognizable Images}，作者为 Anh Nguyen， Jason Yosinski， 和 Jeff Clune
+  （2014）。} 说明，给定一个训练好的神经网络，可以产生对人类来说是白噪声的图像，但是
 网络能够将其确信地分类为某一类。这也是我们需要追寻的理解神经网络和图像识别应用上
 的研究方向。
 
@@ -1515,49 +1499,50 @@ Atari with reinforcement learning”。但是透过表象，想想系统以原�
 任务，如图像分类。现在更进一步，问：通用思维机器会怎么样？神经网络和深度学习能够
 帮助我们解决（通用）人工智能（AI）的问题么？如果可以，以目前深度学习领域的发展速
 度，我们能够期待通用 AI 在未来的发展么？认真探讨这个问题可能又需要另写一本书。不
-过，我们可以给点意见。其想法基于 \href{http://en.wikipedia.org/wiki/Conway%27s_law}{Conway's law}：
+过，我们可以给点意见。其想法基于
+\href{http://en.wikipedia.org/wiki/Conway%27s_law}{Conway's law}：
 
 \begin{quote}
 任何设计了一个系统的组织…… 最终会不可避免地产生一个设计，其结构本身是这个组织
 的交流结构
 \end{quote}
 
-所以，打个比方，Conway 法则告诉我们波音 747 客机的设计会镜像在设计波音 747 那时的
-波音及其承包商的组织结构。或者，简单举例，假设一个公司开发一款复杂的软件应用。如
-果应用的 dashboard 会集成一些机器学习算法，设计 dashboard 的人员最好去找公司的机
-器学习专家讨论一下。Conway 法则就是这种观察的描述，可能更加宏大。第一次听
-到 Conway 法则，很多人的反应是：“好吧，这不是很显然么？” 或者 “这是不是不对
-啊？” 让我来对第二个观点进行分析。作为这个反对的例子，我们可以看看波音的例子：波
-音的审计部门会在哪里展示 747 的设计？他们的清洁部门会怎么样？内部的食品供应？结果
-就是组织的这些部门可能不会显式地出现在 747 所在的任何地方。所以我们应该理
-解 Conway 法则就是仅仅指那些显式地设计和工程的组织部门。
+所以，打个比方，Conway 法则告诉我们波音 747 客机的设计会镜像在设计波音 747 那时
+的波音及其承包商的组织结构。或者，简单举例，假设一个公司开发一款复杂的软件应用。
+如果应用的 dashboard 会集成一些机器学习算法，设计 dashboard 的人员最好去找公司的
+机器学习专家讨论一下。Conway 法则就是这种观察的描述，可能更加宏大。第一次听到
+Conway 法则，很多人的反应是：“好吧，这不是很显然么？” 或者 “这是不是不对啊？”
+让我来对第二个观点进行分析。作为这个反对的例子，我们可以看看波音的例子：波音的审
+计部门会在哪里展示 747 的设计？他们的清洁部门会怎么样？内部的食品供应？结果就是
+组织的这些部门可能不会显式地出现在 747 所在的任何地方。所以我们应该理解 Conway
+法则就是仅仅指那些显式地设计和工程的组织部门。
 
 而对另一个反对观点，就是 Conway 法则是很肤浅，显而易见的？对那些常常违背 Conway
 法则运行的组织来说，可能是这样子，但我认为并非如此。构建新产品的团队通常会被不合
 适的员工挤满或者缺乏具备关键能力的人员。想想那些包含无用却复杂特征的产品，或者那
 些有明显重大缺陷的产品——例如，糟糕的用户界面。这两种情况的问题通常都是因所需构建
-好产品的团队和实际上组成的团队之间的不匹配产生的。Conway 法则可能是显而易见的，但
-是并不是说就可以随随便便忽略这个法则。
+好产品的团队和实际上组成的团队之间的不匹配产生的。Conway 法则可能是显而易见的，
+但是并不是说就可以随随便便忽略这个法则。
 
-Conway 法则应用在系统的设计和工程中，我们需要很好地理解可能的系统的组成结构，以及
-如何来构建这些部件。由于 AI 还不具备这样的特性：我们不知道组成部分究竟是哪些，所
-以 Conway 法则不能直接应用在 AI 的开发过程中。因此，我们甚至不能确定哪些是最为根
-本的问题。换言之，AI 更是一个科学问题而非工程问题。想像我们开始设计 747，并不了解
-喷气引擎和空气动力学的原理。也就难以确定自己团队需要哪种类型的专家。正如 Werner
-von Braun 指出的，“基础研究就是我们并不知道自己正在做的研究究竟是什么”。那么有
-没有 Conway 法则在更为科学而非工程的问题上的版本呢？
+Conway 法则应用在系统的设计和工程中，我们需要很好地理解可能的系统的组成结构，以
+及如何来构建这些部件。由于 AI 还不具备这样的特性：我们不知道组成部分究竟是哪些，
+所以 Conway 法则不能直接应用在 AI 的开发过程中。因此，我们甚至不能确定哪些是最为
+根本的问题。换言之，AI 更是一个科学问题而非工程问题。想像我们开始设计 747，并不
+了解喷气引擎和空气动力学的原理。也就难以确定自己团队需要哪种类型的专家。正如
+Werner von Braun 指出的，“基础研究就是我们并不知道自己正在做的研究究竟是什么”。
+那么有没有 Conway 法则在更为科学而非工程的问题上的版本呢？
 
-为了正好地回答这个问题，我们可以看看医学的历史。在人类早期，医学是
-像 Galen 和 Hippocrates 这样的实践者的领域，他们研究整个人体。但是随着我们知识的
-增长，人类便被强迫进行专业分工了。我们发现很多深刻（deep）的新观点\footnote{深刻
-  （deep）这里并没有给出关于这个概念的严格定义，粗略地指对于整个丰富研究领域来说
-  基础性的概念和想法。BP 算法和疾病的微生物理论就是关于**深刻**很好的例子。}：如
-疾病的微生物理论，或者对抗体工作机制的理解，又或者心脏、肺、血管和动脉的理解，所
-有这些知识形成了完整的心血管疾病系统。这样深刻的理解形成了诸如流行病学、免疫学和
-围绕在心血管疾病系统交叉关联的领域的集群。所以我们的知识结构形成了医学的社会结构。
-这点在免疫学上显现的尤其明显：认识到免疫系统的存在和具备研究的价值是非凡的洞察。
-这样，我们就有了医学的完整领域——包含专家、会议、奖项等等——围绕在某种不可见的事物
-周围，可以说，这并非一个清晰的概念。
+为了正好地回答这个问题，我们可以看看医学的历史。在人类早期，医学是像 Galen 和
+Hippocrates 这样的实践者的领域，他们研究整个人体。但是随着我们知识的增长，人类便
+被强迫进行专业分工了。我们发现很多深刻（deep）的新观点\footnote{深刻（deep）这里
+  并没有给出关于这个概念的严格定义，粗略地指对于整个丰富研究领域来说基础性的概念
+  和想法。反向算法和疾病的微生物理论就是关于深刻很好的例子。}：如疾病的微生物理
+论，或者对抗体工作机制的理解，又或者心脏、肺、血管和动脉的理解，所有这些知识形成
+了完整的心血管疾病系统。这样深刻的理解形成了诸如流行病学、免疫学和围绕在心血管疾
+病系统交叉关联的领域的集群。所以我们的知识结构形成了医学的社会结构。这点在免疫学
+上显现的尤其明显：认识到免疫系统的存在和具备研究的价值是非凡的洞察。这样，我们就
+有了医学的完整领域~——~包含专家、会议、奖项等等~——~围绕在某种不可见的事物周围，可
+以说，这并非一个清晰的概念。
 
 这种特点也在不同的科学分支上广泛存在：不仅仅是医学，在物理学、数学、化学等等领域
 都存在这样的情况。这些领域开始时显现出一整块的知识，只有一点点深刻的观点。早期的
@@ -1565,23 +1550,22 @@ von Braun 指出的，“基础研究就是我们并不知道自己正在做的�
 多深刻的新想法，对任何一个人来说都是太多以至于难以掌握所有的想法。所以，这个领域
 的社会结构就开始重新组织，围绕着这些想法分离。我们现在看到的就是领域被不断地细分，
 子领域按照一种复杂的、递归的、自指的社会结构进行分解，而这些组织关系也反映了最深
-刻的那些想法之间的联系。**因此，知识结构形成了科学的社会组织关系。但这些社会关系
-反过来也会限制和帮助决定那些可以发现的事物**。这就是 Conway 法则在科学上变体版
-本。
+刻的那些想法之间的联系。\emph{因此，知识结构形成了科学的社会组织关系。但这些社会
+  关系反过来也会限制和帮助决定那些可以发现的事物}。这就是 Conway 法则在科学上变
+体版本。
 
 那么，这又会对深度学习或者 AI 有什么影响呢？
 
-因为在 AI 发展早期，存在对它的争论，一方认为，“这并不是很难的一件事，我们已经
-有[超级武器]了。”，反对方认为，“超级武器并不足够”。深度学习就是最新的超级武
-器\footnote{Interestingly, often not by leading experts in deep learning, who
-  have been quite restrained. See, for example, this thoughtful post by Yann
-  LeCun. This is a difference from many earlier incarnations of the argument.}，
+因为在 AI 发展早期，存在对它的争论，一方认为，“这并不是很难的一件事，我们已经有
+［超级武器］了。”，反对方认为，“超级武器并不足够”。深度学习就是最新的超级武
+器\footnote{有趣的是，往往不是由深度学习的主要专家提出的，他们已经相当克制。
+例如，看看 Yann LeCun 写的这篇\href{https://www.facebook.com/yann.lecun/posts/10152348155137143}{严肃的帖子}。这和很多早期的争论不同。}，
 更早的有逻辑、Prolog或者专家系统，或者当时最牛的技术。这些论点的问题就是他们并没
 有以较好的方式告诉你这些给定的候选超级武器如何强大。当然，我们已经花了一章来回顾
-深度学习可以解决具备相当挑战性的问题的证据。看起来令人兴奋，前景光明。但是那些
-像 Prolog 或者 \href{http://en.wikipedia.org/wiki/Eurisko}{Eurisko} 或者专家系统
-在它们的年代也同样如此。所以，那些观点或者方法看起来很有前景并没有什么用。我们如
-何区分出深度学习和早期的方法的本质差异呢？Conway 法则给出了一个粗略和启发性的度量，
+深度学习可以解决具备相当挑战性的问题的证据。看起来令人兴奋，前景光明。但是那些像
+Prolog 或者 \href{http://en.wikipedia.org/wiki/Eurisko}{Eurisko} 或者专家系统在
+它们的年代也同样如此。所以，那些观点或者方法看起来很有前景并没有什么用。我们如何
+区分出深度学习和早期的方法的本质差异呢？Conway 法则给出了一个粗略和启发性的度量，
 也就是评价和这些方法相关的社会关系的复杂性。
 
 所以，这就带来了两个需要回答的问题。第一，根据这种社会复杂性度量，方法集和深度学
@@ -1605,7 +1589,7 @@ von Braun 指出的，“基础研究就是我们并不知道自己正在做的�
 这将会让那些寄望于获得确定性的人们变得沮丧。读了很多网络上的观点，我发现很多人在
 大声地下结论，对 AI 持有非常乐观的态度，但很多是缺少确凿证据和站不住脚的推断的。
 我很坦白的观点是：现在下这样乐观的结论还为之过早。正如一个笑话所讲，如果你问一个
-科学家，某个发现还有多久才会出现，他们会说 10 年（或者更多），其实真正的含义就
-是“我不知道”。AI，像受控核聚变和其他技术一样，已经发展远超 10 年已经 60 多年了。
+科学家，某个发现还有多久才会出现，他们会说 10 年（或者更多），其实真正的含义就是
+“我不知道”。AI，像受控核聚变和其他技术一样，已经发展远超 10 年已经 60 多年了。
 另一方面，我们在深度学习中确确实实在做的其实就是还没有发现极限的强大技术，还有哪
 些相当开放的根本性问题。这是令人兴奋异常的创造新事物的机遇。
