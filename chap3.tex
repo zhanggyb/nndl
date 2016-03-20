@@ -1133,10 +1133,10 @@ $\eta=0.1$ 和$\lambda = 5.0$。我们就突破了 98\%，达到了98.04\% 的�
 论（说它们是新的粒子）进行解释，而我只有一种假设来解释所有的 plate。” Bethe 回答
 说，“在你和我的解释之间的唯一差别就是你的是错的，而我所有的观点是正确的。你单一
 的解释是错误的，我的多重解释所有都是正确的。”后续的工作证实了，Bethe 的想法是正
-确的而 Schein 粒子不再正确\footnote{The story is related by the physicist
-  Richard Feynman in an
-  \href{https://www.aip.org/history-programs/niels-bohr-library/oral-histories/5020-4}{interview}
-  with the historian Charles Weiner.}。
+确的而 Schein 粒子不再正确\footnote{这个故事由物理学家 Richard Feynman 在一次和
+历史学家 Charles Weiner 的%
+  \href{https://www.aip.org/history-programs/niels-bohr-library/oral-histories/5020-4}{采访}%
+  中讲述。}。
 
 第二个例子，在 1859 年，天文学家 Urbain Le Verrier 观察到水星并没有按照牛顿万有引
 力给出的轨迹进行运转。与牛顿力学只有很小的偏差，那时候一些解释就是牛顿力学需要一
@@ -1163,14 +1163,14 @@ $\eta=0.1$ 和$\lambda = 5.0$。我们就突破了 98\%，达到了98.04\% 的�
 
 这里也有更深的问题，这个问题也是有关科学的关键问题~——~我们如何泛化。规范化能够给我
 们一种计算上的魔力帮助神经网络更好地泛化，但是并不会带来原理上理解的指导，甚至不
-会告诉我们什么样的观点才是最好的\footnote{These issues go back to the
+会告诉我们什么样的观点才是最好的\footnote{这些问题追溯到
   \href{http://en.wikipedia.org/wiki/Problem_of_induction}{problem of
-    induction}, famously discussed by the Scottish philosopher David Hume in
+    induction}，被苏格兰哲学家 David Hume 在
   \href{http://www.gutenberg.org/ebooks/9662}{"An Enquiry Concerning Human
-    Understanding"} (1748). The problem of induction has been given a modern
-  machine learning form in the no-free lunch theorem
-  (\href{http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=585893}{link})
-  of David Wolpert and William Macready (1997).}。
+    Understanding"} （1748）中被讨论过，这是人所共知的。归纳的问题已经在 David Wolpert 
+		和 William Macready （1997）的没有免费午餐的定理下%
+		（\href{http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=585893}{链接}）%
+		被给予一个现代的机器学习的形式。}。
 
 这实在是令人困扰，因为在日常生活中，我们人类在泛化上表现很好。给一个儿童几幅大象
 的图片，他就能快速地学会认识其他的大象。当然，他们偶尔也会搞错，很可能将一只犀牛
@@ -1183,10 +1183,10 @@ $\eta=0.1$ 和$\lambda = 5.0$。我们就突破了 98\%，达到了98.04\% 的�
 实际上，我们的网络已经比我们预先期望的要好一些了。拥有 100 个隐藏元的网络会有接
 近 80,000 个参数。我们的训练集仅仅有 50,000 幅图像。这好像是用一个 80,000
 阶的多项式来拟合 50,000 个数据点。我们的网络肯定会过度拟合得很严重。但是，这样的
-网络实际上却泛化得很好。为什么？这一点并没有很好地理解。这里有个猜想\footnote{In
+网络实际上却泛化得很好。为什么？这一点并没有很好地理解。这里有个猜想\footnote{在
   \href{http://yann.lecun.com/exdb/publis/pdf/lecun-01a.pdf}{Gradient-Based
-    Learning Applied to Document Recognition}, by Yann LeCun, Léon Bottou,
-  Yoshua Bengio, and Patrick Haffner (1998).}：梯度下降学习的动态有一种自规范化的
+    Learning Applied to Document Recognition} 中，作者为 Yann LeCun， Léon Bottou，
+  Yoshua Bengio， 和 Patrick Haffner （1998）。}：梯度下降学习的动态有一种自规范化的
 效应。这真是一个意料之外的巧合，但也带来了对于这种现象本质无知的不安。不过，我们
 还是会在后面依照这种实践的观点来应用规范化技术的。神经网络也是由于这点表现才更好
 一些。
@@ -1362,8 +1362,8 @@ $\lambda$ 值\footnote{这个以及下两个图形由程序
 
 这个想法非常强大并且已经被广发应用了。让我们从一篇论
 文\footnote{\href{http://dx.doi.org/10.1109/ICDAR.2003.1227801}{Best Practices
-    for Convolutional Neural Networks Applied to Visual Document Analysis}, by
-  Patrice Simard, Dave Steinkraus, and John Platt (2003)}看看一些结果，这片论文
+    for Convolutional Neural Networks Applied to Visual Document Analysis}，作者为
+  Patrice Simard， Dave Steinkraus， 和 John Platt （2003）}看看一些结果，这片论文
 中，作者在 MNIST 上使用了几个的这种想法的变化方式。其中一种他们考虑的网络结构其
 实和我们已经使用过的类似~——~一个拥有 800 个隐藏元的前馈神经网络，使用了交叉熵代
 价函数。在标准的 MNIST 训练数据上运行这个网络，得到了 98.4\% 的分类准确率。他们
@@ -1419,8 +1419,8 @@ $\lambda$ 值\footnote{这个以及下两个图形由程序
 法 B。上面我们并没有看到这个情况~——~因为这要求两幅图有交叉的点~——~这里并没
 有\footnote{显著的例子参见
   \href{http://dx.doi.org/10.3115/1073012.1073017}{Scaling to very very large
-    corpora for natural language disambiguation}, by Michele Banko and Eric
-  Brill (2001).}。对“算法 A 是不是要比算法 B 好？”正确的反应应该是“你在使用什
+    corpora for natural language disambiguation}，作者为 Michele Banko 和 Eric
+  Brill （2001）。}。对“算法 A 是不是要比算法 B 好？”正确的反应应该是“你在使用什
 么训练集合？”
 
 在进行开发时或者在读研究论文时，这都是需要记住的事情。很多论文聚焦在寻找新的技巧

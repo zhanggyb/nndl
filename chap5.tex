@@ -129,10 +129,8 @@ git clone https://github.com/mnielsen/neural-networks-and-deep-learning.git
 
 让我们训练 30 个完整的\epochs{}，使用\minibatch{}大小为 10， 学习率 $\eta = 0.1$，
 规范化参数 $\lambda = 5.0$。在训练时，我们也会在 \lstinline!validation_data! 上
-监控分类的准确度\footnote{Note that the networks is likely to take some minutes
-  to train, depending on the speed of your machine. So if you're running the
-  code you may wish to continue reading and return later, not wait for the code
-  to finish executing.}：
+监控分类的准确度\footnote{注意网络可能需要花费几分钟来训练，要看你机器的速度。所以如果你
+正在运行代码，你可能愿意继续阅读并稍后回来，而不是等待代码完成执行。}：
 \begin{lstlisting}[language=Python]
 >>> net.SGD(training_data, 30, 10, 0.1, lmbda=5.0,  
 ... evaluation_data=validation_data, monitor_evaluation_accuracy=True) 
@@ -168,8 +166,9 @@ git clone https://github.com/mnielsen/neural-networks-and-deep-learning.git
  
 这里表现出来的现象看起非常奇怪。直觉地，额外的隐藏层应当让网络能够学到更加复杂的
 分类函数，然后可以在分类时表现得更好吧。可以肯定的是，事情并没有变差，至少新的层
-次增加上，在最坏的情形下也就是没有影响\footnote{See this later problem to
-  understand how to build a hidden layer that does nothing.}。事情并不是这样子的。
+次增加上，在最坏的情形下也就是没有影响\footnote{参见%
+\hyperref[identity_neuron]{这个后面的问题}来了解如何构建一个什么也不干的隐藏层。}。
+事情并不是这样子的。
  
 那么，应该是怎样的呢？假设额外的隐藏层的确能够在原理上起到作用，问题是我们的学习
 算法没有发现正确地权值和偏置。那么现在就要好好看看学习算法本身有哪里出了问题，并
@@ -248,13 +247,11 @@ $||\delta^2|| = 0.31$，所以这就确认了之前的疑惑：在第二层隐�
 时候梯度倾向于变小。这意味着在前面的隐藏层中的神经元学习速度要慢于后面的隐藏层。
 这儿我们只在一个网络中发现了这个现象，其实在多数的神经网络中存在着更加根本的导致
 这个现象出现的原因。这个现象也被称作是\emph{消失的梯度问题\index{消失的梯度问
-    题}（vanishing gradient problem）}\footnote{See Gradient flow in recurrent
-  nets: the difficulty of learning long-term dependencies, by Sepp Hochreiter,
-  Yoshua Bengio, Paolo Frasconi, and Jürgen Schmidhuber (2001). This paper
-  studied recurrent neural nets, but the essential phenomenon is the same as in
-  the feedforward networks we are studying. See also Sepp Hochreiter's earlier
-  Diploma Thesis, Untersuchungen zu dynamischen neuronalen Netzen (1991, in
-  German).}。
+    题}（vanishing gradient problem）}\footnote{参见 \href{http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.24.7321}{Gradient flow in recurrent
+  nets: the difficulty of learning long-term dependencies}，作者为 Sepp Hochreiter，
+  Yoshua Bengio， Paolo Frasconi， 和 Jürgen Schmidhuber （2001）。这篇论文
+	研究了递归神经网络，但是其本质现象和我们正在研究的前馈网络中的是一样的。还可看看 Sepp Hochreiter
+	的早期的学位论文，\href{http://www.idsia.ch/~juergen/SeppHochreiter1991ThesisAdvisorSchmidhuber.pdf}{Untersuchungen zu dynamischen neuronalen Netzen} （1991，德语）。}。
  
 为何消失的梯度问题会出现呢？我们可以通过什么方式避免它？还有在训练深度神经网络时
 如何处理好这个问题？实际上，这个问题是可以避免的，尽管替代方法并不是那么有效，同
@@ -447,7 +444,7 @@ $100*1/4 = 25$。最终，我们就获得了激增的梯度。\\
   （3）数值上说明上述表达式在 $|w| ~= 6.9$ 时候去的最高值约
   $0.45$。所以即使每个条件都满足，我们仍然有一个狭窄的输入激活区间，这样来避免消
   失的梯度问题。
-\item \textbf{幺神经元：} 考虑一个单一输入的神经元，$x$，对应的权重 $w_1$，偏
+\item \textbf{幺神经元：}\label{identity_neuron} 考虑一个单一输入的神经元，$x$，对应的权重 $w_1$，偏
   差 $b$，输出上的权重 $w_2$。证明，通过合理选择权重和偏差，我们可以确保 $w_2
   \sigma(w_1*x +b)~=x$ 其中
   $x \in [0, 1]$。这样的神经元可用来作为幺元使用，输出和输入相同（成比例
@@ -489,18 +486,18 @@ $100*1/4 = 25$。最终，我们就获得了激增的梯度。\\
 究集中在更好地理解在训练深度神经网络时遇到的挑战。这里我不会给出一个详尽的总结，
 仅仅想要给出一些论文，告诉你人们正在寻觅探究的问题。
  
-首先，在 2010 年 Glorot 和 Bengio\footnote{Understanding the difficulty of
-  training deep feedforward neural networks, by Xavier Glorot and Yoshua Bengio
-  (2010). See also the earlier discussion of the use of sigmoids in Efficient
-  BackProp, by Yann LeCun, Léon Bottou, Genevieve Orr and Klaus-Robert Müller
-  (1998).} 发现证据表明 sigmoid 函数的选择会导致训练网络的问题。特别地，他们发
+首先，在 2010 年 Glorot 和 Bengio\footnote{\href{http://jmlr.org/proceedings/papers/v9/glorot10a/glorot10a.pdf}{Understanding the difficulty of
+  training deep feedforward neural networks}，作者为 Xavier Glorot 和 Yoshua Bengio
+  （2010）。还可看看 \href{http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf}{Efficient
+  BackProp} 论文中前面的关于 S 型函数的讨论，作者为 Yann LeCun， Léon Bottou， Genevieve Orr 和 Klaus-Robert Müller
+  （1998）。} 发现证据表明 sigmoid 函数的选择会导致训练网络的问题。特别地，他们发
 现 sigmoid 函数会导致最终层上的激活函数在训练中会聚集在 $0$，这也导致了学习的缓慢。
 他们的工作中提出了一些取代 sigmoid 函数的激活函数选择，使得不会被这种聚集性影响性
 能。
  
-第二个例子，在 2013 年 Sutskever, Martens, Dahl 和 Hinton\footnote{On the
-  importance of initialization and momentum in deep learning, by Ilya Sutskever,
-  James Martens, George Dahl and Geoffrey Hinton (2013).} 研究了深度学习使用随机
+第二个例子，在 2013 年 Sutskever, Martens, Dahl 和 Hinton\footnote{\href{http://www.cs.toronto.edu/~hinton/absps/momentum.pdf}{On the
+  importance of initialization and momentum in deep learning}，作者为 Ilya Sutskever，
+  James Martens， George Dahl 和 Geoffrey Hinton （2013）。} 研究了深度学习使用随机
 权重初始化和基于 $momentum$ 的 $SGD$ 方法。两种情形下，好的选择可以获得较大的差异
 的训练效果。
 
