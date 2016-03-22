@@ -830,6 +830,9 @@ $z^L_j = \sum_{k} w^L_{jk} a^{L-1}_k + b^L_j$。不过，这里我们不会使�
 元，\learningrate{} $0.5$，\minibatch{}规模为 $10$），但是\epochs{}为 30 次。下图
 展示了分类准确率在训练和测试集上的变化情况。注意我们使用的测试数据，而不是验证集
 合，为了让结果看起来和前面的图更方便比较。
+\begin{center}
+  \includegraphics[width=.6\textwidth]{code_samples/fig/overfitting_full}
+\end{center}
 
 如你所见，测试集和训练集上的准确率相比我们使用 $1,000$ 个训练数据时相差更小。特
 别地，在训练数据上的最佳的分类准确率 97.86\% 只比测试集上的 95.33\% 准确率高了
@@ -991,6 +994,9 @@ $1-\frac{\eta\lambda}{n}$。如果我们持续使用 $\lambda = 0.1$ 就会产�
 \end{lstlisting}
 
 我们得到：
+\begin{center}
+  \includegraphics[width=.6\textwidth]{code_samples/fig/regularized_full}
+\end{center}
 
 这个结果很不错。第一，我们在测试集上的分类准确率在使用规范化后有了提升，从
 95.49\% 到 96.49\%。这是个很大的进步。第二，我们可以看到在训练数据和测试数据上的
