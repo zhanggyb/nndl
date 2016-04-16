@@ -75,6 +75,16 @@
 % for compact item list
 \usepackage{paralist}
 
+% ------------------------------------------------------------------------------
+% Math - Warning: before cjkfonts (xeCJK) and other package loads fontspec
+% ------------------------------------------------------------------------------
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+% font selection for mathematics with XeLaTeX, MUST after amsfonts
+\usepackage{mathspec}
+
 \input{localization.tex}
 
 % Set Roboto and Source Code Pro, which are installed with TexLive, for western
@@ -84,8 +94,6 @@
 
 \usepackage{setspace}
 \onehalfspacing{}
-
-\usepackage{amsmath}
 
 %\usepackage{tikz} % load TikZ/PGF
 %\usetikzlibrary{circuits.logic.US,positioning,decorations.pathreplacing,mindmap,backgrounds,math}
@@ -142,7 +150,7 @@
 
 %\input{faq}
 
-%\input{history}
+\input{history}
 
 \backmatter{}
 
