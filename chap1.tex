@@ -803,7 +803,7 @@ w_k$和$\partial C / \partial b_l$。用这些分量来写梯度下降的更新�
 证实了我们可以通过仅仅计算随机选取的\minibatch{}的梯度来估算整体的梯度。
 
 为了将其明确地和神经网络的学习联系起来，假设 $w_k$ 和 $b_l$ 表示我们神经网络中权
-重和偏置。随即梯度下降通过随机地选取并训练输入的\minibatch{}来工作，
+重和偏置。随机梯度下降通过随机地选取并训练输入的\minibatch{}来工作，
 \begin{align}
   \label{eq:20}w_k \rightarrow w_k' &= w_k-\frac{\eta}{m}
                                       \sum_j \frac{\partial C_{X_j}}{\partial w_k}
