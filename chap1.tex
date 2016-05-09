@@ -977,7 +977,7 @@ def feedforward(self, a):
 \end{lstlisting}
 
 当然，我们想要 \lstinline!Network! 对象做的主要事情是学习。为此我们给它们一个实
-现随即梯度下降算法的 \lstinline!SGD! 方法。代码如下。其中一些地方看似有一点神秘，
+现随机梯度下降算法的 \lstinline!SGD! 方法。代码如下。其中一些地方看似有一点神秘，
 我会在代码后面逐个分析。
 \begin{lstlisting}[language=Python]
 def SGD(self, training_data, epochs, mini_batch_size, eta,
