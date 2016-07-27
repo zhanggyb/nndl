@@ -1,9 +1,8 @@
 % file: westernfonts.tex
 
-\newcommand{\fontdir}[0]{/usr/local/texlive/2015/texmf-dist/fonts/}
-\newcommand{\robotodir}[0]{\fontdir/truetype/google/roboto/}
-\newcommand{\sourcecodeprodir}[0]{\fontdir/opentype/adobe/sourcecodepro/}
-\newcommand{\sourceserifprodir}[0]{\fontdir/opentype/adobe/sourceserifpro/}
+\newcommand{\robotodir}[0]{fonts/}
+\newcommand{\sourcecodeprodir}[0]{fonts/}
+\newcommand{\sourceserifprodir}[0]{fonts/}
 
 \newcommand{\robotomd}[0]{Light}
 \newcommand{\robotobf}[0]{Medium}
@@ -21,7 +20,7 @@
   Path=\robotodir,
   UprightFont=*-Regular,
   BoldFont=*-Bold,
-  ItalicFont=*-RegularItalic,
+  ItalicFont=*-Italic,
   BoldItalicFont=*-BoldItalic]
 
 \newfontfamily\SourceCodePro{SourceCodePro}[
@@ -56,7 +55,7 @@
   Extension=.ttf,
   Path=\robotodir,
   UprightFont=*-Regular,
-  ItalicFont=*-RegularItalic]
+  ItalicFont=*-Italic]
 
 \newfontfamily\RobotoMedium{Roboto}[
   Extension=.ttf,
