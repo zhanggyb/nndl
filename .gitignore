@@ -1,6 +1,8 @@
 .texpadtmp
 auto
-/fonts/
+
+/fonts/*.otf
+/fonts/*.ttf
 
 *.log
 *.aux
