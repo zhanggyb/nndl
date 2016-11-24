@@ -290,7 +290,7 @@ $\sum_j w_j a_j$。我们现在知道如何在这个量上获得大量的控制�
 是在输出神经元的偏置。有什么办法可以实现对网络的实际输出控制吗？
 
 解决方案是设计一个神经网络，它的隐藏层有一个加权输出 $\sigma^{-1} \circ f(x)$，其
-中 $\sigma^{-1}$是 $\sigma$ 函数的倒数。也就是说，我们希望从隐藏层的加权输出是：
+中 $\sigma^{-1}$是 $\sigma$ 函数的反函数。也就是说，我们希望从隐藏层的加权输出是：
 \begin{center}
   \includegraphics{inverted_function}
 \end{center}
