@@ -1,7 +1,9 @@
 %!TEX TS-program = xelatex
 %!TEX encoding = UTF-8 Unicode
 
+% ------------------------------------------------------------------------------
 % customize the headers with fancyhdr package
+% ------------------------------------------------------------------------------
 \usepackage{fancyhdr}
 \fancyhf{}
 \fancyhead[LE]{\leftmark}
@@ -9,18 +11,33 @@
 \fancyfoot[LE,RO]{\thepage}
 \pagestyle{fancy}
 
+% ------------------------------------------------------------------------------
+% Index package
+% ------------------------------------------------------------------------------
 \usepackage{makeidx}
 \makeindex
 
+% ------------------------------------------------------------------------------
 % load hyperref to use hyperlinks
+% ------------------------------------------------------------------------------
 \usepackage[colorlinks=true,linkcolor=blue]{hyperref}
 \usepackage[all]{hypcap}  % Be sure to call this package after loading hyperref.
 
+% ------------------------------------------------------------------------------
+% Glossaries, must be after hyperref
+% ------------------------------------------------------------------------------
+\usepackage[xindy,toc]{glossaries}
+\makeglossaries{}
+
+% ------------------------------------------------------------------------------
 % load tocbibind to add contents,list of figures, list of tables and
 % bibliography into the toc
+% ------------------------------------------------------------------------------
 \usepackage{tocbibind}
 
+% ------------------------------------------------------------------------------
 % Needed to load images
+% ------------------------------------------------------------------------------
 \usepackage{graphicx}
 \graphicspath{ {images/} }   % where to look for images
 
@@ -30,7 +47,9 @@
 
 \usepackage{framed}
 
+% ------------------------------------------------------------------------------
 % for code example
+% ------------------------------------------------------------------------------
 \usepackage{listings}
 
 \definecolor{syntax_comment}{rgb}{0.72,0.14,0.15}	% red
@@ -67,12 +86,16 @@
 %  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
 }
 
+% ------------------------------------------------------------------------------
 % for long and nice table
+% ------------------------------------------------------------------------------
 \usepackage{longtable}
 \usepackage{booktabs}
 \usepackage{ltxtable}
 
+% ------------------------------------------------------------------------------
 % for compact item list
+% ------------------------------------------------------------------------------
 \usepackage{paralist}
 
 % ------------------------------------------------------------------------------
@@ -84,7 +107,17 @@
 
 % font selection for mathematics with XeLaTeX, MUST after amsfonts
 \usepackage{mathspec}
+% \setmathsfont(Digits,Latin,Greek)[Numbers={Lining,Proportional}]{Minion Pro}
 
+% There's no italic sans-serif math font by default, but it's needed in this book
+% follow: http://tex.stackexchange.com/questions/77640/bold-italic-and-sans-serif-math-symbols
+% to define a \mathsfit{} macro
+\DeclareMathAlphabet{\mathsfit}{\encodingdefault}{\sfdefault}{m}{sl}
+\SetMathAlphabet{\mathsfit}{bold}{\encodingdefault}{\sfdefault}{bx}{sl}
+
+% ------------------------------------------------------------------------------
+% Localization setting
+% ------------------------------------------------------------------------------
 \input{localization.tex}
 
 % Set Roboto and Source Code Pro, which are installed with TexLive, for western
@@ -101,7 +134,17 @@
 %\pgfplotsset{compat=yourversion}
 
 \input{terms}
+
+% ------------------------------------------------------------------------------
+% Load glossaries
+% ------------------------------------------------------------------------------
+\input{glossaries}
+
 \input{plots}
+
+% ------------------------------------------------------------------------------
+% The document body
+% ------------------------------------------------------------------------------
 
 \begin{document}
 
@@ -155,5 +198,6 @@
 \backmatter{}
 
 \printindex
+\printglossary[title={中英对照术语表}]
 
 \end{document}

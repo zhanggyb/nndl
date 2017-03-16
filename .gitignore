@@ -14,3 +14,7 @@ auto
 *.ilg
 *.pdf
 *.DS_Store
+*.xdy
+*.gls
+*.glo
+*.glg

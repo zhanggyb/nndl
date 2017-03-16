@@ -3,6 +3,7 @@
 
 TEX = xelatex
 MKIDX = makeindex
+MKGLS = makeglossaries
 RM = rm -rf
 MAKE = make
 TARGET = nndl-ebook.pdf
@@ -19,6 +20,7 @@ all: graphics $(TARGET)
 $(TARGET): $(SOURCES) $(IMAGEDEPS)
 	$(TEX) $(basename $@)
 	$(MKIDX) $(basename $@)
+	$(MKGLS) $(basename $@)
 	$(TEX) $(basename $@)
 	$(TEX) $(basename $@)
 
