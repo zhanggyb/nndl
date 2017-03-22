@@ -1042,16 +1042,17 @@ def SGD(self, training_data, epochs, mini_batch_size, eta,
 
 \lstinline!training_data! 是一个 \lstinline!(x, y)! 元组的列表，表示训练输入和其
 对应的期望输出。变量 \lstinline!epochs! 和 \lstinline!mini_batch_size! 正如你预
-料的~——~\epochs{}数量，和采样时的\minibatch{}的大小。\lstinline!eta! 是%
-\gls*{learning-rate}，$\eta$。如果给出了可选参数 \lstinline!test_data!，那么程序会在
-每个训练器后评估网络，并打印出部分进展。这对于追踪进度很有用，但相当拖慢执行速度。
+料的~——~\gls*{epoch}数量，和采样时的\minibatch{}的大小。\lstinline!eta! 是%
+\gls*{learning-rate}，$\eta$。如果给出了可选参数 \lstinline!test_data!，那么程序
+会在每个训练器后评估网络，并打印出部分进展。这对于追踪进度很有用，但相当拖慢执行
+速度。
 
-代码如下工作。在每个\epoch{}，它首先随机地将训练数据打乱，然后将它分成多个适当大
-小的\minibatch{}。这是一个简单的从训练数据的随机采样方法。然后对于每一个
+代码如下工作。在每个\gls*{epoch}，它首先随机地将训练数据打乱，然后将它分成多个适
+当大小的\minibatch{}。这是一个简单的从训练数据的随机采样方法。然后对于每一个
 \lstinline!mini_batch! 我们应用一次梯度下降。这是通过代码
 \lstinline!self.update_mini_batch(mini_batch, eta)! 完成的，它仅仅使用
-\lstinline!mini_batch! 中的训练数据，根据单次梯度下降的迭代更新网络的\gls*{weight}和\gls*{bias}。
-这是 \lstinline!update_mini_batch! 方法的代码：
+\lstinline!mini_batch! 中的训练数据，根据单次梯度下降的迭代更新网络的%
+\gls*{weight}和\gls*{bias}。这是 \lstinline!update_mini_batch! 方法的代码：
 \begin{lstlisting}[language=Python]
 def update_mini_batch(self, mini_batch, eta):
    """Update the network's weights and biases by applying
@@ -1121,7 +1122,7 @@ Python shell 里执行也许是最方便的。
 \end{lstlisting}
 
 最后，我们将使用随机梯度下降来从 MNIST \lstinline!training_data! 学习超过 30 次%
-\epochs{}，\minibatch{}大小为 10，\gls*{learning-rate} $\eta = 3.0$，
+\gls*{epoch}，\gls*{mini-batch}大小为 10，\gls*{learning-rate} $\eta = 3.0$，
 
 \begin{lstlisting}[language=Python]
 >>> net.SGD(training_data, 30, 10, 3.0, test_data=test_data)
@@ -1225,9 +1226,9 @@ Epoch 29: 982 / 10000
 有太多信息能指导我们怎么做。我们可能不仅关心\gls*{learning-rate}，还要关心我们的
 神经网络中的其它每一个部分。我们可能想知道是否用了让网络很难学习的初始%
 \gls*{weight}和\gls*{bias}？或者可能我们没有足够的训练数据来获得有意义的学习？或
-者我们没有进行足够的\epoch{}？或者可能对于具有这种结构的神经网络，学习识别手写数
-字是不可能的？可能\gls*{learning-rate}太低？或者可能\gls*{learning-rate}太高？当
-你第一次遇到问题，你不总是能有把握。
+者我们没有进行足够的\gls*{epoch}？或者可能对于具有这种结构的神经网络，学习识别手
+写数字是不可能的？可能\gls*{learning-rate}太低？或者可能\gls*{learning-rate}太高？
+当你第一次遇到问题，你不总是能有把握。
 
 从这得到的教训是调试一个神经网络不是琐碎的，就像常规编程那样，它是一门艺术。你需
 要学习调试的艺术来获得神经网络更好的结果。更普通的是，我们需要启发式方法来选择好
@@ -1384,7 +1385,7 @@ SVM。现在（2013）的纪录是从 $10,000$ 图像中正确分类 $9,979$ 个
 最终的结果是，我们设计出了一个网络，它将一个非常复杂的问题~——~这张图像是否有一张
 人脸~——~分解成在单像素层面上就可回答的非常简单的问题。它通过一系列多层结构来完成，
 在前面的网络层，它回答关于输入图像非常简单明确的问题，在后面的网络层，它建立了一
-个更加复杂和抽象的层级结构。包含这种多层结构~——~两层或更多隐藏层~——~的网络被称为
+个更加复杂和抽象的层级结构。包含这种多层结构~——~两层或更多隐藏层~——~的网络被称为%
 \textbf{深度神经网络}。
 
 当然，我没有提到如何去递归地分解成子网络。手工设计网络中的\gls*{weight}和%
