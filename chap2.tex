@@ -209,12 +209,12 @@ C/\partial w_{jk}^l$ 和 $\partial C/\partial b_j^l$ 上。
 
 现在，这个调皮鬼变好了，试着帮助你来优化代价，它试着找到可以让代价更小的$\Delta
 z_j^l$。假设 $\frac{\partial C}{\partial z_j^l}$ 有一个很大的值（或正或负）。那
-么这个调皮鬼可以通过选择与 $\frac{\partial C}{\partial z_j^l}$ 相反符号的
-$\Delta z_j^l$ 来降低代价。相反，如果 $\frac{\partial C}{\partial z_j^l}$接近
-$0$，那么调皮鬼并不能通过扰动带权输入 $z_j^l$ 来改善太多代价。在调皮鬼看来，这时
-候神经元已经很接近最优了\footnote{这里需要注意的是，只有在 $\Delta z_j^l$ 很小的
-  时候才能够满足。我们需要假设调皮鬼只能进行微小的调整。}。所以这里有一种启发式
-的认识，$\frac{\partial C}{\partial z_j^l}$ 是神经元的误差的度量。
+么这个调皮鬼可以通过选择与 $\frac{\partial C}{\partial z_j^l}$ 相反符号的$\Delta
+z_j^l$ 来降低代价。相反，如果 $\frac{\partial C}{\partial z_j^l}$接近$0$，那么调
+皮鬼并不能通过扰动带权输入 $z_j^l$ 来改善太多代价。在调皮鬼看来，这时候神经元已
+经很接近最优了\footnote{这里需要注意的是，只有在 $\Delta z_j^l$ 很小的时候才能够
+  满足。我们需要假设调皮鬼只能进行微小的调整。}。所以这里有一种启发式的认识，
+$\frac{\partial C}{\partial z_j^l}$ 是神经元的误差的度量。
 
 按照上面的描述，我们定义 $l$ 层的第 $j^{th}$ 个神经元上的误差 $\delta_j^l$ 为：
 \begin{equation}
@@ -301,8 +301,8 @@ Numpy 这样的矩阵库进行计算了。\\
 输出的误差方法。然后，我们进行 Hadamard 乘积运算 $\odot \sigma'(z^l)$。这会让误
 差通过 $l$ 层的激活函数反向传递回来并给出在第 $l$ 层的带权输入的误差 $\delta$。
 
-通过组合 \eqref{eq:bp1} 和 \eqref{eq:bp2}，我们可以计算任何层的误差 $\delta^l$。
-首先使用 \eqref{eq:bp1} 计算 $\delta^L$，然后应用方程~\eqref{eq:bp2} 来计算
+通过组合~\eqref{eq:bp1} 和~\eqref{eq:bp2}，我们可以计算任何层的误差 $\delta^l$。
+首先使用~\eqref{eq:bp1} 计算 $\delta^L$，然后应用方程~\eqref{eq:bp2} 来计算
 $\delta^{L-1}$，然后再次用方程~\eqref{eq:bp2} 来计算 $\delta^{L-2}$，如此一步一
 步地\gls*{bp}完整个网络。\\
 
@@ -357,7 +357,7 @@ $a^{l-1}$ 这些量我们都已经知道如何计算了。方程也可以写成�
   和}了，并且，\gls*{weight}学习也会终止（或者学习非常缓慢）。类似的结果对于输出
 神经元的\gls*{bias}也是成立的。
 
-针对前面的层，我们也有类似的观点。特别地，注意在 \eqref{eq:bp2} 中的项
+针对前面的层，我们也有类似的观点。特别地，注意在~\eqref{eq:bp2} 中的项
 $\sigma'(z^l)$。这表示如果神经元已经接近饱和，$\delta_j^l$ 很可能变小。这就导致
 任何输入进一个饱和的神经元的\gls*{weight}学习缓慢\footnote{如果 ${w^{l+1}}^T
   \delta^{l+1}$ 拥有足够大的量能够补偿 $\sigma'(z_k^l)$ 的话，这里的推导就不能成
@@ -395,17 +395,17 @@ $\sigma'(z^l)$。这表示如果神经元已经接近饱和，$\delta_j^l$ 很�
 \subsection*{问题}
 
 \begin{itemize}
-\item \textbf{另一种\gls*{bp}方程的表示方式：} 我已经给出了使用 Hadamard 乘积的反
-  向传播的公式（尤其是 \eqref{eq:bp1} 和 \eqref{eq:bp2}）。如果你对这种特殊的乘
-  积不熟悉，可能会有一些困惑。下面还有一种表示方式，那就是基于传统的矩阵乘法，某
-  些读者可能会觉得很有启发。（1）证明 \eqref{eq:bp1} 可以写成
+\item \textbf{另一种\gls*{bp}方程的表示方式：} 我已经给出了使用 Hadamard 乘积的
+  \gls*{bp}的公式（尤其是~\eqref{eq:bp1} 和~\eqref{eq:bp2}）。如果你对这种特殊的
+  乘积不熟悉，可能会有一些困惑。下面还有一种表示方式，那就是基于传统的矩阵乘法，
+  某些读者可能会觉得很有启发。（1）证明~\eqref{eq:bp1} 可以写成
   \begin{equation}
     \delta^L = \Sigma'(z^L) \nabla_a C
     \label{eq:33}\tag{33}
   \end{equation}
   其中 $\Sigma'(z^L)$ 是一个方阵，其对角线的元素是 $\sigma'(z_j^L)$，其他的元素
-  均是 $0$。注意，这个矩阵通过一般的矩阵乘法作用在 $\nabla_a C$ 上。（2）证明
-  \eqref{eq:bp2} 可以写成
+  均是 $0$。注意，这个矩阵通过一般的矩阵乘法作用在 $\nabla_a C$ 上。（2）证
+  明~\eqref{eq:bp2} 可以写成
   \begin{equation}
     \delta^l = \Sigma'(z^l) (w^{l+1})^T \delta^{l+1}
     \label{eq:34}\tag{34}
@@ -707,7 +707,7 @@ C/\partial w_j$，仅仅使用一次前向传播，加上一次后向传播。�
   前向传播过程中主要的计算代价消耗在\gls*{weight}矩阵的乘法上，而\gls*{bp}则是计
   算\gls*{weight}矩阵的转置矩阵。这些操作显然有着类似的计算代价。}。所以%
 \gls*{bp}总的计算代价大概是两倍的前向传播。比起直接计算导数，显然\gls*{bp}有着更
-大的优势。所以即使\gls*{bp}看起来要比 \eqref{eq:46} 更加复杂，但实际上要更快。
+大的优势。所以即使\gls*{bp}看起来要比~\eqref{eq:46} 更加复杂，但实际上要更快。
 
 这个加速算法在 1986 年首次被众人接受，并直接导致神经网络可以处理的问题的扩展。这
 也导致了大量的研究者涌向了神经网络方向。当然，\gls*{bp}并不是万能钥匙。在 1980
@@ -815,7 +815,7 @@ $\Delta a_j^l$ 的变化将会导致下一层 $(l+1)^{\rm th}$ 的\textbf{所有
   \label{eq:52}\tag{52}
 \end{equation}
 
-这里我们对路径中所有可能的中间神经元选择进行求和。对比 \eqref{eq:47} 我们有
+这里我们对路径中所有可能的中间神经元选择进行求和。对比~\eqref{eq:47} 我们有
 \begin{equation}
   \frac{\partial C}{\partial w^l_{jk}} = \sum_{mnp\ldots q} \frac{\partial
     C}{\partial a^L_m} \frac{\partial a^L_m}{\partial a^{L-1}_n} \frac{\partial
