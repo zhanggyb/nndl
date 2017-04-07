@@ -47,7 +47,7 @@
 
 当然，如果仅仅为了编写一个计算机程序来识别手写数字，本章的内容可以简短很多！但前
 进的道路上，我们将扩展出很多关于神经网络的关键的思想，其中包括两个重要的人工神经
-元（\gls*{perceptron}和\gls*{sigmoid-neuron}），以及标准的神经网络学习算法，即%
+元（\gls*{perceptron}和 \gls*{sigmoid-neuron}），以及标准的神经网络学习算法，即%
 \gls*{sgd}算法。自始至终，我专注于解释事情的原委，并构筑你对神经网络的直观感受。
 这需要一个漫长的讨论，而不是仅仅介绍些基本的技巧，但这对于更深入的理解是值得的。
 作为收益，在本章的最后，我们会准备好了解什么是深度学习，以及它为什么很重要。
@@ -63,8 +63,8 @@
   McCulloch} 和 \href{http://en.wikipedia.org/wiki/Walter_Pitts}{Walter Pitts}
 早期\href{http://scholar.google.ca/scholar?cluster=4035975255085082870}{著作}的
 影响。今天，使用其它人工神经元模型更为普遍~——~在这本书中，以及更多现代的神经网络
-著作中，主要使用的是一种叫做\textbf{\gls{sigmoid-neuron}}的神经元模型。我们很快
-会讲到\gls*{sigmoid-neuron}。但是要理解为什么\gls*{sigmoid-neuron}被定义为那样的
+著作中，主要使用的是一种叫做 \textbf{\gls{sigmoid-neuron}}的神经元模型。我们很快
+会讲到 \gls*{sigmoid-neuron}。但是要理解为什么 \gls*{sigmoid-neuron}被定义为那样的
 方式，值得花点时间先来理解下\gls*{perceptron}。
 
 \gls*{perceptron}是如何工作的呢？一个\gls*{perceptron}接受几个二进制输入，
@@ -256,19 +256,19 @@ $3$，标记的单个\gls*{weight}为 $-4$：
 决这个问题。但是目前为止，我们还没发现有什么办法能让\gls*{perceptron}网络进行学
 习。
 
-我们可以引入一种称为\gls*{sigmoid-neuron}的新的人工神经元来克服这个问题。%
+我们可以引入一种称为 \gls*{sigmoid-neuron}的新的人工神经元来克服这个问题。
 \gls*{sigmoid-neuron}和\gls*{perceptron}类似，但是经过修改后，\gls*{weight}和%
 \gls*{bias}的微小改动只引起输出的微小变化。这对于让神经元网络学习起来是很关键的。
 
-好了, 让我来描述下\gls*{sigmoid-neuron}。我们用描绘\gls*{perceptron}的相同方式来
-描绘\gls*{sigmoid-neuron}\index{\gls*{sigmoid-neuron}}：
+好了, 让我来描述下 \gls*{sigmoid-neuron}。我们用描绘\gls*{perceptron}的相同方式来
+描绘 \gls*{sigmoid-neuron}：
 \begin{center}
   \includegraphics{tikz9}
 \end{center}
 
 正如一个\gls*{perceptron}，\gls*{sigmoid-neuron}有多个输入，$x_1,x_2,\ldots$。但
 是这些输入可以取 $0$ 和$1$ 中的任意值，而不仅仅是 $0$ 或 $1$。例如，
-$0.638\ldots$ 是一个\gls*{sigmoid-neuron}的有效输入。同样，\gls*{sigmoid-neuron}
+$0.638\ldots$ 是一个 \gls*{sigmoid-neuron}的有效输入。同样，\gls*{sigmoid-neuron}
 对每个输入有\gls*{weight}，$w_1,w_2,\ldots$，和一个总的\gls*{bias}，$b$。但是输
 出不是 $0$ 或 $1$。相反，它现在是 $\sigma(w \cdot x+b)$，这里 $\sigma$ 被称为 S
 型函数\footnote{顺便提一下，$\sigma$ 有时被称为\textbf{逻辑函数}，而这种新的神经
@@ -280,15 +280,15 @@ $0.638\ldots$ 是一个\gls*{sigmoid-neuron}的有效输入。同样，\gls*{sig
 \end{equation}
 
 把它们放在一起来更清楚地说明，一个具有输入 $x_1,x_2,\ldots$，\gls*{weight}
-$w_1,w_2,\ldots$，和\gls*{bias} $b$ 的\gls*{sigmoid-neuron}的输出是：
+$w_1,w_2,\ldots$，和\gls*{bias} $b$ 的 \gls*{sigmoid-neuron}的输出是：
 \begin{equation}
   \frac{1}{1+\exp(-\sum_j w_j x_j-b)}
   \label{eq:4}\tag{4}
 \end{equation}
 
 初看上去，\gls*{sigmoid-neuron}和\gls*{perceptron}有很大的差别。如果你不熟悉 S
-型函数的代数形式，它看上去晦涩难懂又令人生畏。实际上，\gls*{perceptron}和%
-\gls*{sigmoid-neuron}之间有很多相似的地方，跨过理解上的障碍，S 型函数的代数形式
+型函数的代数形式，它看上去晦涩难懂又令人生畏。实际上，\gls*{perceptron}和
+\gls*{sigmoid-neuron}之间有很多相似的地方，跨过理解上的障碍，\gls*{sigmoid-func}的代数形式
 具有很多技术细节。
 
 为了理解和\gls*{perceptron}模型的相似性，假设 $z \equiv w \cdot x + b$ 是一个很
@@ -345,8 +345,8 @@ $\Delta b$~——~的线性函数。利用这个线性特性，我们比较容�
 无论如何，$\sigma$ 在神经网络的工作中被普遍使用，并且是这本书中我们最常使用的激
 活函数。
 
-我们应该如何解释一个\gls*{sigmoid-neuron}的输出呢？很明显，\gls*{perceptron}和%
-\gls*{sigmoid-neuron}之间一个很大的不同是\gls*{sigmoid-neuron}不仅仅输出 $0$ 或
+我们应该如何解释一个 \gls*{sigmoid-neuron}的输出呢？很明显，\gls*{perceptron}和
+\gls*{sigmoid-neuron}之间一个很大的不同是 \gls*{sigmoid-neuron}不仅仅输出 $0$ 或
 $1$。它可以输出 $0$ 到 $1$ 之间的任何实数，所以诸如 $0.173\ldots$ 和
 $0.689\ldots$ 的值是合理的输出。这是非常有用的，例如，当我们想要输出来表示一个神
 经网络的图像像素输入的平均强度。但有时候这会是个麻烦。假设我们希望网络的输出表示
@@ -366,7 +366,7 @@ $0.689\ldots$ 的值是合理的输出。这是非常有用的，例如，当我
   上题中相同的设置~——~一个\gls*{perceptron}网络。同样假设所有输入被选中。我们不
   需要实际的输入值，仅仅需要固定这些输入。假设对于网络中任何特定%
   \gls*{perceptron}的输入 $x$， \gls*{weight}和\gls*{bias}遵循 $w \cdot x + b
-  \neq 0$。现在用\gls*{sigmoid-neuron}替换所有网络中的\gls*{perceptron}，并且把%
+  \neq 0$。现在用 \gls*{sigmoid-neuron}替换所有网络中的\gls*{perceptron}，并且把%
   \gls*{weight}和\gls*{bias}乘以一个正的常量$c>0$。证明在$c \rightarrow \infty$
   的极限情况下，\gls*{sigmoid-neuron}网络的行为和\gls*{perceptron}网络的完全一致。
   当一个\gls*{perceptron}的 $w \cdot x + b = 0$ 时又为什么会不同？
@@ -391,7 +391,7 @@ $0.689\ldots$ 的值是合理的输出。这是非常有用的，例如，当我
   \includegraphics{tikz11}
 \end{center}
 
-有些令人困惑的是，由于历史的原因，尽管是由\gls*{sigmoid-neuron}而不是%
+有些令人困惑的是，由于历史的原因，尽管是由 \gls*{sigmoid-neuron}而不是%
 \gls*{perceptron}构成，这种多层网络有时被称为\textbf{\gls{mlp}}或者\textbf{MLP}。
 在这本书中我不会使用 MLP 这个术语，因为我认为这会引起混淆，但这里想提醒你它的存
 在。
