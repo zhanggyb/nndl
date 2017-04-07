@@ -1,27 +1,14 @@
 % file: westernfonts.tex
 
-\newcommand{\robotodir}[0]{fonts/}
 \newcommand{\sourcecodeprodir}[0]{fonts/}
 \newcommand{\sourceserifprodir}[0]{fonts/}
 
-\newcommand{\robotomd}[0]{Light}
-\newcommand{\robotobf}[0]{Medium}
-\newcommand{\robotoit}[0]{LightItalic}
-\newcommand{\robotobi}[0]{MediumItalic}
 \newcommand{\codepromd}[0]{Light}
 \newcommand{\codeprobf}[0]{Medium}
 \newcommand{\codeproit}[0]{LightIt}
 \newcommand{\codeprobi}[0]{MediumIt}
 \newcommand{\serifpromd}[0]{Light}
 \newcommand{\serifprobf}[0]{Semibold}
-
-\newfontfamily\Roboto{Roboto}[
-  Extension=.ttf,
-  Path=\robotodir,
-  UprightFont=*-Regular,
-  BoldFont=*-Bold,
-  ItalicFont=*-Italic,
-  BoldItalicFont=*-BoldItalic]
 
 \newfontfamily\SourceCodePro{SourceCodePro}[
   Extension=.otf,
@@ -39,60 +26,8 @@
 
 \newcommand{\serif}[0]{\SourceSerifPro}
 
-\newfontfamily\RobotoThin{Roboto}[
-  Extension=.ttf,
-  Path=\robotodir,
-  UprightFont=*-Thin,
-  ItalicFont=*-ThinItalic]
-
-\newfontfamily\RobotoLight{Roboto}[
-  Extension=.ttf,
-  Path=\robotodir,
-  UprightFont=*-Light,
-  ItalicFont=*-LightItalic]
-
-\newfontfamily\RobotoRegular{Roboto}[
-  Extension=.ttf,
-  Path=\robotodir,
-  UprightFont=*-Regular,
-  ItalicFont=*-Italic]
-
-\newfontfamily\RobotoMedium{Roboto}[
-  Extension=.ttf,
-  Path=\robotodir,
-  UprightFont=*-Medium,
-  ItalicFont=*-MediumItalic]
-
-\newfontfamily\RobotoBold{Roboto}[
-  Extension=.ttf,
-  Path=\robotodir,
-  UprightFont=*-Bold,
-  ItalicFont=*-BoldItalic]
-
-\newfontfamily\RobotoBlack{Roboto}[
-  Extension=.ttf,
-  Path=\robotodir,
-  UprightFont=*-Black,
-  ItalicFont=*-BlackItalic]
-
 \newcommand{\setdefaultwesternfonts}[0]{
   
-  \setmainfont{Roboto}[
-    Extension=.ttf,
-    Path=\robotodir,
-    UprightFont=*-\robotomd,
-    BoldFont=*-\robotobf,
-    ItalicFont=*-\robotoit,
-    BoldItalicFont=*-\robotobi]
-
-  \setsansfont{Roboto}[
-    Extension=.ttf,
-    Path=\robotodir,
-    UprightFont=*-\robotomd,
-    BoldFont=*-\robotobf,
-    ItalicFont=*-\robotoit,
-    BoldItalicFont=*-\robotobi]
-
   \setmonofont{SourceCodePro}[
     Extension=.otf,
     Path=\sourcecodeprodir,
