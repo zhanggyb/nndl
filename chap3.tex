@@ -787,8 +787,8 @@ $a_7^L$ 就变得很小，代价 $-\ln a_7^L$ 随之增大。所以对数似然\
 $10,000$ 幅都不相同。我们会使用 \lstinline!validation_data! 而不是
 \lstinline!test_data! 来防止\gls*{overfitting}。我们会为 \lstinline!test_data! 使用和上面
 提到的相同的策略。我们在每个\gls*{epoch}的最后都计算在 \lstinline!validation_data!
-上的分类准确率。一旦分类准确率已经饱和，就停止训练。这个策略被称为\emph{提前停
-  止}\index{提前停止}。当然，实际应用中，我们不会立即知道什么时候准确率会饱和。
+上的分类准确率。一旦分类准确率已经饱和，就停止训练。这个策略被称为\textbf{提前停
+  止}。当然，实际应用中，我们不会立即知道什么时候准确率会饱和。
 相反，我们会一直训练直到我们确信准确率已经饱和\footnote{这里需要一些判定标准来确
   定什么时候停止。在我前面的图中，将 280 \gls*{epoch}看成是饱和的地方。可能这有点太
   悲观了。因为神经网络有时候会训练过程中处在一个稳定期，然后又开始提升。如果在
@@ -814,7 +814,7 @@ $10,000$ 幅都不相同。我们会使用 \lstinline!validation_data! 而不是
 最终我们就使用 \lstinline!test_data! 进行准确率测量。这给了我们在
 \lstinline!test_data! 上的结果是一个网络泛化能力真正的度量方式的信心。换言之，你
 可以将验证集看成是一种特殊的训练数据集能够帮助我们学习好的超参数。这种寻找好的超
-参数的方法有时候被称为\emph{hold out}方法，因为 \lstinline!validation_data! 是从
+参数的方法有时候被称为\textbf{hold out}方法，因为 \lstinline!validation_data! 是从
 \lstinline!traning_data! 训练集中留出或者“拿出”的一部分。
 
 在实际应用中，甚至在衡量了 \lstinline!test_data! 的性能后，我们可能也会改变想法并
@@ -860,7 +860,7 @@ $10,000$ 幅都不相同。我们会使用 \lstinline!validation_data! 而不是
 \end{equation}
 
 其中第一个项就是常规的交叉熵的表达式。第二个现在加入的就是所有\gls*{weight}的平方的和。然
-后使用一个因子 $\lambda / 2n$ 进行量化调整，其中 $\lambda > 0$ 可以称为\emph{规
+后使用一个因子 $\lambda / 2n$ 进行量化调整，其中 $\lambda > 0$ 可以称为\textbf{规
   范化参数}，而 $n$ 就是训练集合的大小。我们会在后面讨论
 $\lambda$ 的选择策略。需要注意的是，\gls*{regularization}项里面并\textbf{不}包含\gls*{bias}。这点我们后
 面也会再讲述。
@@ -914,7 +914,7 @@ $\frac{\lambda}{n} w$ 得到所有\gls*{weight}的偏导数。而\gls*{bias}的�
 \end{align}
 
 这正和通常的梯度下降学习规则相同，除了通过一个因子 $1-\frac{\eta\lambda}{n}$ 重
-新调整了\gls*{weight} $w$。这种调整有时被称为\emph{\gls*{weight}衰减}，因为它使得\gls*{weight}变小。粗看，
+新调整了\gls*{weight} $w$。这种调整有时被称为\textbf{\gls*{weight}衰减}，因为它使得\gls*{weight}变小。粗看，
 这样会导致\gls*{weight}会不断下降到 $0$。但是实际不是这样的，因为如果在原始\gls*{cost-func}中造成
 下降的话其他的项可能会让\gls*{weight}增加。
 
@@ -1208,7 +1208,7 @@ $\eta=0.1$ 和$\lambda = 5.0$。我们就突破了 98\%，达到了98.04\% 的�
 \subsection{规范化的其他技术}
 
 除了 L2 外还有很多\gls*{regularization}技术。实际上，正是由于数量众多，我这里也不会将所有的都列
-举出来。在本节，我简要地给出三种减轻\gls*{overfitting}的其他的方法：L1 \gls*{regularization}、弃权和人为
+举出来。在本节，我简要地给出三种减轻\gls*{overfitting}的其他的方法：L1 \gls*{regularization}、\gls*{dropout}和人为
 增加训练样本。我们不会像上面介绍得那么深入。其实，目的只是想让读者熟悉这些主要的
 思想，然后来体会一下\gls*{regularization}技术的多样性。\\
 
@@ -1260,9 +1260,9 @@ C/\partial w$ 未定义。原因在于函数 $|w|$ 在 $w=0$ 时有个“直角�
 程~\eqref{eq:96} 和~\eqref{eq:97} 并约定 $\mbox{sgn}(0) = 0$。这样就给出了一种细
 致又紧凑的规则来进行采用 L1 \gls*{regularization}的\gls*{sgd}学习。\\
 
-\textbf{弃权：} 弃权\index{弃权}（Dropout\index{Dropout}）是一种相当激进的技术。
-和 L1、L2 \gls*{regularization}不同，弃权技术并不依赖对\gls*{cost-func}的修改。而是，在弃权中，我们改变
-了网络本身。在介绍它为什么能工作，以及所得到的结果前，让我描述一下弃权基本的工作
+\textbf{\gls{dropout}：} \gls*{dropout}是一种相当激进的技术。
+和 L1、L2 \gls*{regularization}不同，\gls*{dropout}技术并不依赖对\gls*{cost-func}的修改。而是，在\gls*{dropout}中，我们改变
+了网络本身。在介绍它为什么能工作，以及所得到的结果前，让我描述一下\gls*{dropout}基本的工作
 机制。
 
 假设我们尝试训练一个网络：
@@ -1271,9 +1271,9 @@ C/\partial w$ 未定义。原因在于函数 $|w|$ 在 $w=0$ 时有个“直角�
 \end{center}
 
 特别地，假设我们有一个训练数据 $x$ 和 对应的目标输出 $y$。通常我们会通过在网络中
-前向传播 $x$ ，然后进行\gls*{bp}来确定对梯度的贡献。使用弃权技术，这个过程就改了。
+前向传播 $x$ ，然后进行\gls*{bp}来确定对梯度的贡献。使用\gls*{dropout}技术，这个过程就改了。
 我们会从随机（临时）地删除网络中的一半的隐藏神经元开始，同时让输入层和输出层的神经元保持
-不变。在此之后，我们会得到最终如下线条所示的网络。注意那些被弃权的神经元，即那些临时被删
+不变。在此之后，我们会得到最终如下线条所示的网络。注意那些被\gls*{dropout}的神经元，即那些临时被删
 除的神经元，用虚圈表示在图中：
 \begin{center}
   \includegraphics{tikz31}
@@ -1281,15 +1281,15 @@ C/\partial w$ 未定义。原因在于函数 $|w|$ 在 $w=0$ 时有个“直角�
 
 我们前向传播输入 $x$，通过修改后的网络，然后\gls*{bp}结果，同样通过这个修改后的网
 络。在一个\minibatch{小批量}的若干样本上进行这些步骤后，我们对有关的\gls*{weight}和\gls*{bias}进
-行更新。然后重复这个过程，首先重置弃权的神经元，然后选择一个新的随机的隐藏神经元
+行更新。然后重复这个过程，首先重置\gls*{dropout}的神经元，然后选择一个新的随机的隐藏神经元
 的子集进行删除，估计对一个不同的\gls*{mini-batch}的梯度，然后更新\gls*{weight}和\gls*{bias}。
 
 通过不断地重复，我们的网络会学到一个\gls*{weight}和\gls*{bias}的集合。当然，这些\gls*{weight}和\gls*{bias}也是在
-一半的隐藏神经元被弃权的情形下学到的。当我们实际运行整个网络时，是指两倍的隐藏神
+一半的隐藏神经元被\gls*{dropout}的情形下学到的。当我们实际运行整个网络时，是指两倍的隐藏神
 经元将会被激活。为了补偿这个，我们将从隐藏神经元出去的\gls*{weight}减半。
 
-这个弃权过程可能看起来奇怪，像是临时安排的。为什么我们会指望这样的方法能够进行规
-范化呢？为了解释所发生的事，我希望你停下来想一下标准（没有弃权）的训练方式。
+这个\gls*{dropout}过程可能看起来奇怪，像是临时安排的。为什么我们会指望这样的方法能够进行规
+范化呢？为了解释所发生的事，我希望你停下来想一下标准（没有\gls*{dropout}）的训练方式。
 特别地，想象一下我们训练几个不同的神经网络，都使用同一个训练数据。当然，网络可能
 不是从同一初始状态开始的，最终的结果也会有一些差异。出现这种情况时，我们可以使用
 一些平均或者投票的方式来确定接受哪个输出。例如，如果我们训练了五个网络，其中三个
@@ -1297,9 +1297,9 @@ C/\partial w$ 未定义。原因在于函数 $|w|$ 在 $w=0$ 时有个“直角�
 方式通常是一种强大（尽管代价昂贵）的方式来减轻\gls*{overfitting}。原因在于不同的网络可能会
 以不同的方式\gls*{overfitting}，平均法可能会帮助我们消除那样的\gls*{overfitting}。
 
-那么这和弃权有什么关系呢？启发式地看，当我们弃权掉不同的神经元集合时，有点像我们
-在训练不同的神经网络。所以，弃权过程就如同大量不同网络的效果的平均那样。不同的网
-络会以不同的方式\gls*{overfitting}了，所以，弃权过的网络的效果会减轻\gls*{overfitting}。
+那么这和\gls*{dropout}有什么关系呢？启发式地看，当我们\gls*{dropout}掉不同的神经元集合时，有点像我们
+在训练不同的神经网络。所以，\gls*{dropout}过程就如同大量不同网络的效果的平均那样。不同的网
+络会以不同的方式\gls*{overfitting}了，所以，\gls*{dropout}过的网络的效果会减轻\gls*{overfitting}。
 
 一个相关的启发式解释\label{dropout_explanation}在早期使用这项技术的论文中曾经给
 出\footnote{\href{https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf}{ImageNet
@@ -1307,20 +1307,20 @@ C/\partial w$ 未定义。原因在于函数 $|w|$ 在 $w=0$ 时有个“直角�
   Ilya Sutskever， 和 Geoffrey Hinton （2012）。}：“因为神经元不能依赖其他神经元特
 定的存在，这个技术其实减少了复杂的互适应的神经元。所以，强制要学习那些在神经元的
 不同随机子集中更加健壮的特征。” 换言之，如果我们将我们的神经网络看做一个进行预
-测的模型的话，我们就可以将弃权看做是一种确保模型对于一部分证据丢失健壮的方式。这
-样看来，弃权和 L1、L2 \gls*{regularization}也是有相似之处的，这也倾向于更小的\gls*{weight}，最后让网络对
+测的模型的话，我们就可以将\gls*{dropout}看做是一种确保模型对于一部分证据丢失健壮的方式。这
+样看来，\gls*{dropout}和 L1、L2 \gls*{regularization}也是有相似之处的，这也倾向于更小的\gls*{weight}，最后让网络对
 丢失个体连接的场景更加健壮。
 
-当然，弃权技术的真正衡量是它已经在提升神经网络性能上应用得相当成功。原始论
+当然，\gls*{dropout}技术的真正衡量是它已经在提升神经网络性能上应用得相当成功。原始论
 文\footnote{\href{http://arxiv.org/pdf/1207.0580.pdf}{Improving neural networks
     by preventing co-adaptation of feature detectors}， 作者为 Geoffrey Hinton， Nitish
   Srivastava， Alex Krizhevsky， Ilya Sutskever， 和 Ruslan Salakhutdinov
   （2012）。 注意这篇论文讨论了许多细微之处，这些我在这个简要的介绍里敷衍地带过了。}介
-绍了将其应用于很多不同任务的技术。对我们来说，特别感兴趣的是他们应用弃权在 MNIST
+绍了将其应用于很多不同任务的技术。对我们来说，特别感兴趣的是他们应用\gls*{dropout}在 MNIST
 数字分类上，使用了一个和我们之前介绍的那种普通的前向神经网络。这篇论文提及到当前
-最好的结果是在测试集上取得了 98.4\% 的准确率。他们使用弃权和 L2 \gls*{regularization}的组合将其
+最好的结果是在测试集上取得了 98.4\% 的准确率。他们使用\gls*{dropout}和 L2 \gls*{regularization}的组合将其
 提高到了 98.7\%。类似重要的结果在其他不同的任务上也取得了一定的成效，包括图像和
-语音识别、自然语言处理。弃权技术在训练大规模深度网络时尤其有用，这样的网络中过度
+语音识别、自然语言处理。\gls*{dropout}技术在训练大规模深度网络时尤其有用，这样的网络中过度
 拟合问题经常特别突出。\\
 
 \textbf{人为扩展训练数据：} 我们前面看到了 MNIST 分类准确率在我们使用 1,000 幅训
@@ -1435,7 +1435,7 @@ C/\partial w$ 未定义。原因在于函数 $|w|$ 在 $w=0$ 时有个“直角�
 在特定的训练数据集上的应用效果。那些给出基准数据集的人们会拥有更大的研究经费支持，
 这样能够获得更好的训练数据。所以，很可能他们由于超赞的技术的性能提升其实在更大的
 数据集合上就丧失了。换言之，人们标榜的提升可能就是历史的偶然。所以需要记住的特别
-是在实际应用中，我们想要的是更好的算法\emph{和}更好的训练数据。寻找更好的算法很
+是在实际应用中，我们想要的是更好的算法\textbf{和}更好的训练数据。寻找更好的算法很
 好，不过需要确保你在此过程中，没有放弃对更多更好的数据的追求。
 
 \subsection*{问题}
@@ -1459,7 +1459,7 @@ C/\partial w$ 未定义。原因在于函数 $|w|$ 在 $w=0$ 时有个“直角�
 创建了神经网络后，我们需要进行\gls*{weight}和\gls*{bias}的初始化。到现在，我们一直是根据在%
 \hyperref[ch:UsingNeuralNetsToRecognizeHandwrittenDigits]{第一章中}介绍的那样进
 行初始化。提醒你一下，之前的方式就是根据独立高斯随机变量来选择\gls*{weight}和\gls*{bias}，其被归
-一化为均值为 $0$，标准差 $1$。这个方法工作的还不错，但是非常\emph{特别}，所以值
+一化为均值为 $0$，标准差 $1$。这个方法工作的还不错，但是非常\textbf{特别}，所以值
 得去重新探讨它，看看是否能寻找一些更好的方式来设置初始的\gls*{weight}和\gls*{bias}，这也许能帮助
 我们的网络学习得更快。
 
@@ -1825,7 +1825,7 @@ Accuracy on evaluation data: 967 / 10000
 会是一个能够完全解决的问题，也不存在一种通用的关于正确策略的共同认知。总是会有一
 些新的技巧可以帮助你提高一点性能。但是本节的启发式想法能帮你开个好头。\\
 
-\textbf{宽泛策略：} 在使用神经网络来解决新的问题时，一个挑战就是获得\emph{任何}
+\textbf{宽泛策略：} 在使用神经网络来解决新的问题时，一个挑战就是获得\textbf{任何}
 一种非寻常的学习，也就是说，达到比随机的情况更好的结果。这个实际上会很困难，尤其
 是遇到一种新类型的问题时。让我们看看有哪些策略可以在面临这类困难时候尝试。
 
@@ -2162,7 +2162,7 @@ $\lambda=1.0$ 开始，然后根据验证集上的性能按照因子 $10$增加�
 
 \textbf{自动技术：} 我已经给出很多在手动进行超参数优化时的启发式规则。手动选择当
 然是种理解网络行为的方法。不过，现实是，很多工作已经使用自动化过程进行。通常的技
-术就是\emph{网格搜索}（\emph{grid search}），可以系统化地对超参数的参数空间的网
+术就是\textbf{网格搜索}（\textbf{grid search}），可以系统化地对超参数的参数空间的网
 格进行搜索。网格搜索的成就和限制（易于实现的变体）在 James Bergstra 和 Yoshua
 Bengio $2012$年的论
 文\footnote{\href{http://dl.acm.org/citation.cfm?id=2188395}{Random search for
@@ -2246,7 +2246,7 @@ $w=w_1,w_2,\ldots$，所以 $C=C(w)$。借助于泰勒展开式，\gls*{cost-fun
   \frac{1}{2} \Delta w^T H \Delta w + \ldots
   \label{eq:104}\tag{104}
 \end{equation}
-其中 $\nabla C$ 是通常的梯度向量，$H$ 就是矩阵形式的 \emph{Hessian 矩阵}，其中第
+其中 $\nabla C$ 是通常的梯度向量，$H$ 就是矩阵形式的 \textbf{Hessian 矩阵}，其中第
 $jk$ 项就是 $\partial^2 C/\partial w_j\partial w_k$。假设我们通过丢弃更高阶的项
 来近似 $C$，
 \begin{equation} 
@@ -2279,7 +2279,7 @@ $w+\Delta w = w - H^{-1}\nabla C$ 可以显著地降低\gls*{cost-func}的值。
 地使用改变量 $\Delta w = -\eta H^{-1} \nabla C$ 来 改变 $w$，其中 $\eta$ 就是
 \gls*{learning-rate}。
 
-这个最小化\gls*{cost-func}的方法常常被称为 \emph{Hessian 技术}或者 \emph{Hessian 优化}。
+这个最小化\gls*{cost-func}的方法常常被称为 \textbf{Hessian 技术}或者 \textbf{Hessian 优化}。
 在理论上和实践中的结果都表明 Hessian 方法比标准的梯度下降方法收敛速度更快。特别
 地，通过引入\gls*{cost-func}的二阶变化信息，可以让 Hessian 方法避免在梯度下降中常碰到的
 多路径（pathologies）问题。而且，\gls*{bp}算法的有些版本也可以用于计算 Hessian。
@@ -2329,7 +2329,7 @@ $w\rightarrow w'=w-\eta \nabla C$。在实践中，使用 $0$ 和 $1$ 之间的 
 的 $\mu$ 值，就像我们之前选择$\eta$ 和 $\lambda$ 那样。
 
 我到现在也没有把 $\mu$ 看成是超参数。原因在于 $\mu$ 的标准命名不大好：它叫做
-\emph{moment co-efficient}。这其实很让人困惑，因为 $\mu$ 并不是物理学那个叫做动
+\textbf{moment co-efficient}。这其实很让人困惑，因为 $\mu$ 并不是物理学那个叫做动
 量（momentum）的东西。并且，它更像摩擦力的概念。然而，现在这个术语已经被大家广泛
 使用了，所以我们继续使用它。
 

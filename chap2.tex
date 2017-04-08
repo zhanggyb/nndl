@@ -114,7 +114,7 @@ $\sigma$ 函数
 
 在使用方程~\eqref{eq:25} 计算 $a^l$ 的过程中，我们计算了中间量 $z^l \equiv w^l
 a^{l-1}+b^l$。这个量其实是非常有用的：我们称 $z^l$ 为 $l$ 层神经元的\textbf{带权
-  输入}\index{带权输入}。在本章后面，我们会充分利用带权输入 $z^l$。方
+  输入}。在本章后面，我们会充分利用带权输入 $z^l$。方
 程~\eqref{eq:25} 有时候会以带权输入的形式写作 $a^l = \sigma(z^l)$。同样要指出的
 是 $z^l$ 的每个元素是 $z^l_j = \sum_k w^l_{jk} a^{l-1}_k+b^l_j$，其实 $z^l_j$ 就
 是第 $l$ 层第 $j$ 个神经元的激活函数的带权输入。
@@ -353,8 +353,7 @@ $a^{l-1}$ 这些量我们都已经知道如何计算了。方程也可以写成�
 \hyperref[fig:StepFunction]{上一章中S型函数的图形}，当 $\sigma(z^L_j)$ 近似为$0$
 或者 $1$ 的时候 $\sigma$ 函数变得非常平。这时 $\sigma'(z^L_j) \approx 0$。所以如
 果输出神经元处于或者低激活值（$\approx 0$）或者高激活值（$\approx 1$）时，最终层
-的\gls*{weight}学习缓慢。这样的情形，我们常常称输出神经元已经\textbf{饱和}\index{饱
-  和}了，并且，\gls*{weight}学习也会终止（或者学习非常缓慢）。类似的结果对于输出
+的\gls*{weight}学习缓慢。这样的情形，我们常常称输出神经元已经\textbf{饱和}了，并且，\gls*{weight}学习也会终止（或者学习非常缓慢）。类似的结果对于输出
 神经元的\gls*{bias}也是成立的。
 
 针对前面的层，我们也有类似的观点。特别地，注意在~\eqref{eq:bp2} 中的项
@@ -380,7 +379,7 @@ $\sigma'(z^l)$。这表示如果神经元已经接近饱和，$\delta_j^l$ 很�
   \begin{minipage}{0.7\textwidth}
     \begin{framed}
       \centering
-      \textbf{总结：\gls*{bp}的四个方程式}\index{\gls*{bp}的四个方程式}\label{backpropsummary}\\
+      \textbf{总结：\gls*{bp}的四个方程式}\label{backpropsummary}\\
       \vspace{1.5ex}
       \begin{tabular}{ll}
         $\delta^L = \nabla_a C \odot \sigma'(z^L)$            & \hspace{2cm}\eqref{eq:bp1} \\[1.5ex]
@@ -424,7 +423,7 @@ $\sigma'(z^l)$。这表示如果神经元已经接近饱和，$\delta_j^l$ 很�
 \label{sec:proof_of_the_four_fundamental_equations}
 
 我们现在证明这四个基本的方程 \eqref{eq:bp1}--\eqref{eq:bp4}。所有这些都是多元微
-积分的\href{https://en.wikipedia.org/wiki/Chain_rule}{链式法则}\index{链式法则}%
+积分的\href{https://en.wikipedia.org/wiki/Chain_rule}{链式法则}%
 的推论。如果你熟悉链式法则，那么我鼓励你在读之前尝试自己推导。
 
 让我们从方程~\eqref{eq:bp1} 开始，它给出了输出误差 $\delta^L$ 的表达式。为了证明
