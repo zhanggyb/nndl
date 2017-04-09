@@ -14,8 +14,8 @@
 % ------------------------------------------------------------------------------
 % Index package
 % ------------------------------------------------------------------------------
-\usepackage{makeidx}
-\makeindex
+% \usepackage{makeidx}
+% \makeindex
 
 % ------------------------------------------------------------------------------
 % load hyperref to use hyperlinks
@@ -123,7 +123,6 @@
 % Set Roboto and Source Code Pro, which are installed with TexLive, for western
 % fonts:
 \input{westernfonts.tex}
-\setdefaultwesternfonts{}
 
 \usepackage{setspace}
 \onehalfspacing{}
@@ -132,8 +131,6 @@
 %\usetikzlibrary{circuits.logic.US,positioning,decorations.pathreplacing,mindmap,backgrounds,math}
 \usepackage{pgfplots} % load PDFPlots
 %\pgfplotsset{compat=yourversion}
-
-\input{terms}
 
 % ------------------------------------------------------------------------------
 % Load glossaries
@@ -197,7 +194,7 @@
 
 \backmatter{}
 
-\printindex
+% \printindex
 \printglossary[title={中英对照术语表}]
 
 \end{document}

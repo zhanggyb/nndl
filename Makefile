@@ -19,7 +19,7 @@ all: graphics $(TARGET)
 
 $(TARGET): $(SOURCES) $(IMAGEDEPS)
 	$(TEX) $(basename $@)
-	$(MKIDX) $(basename $@)
+	# $(MKIDX) $(basename $@)
 	$(MKGLS) $(basename $@)
 	$(TEX) $(basename $@)
 	$(TEX) $(basename $@)

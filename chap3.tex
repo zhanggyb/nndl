@@ -9,10 +9,10 @@
 中大部分工作学习和研究的基础。本章，我会解释若干技术能够用来提升我们关于%
 \gls*{bp}的初级的实现，最终改进网络学习的方式。
 
-本章涉及的技术包括：更好的代价函数的选择~——~%
-\hyperref[sec:the_cross-entropy_cost_function]{交叉熵}代价函数；四种称为%
-\hyperref[sec:overfitting_and_regularization]{“规范化”的方法}（L1 和 L2 规范化，
-  弃权和训练数据的人为扩展），这会让我们的网络在训练集之外的数据上更好地泛化；%
+本章涉及的技术包括：更好的\gls*{cost-func}的选择~——~%
+\hyperref[sec:the_cross-entropy_cost_function]{交叉熵}\gls*{cost-func}；四种称为%
+\hyperref[sec:overfitting_and_regularization]{“\gls*{regularization}”的方法}（L1 和 L2 \gls*{regularization}，
+  \gls*{dropout}和训练数据的人为扩展），这会让我们的网络在训练集之外的数据上更好地泛化；%
 \hyperref[sec:weight_initialization]{更好的\gls*{weight}初始化方法}；还有%
 \hyperref[sec:how_to_choose_a_neural_network's_hyper-parameters]{帮助选择好的超
   参数的启发式想法}。同样我也会再给出一些简要的%
@@ -54,7 +54,7 @@ $0.82$，所以这离我们的目标输出 $0.0$ 还差得很远。从下图来�
 输出接近 $0.0$ 的。注意这些图像实际上是正在进行梯度的计算，然后使用梯度更新来对%
 \gls*{weight}和\gls*{bias}进行更新，并且展示结果。设置\gls*{learning-rate}
 $\eta=0.15$ 进行学习一方面足够慢的让我们跟随学习的过程，另一方面也保证了学习的时
-间不会太久，几秒钟应该就足够了。代价函数是我们在第一章用到的二次函数，$C$。这里
+间不会太久，几秒钟应该就足够了。\gls*{cost-func}是我们在第一章用到的二次函数，$C$。这里
 我也会给出准确的形式，所以不需要翻到前面查看定义了。
 \begin{center}
   \includegraphics{saturation1-0}
@@ -67,7 +67,7 @@ $\eta=0.15$ 进行学习一方面足够慢的让我们跟随学习的过程，�
     \includegraphics{saturation1-250}\includegraphics{saturation1-300}
 \end{center}
 
-正如你所见，神经元快速地学到了使得代价函数下降的\gls*{weight}和\gls*{bias}，给出
+正如你所见，神经元快速地学到了使得\gls*{cost-func}下降的\gls*{weight}和\gls*{bias}，给出
 了最终的输出为 $0.09$。这虽然不是我们的目标输出 $0.0$，但是已经挺好了。假设我们
 现在将初始\gls*{weight}和\gls*{bias}都设置为 $2.0$。此时初始输出为 $0.98$，这是
 和目标值的差距相当大的。现在看看神经元学习的过程。
@@ -92,10 +92,10 @@ $\eta=0.15$ 进行学习一方面足够慢的让我们跟随学习的过程，�
 出现。为何学习如此缓慢？我们能够找到避免这种情况的方法吗？
 
 为了理解这个问题的源头，想想我们的神经元是通过改变\gls*{weight}和\gls*{bias}，并
-以一个代价函数的偏导数（$\partial C/\partial w$ 和 $\partial C/\partial b$）决定
+以一个\gls*{cost-func}的偏导数（$\partial C/\partial w$ 和 $\partial C/\partial b$）决定
 的速度学习。所以，我们在说“学习缓慢”时，实际上就是说这些偏导数很小。理解他们为
 何这么小就是我们面临的挑战。为了理解这些，让我们计算偏导数看看。我们一直在用的是
-方程~\eqref{eq:6}表示的二次代价函数，定义如下
+方程~\eqref{eq:6}表示的二次\gls*{cost-func}，定义如下
 \begin{equation}
   C = \frac{(y-a)^2}{2}
 \label{eq:54}\tag{54}
@@ -124,7 +124,7 @@ C/\partial w$ 和 $\partial C/\partial b$ 会非常小。这其实就是学习�
 \subsection{引入交叉熵代价函数}
 \label{sec:introducing_the_cross-entropy_cost_function}
 
-那么我们如何解决这个问题呢？研究表明，我们可以通过使用交叉熵代价函数来替换二次代
+那么我们如何解决这个问题呢？研究表明，我们可以通过使用交叉熵\gls*{cost-func}来替换二次代
 价函数。为了理解什么是交叉熵，我们稍微改变一下之前的简单例子。假设，我们现在要训
 练一个包含若干输入变量的的神经元，$x_1, x_2, \ldots$ 对应的\gls*{weight}为 $w_1,
 w_2, \ldots$ 和\gls*{bias} $b$：
@@ -134,7 +134,7 @@ w_2, \ldots$ 和\gls*{bias} $b$：
 \end{center}
 
 神经元的输出就是 $a = \sigma(z)$，其中 $z = \sum_j w_j x_j+b$ 是输入的带权和。我
-们如下定义这个神经元的交叉熵代价函数：
+们如下定义这个神经元的交叉熵\gls*{cost-func}：
 \begin{equation}
   C = -\frac{1}{n} \sum_x \left[y \ln a + (1-y ) \ln (1-a) \right]
 \label{eq:57}\tag{57}
@@ -144,10 +144,10 @@ w_2, \ldots$ 和\gls*{bias} $b$：
 输出。
 
 表达式~\eqref{eq:57} 是否解决学习缓慢的问题并不明显。实际上，甚至将这个定义看做
-是代价函数也不是显而易见的！在解决学习缓慢前，我们来看看交叉熵为何能够解释成一个
-代价函数。
+是\gls*{cost-func}也不是显而易见的！在解决学习缓慢前，我们来看看交叉熵为何能够解释成一个
+\gls*{cost-func}。
 
-将交叉熵看做是代价函数有两点原因。第一，它是非负的，$C > 0$。可以看出：（a）
+将交叉熵看做是\gls*{cost-func}有两点原因。第一，它是非负的，$C > 0$。可以看出：（a）
 \eqref{eq:57} 中的求和中的所有独立的项都是负数的，因为对数函数的定义域是 $(0,1)$；
       （b）求和前面有一个负号。
 
@@ -160,8 +160,8 @@ $0$\footnote{为了证明它我需要假设目标输出 $y$ 都是 $0$或$1$。�
 输出之间的差距越小，最终的交叉熵的值就越低了。
 
 综上所述，交叉熵是非负的，在神经元达到很好的正确率的时候会接近 $0$。这些其实就是
-我们想要的代价函数的特性。其实这些特性也是二次代价函数具备的。所以，交叉熵就是很
-好的选择了。但是交叉熵代价函数有一个比二次代价函数更好的特性就是它避免了学习速度
+我们想要的\gls*{cost-func}的特性。其实这些特性也是二次\gls*{cost-func}具备的。所以，交叉熵就是很
+好的选择了。但是交叉熵\gls*{cost-func}有一个比二次\gls*{cost-func}更好的特性就是它避免了学习速度
 下降的问题。为了弄清楚这个情况，我们来算算交叉熵函数关于\gls*{weight}的偏导数。
 我们将 $a=\sigma(z)$ 代入到 \eqref{eq:57} 中应用两次链式法则，得到：
 \begin{align}
@@ -191,7 +191,7 @@ $0$\footnote{为了证明它我需要假设目标输出 $y$ 都是 $0$或$1$。�
 
 这是一个优美的公式。它告诉我们\gls*{weight}学习的速度受到 $\sigma(z)-y$，也就是
 输出中的误差的控制。更大的误差，更快的学习速度。这是我们直觉上期待的结果。特别地，
-这个代价函数还避免了像在二次代价函数中类似方程中 $\sigma'(z)$ 导致的学习缓慢，见
+这个\gls*{cost-func}还避免了像在二次\gls*{cost-func}中类似方程中 $\sigma'(z)$ 导致的学习缓慢，见
 方程~\eqref{eq:55}。当我们使用交叉熵的时候，$\sigma'(z)$ 被约掉了，所以我们不再
 需要关心它是不是变得很小。这种约除就是交叉熵带来的特效。实际上，这也并不是非常奇
 迹的事情。我们在后面可以看到，交叉熵其实只是满足这种特性的一种选择罢了。
@@ -203,7 +203,7 @@ $0$\footnote{为了证明它我需要假设目标输出 $y$ 都是 $0$或$1$。�
 \label{eq:62}\tag{62}
 \end{equation}
 
-再一次,这避免了二次代价函数中类似方程~\eqref{eq:56} 中 $\sigma'(z)$ 项导致的学习
+再一次,这避免了二次\gls*{cost-func}中类似方程~\eqref{eq:56} 中 $\sigma'(z)$ 项导致的学习
 缓慢。
 
 \subsection*{练习}
@@ -238,13 +238,13 @@ $0$\footnote{为了证明它我需要假设目标输出 $y$ 都是 $0$或$1$。�
 \end{center}
 
 成功了！这次神经元的学习速度相当快，跟我们预期的那样。如果你观测的足够仔细，你可
-以发现代价函数曲线要比二次代价函数训练前面部分要陡很多。那个交叉熵导致的陡度让我
+以发现\gls*{cost-func}曲线要比二次\gls*{cost-func}训练前面部分要陡很多。那个交叉熵导致的陡度让我
 们高兴，这正是我们期待的当神经元开始出现严重错误时能以最快速度学习。
 
-我还没有提及刚才的示例用了什么\gls*{learning-rate}。刚开始使用二次代价函数的时候，
+我还没有提及刚才的示例用了什么\gls*{learning-rate}。刚开始使用二次\gls*{cost-func}的时候，
 我们使用了 $\eta = 0.15$。在新例子中，我们还应该使用同样的\gls*{learning-rate}吗？
-实际上，根据不同的代价函数，我们不能够直接去套用同样的\gls*{learning-rate}。这好
-比苹果和橙子的比较。对于这两种代价函数，我只是通过简单的实验来找到一个能够让我们
+实际上，根据不同的\gls*{cost-func}，我们不能够直接去套用同样的\gls*{learning-rate}。这好
+比苹果和橙子的比较。对于这两种\gls*{cost-func}，我只是通过简单的实验来找到一个能够让我们
 看清楚变化过程的\gls*{learning-rate}的值。尽管我不愿意提及，但如果你仍然好奇，这
 个例子中我使用了 $\eta = 0.005$。
 
@@ -252,9 +252,9 @@ $0$\footnote{为了证明它我需要假设目标输出 $y$ 都是 $0$或$1$。�
 \gls*{learning-rate}的选择是任意挑选的时候神经元学习的速度？！这样的反对其实没有
 抓住重点。上面的图例不是想讨论学习的绝对速度。而是想研究学习速度的变化情况。
 
-特别地，当我们使用二次代价函数时，学习在神经元犯了明显的错误的时候却比学习快接近
+特别地，当我们使用二次\gls*{cost-func}时，学习在神经元犯了明显的错误的时候却比学习快接近
 真实值的时候缓慢；而使用交叉熵学习正是在神经元犯了明显错误的时候速度更快。特别地，
-当我们使用二次代价函数时，当神经元在接近正确的输出前犯了明显错误的时候，学习变得%
+当我们使用二次\gls*{cost-func}时，当神经元在接近正确的输出前犯了明显错误的时候，学习变得%
 \textbf{更加缓慢}；而使用交叉熵，在神经元犯明显错误时学习得更快。这些现象并不依
 赖于如何设置\gls*{learning-rate}。
 
@@ -271,11 +271,11 @@ $a^L_1, a^L_2, \ldots$ 是实际输出值。那么我们定义交叉熵如下
 式~\eqref{eq:63} 确实会在很多的神经网络中避免学习的缓慢。如果你感兴趣，你可以尝
 试一下下面问题的推导。
 
-那么我们应该在什么时候用交叉熵来替换二次代价函数？实际上，如果在输出神经元是%
+那么我们应该在什么时候用交叉熵来替换二次\gls*{cost-func}？实际上，如果在输出神经元是%
 \gls*{sigmoid-neuron}时，交叉熵一般都是更好的选择。为什么？考虑一下我们初始化网
 络的\gls*{weight}和\gls*{bias}的时候通常使用某种随机方法。可能会发生这样的情况，
 这些初始选择会对某些训练输入误差相当明显~——~比如说，目标输出是 $1$，而实际值是
-$0$，或者完全反过来。如果我们使用二次代价函数，那么这就会导致学习速度的下降。它
+$0$，或者完全反过来。如果我们使用二次\gls*{cost-func}，那么这就会导致学习速度的下降。它
 并不会完全终止学习的过程，因为这些\gls*{weight}会持续从其他的样本中进行学习，但
 是显然这不是我们想要的效果。
 
@@ -304,14 +304,14 @@ $0$，或者完全反过来。如果我们使用二次代价函数，那么这�
 \begin{itemize}
 \item \textbf{多层多神经元网络}\quad 用%
   \hyperref[ch:HowTheBackpropagationAlgorithmWorks]{上一章}的定义符号，证明对二
-  次代价函数，关于输出层的\gls*{weight}的偏导数为
+  次\gls*{cost-func}，关于输出层的\gls*{weight}的偏导数为
   \begin{equation}
     \frac{\partial C}{\partial w^L_{jk}} = \frac{1}{n}
     \sum_x a^{L-1}_k  (a^L_j-y_j) \sigma'(z^L_j)
     \label{eq:65}\tag{65}
   \end{equation}
   项 $\sigma'(z^L_j)$ 会在一个输出神经元困在错误值时导致学习速度的下降。证明对于
-  交叉熵代价函数，针对一个训练样本 $x$ 的输出误差 $\delta^L$为
+  交叉熵\gls*{cost-func}，针对一个训练样本 $x$ 的输出误差 $\delta^L$为
   \begin{equation}
     \delta^L = a^L-y
     \label{eq:66}\tag{66}
@@ -325,9 +325,9 @@ $0$，或者完全反过来。如果我们使用二次代价函数，那么这�
   这里 $\sigma'(z^L_j)$ 就消失了，所以交叉熵避免了学习缓慢的问题，不仅仅是在一个
   神经元上，而且在多层多元网络上都起作用。这个分析过程稍作变化对\gls*{bias}也是一样的。
   如果你对这个还不确定，那么请仔细研读一下前面的分析。
-\item \textbf{在输出层使用线性神经元时使用二次代价函数}\quad 假设我们有一个多层
-  多神经元网络，最终输出层的神经元都是\textbf{线性神经元}，输出不再是 S 型函数作
-  用的结果，而是 $a^L_j = z^L_j$。证明如果我们使用二次代价函数，那么对单个训练样
+\item \textbf{在输出层使用线性神经元时使用二次\gls*{cost-func}}\quad 假设我们有一个多层
+  多神经元网络，最终输出层的神经元都是\textbf{线性神经元}，输出不再是 \gls*{sigmoid-func}作
+  用的结果，而是 $a^L_j = z^L_j$。证明如果我们使用二次\gls*{cost-func}，那么对单个训练样
   本 $x$ 的输出误差就是
   \begin{equation}
     \delta^L = a^L-y
@@ -341,8 +341,8 @@ $0$，或者完全反过来。如果我们使用二次代价函数，那么这�
     \frac{\partial C}{\partial b^L_{j}} &= \frac{1}{n} \sum_x
                                           (a^L_j-y_j) \label{eq:70}\tag{70}
   \end{align}
-  这表明如果输出神经元是线性的那么二次代价函数不再会导致学习速度下降的问题。在此
-  情形下，二次代价函数就是一种合适的选择。
+  这表明如果输出神经元是线性的那么二次\gls*{cost-func}不再会导致学习速度下降的问题。在此
+  情形下，二次\gls*{cost-func}就是一种合适的选择。
 \end{itemize}
 
 \subsection{使用交叉熵来对 MNIST 数字进行分类}
@@ -357,7 +357,7 @@ $0$，或者完全反过来。如果我们使用二次代价函数，那么这�
 样，我们会使用一个包含 $30$ 个隐藏元的网络，而\gls*{mini-batch}的大小也设置为
 $10$。我们将\gls*{learning-rate}设置为 $\eta=0.5$ \footnote{在第一章里我们用了二
   次代价和 $\eta = 3.0$ 的\gls*{learning-rate}。上面已经讨论过，准确地说出当代价
-  函数改变时用“相同的”学习速率意味什么，这是不可能的。对于两种代价函数，在给出其
+  函数改变时用“相同的”学习速率意味什么，这是不可能的。对于两种\gls*{cost-func}，在给出其
   它超参数的选择后，我都做了实验来找出一个接近优化性能的\gls*{learning-rate}，顺
   便提一下，有一个非常粗略的将交叉熵和二次代价的\gls*{learning-rate}联系起来的推
   导。正如我们之前看到的，二次代价的梯度项中有一个额外的 $\sigma' =
@@ -384,15 +384,15 @@ $10$。我们将\gls*{learning-rate}设置为 $\eta=0.5$ \footnote{在第一章�
 注意看下，\lstinline!net.large_weight_initializer()! 命令使用和第一章介绍的同样
 的方式来进行\gls*{weight}和\gls*{bias}的初始化。我们需要运行这个命令，是因为我们
 要在这一章的后面才改变默认的\gls*{weight}初始化命令。运行上面的代码我们得到了一
-个 95.49\% 准确率的网络。这跟我们在第一章中使用二次代价函数得到的结果相当接近了，
+个 95.49\% 准确率的网络。这跟我们在第一章中使用二次\gls*{cost-func}得到的结果相当接近了，
 95.42\%。
 
 同样也来试试使用 $100$ 个隐藏神经元，交叉熵及其他参数保持不变的情况。在这个情形
-下，我们获得了 96.82\% 的准确率。相比第一章使用二次代价函数的结果 96.59\%，这有
+下，我们获得了 96.82\% 的准确率。相比第一章使用二次\gls*{cost-func}的结果 96.59\%，这有
 一定的提升。这看起来是一个小小的变化，但是考虑到误差率已经从 3.41\% 下降到3.18\%
 了。我们已经消除了原误差的 $1/14$。这其实是可观的改进。
 
-令人振奋的是交叉熵代价函数给了我们和二次代价相比类似的或者更好的结果。然而，这些
+令人振奋的是交叉熵\gls*{cost-func}给了我们和二次代价相比类似的或者更好的结果。然而，这些
 结果并没有能够明确地证明交叉熵是更好的选择。原因在于我花费了少许努力在选择诸如学
 习速率，\gls*{mini-batch}大小等等这样的超参数上。为了让这些提升更具说服力，我们
 需要对超参数进行深度的优化。然而，这些结果仍然是令人鼓舞的，巩固了我们早先关于交
@@ -407,8 +407,8 @@ $10$。我们将\gls*{learning-rate}设置为 $\eta=0.5$ \footnote{在第一章�
 
 至此，我们已经花了大量篇幅介绍交叉熵。为何对一个只能给我们的 MNIST 结果带来一点
 点性能提升的技术花费这么多的精力？后面，我们会看到其他的技术~——~%
-\hyperref[sec:overfitting_and_regularization]{规范化}，会带来更大的提升效果。所
-以为何要这么细致地讨论交叉熵？部分原因在于交叉熵是一种广泛使用的代价函数，值得深
+\hyperref[sec:overfitting_and_regularization]{\gls*{regularization}}，会带来更大的提升效果。所
+以为何要这么细致地讨论交叉熵？部分原因在于交叉熵是一种广泛使用的\gls*{cost-func}，值得深
 入理解。但是更加重要的原因是神经元的饱和是神经网络中一个关键的问题，整本书都会不
 断回归到这个问题上。因此我现在深入讨论交叉熵就是因为这是一种开始理解神经元饱和以
 及如何解决这个问题的很好的实验。
@@ -428,7 +428,7 @@ $10$。我们将\gls*{learning-rate}设置为 $\eta=0.5$ \footnote{在第一章�
   \frac{\partial C}{\partial b } &= (a-y) \label{eq:72}\tag{72}
 \end{align}
 
-如果我们选择的代价函数满足这些条件，那么它们就能以简单的方式呈现这样的特性：初始
+如果我们选择的\gls*{cost-func}满足这些条件，那么它们就能以简单的方式呈现这样的特性：初始
 误差越大，神经元学习得越快。这也能够解决学习速度下降的问题。实际上，从这些公式开
 始，现在我们就看看凭着我们数学的直觉推导出交叉熵的形式是可行的。我们来推一下，由
 链式法则，我们有
@@ -456,8 +456,8 @@ $10$。我们将\gls*{learning-rate}设置为 $\eta=0.5$ \footnote{在第一章�
   C = -[y \ln a + (1-y) \ln (1-a)]+ {\rm constant}
   \label{eq:76}\tag{76}
 \end{equation}
-其中 {\rm constant} 是积分常量。这是一个单独的训练样本 $x$ 对代价函数的贡献。为
-了得到整个的代价函数，我们需要对所有的训练样本进行平均，得到了
+其中 {\rm constant} 是积分常量。这是一个单独的训练样本 $x$ 对\gls*{cost-func}的贡献。为
+了得到整个的\gls*{cost-func}，我们需要对所有的训练样本进行平均，得到了
 \begin{equation}
   C = -\frac{1}{n} \sum_x [y \ln a +(1-y) \ln(1-a)] + {\rm constant}
   \label{eq:77}\tag{77}
@@ -484,10 +484,10 @@ $10$。我们将\gls*{learning-rate}设置为 $\eta=0.5$ \footnote{在第一章�
 \subsection*{问题}
 
 \begin{itemize}
-\item 我们已经深入讨论了使用二次代价函数的网络中在输出神经元饱和时候学习缓慢的问
+\item 我们已经深入讨论了使用二次\gls*{cost-func}的网络中在输出神经元饱和时候学习缓慢的问
   题，另一个可能会影响学习的因素就是在方程~\eqref{eq:61} 中的 $x_j$ 项。由于此项，
   当输入 $x_j$ 接近 $0$ 时，对应的\gls*{weight} $w_j$ 会学习得相当缓慢。解释为何
-  不可以通过改变代价函数来消除 $x_j$ 项的影响。
+  不可以通过改变\gls*{cost-func}来消除 $x_j$ 项的影响。
 \end{itemize}
 
 \subsection{柔性最大值}
@@ -601,7 +601,7 @@ $10$。我们将\gls*{learning-rate}设置为 $\eta=0.5$ \footnote{在第一章�
 
 \textbf{学习缓慢问题：} 我们现在已经对柔性最大值神经元层有了一定的认识。但是我们
 还没有看到一个柔性最大值层会怎么样解决学习缓慢问题。为了理解这点，让我们先定义一
-个\textbf{\gls{log-likelihood}}代价函数。我们使用 $x$ 表示网络的训练输入，$y$ 表
+个\textbf{\gls{log-likelihood}}\gls*{cost-func}。我们使用 $x$ 表示网络的训练输入，$y$ 表
 示对应的目标输出。然后关联这个训练输入的\gls*{log-likelihood}\gls*{cost-func}就是
 \begin{equation}
   C \equiv -\ln a^L_y
@@ -611,8 +611,8 @@ $10$。我们将\gls*{learning-rate}设置为 $\eta=0.5$ \footnote{在第一章�
 \gls*{log-likelihood}代价就是 $-\ln a_7^L$。看看这个直觉上的含义，想想当网络表现
 很好的时候，也就是确认输入为 $7$ 的时候。这时，他会估计一个对应的概率 $a_7^L$ 跟
 $1$ 非常接近，所以代价 $-\ln a_7^L$ 就会很小。反之，如果网络的表现糟糕时，概率
-$a_7^L$ 就变得很小，代价 $-\ln a_7^L$ 随之增大。所以对数似然代价函数也是满足我们
-期待的代价函数的条件的。
+$a_7^L$ 就变得很小，代价 $-\ln a_7^L$ 随之增大。所以对数似然\gls*{cost-func}也是满足我们
+期待的\gls*{cost-func}的条件的。
 
 那关于学习缓慢问题呢？为了分析它，回想一下学习缓慢的关键就是量 $\partial C /
 \partial w^L_{jk}$ 和 $\partial C / \partial b^L_j$ 的变化情况。我不会显式地给出
@@ -695,9 +695,9 @@ $a_7^L$ 就变得很小，代价 $-\ln a_7^L$ 随之增大。所以对数似然�
 让我们通过构造一个网络泛化能力很差的例子使这个问题更清晰。我们的网络有 30 个隐藏
 神经元，共 23,860 个参数。但是我们不会使用所有 50,000 幅 MNIST 训练图像。相反，我
 们只使用前 1,000 幅图像。使用这个受限的集合，会让泛化的问题突显。我们按照之前同样
-的方式，使用交叉熵代价函数，\gls*{learning-rate}设置为 $\eta = 0.5$ 而\gls*{mini-batch}大小
+的方式，使用交叉熵\gls*{cost-func}，\gls*{learning-rate}设置为 $\eta = 0.5$ 而\gls*{mini-batch}大小
 设置为 $10$。不过这里我们要训练 400 个\gls*{epoch}，比前面的要多一些，因为我们只用了
-少量的训练样本。我们现在使用 \lstinline!network2! 来研究代价函数改变的情况：
+少量的训练样本。我们现在使用 \lstinline!network2! 来研究\gls*{cost-func}改变的情况：
 
 \begin{lstlisting}[language=Python]
 >>> import mnist_loader
@@ -718,7 +718,7 @@ $a_7^L$ 就变得很小，代价 $-\ln a_7^L$ 随之增大。所以对数似然�
   \includegraphics[width=.6\textwidth]{overfitting1}
 \end{center}
   
-这看起来令人振奋，因为代价函数有一个光滑的下降，跟我们预期一致。注意，我只是展示
+这看起来令人振奋，因为\gls*{cost-func}有一个光滑的下降，跟我们预期一致。注意，我只是展示
 了 $200$ 到 $399$ \gls*{epoch}的情况。这给出了很好的近距离理解训练后期的情况，也是出
 现有趣现象的地方。
 
@@ -787,8 +787,8 @@ $a_7^L$ 就变得很小，代价 $-\ln a_7^L$ 随之增大。所以对数似然�
 $10,000$ 幅都不相同。我们会使用 \lstinline!validation_data! 而不是
 \lstinline!test_data! 来防止\gls*{overfitting}。我们会为 \lstinline!test_data! 使用和上面
 提到的相同的策略。我们在每个\gls*{epoch}的最后都计算在 \lstinline!validation_data!
-上的分类准确率。一旦分类准确率已经饱和，就停止训练。这个策略被称为\emph{提前停
-  止}\index{提前停止}。当然，实际应用中，我们不会立即知道什么时候准确率会饱和。
+上的分类准确率。一旦分类准确率已经饱和，就停止训练。这个策略被称为\textbf{提前停
+  止}。当然，实际应用中，我们不会立即知道什么时候准确率会饱和。
 相反，我们会一直训练直到我们确信准确率已经饱和\footnote{这里需要一些判定标准来确
   定什么时候停止。在我前面的图中，将 280 \gls*{epoch}看成是饱和的地方。可能这有点太
   悲观了。因为神经网络有时候会训练过程中处在一个稳定期，然后又开始提升。如果在
@@ -814,7 +814,7 @@ $10,000$ 幅都不相同。我们会使用 \lstinline!validation_data! 而不是
 最终我们就使用 \lstinline!test_data! 进行准确率测量。这给了我们在
 \lstinline!test_data! 上的结果是一个网络泛化能力真正的度量方式的信心。换言之，你
 可以将验证集看成是一种特殊的训练数据集能够帮助我们学习好的超参数。这种寻找好的超
-参数的方法有时候被称为\emph{hold out}方法，因为 \lstinline!validation_data! 是从
+参数的方法有时候被称为\textbf{hold out}方法，因为 \lstinline!validation_data! 是从
 \lstinline!traning_data! 训练集中留出或者“拿出”的一部分。
 
 在实际应用中，甚至在衡量了 \lstinline!test_data! 的性能后，我们可能也会改变想法并
@@ -851,8 +851,8 @@ $10,000$ 幅都不相同。我们会使用 \lstinline!validation_data! 而不是
 
 幸运的是，还有其他的技术能够缓解\gls*{overfitting}，即使我们只有一个固定的网络和固定的训练集
 合。这种技术就是\textbf{\gls{regularization}}。本节，我会给出一种最为常用的\gls*{regularization}
-手段~——~有时候被称为\textbf{\gls{weight-decay}}或者 \textbf{\gls{l2-regularization}}。L2 规范化的想法是增加一个额外的
-项到代价函数上，这个项叫做\textbf{\gls{regularization-term}}。下面是规范化的交叉熵：
+手段~——~有时候被称为\textbf{\gls{weight-decay}}或者 \textbf{L2 \gls*{regularization}}。L2 \gls*{regularization}的想法是增加一个额外的
+项到\gls*{cost-func}上，这个项叫做\textbf{\gls{regularization-term}}。下面是\gls*{regularization}的交叉熵：
 \begin{equation}
   C = -\frac{1}{n} \sum_{xj} \left[ y_j \ln a^L_j+(1-y_j) \ln
   (1-a^L_j)\right] + \frac{\lambda}{2n} \sum_w w^2
@@ -860,12 +860,12 @@ $10,000$ 幅都不相同。我们会使用 \lstinline!validation_data! 而不是
 \end{equation}
 
 其中第一个项就是常规的交叉熵的表达式。第二个现在加入的就是所有\gls*{weight}的平方的和。然
-后使用一个因子 $\lambda / 2n$ 进行量化调整，其中 $\lambda > 0$ 可以称为\emph{规
-  范化参数}\index{规范化参数}，而 $n$ 就是训练集合的大小。我们会在后面讨论
-$\lambda$ 的选择策略。需要注意的是，规范化项里面并\emph{不}包含\gls*{bias}。这点我们后
+后使用一个因子 $\lambda / 2n$ 进行量化调整，其中 $\lambda > 0$ 可以称为\textbf{规
+  范化参数}，而 $n$ 就是训练集合的大小。我们会在后面讨论
+$\lambda$ 的选择策略。需要注意的是，\gls*{regularization}项里面并\textbf{不}包含\gls*{bias}。这点我们后
 面也会再讲述。
 
-当然，对其他的代价函数也可以进行规范化，例如二次代价函数。类似的规范化的形式如下：
+当然，对其他的\gls*{cost-func}也可以进行\gls*{regularization}，例如二次\gls*{cost-func}。类似的\gls*{regularization}的形式如下：
 \begin{equation}
   C = \frac{1}{2n} \sum_x \|y-a^L\|^2 + \frac{\lambda}{2n} \sum_w w^2
   \label{eq:86}\tag{86}
@@ -876,17 +876,17 @@ $\lambda$ 的选择策略。需要注意的是，规范化项里面并\emph{不}
   C = C_0 + \frac{\lambda}{2n} \sum_w w^2
   \label{eq:87}\tag{87}
 \end{equation}
-其中 $C_0$ 是原始的代价函数。
+其中 $C_0$ 是原始的\gls*{cost-func}。
 
-直觉地看，规范化的效果是让网络倾向于学习小一点的\gls*{weight}，其他的东西都一样的。大的权
-重只有能够给出代价函数第一项足够的提升时才被允许。换言之，规范化可以当做一种寻找
-小的\gls*{weight}和最小化原始的代价函数之间的折中。这两部分之间相对的重要性就由 $\lambda$
-的值来控制了：$\lambda$ 越小，就偏向于最小化原始代价函数，反之，倾向于小的\gls*{weight}。
+直觉地看，\gls*{regularization}的效果是让网络倾向于学习小一点的\gls*{weight}，其他的东西都一样的。
+大的\gls*{weight}只有能够给出\gls*{cost-func}第一项足够的提升时才被允许。换言之，\gls*{regularization}可以当做一种寻找
+小的\gls*{weight}和最小化原始的\gls*{cost-func}之间的折中。这两部分之间相对的重要性就由 $\lambda$
+的值来控制了：$\lambda$ 越小，就偏向于最小化原始\gls*{cost-func}，反之，倾向于小的\gls*{weight}。
 
 现在，对于这样的折中为何能够减轻\gls*{overfitting}还不是很清楚！但是，实际表现表明了这点。我
-们会在下一节来回答这个问题。但现在，我们来看看一个规范化的确减轻\gls*{overfitting}的例子。
+们会在下一节来回答这个问题。但现在，我们来看看一个\gls*{regularization}的确减轻\gls*{overfitting}的例子。
 
-为了构造这个例子，我们首先需要弄清楚如何将随机梯度下降算法应用在一个规范化的神经
+为了构造这个例子，我们首先需要弄清楚如何将\gls*{sgd}算法应用在一个\gls*{regularization}的神经
 网络上。特别地，我们需要知道如何计算对网络中所有\gls*{weight}和\gls*{bias}的偏导数 $\partial
 C/\partial w$ 和 $\partial C/\partial b$。对方程~\eqref{eq:87} 进行求偏导数得：
 \begin{align}
@@ -897,7 +897,7 @@ C/\partial w$ 和 $\partial C/\partial b$。对方程~\eqref{eq:87} 进行求偏
 
 $\partial C_0/\partial w$ 和 $\partial C_0/\partial b$ 可以通过\gls*{bp}进行计算，
 正如\hyperref[ch:HowTheBackpropagationAlgorithmWorks]{上一章}中描述的那样。所以
-我们看到其实计算规范化的代价函数的梯度是很简单的：仅仅需要\gls*{bp}，然后加上
+我们看到其实计算\gls*{regularization}的\gls*{cost-func}的梯度是很简单的：仅仅需要\gls*{bp}，然后加上
 $\frac{\lambda}{n} w$ 得到所有\gls*{weight}的偏导数。而\gls*{bias}的偏导数就不要变化，所以\gls*{bias}的
 梯度下降学习规则不会发生变化：
 \begin{equation}
@@ -914,35 +914,35 @@ $\frac{\lambda}{n} w$ 得到所有\gls*{weight}的偏导数。而\gls*{bias}的�
 \end{align}
 
 这正和通常的梯度下降学习规则相同，除了通过一个因子 $1-\frac{\eta\lambda}{n}$ 重
-新调整了\gls*{weight} $w$。这种调整有时被称为\emph{\gls*{weight}衰减}，因为它使得\gls*{weight}变小。粗看，
-这样会导致\gls*{weight}会不断下降到 $0$。但是实际不是这样的，因为如果在原始代价函数中造成
+新调整了\gls*{weight} $w$。这种调整有时被称为\textbf{\gls*{weight}衰减}，因为它使得\gls*{weight}变小。粗看，
+这样会导致\gls*{weight}会不断下降到 $0$。但是实际不是这样的，因为如果在原始\gls*{cost-func}中造成
 下降的话其他的项可能会让\gls*{weight}增加。
 
-好的，这就是梯度下降工作的原理。那么随机梯度下降呢？正如在没有规范化的随机梯度下
+好的，这就是梯度下降工作的原理。那么\gls*{sgd}呢？正如在没有\gls*{regularization}的随机梯度下
 降中，我们可以通过平均 $m$ 个训练样本的\gls*{mini-batch}来估计 $\partial C_0/\partial
-w$。因此，为了随机梯度下降的规范化学习规则就变成（参考方程~\eqref{eq:20}）
+w$。因此，为了\gls*{sgd}的\gls*{regularization}学习规则就变成（参考方程~\eqref{eq:20}）
 \begin{equation}
   w \rightarrow \left(1-\frac{\eta \lambda}{n}\right) w -\frac{\eta}{m}
   \sum_x \frac{\partial C_x}{\partial w}
   \label{eq:93}\tag{93}
 \end{equation}
 其中后面一项是在训练样本的\gls*{mini-batch} $x$ 上进行的，而 $C_x$ 是对每个训练样本的（无规
-  范化的）代价。这其实和之前通常的随机梯度下降的规则是一样的，除了有一个\gls*{weight}下降
-的因子 $1-\frac{\eta \lambda}{n}$。最后，为了完整，我给出\gls*{bias}的规范化的学习规则。
-这当然是和我们之前的非规范化的情形一致了（参考公式~\eqref{eq:21}），
+  范化的）代价。这其实和之前通常的\gls*{sgd}的规则是一样的，除了有一个\gls*{weight}下降
+的因子 $1-\frac{\eta \lambda}{n}$。最后，为了完整，我给出\gls*{bias}的\gls*{regularization}的学习规则。
+这当然是和我们之前的非\gls*{regularization}的情形一致了（参考公式~\eqref{eq:21}），
 \begin{equation}
   b \rightarrow b - \frac{\eta}{m} \sum_x \frac{\partial C_x}{\partial b}
   \label{eq:94}\tag{94}
 \end{equation}
 这里求和也是在训练样本的\gls*{mini-batch} $x$ 上进行的。
 
-让我们看看规范化给网络带来的性能提升吧。这里还会使用有 $30$ 个隐藏神经元、\gls*{mini-batch}
+让我们看看\gls*{regularization}给网络带来的性能提升吧。这里还会使用有 $30$ 个隐藏神经元、\gls*{mini-batch}
 大小为 $10$，\gls*{learning-rate}为 $0.5$，使用交叉熵的神经网络。然而，这次我们会使用规
 范化参数为 $\lambda = 0.1$。注意在代码中，我们使用的变量名字为 \lstinline!lmbda!，
 这是因为在 Python 中 \lstinline!lambda! 是关键字，有着不相关的含义。我也会再次使
 用 \lstinline!test_data!，而不是 \lstinline!validation_data!。不过严格地讲，我们
 应当使用 \lstinline!validation_data! 的，因为前面已经讲过了。这里我这样做，是因
-为这会让结果和非规范化的结果对比起来效果更加直接。你可以轻松地调整为
+为这会让结果和非\gls*{regularization}的结果对比起来效果更加直接。你可以轻松地调整为
 \lstinline!validation_data!，你会发现有相似的结果。
 
 \begin{lstlisting}[language=Python]
@@ -958,7 +958,7 @@ w$。因此，为了随机梯度下降的规范化学习规则就变成（参考
 ... monitor_training_cost=True, monitor_training_accuracy=True)
 \end{lstlisting}
 
-训练集上的代价函数持续下降，和前面无规范化的情况一样的规律\footnote{这个以及下一
+训练集上的\gls*{cost-func}持续下降，和前面无\gls*{regularization}的情况一样的规律\footnote{这个以及下一
   个图像由程序
   \href{https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/fig/overfitting.py}{overfitting.py}
   生成。}：
@@ -971,18 +971,18 @@ w$。因此，为了随机梯度下降的规范化学习规则就变成（参考
   \includegraphics[width=.6\textwidth]{regularized2}
 \end{center}
 
-显然，规范化的使用能够解决\gls*{overfitting}的问题。而且，准确率相当高了，最高处达到了
+显然，\gls*{regularization}的使用能够解决\gls*{overfitting}的问题。而且，准确率相当高了，最高处达到了
 87.1\%，相较于之前的 82.27\%。因此，我们几乎可以确信在 400 \gls*{epoch}之后持续训
-练会有更加好的结果。看起来，经实践检验，规范化让网络具有更好的泛化能力，显著地减
+练会有更加好的结果。看起来，经实践检验，\gls*{regularization}让网络具有更好的泛化能力，显著地减
 轻了\gls*{overfitting}的影响。
 
 如果我们摆脱人为的仅用 1,000 个训练图像的环境，转而用所有 50,000 图像的训练集，
 会发生什么？当然，我们之前已经看到\gls*{overfitting}在大规模的数据上其实不是那么明显了。那规
 范化能不能起到相应的作用呢？保持超参数和之前一样，30 \gls*{epoch}, \gls*{learning-rate}为 0.5,
-\gls*{mini-batch}大小为 10。不过我们这里需要改变规范化参数。原因在于训练数据的大小已
+\gls*{mini-batch}大小为 10。不过我们这里需要改变\gls*{regularization}参数。原因在于训练数据的大小已
 经从 $n=1,000$ 改成了 $n=50,000$，这个会改变\gls*{weight}衰减因子
 $1-\frac{\eta\lambda}{n}$。如果我们持续使用 $\lambda = 0.1$ 就会产生很小的\gls*{weight}衰
-减，因此就将规范化的效果降低很多。我们通过修改为 $\lambda = 5.0$ 来补偿这种下降。
+减，因此就将\gls*{regularization}的效果降低很多。我们通过修改为 $\lambda = 5.0$ 来补偿这种下降。
 
 好了，来训练网络，重新初始化\gls*{weight}：
 
@@ -998,14 +998,14 @@ $1-\frac{\eta\lambda}{n}$。如果我们持续使用 $\lambda = 0.1$ 就会产�
   \includegraphics[width=.6\textwidth]{code_samples/fig/regularized_full}
 \end{center}
 
-这个结果很不错。第一，我们在测试集上的分类准确率在使用规范化后有了提升，从
+这个结果很不错。第一，我们在测试集上的分类准确率在使用\gls*{regularization}后有了提升，从
 95.49\% 到 96.49\%。这是个很大的进步。第二，我们可以看到在训练数据和测试数据上的
 结果之间的差距也更小了。这仍然是一个大的差距，不过我们已经显著得到了本质上的降低
 \gls*{overfitting}的进步。
 
-最后，我们看看在使用 100 个隐藏神经元和规范化参数为 $\lambda = 5.0$ 相应的测试分
+最后，我们看看在使用 100 个隐藏神经元和\gls*{regularization}参数为 $\lambda = 5.0$ 相应的测试分
 类准确率。我不会给出详细分析，纯粹为了好玩，来看看我们使用一些技巧（交叉熵函数和
-  L2 规范化）能够达到多高的准确率。
+  L2 \gls*{regularization}）能够达到多高的准确率。
 
 \begin{lstlisting}[language=Python]
 >>> net = network2.Network([784, 100, 10], cost=network2.CrossEntropyCost)
@@ -1020,16 +1020,16 @@ $1-\frac{\eta\lambda}{n}$。如果我们持续使用 $\lambda = 0.1$ 就会产�
 $\eta=0.1$ 和$\lambda = 5.0$。我们就突破了 98\%，达到了98.04\% 的分类准确
 率\label{98percent}。对于 152 行代码这个效果还真不错！
 
-我已经把规范化描述为一种减轻\gls*{overfitting}和提高分类准确率的方法。实际上，这不是仅有的
+我已经把\gls*{regularization}描述为一种减轻\gls*{overfitting}和提高分类准确率的方法。实际上，这不是仅有的
 好处。实践表明，在使用不同的（随机）\gls*{weight}初始化进行多次 MNIST 网络训练的时候，我发
-现无规范化的网络会偶然被限制住，明显困在了代价函数的局部最优值处。结果就是不同的
-运行会给出相差很大的结果。对比看来，规范化的网络能够提供更容易复制的结果。
+现无\gls*{regularization}的网络会偶然被限制住，明显困在了\gls*{cost-func}的局部最优值处。结果就是不同的
+运行会给出相差很大的结果。对比看来，\gls*{regularization}的网络能够提供更容易复制的结果。
 
-为何会这样子？从经验上看，如果代价函数是无规范化的，那么\gls*{weight}向量的长度可能会增长，
+为何会这样子？从经验上看，如果\gls*{cost-func}是无\gls*{regularization}的，那么\gls*{weight}向量的长度可能会增长，
 而其他的东西都保持一样。随着时间的推移，这会导致\gls*{weight}向量变得非常大。所以会使得权
 重向量卡在朝着更多还是更少的方向上变化，因为当长度很大的时候梯度下降带来的变化仅
 仅会引起在那个方向发生微小的变化。我相信这个现象让我们的学习算法更难有效地探索权
-重空间，最终导致很难找到代价函数的最优值。
+重空间，最终导致很难找到\gls*{cost-func}的最优值。
 
 \subsection{为何规范化可以帮助减轻过度拟合}
 
@@ -1061,7 +1061,7 @@ $\eta=0.1$ 和$\lambda = 5.0$。我们就突破了 98\%，达到了98.04\% 的�
 %		plot(x2,y2,'b')
 %		hold off
 
-我们已经看到了规范化在实践中能够减少\gls*{overfitting}了。这是令人振奋的，不过，这背后的原因
+我们已经看到了\gls*{regularization}在实践中能够减少\gls*{overfitting}了。这是令人振奋的，不过，这背后的原因
 还不得而知！通常的说法是：小的\gls*{weight}在某种程度上，意味着更低的复杂性，也就对数据给出了一
 种更简单却更强大解释，因此应该优先选择。这虽然很简短，不过暗藏了一些可能看
 起来会令人困惑的因素。让我们将这个解释细化，认真地研究一下。现在给一个简单的数据
@@ -1115,11 +1115,11 @@ $\eta=0.1$ 和$\lambda = 5.0$。我们就突破了 98\%，达到了98.04\% 的�
 
 让我们从这个观点来看神经网络。假设神经网络大多数有很小的\gls*{weight}，这最可能出现在规范
 化的网络中。更小的\gls*{weight}意味着网络的行为不会因为我们随便改变了一个输入而改变太大。
-这会让规范化网络学习局部噪声的影响更加困难。将它看做是一种让单个的证据不会影响网
-络输出太多的方式。相对的，规范化网络学习去对整个训练集中经常出现的证据进行反应。
+这会让\gls*{regularization}网络学习局部噪声的影响更加困难。将它看做是一种让单个的证据不会影响网
+络输出太多的方式。相对的，\gls*{regularization}网络学习去对整个训练集中经常出现的证据进行反应。
 对比看，大\gls*{weight}的网络可能会因为输入的微小改变而产生比较大的行为改变。所以一个无规
 范化的网络可以使用大的\gls*{weight}来学习包含训练数据中的噪声的大量信息的复杂模型。简言之，
-规范化网络受限于根据训练数据中常见的模式来构造相对简单的模型，而能够抵抗训练数据
+\gls*{regularization}网络受限于根据训练数据中常见的模式来构造相对简单的模型，而能够抵抗训练数据
 中的噪声的特性影响。我们的想法就是这可以让我们的网络对看到的现象进行真实的学习，
 并能够根据已经学到的知识更好地进行泛化。
 
@@ -1159,15 +1159,15 @@ $\eta=0.1$ 和$\lambda = 5.0$。我们就突破了 98\%，达到了98.04\% 的�
 的工作。第二，即使我们可以做出这样一个判断，简单性也是一个使用时需要相当小心的指
 导！第三，对模型真正的测试不是简单性，而是它在新场景中对新的活动中的预测能力。
 
-所以，我们应当时时记住这一点，规范化的神经网络常常能够比非规范化的泛化能力更强，
+所以，我们应当时时记住这一点，\gls*{regularization}的神经网络常常能够比非\gls*{regularization}的泛化能力更强，
 这只是一种实验事实（empirical fact）。所以，本书剩下的内容，我们也会频繁地使用规
 范化技术。我已经在上面讲过了为何现在还没有一个人能够发展出一整套具有说服力的关于
-规范化可以帮助网络泛化的理论解释。实际上，研究者们不断地在写自己尝试不同的规范化
-方法，然后看看哪种表现更好，尝试理解为何不同的观点表现的更好。所以你可以将规范化
+\gls*{regularization}可以帮助网络泛化的理论解释。实际上，研究者们不断地在写自己尝试不同的\gls*{regularization}
+方法，然后看看哪种表现更好，尝试理解为何不同的观点表现的更好。所以你可以将\gls*{regularization}
 看做某种任意整合的技术。尽管其效果不错，但我们并没有一套完整的关于所发生情况的理
 解，仅仅是一些不完备的启发式规则或者经验。
 
-这里也有更深的问题，这个问题也是有关科学的关键问题~——~我们如何泛化。规范化能够给我
+这里也有更深的问题，这个问题也是有关科学的关键问题~——~我们如何泛化。\gls*{regularization}能够给我
 们一种计算上的魔力帮助神经网络更好地泛化，但是并不会带来原理上理解的指导，甚至不
 会告诉我们什么样的观点才是最好的\footnote{这些问题追溯到
   \href{http://en.wikipedia.org/wiki/Problem_of_induction}{problem of
@@ -1182,8 +1182,8 @@ $\eta=0.1$ 和$\lambda = 5.0$。我们就突破了 98\%，达到了98.04\% 的�
 的图片，他就能快速地学会认识其他的大象。当然，他们偶尔也会搞错，很可能将一只犀牛
 误认为大象，但是一般说来，这个过程会相当准确。所以我们有个系统~——~人的大脑~——~拥有超
 大量的自由变量。在受到仅仅少量的训练图像后，系统学会了在其他图像上的推广。某种程度
-上，我们的大脑的规范化做得特别好！怎么做的？现在还不得而知。我期望若干年后，我们
-能够发展出更加强大的技术来规范化神经网络，最终这些技术会让神经网络甚至在小的训练
+上，我们的大脑的\gls*{regularization}做得特别好！怎么做的？现在还不得而知。我期望若干年后，我们
+能够发展出更加强大的技术来\gls*{regularization}神经网络，最终这些技术会让神经网络甚至在小的训练
 集上也能够学到强大的泛化能力。
 
 实际上，我们的网络已经比我们预先期望的要好一些了。拥有 100 个隐藏元的网络会有接
@@ -1192,77 +1192,77 @@ $\eta=0.1$ 和$\lambda = 5.0$。我们就突破了 98\%，达到了98.04\% 的�
 网络实际上却泛化得很好。为什么？这一点并没有很好地理解。这里有个猜想\footnote{在
   \href{http://yann.lecun.com/exdb/publis/pdf/lecun-01a.pdf}{Gradient-Based
     Learning Applied to Document Recognition} 中，作者为 Yann LeCun， Léon Bottou，
-  Yoshua Bengio， 和 Patrick Haffner （1998）。}：梯度下降学习的动态有一种自规范化的
+  Yoshua Bengio， 和 Patrick Haffner （1998）。}：梯度下降学习的动态有一种自\gls*{regularization}的
 效应。这真是一个意料之外的巧合，但也带来了对于这种现象本质无知的不安。不过，我们
-还是会在后面依照这种实践的观点来应用规范化技术的。神经网络也是由于这点表现才更好
+还是会在后面依照这种实践的观点来应用\gls*{regularization}技术的。神经网络也是由于这点表现才更好
 一些。
 
-现在我们回到前面留下来的一个细节：L2 规范化没有限制\gls*{bias}，以此作为本节的结论。当然
-了，对规范化的过程稍作调整就可以对\gls*{bias}进行规范了。实践看来，做出这样的调整并不会
-对结果改变太多，所以，在某种程度上，对不对\gls*{bias}进行规范化其实就是一种习惯了。然而，
+现在我们回到前面留下来的一个细节：L2 \gls*{regularization}没有限制\gls*{bias}，以此作为本节的结论。当然
+了，对\gls*{regularization}的过程稍作调整就可以对\gls*{bias}进行规范了。实践看来，做出这样的调整并不会
+对结果改变太多，所以，在某种程度上，对不对\gls*{bias}进行\gls*{regularization}其实就是一种习惯了。然而，
 需要注意的是，有一个大的\gls*{bias}并不会像大的\gls*{weight}那样会让神经元对输入太过敏感。所以我
 们不需要对大的\gls*{bias}所带来的学习训练数据的噪声太过担心。同时，允许大的\gls*{bias}能够让网
 络更加灵活~——~因为，大的\gls*{bias}让神经元更加容易饱和，这有时候是我们所要达到的效果。所
-以，我们通常不会对\gls*{bias}进行规范化。
+以，我们通常不会对\gls*{bias}进行\gls*{regularization}。
 
 \subsection{规范化的其他技术}
 
-除了 L2 外还有很多规范化技术。实际上，正是由于数量众多，我这里也不会将所有的都列
-举出来。在本节，我简要地给出三种减轻\gls*{overfitting}的其他的方法：L1 规范化、弃权和人为
+除了 L2 外还有很多\gls*{regularization}技术。实际上，正是由于数量众多，我这里也不会将所有的都列
+举出来。在本节，我简要地给出三种减轻\gls*{overfitting}的其他的方法：L1 \gls*{regularization}、\gls*{dropout}和人为
 增加训练样本。我们不会像上面介绍得那么深入。其实，目的只是想让读者熟悉这些主要的
-思想，然后来体会一下规范化技术的多样性。\\
+思想，然后来体会一下\gls*{regularization}技术的多样性。\\
 
-\textbf{L1 规范化\index{L1 规范化}：} 这个方法是在未规范化的代价函数上加上一个权
+\textbf{L1 \gls*{regularization}：} 这个方法是在未\gls*{regularization}的\gls*{cost-func}上加上一个权
 重绝对值的和：
 \begin{equation}
   C = C_0 + \frac{\lambda}{n} \sum_w |w|
   \label{eq:95}\tag{95}
 \end{equation}
 
-凭直觉地看，这和 L2 规范化相似，惩罚大的\gls*{weight}，倾向于让网络优先选择小的\gls*{weight}。当然，
-L1 规范化和 L2 规范化并不相同，所以我们不应该期望从 L1 规范化得到完全同样的行为。
-让我们来试着理解使用 L1 规范化训练的网络和 L2 规范化训练的网络所不同的行为。
+凭直觉地看，这和 L2 \gls*{regularization}相似，惩罚大的\gls*{weight}，倾向于让网络优先选择小的\gls*{weight}。当然，
+L1 \gls*{regularization}和 L2 \gls*{regularization}并不相同，所以我们不应该期望从 L1 \gls*{regularization}得到完全同样的行为。
+让我们来试着理解使用 L1 \gls*{regularization}训练的网络和 L2 \gls*{regularization}训练的网络所不同的行为。
 
-首先，我们会研究一下代价函数的偏导数。对 \eqref{eq:95} 求导我们有：
+首先，我们会研究一下\gls*{cost-func}的偏导数。对 \eqref{eq:95} 求导我们有：
 \begin{equation}
   \frac{\partial C}{\partial w} = \frac{\partial C_0}{\partial w}
   + \frac{\lambda}{n} \, {\rm sgn}(w)
   \label{eq:96}\tag{96}
 \end{equation}
 其中 ${\rm sgn}(w)$ 就是 $w$ 的正负号，即 $w$ 是正数时为 $+1$，而 $w$ 为负数时为
-$-1$。使用这个表达式，我们可以轻易地对\gls*{bp}进行修改从而使用基于 L1 规范化的随
-机梯度下降进行学习。对 L1 规范化的网络进行更新的规则就是
+$-1$。使用这个表达式，我们可以轻易地对\gls*{bp}进行修改从而使用基于 L1 \gls*{regularization}的随
+机梯度下降进行学习。对 L1 \gls*{regularization}的网络进行更新的规则就是
 \begin{equation}
   w \rightarrow w' = w-\frac{\eta \lambda}{n} \mbox{sgn}(w) - \eta \frac{\partial
   C_0}{\partial w}
   \label{eq:97}\tag{97}
 \end{equation}
 其中和往常一样，我们可以用一个\gls*{mini-batch}的均值来估计 $\partial C_0/\partial w$。对
-比 L2 规范化的更新规则（参见方程~\eqref{eq:93}），
+比 L2 \gls*{regularization}的更新规则（参见方程~\eqref{eq:93}），
 \begin{equation}
   w \rightarrow w' = w\left(1 - \frac{\eta \lambda}{n} \right)
   - \eta \frac{\partial C_0}{\partial w}
   \label{eq:98}\tag{98}
 \end{equation}
-在两种情形下，规范化的效果就是缩小\gls*{weight}。这符合我们的直觉，两种规范化都惩罚大的权
-重。但\gls*{weight}缩小的方式不同。在 L1 规范化中，\gls*{weight}通过一个常量向 $0$ 进行缩小。在 L2
-规范化中，\gls*{weight}通过一个和 $w$ 成比例的量进行缩小的。所以，当一个特定的\gls*{weight}绝对值
-$|w|$ 很大时，L1 规范化的\gls*{weight}缩小得远比 L2 规范化要小得多。相反，当一个特定的权
-重绝对值 $|w|$ 很小时，L1 规范化的\gls*{weight}缩小得要比 L2 规范化大得多。最终的结果就是：
-L1 规范化倾向于聚集网络的\gls*{weight}在相对少量的高重要度连接上，而其他\gls*{weight}就会被驱使向
+在两种情形下，\gls*{regularization}的效果就是缩小\gls*{weight}。这符合我们的直觉，两种\gls*{regularization}都惩罚大的权
+重。但\gls*{weight}缩小的方式不同。在 L1 \gls*{regularization}中，\gls*{weight}通过一个常量向 $0$ 进行缩小。在 L2
+\gls*{regularization}中，\gls*{weight}通过一个和 $w$ 成比例的量进行缩小的。所以，当一个特定的\gls*{weight}绝对值
+$|w|$ 很大时，L1 \gls*{regularization}的\gls*{weight}缩小得远比 L2 \gls*{regularization}要小得多。相反，当一个特定的权
+重绝对值 $|w|$ 很小时，L1 \gls*{regularization}的\gls*{weight}缩小得要比 L2 \gls*{regularization}大得多。最终的结果就是：
+L1 \gls*{regularization}倾向于聚集网络的\gls*{weight}在相对少量的高重要度连接上，而其他\gls*{weight}就会被驱使向
 $0$ 接近。
 
 我在上面的讨论中其实忽略了一个问题~——~在 $w=0$ 的时候，偏导数 $\partial
 C/\partial w$ 未定义。原因在于函数 $|w|$ 在 $w=0$ 时有个“直角”，事实上，导数是
-不存在的。不过也没有关系。我们下面要做的就是应用通常的（无规范化的）随机梯度下降
-的规则在 $w=0$ 处。这应该不会有什么问题，凭直觉地看，规范化的效果就是缩小\gls*{weight}，
+不存在的。不过也没有关系。我们下面要做的就是应用通常的（无\gls*{regularization}的）\gls*{sgd}
+的规则在 $w=0$ 处。这应该不会有什么问题，凭直觉地看，\gls*{regularization}的效果就是缩小\gls*{weight}，
 显然，不能对一个已经是 $0$ 的\gls*{weight}进行缩小了。更准确地说，我们将会使用方
 程~\eqref{eq:96} 和~\eqref{eq:97} 并约定 $\mbox{sgn}(0) = 0$。这样就给出了一种细
-致又紧凑的规则来进行采用 L1 规范化的随机梯度下降学习。\\
+致又紧凑的规则来进行采用 L1 \gls*{regularization}的\gls*{sgd}学习。\\
 
-\textbf{弃权：} 弃权\index{弃权}（Dropout\index{Dropout}）是一种相当激进的技术。
-和 L1、L2 规范化不同，弃权技术并不依赖对代价函数的修改。而是，在弃权中，我们改变
-了网络本身。在介绍它为什么能工作，以及所得到的结果前，让我描述一下弃权基本的工作
+\textbf{\gls{dropout}：} \gls*{dropout}是一种相当激进的技术。
+和 L1、L2 \gls*{regularization}不同，\gls*{dropout}技术并不依赖对\gls*{cost-func}的修改。而是，在\gls*{dropout}中，我们改变
+了网络本身。在介绍它为什么能工作，以及所得到的结果前，让我描述一下\gls*{dropout}基本的工作
 机制。
 
 假设我们尝试训练一个网络：
@@ -1271,25 +1271,25 @@ C/\partial w$ 未定义。原因在于函数 $|w|$ 在 $w=0$ 时有个“直角�
 \end{center}
 
 特别地，假设我们有一个训练数据 $x$ 和 对应的目标输出 $y$。通常我们会通过在网络中
-前向传播 $x$ ，然后进行\gls*{bp}来确定对梯度的贡献。使用弃权技术，这个过程就改了。
+前向传播 $x$ ，然后进行\gls*{bp}来确定对梯度的贡献。使用\gls*{dropout}技术，这个过程就改了。
 我们会从随机（临时）地删除网络中的一半的隐藏神经元开始，同时让输入层和输出层的神经元保持
-不变。在此之后，我们会得到最终如下线条所示的网络。注意那些被弃权的神经元，即那些临时被删
+不变。在此之后，我们会得到最终如下线条所示的网络。注意那些被\gls*{dropout}的神经元，即那些临时被删
 除的神经元，用虚圈表示在图中：
 \begin{center}
   \includegraphics{tikz31}
 \end{center}
 
 我们前向传播输入 $x$，通过修改后的网络，然后\gls*{bp}结果，同样通过这个修改后的网
-络。在一个\minibatch{小批量}的若干样本上进行这些步骤后，我们对有关的\gls*{weight}和\gls*{bias}进
-行更新。然后重复这个过程，首先重置弃权的神经元，然后选择一个新的随机的隐藏神经元
+络。在一个\gls*{mini-batch}的若干样本上进行这些步骤后，我们对有关的\gls*{weight}和\gls*{bias}进
+行更新。然后重复这个过程，首先重置\gls*{dropout}的神经元，然后选择一个新的随机的隐藏神经元
 的子集进行删除，估计对一个不同的\gls*{mini-batch}的梯度，然后更新\gls*{weight}和\gls*{bias}。
 
 通过不断地重复，我们的网络会学到一个\gls*{weight}和\gls*{bias}的集合。当然，这些\gls*{weight}和\gls*{bias}也是在
-一半的隐藏神经元被弃权的情形下学到的。当我们实际运行整个网络时，是指两倍的隐藏神
+一半的隐藏神经元被\gls*{dropout}的情形下学到的。当我们实际运行整个网络时，是指两倍的隐藏神
 经元将会被激活。为了补偿这个，我们将从隐藏神经元出去的\gls*{weight}减半。
 
-这个弃权过程可能看起来奇怪，像是临时安排的。为什么我们会指望这样的方法能够进行规
-范化呢？为了解释所发生的事，我希望你停下来想一下标准（没有弃权）的训练方式。
+这个\gls*{dropout}过程可能看起来奇怪，像是临时安排的。为什么我们会指望这样的方法能够进行规
+范化呢？为了解释所发生的事，我希望你停下来想一下标准（没有\gls*{dropout}）的训练方式。
 特别地，想象一下我们训练几个不同的神经网络，都使用同一个训练数据。当然，网络可能
 不是从同一初始状态开始的，最终的结果也会有一些差异。出现这种情况时，我们可以使用
 一些平均或者投票的方式来确定接受哪个输出。例如，如果我们训练了五个网络，其中三个
@@ -1297,9 +1297,9 @@ C/\partial w$ 未定义。原因在于函数 $|w|$ 在 $w=0$ 时有个“直角�
 方式通常是一种强大（尽管代价昂贵）的方式来减轻\gls*{overfitting}。原因在于不同的网络可能会
 以不同的方式\gls*{overfitting}，平均法可能会帮助我们消除那样的\gls*{overfitting}。
 
-那么这和弃权有什么关系呢？启发式地看，当我们弃权掉不同的神经元集合时，有点像我们
-在训练不同的神经网络。所以，弃权过程就如同大量不同网络的效果的平均那样。不同的网
-络会以不同的方式\gls*{overfitting}了，所以，弃权过的网络的效果会减轻\gls*{overfitting}。
+那么这和\gls*{dropout}有什么关系呢？启发式地看，当我们\gls*{dropout}掉不同的神经元集合时，有点像我们
+在训练不同的神经网络。所以，\gls*{dropout}过程就如同大量不同网络的效果的平均那样。不同的网
+络会以不同的方式\gls*{overfitting}了，所以，\gls*{dropout}过的网络的效果会减轻\gls*{overfitting}。
 
 一个相关的启发式解释\label{dropout_explanation}在早期使用这项技术的论文中曾经给
 出\footnote{\href{https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf}{ImageNet
@@ -1307,30 +1307,30 @@ C/\partial w$ 未定义。原因在于函数 $|w|$ 在 $w=0$ 时有个“直角�
   Ilya Sutskever， 和 Geoffrey Hinton （2012）。}：“因为神经元不能依赖其他神经元特
 定的存在，这个技术其实减少了复杂的互适应的神经元。所以，强制要学习那些在神经元的
 不同随机子集中更加健壮的特征。” 换言之，如果我们将我们的神经网络看做一个进行预
-测的模型的话，我们就可以将弃权看做是一种确保模型对于一部分证据丢失健壮的方式。这
-样看来，弃权和 L1、L2 规范化也是有相似之处的，这也倾向于更小的\gls*{weight}，最后让网络对
+测的模型的话，我们就可以将\gls*{dropout}看做是一种确保模型对于一部分证据丢失健壮的方式。这
+样看来，\gls*{dropout}和 L1、L2 \gls*{regularization}也是有相似之处的，这也倾向于更小的\gls*{weight}，最后让网络对
 丢失个体连接的场景更加健壮。
 
-当然，弃权技术的真正衡量是它已经在提升神经网络性能上应用得相当成功。原始论
+当然，\gls*{dropout}技术的真正衡量是它已经在提升神经网络性能上应用得相当成功。原始论
 文\footnote{\href{http://arxiv.org/pdf/1207.0580.pdf}{Improving neural networks
     by preventing co-adaptation of feature detectors}， 作者为 Geoffrey Hinton， Nitish
   Srivastava， Alex Krizhevsky， Ilya Sutskever， 和 Ruslan Salakhutdinov
   （2012）。 注意这篇论文讨论了许多细微之处，这些我在这个简要的介绍里敷衍地带过了。}介
-绍了将其应用于很多不同任务的技术。对我们来说，特别感兴趣的是他们应用弃权在 MNIST
+绍了将其应用于很多不同任务的技术。对我们来说，特别感兴趣的是他们应用\gls*{dropout}在 MNIST
 数字分类上，使用了一个和我们之前介绍的那种普通的前向神经网络。这篇论文提及到当前
-最好的结果是在测试集上取得了 98.4\% 的准确率。他们使用弃权和 L2 规范化的组合将其
+最好的结果是在测试集上取得了 98.4\% 的准确率。他们使用\gls*{dropout}和 L2 \gls*{regularization}的组合将其
 提高到了 98.7\%。类似重要的结果在其他不同的任务上也取得了一定的成效，包括图像和
-语音识别、自然语言处理。弃权技术在训练大规模深度网络时尤其有用，这样的网络中过度
+语音识别、自然语言处理。\gls*{dropout}技术在训练大规模深度网络时尤其有用，这样的网络中过度
 拟合问题经常特别突出。\\
 
 \textbf{人为扩展训练数据：} 我们前面看到了 MNIST 分类准确率在我们使用 1,000 幅训
 练图像时候下降到了 80\% 中间的准确率。这种情况并不奇怪，因为更少的训练数据意味着
 我们的网络接触更少的人类手写的数字中的变化。让我们训练 30 个隐藏神经元的网络，使
 用不同的训练数据集，来看看性能的变化情况。我们使用\gls*{mini-batch}大小为 $10$，%
-\gls*{learning-rate}为 $\eta=0.5$，规范化参数是 $\lambda=5.0$，交叉熵代价函数。
+\gls*{learning-rate}为 $\eta=0.5$，\gls*{regularization}参数是 $\lambda=5.0$，交叉熵\gls*{cost-func}。
 我们在全部训练数据集合上训练 30 个\gls*{epoch}，然后会随着训练数据量的下降而成比
 例增加\gls*{epoch}的数量。为了确保\gls*{weight}衰减因子在训练数据集上相同，我们
-会在全部训练集上使用规范化参数为 $\lambda = 5.0$，然后在使用更小的训练集的时候成
+会在全部训练集上使用\gls*{regularization}参数为 $\lambda = 5.0$，然后在使用更小的训练集的时候成
 比例地降低$\lambda$ 值\footnote{这个以及下两个图形由程序
   \href{https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/fig/more_data.py}{\lstinline!more_data.py!}
   生成}。
@@ -1435,7 +1435,7 @@ C/\partial w$ 未定义。原因在于函数 $|w|$ 在 $w=0$ 时有个“直角�
 在特定的训练数据集上的应用效果。那些给出基准数据集的人们会拥有更大的研究经费支持，
 这样能够获得更好的训练数据。所以，很可能他们由于超赞的技术的性能提升其实在更大的
 数据集合上就丧失了。换言之，人们标榜的提升可能就是历史的偶然。所以需要记住的特别
-是在实际应用中，我们想要的是更好的算法\emph{和}更好的训练数据。寻找更好的算法很
+是在实际应用中，我们想要的是更好的算法\textbf{和}更好的训练数据。寻找更好的算法很
 好，不过需要确保你在此过程中，没有放弃对更多更好的数据的追求。
 
 \subsection*{问题}
@@ -1448,9 +1448,9 @@ C/\partial w$ 未定义。原因在于函数 $|w|$ 在 $w=0$ 时有个“直角�
   理论上的验证方法吗？如果可以，比较不同的机器学习算法的渐近性能。
 \end{itemize}
 
-\textbf{总结：} 我们现在已经介绍完了\gls*{overfitting}和规范化。当然，我们会重回这个问题。
+\textbf{总结：} 我们现在已经介绍完了\gls*{overfitting}和\gls*{regularization}。当然，我们会重回这个问题。
 正如我已经提过了几次，\gls*{overfitting}是神经网络中一个重要的问题，尤其是计算机越来越强大，
-我们有训练更大的网络的能力时。我们有迫切的需要来开发出强大的规范化技术来减轻过度
+我们有训练更大的网络的能力时。我们有迫切的需要来开发出强大的\gls*{regularization}技术来减轻过度
 拟合，而这也是当前研究的极其活跃的领域。
 
 \section{权重初始化}
@@ -1459,7 +1459,7 @@ C/\partial w$ 未定义。原因在于函数 $|w|$ 在 $w=0$ 时有个“直角�
 创建了神经网络后，我们需要进行\gls*{weight}和\gls*{bias}的初始化。到现在，我们一直是根据在%
 \hyperref[ch:UsingNeuralNetsToRecognizeHandwrittenDigits]{第一章中}介绍的那样进
 行初始化。提醒你一下，之前的方式就是根据独立高斯随机变量来选择\gls*{weight}和\gls*{bias}，其被归
-一化为均值为 $0$，标准差 $1$。这个方法工作的还不错，但是非常\emph{特别}，所以值
+一化为均值为 $0$，标准差 $1$。这个方法工作的还不错，但是非常\textbf{特别}，所以值
 得去重新探讨它，看看是否能寻找一些更好的方式来设置初始的\gls*{weight}和\gls*{bias}，这也许能帮助
 我们的网络学习得更快。
 
@@ -1484,12 +1484,12 @@ C/\partial w$ 未定义。原因在于函数 $|w|$ 在 $w=0$ 时有个“直角�
 -1$。如果是这样，隐藏神经元的输出 $\sigma(z)$ 就会接近 $1$ 或者 $0$。也就表示我
 们的隐藏神经元会饱和。所以当出现这样的情况时，在\gls*{weight}中进行微小的调整仅仅会给隐藏
 神经元的激活值带来极其微弱的改变。而这种微弱的改变也会影响网络中剩下的神经元，然
-后会带来相应的代价函数的改变。结果就是，这些\gls*{weight}在我们进行梯度下降算法时会学习得
+后会带来相应的\gls*{cost-func}的改变。结果就是，这些\gls*{weight}在我们进行梯度下降算法时会学习得
 非常缓慢\footnote{我们在第二章详细讨论过这个问题，其中我们用%
   \hyperref[sec:the_four_fundamental_equations_behind_backpropagation]{\gls*{bp}
     的方程}来显示输入到饱和神经元的\gls*{weight}学习得缓慢。}。这其实和我们在本章前面讨论
 的问题差不多，前面的情况是输出神经元在错误的值上饱和导致学习的下降。我们之前通过
-代价函数的选择解决了前面的问题。不幸的是，尽管那种方式在输出神经元上有效，但对于
+\gls*{cost-func}的选择解决了前面的问题。不幸的是，尽管那种方式在输出神经元上有效，但对于
 隐藏神经元的饱和却一点作用都没有。
 
 我已经讨论了第一个隐藏层的\gls*{weight}输入。当然，类似的论证也适用于后面的隐藏层：如果后
@@ -1525,7 +1525,7 @@ $1$ 的高斯分布来对\gls*{bias}进行初始化。这其实是可行的，�
 们后面还会按照前面的方式来进行初始化。
 
 让我们在 MNIST 数字分类任务上比较一下新旧两种\gls*{weight}初始化方式。同样，还是使用 $30$
-个隐藏元，\minibatch 的大小为 $10$，规范化参数 $\lambda = 5.0$，然后是交叉熵代价
+个隐藏元，\gls*{mini-batch} 的大小为 $10$，\gls*{regularization}参数 $\lambda = 5.0$，然后是交叉熵代价
 函数。我们将\gls*{learning-rate}从 $\eta=0.5$ 降到 $0.1$，因为这样会让结果在图像中表
 现得更加明显。我们先使用旧的\gls*{weight}初始化方法训练：
 
@@ -1586,7 +1586,7 @@ $1/\sqrt{n_{\rm in}}$ 的\gls*{weight}初始化方法帮助我们提升了神经
 \subsection*{问题}
 
 \begin{itemize}
-\item \textbf{将规范化和改进的\gls*{weight}初始化方法结合使用} L2 规范化有时候会自动给我
+\item \textbf{将\gls*{regularization}和改进的\gls*{weight}初始化方法结合使用} L2 \gls*{regularization}有时候会自动给我
   们一些类似于新的初始化方法的东西。假设我们使用旧的初始化\gls*{weight}的方法。考虑一个启
   发式的观点：（1）假设 $\lambda$ 不太小，训练的第一\gls*{epoch}将会几乎被\gls*{weight}衰减统
   治；（2）如果 $\eta \lambda \ll n$，\gls*{weight}会按照因子 $\exp(-\eta \lambda / m)$ 每
@@ -1668,14 +1668,14 @@ class CrossEntropyCost(object):
 \end{lstlisting}
 
 让我们分解一下。第一个看到的是：即使使用的是交叉熵，数学上看，就是一个函数，这里
-我们用 Python 的类而不是 Python 函数实现了它。为什么这样做呢？答案就是代价函数在
+我们用 Python 的类而不是 Python 函数实现了它。为什么这样做呢？答案就是\gls*{cost-func}在
 我们的网络中扮演了两种不同的角色。明显的角色就是代价是输出激活值 $a$ 和目标输出
 $y$ 差距优劣的度量。这个角色通过 \lstinline!CrossEntropyCost.fn! 方法来扮演。
 （注意，\lstinline!np.nan_to_num! 调用确保了 Numpy 正确处理接近 $0$ 的对数值）但
-是代价函数其实还有另一个角色。回想%
+是\gls*{cost-func}其实还有另一个角色。回想%
 \hyperref[sec:the_four_fundamental_equations_behind_backpropagation]{第二章}中运
 行\gls*{bp}算法时，我们需要计算网络输出误差，$\delta^L$。这种形式的输出误差依赖于
-代价函数的选择：不同的代价函数，输出误差的形式就不同。对于交叉熵函数，输出误差就
+\gls*{cost-func}的选择：不同的\gls*{cost-func}，输出误差的形式就不同。对于交叉熵函数，输出误差就
 如公式~\eqref{eq:66}所示：
 \begin{equation}
   \delta^L = a^L-y
@@ -1686,10 +1686,10 @@ $y$ 差距优劣的度量。这个角色通过 \lstinline!CrossEntropyCost.fn! �
 道如何进行输出误差的计算。然后我们将这两个组合在一个包含所有需要知道的有关代价函
 数信息的类中。
 
-类似地，\lstinline!network2.py! 还包含了一个表示二次代价函数的类。这个是用来和第
+类似地，\lstinline!network2.py! 还包含了一个表示二次\gls*{cost-func}的类。这个是用来和第
 一章的结果进行对比的，因为后面我们几乎都在使用交叉函数。代码如下。
 \lstinline!QuadraticCost.fn! 方法是关于网络输出 $a$ 和目标输出 $y$ 的二次代价函
-数的直接计算结果。由 \lstinline!QuadraticCost.delta! 返回的值基于二次代价函数的
+数的直接计算结果。由 \lstinline!QuadraticCost.delta! 返回的值基于二次\gls*{cost-func}的
 误差表达式~\eqref{eq:30}，我们在第二章中得到它。
 \begin{lstlisting}[language=Python]
 class QuadraticCost(object):
@@ -1705,14 +1705,14 @@ class QuadraticCost(object):
 
 现在，我们理解了 \lstinline!network2.py! 和 \lstinline!network.py! 两个实现之间
 的主要差别。都是很简单的东西。还有一些更小的变动，下面我们会进行介绍，包含 L2 规
-范化的实现。在讲述规范化之前，我们看看 \lstinline!network2.py! 完整的实现代码。
+范化的实现。在讲述\gls*{regularization}之前，我们看看 \lstinline!network2.py! 完整的实现代码。
 你不需要太仔细地读遍这些代码，但是对整个结构尤其是文档中的内容的理解是非常重要的，
 这样，你就可以理解每段程序所做的工作。当然，你也可以随自己意愿去深入研究！如果你
 迷失了理解，那么请读读下面的讲解，然后再回到代码中。不多说了，给代码：
 
 \lstinputlisting[language=Python]{code_samples/src/network2.py}
 
-有个更加有趣的变动就是在代码中增加了 L2 规范化。尽管这是一个主要的概念上的变动，
+有个更加有趣的变动就是在代码中增加了 L2 \gls*{regularization}。尽管这是一个主要的概念上的变动，
 在实现中其实相当简单。对大部分情况，仅仅需要传递参数 \lstinline!lmbda! 到不同的
 方法中，主要是 \lstinline!Network.SGD! 方法。实际上的工作就是一行代码的事在
 \lstinline!Network.update_mini_batch! 的倒数第四行。这就是我们改动梯度下降规则来
@@ -1722,7 +1722,7 @@ class QuadraticCost(object):
 范化。概念的理解非常微妙困难。但是添加到程序中的时候却如此简单。精妙复杂的技术可
 以通过微小的代码改动就可以实现了。
 
-另一个微小却重要的改动是随机梯度下降方法的几个标志位的增加。这些标志位让我们可以
+另一个微小却重要的改动是\gls*{sgd}方法的几个标志位的增加。这些标志位让我们可以
 对在代价和准确率的监控变得可能。这些标志位默认是 \lstinline!False! 的，但是在我
 们例子中，已经被置为 \lstinline!True! 来监控 \lstinline!Network! 的性能。另外，
 \lstinline!network2.py! 中的 \lstinline!Network.SGD! 方法返回了一个四元组来表示
@@ -1739,7 +1739,7 @@ class QuadraticCost(object):
 \end{lstlisting}
 
 所以，比如 \lstinline!evaluation_cost! 将会是一个 $30$ 个元素的列表其
-中包含了每个\gls*{epoch}在验证集合上的代价函数值。这种类型的信息在理解网络行为的过程
+中包含了每个\gls*{epoch}在验证集合上的\gls*{cost-func}值。这种类型的信息在理解网络行为的过程
 中特别有用。比如，它可以用来画出展示网络随时间学习的状态。其实，这也是我在前面的
 章节中展示性能的方式。然而要注意的是如果任何标志位都没有设置的话，对应的元组中的
 元素就是空列表。
@@ -1759,10 +1759,10 @@ pickle 对象，会导致 \lstinline!load! 函数出错。使用 JSON 进行序�
 \subsection*{问题}
 
 \begin{itemize}
-\item 更改上面的代码来实现 L1 规范化，使用 L1 规范化使用 $30$ 个隐藏元的神经网络
-  对 MNIST 数字进行分类。你能够找到一个规范化参数使得比无规范化效果更好么？
+\item 更改上面的代码来实现 L1 \gls*{regularization}，使用 L1 \gls*{regularization}使用 $30$ 个隐藏元的神经网络
+  对 MNIST 数字进行分类。你能够找到一个\gls*{regularization}参数使得比无\gls*{regularization}效果更好么？
 \item 看看 \href{https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/src/network.py}{\lstinline!network.py!} 中的 \lstinline!Network.cost_derivative! 方法。
-  这个方法是为二次代价函数写的。怎样修改可以用于交叉熵代价函数上？你能不能想到可
+  这个方法是为二次\gls*{cost-func}写的。怎样修改可以用于交叉熵\gls*{cost-func}上？你能不能想到可
   能在交叉熵函数上遇到的问题？在 \lstinline!network2.py! 中，我们已经去掉了
   \lstinline!Network.cost_derivative! 方法，将其集成进了
   `CrossEntropyCost.delta` 方法中。请问，这样是如何解决你已经发现的问题的？
@@ -1771,11 +1771,11 @@ pickle 对象，会导致 \lstinline!load! 函数出错。使用 JSON 进行序�
 \section{如何选择神经网络的超参数}
 \label{sec:how_to_choose_a_neural_network's_hyper-parameters}
 
-直到现在，我们还没有解释对诸如\gls*{learning-rate} $\eta$，规范化参数 $\lambda$ 等等
+直到现在，我们还没有解释对诸如\gls*{learning-rate} $\eta$，\gls*{regularization}参数 $\lambda$ 等等
 超参数选择的方法。我只是给出那些效果很好的值而已。实践中，当你使用神经网络解决问
 题时，寻找好的超参数其实是很困难的一件事。例如，我们要解决 MNIST 问题，开始时对
 于选择什么样的超参数一无所知。假设，刚开始的实验中选择前面章节的参数都是运气较好。
-但在使用\gls*{learning-rate} $\eta=10.0$ 而规范化参数 $\lambda=1000.0$。下面是我们的
+但在使用\gls*{learning-rate} $\eta=10.0$ 而\gls*{regularization}参数 $\lambda=1000.0$。下面是我们的
 一个尝试：
 
 \begin{lstlisting}[language=Python]
@@ -1809,12 +1809,12 @@ Accuracy on evaluation data: 967 / 10000
 
 我们分类准确率并不比随机选择更好。网络就像随机噪声产生器一样。
 
-你可能会说，“这好办，降低\gls*{learning-rate}和规范化参数就好了。”不幸的是，你并不
+你可能会说，“这好办，降低\gls*{learning-rate}和\gls*{regularization}参数就好了。”不幸的是，你并不
 先验地知道这些就是需要调整的超参数。可能真正的问题出在 $30$ 个隐藏元中，本身就不
 能很有效，不管我们如何调整其他的超参数都没有作用的？可能我们真的需要至少 $100$
 个隐藏神经元？或者是 $300$ 个隐藏神经元？或者更多层的网络？或者不同输出编码方式？
 可能我们的网络一直在学习，只是学习的回合还不够？可能 minibatch 设的太小了？可能我
-们需要切换成二次代价函数？可能我们需要尝试不同的\gls*{weight}初始化方法？等等。很容易就在
+们需要切换成二次\gls*{cost-func}？可能我们需要尝试不同的\gls*{weight}初始化方法？等等。很容易就在
 超参数的选择中迷失了方向。如果你的网络规模很大，或者使用了很多的训练数据，这种情
 况就很令人失望了，因为一次训练可能就要几个小时甚至几天乃至几周，最终什么都没有获
 得。如果这种情况一直发生，就会打击你的自信心。可能你会怀疑神经网络是不是适合你所
@@ -1825,7 +1825,7 @@ Accuracy on evaluation data: 967 / 10000
 会是一个能够完全解决的问题，也不存在一种通用的关于正确策略的共同认知。总是会有一
 些新的技巧可以帮助你提高一点性能。但是本节的启发式想法能帮你开个好头。\\
 
-\textbf{宽泛策略：} 在使用神经网络来解决新的问题时，一个挑战就是获得\emph{任何}
+\textbf{宽泛策略：} 在使用神经网络来解决新的问题时，一个挑战就是获得\textbf{任何}
 一种非寻常的学习，也就是说，达到比随机的情况更好的结果。这个实际上会很困难，尤其
 是遇到一种新类型的问题时。让我们看看有哪些策略可以在面临这类困难时候尝试。
 
@@ -1956,9 +1956,9 @@ Accuracy on evaluation data: 61 / 100
 人生中很多情况一样~——~万事开头难。
 
 好了，上面就是宽泛的策略。现在我们看看一些具体的设置超参数的推荐。我会聚焦在学习
-率 $\eta$，L2 规范化参数
+率 $\eta$，L2 \gls*{regularization}参数
 $\lambda$，和\gls*{mini-batch}大小。然而，很多的观点同样可以应用在其他的超参数的选择上，
-包括一些关于网络架构的、其他类型的规范化和一些本书后面遇到的如 momentum
+包括一些关于网络架构的、其他类型的\gls*{regularization}和一些本书后面遇到的如 momentum
 co-efficient 这样的超参数。\\
 
 \textbf{\gls*{learning-rate}：} 假设我们运行了三个不同\gls*{learning-rate}（$\eta=0.025$、
@@ -1969,21 +1969,21 @@ co-efficient 这样的超参数。\\
   \includegraphics[width=.6\textwidth]{multiple_eta}
 \end{center}
 
-使用 $\eta=0.025$，代价函数平滑下降到最后的回合。使用 $\eta=0.25$，代价刚开始下降，
+使用 $\eta=0.025$，\gls*{cost-func}平滑下降到最后的回合。使用 $\eta=0.25$，代价刚开始下降，
 在大约 $20$ 回合后接近饱和状态，后面就是微小的震荡和随机抖动。最终使
 用 $\eta=2.5$ 代价从始至终都震荡得非常明显。为了理解震荡的原因，回想一下随机梯度
-下降其实是期望我们能够逐渐地抵达代价函数的谷底的，
+下降其实是期望我们能够逐渐地抵达\gls*{cost-func}的谷底的，
 \begin{center}
   \includegraphics{valley_with_ball}
 \end{center}
 然而，如果 $\eta$ 太大的话，步长也会变大可能会使得算法在接近最小值时候又越过了谷
-底。这在 $\eta=2.5$ 时非常可能发生。当我们选择 $\eta=0.25$ 时，初始几步将我们带到
-了谷底附近，但一旦到达了谷底，又很容易跨越过去。而在我们选择 $\eta=0.025$ 时，在
-前 $30$ 回合的训练中不再受到这个情况的影响。当然，选择太小的\gls*{learning-rate}，也会
-带来另一个问题~——~随机梯度下降算法变慢了。一种更加好的策略其实是，在开始时使
-用 $\eta=0.25$，随着越来越接近谷底，就换成
-$\eta=0.025$。这种可变\gls*{learning-rate}的方法我们后面会介绍。现在，我们就聚焦在找出
-一个单独的好的\gls*{learning-rate}的选择，$\eta$。
+底。这在 $\eta=2.5$ 时非常可能发生。当我们选择 $\eta=0.25$ 时，初始几步将我们带
+到了谷底附近，但一旦到达了谷底，又很容易跨越过去。而在我们选择 $\eta=0.025$ 时，
+在前 $30$ 回合的训练中不再受到这个情况的影响。当然，选择太小的%
+\gls*{learning-rate}，也会带来另一个问题~——~\gls*{sgd}算法变慢了。一种更加好的
+策略其实是，在开始时使用 $\eta=0.25$，随着越来越接近谷底，就换成$\eta=0.025$。这
+种可变\gls*{learning-rate}的方法我们后面会介绍。现在，我们就聚焦在找出一个单独的
+好的\gls*{learning-rate}的选择，$\eta$。
 
 所以，有了这样的想法，我们可以如下设置 $\eta$。首先，我们选择在训练数据上的代价立
 即开始下降而非震荡或者增加时作为 $\eta$ 的阈值的估计。这个估计并不需要太过精确。
@@ -1999,14 +1999,14 @@ $\eta=0.025$。这种可变\gls*{learning-rate}的方法我们后面会介绍。
 你更应该使用稍微小一点的值，例如，阈值的一半这样的选择。这样的选择能够允许你训练
 更多的回合，不会减慢学习的速度。
 
-在 MNIST 数据中，使用这样的策略会给出一个关于\gls*{learning-rate} $\eta$ 的一个量级的
-估计，大概是 $0.1$。在一些改良后，我们得到了阈值 $\eta=0.5$。所以，我们按照刚刚
-的取一半的策略就确定了\gls*{learning-rate}为 $\eta=0.25$。实际上，我发现使用
-$\eta=0.5$ 在 $30$ 回合内表现是很好的，所以选择更低的\gls*{learning-rate}，也没有什么
-问题。
+在 MNIST 数据中，使用这样的策略会给出一个关于\gls*{learning-rate} $\eta$ 的一个
+量级的估计，大概是 $0.1$。在一些改良后，我们得到了阈值 $\eta=0.5$。所以，我们按
+照刚刚的取一半的策略就确定了\gls*{learning-rate}为 $\eta=0.25$。实际上，我发现使
+用 $\eta=0.5$ 在 $30$ 回合内表现是很好的，所以选择更低的\gls*{learning-rate}，也
+没有什么问题。
 
-这看起来相当直接。然而，使用训练代价函数来选择 $\eta$ 看起来和我们之前提到的通过
-验证集来确定超参数的观点有点矛盾。实际上，我们会使用验证准确率来选择规范化超参数，
+这看起来相当直接。然而，使用训练\gls*{cost-func}来选择 $\eta$ 看起来和我们之前提到的通过
+验证集来确定超参数的观点有点矛盾。实际上，我们会使用验证准确率来选择\gls*{regularization}超参数，
 minibatch 大小，和层数及隐藏元个数这些网络参数，等等。为何对\gls*{learning-rate}要用
 不同的方法呢？坦白地说，这些选择其实是我个人美学偏好，个人习惯罢了。原因就是其他
 的超参数倾向于提升最终的测试集上的分类准确率，所以将他们通过验证准确率来选择更合
@@ -2015,30 +2015,29 @@ minibatch 大小，和层数及隐藏元个数这些网络参数，等等。为�
 其实就是个人的偏好。在学习的前期，如果验证准确率提升，训练代价通常都在下降。所以
 在实践中使用那种衡量方式并不会对判断的影响太大。\\
 
-\textbf{使用提前停止\label{early_stopping}来确定训练的\gls*{epoch}数量：} 正如我们在本章前面讨论
-的那样，提前停止表示在每个回合的最后，我们都要计算验证集上的分类准确率。
-当准确率不再提升，就终止它。这让选择回合数变得很简单。特别地，也意味着我们不再需
-要担心显式地掌握回合数和其他超参数的关联。而且，这个过程还是自动的。另外，提前停止
-也能够帮助我们避免\gls*{overfitting}。尽管在实验前期不采用提前停止，这样可
-以看到任何过匹配的信号，使用这些来选择规范化方法，但提前停止仍然是一件很
-棒的事。
+\textbf{使用提前停止\label{early_stopping}来确定训练的\gls*{epoch}数量：} 正如我
+们在本章前面讨论的那样，提前停止表示在每个回合的最后，我们都要计算验证集上的分类
+准确率。当准确率不再提升，就终止它。这让选择回合数变得很简单。特别地，也意味着我
+们不再需要担心显式地掌握回合数和其他超参数的关联。而且，这个过程还是自动的。另外，
+提前停止也能够帮助我们避免\gls*{overfitting}。尽管在实验前期不采用提前停止，这样
+可以看到任何过匹配的信号，使用这些来选择\gls*{regularization}方法，但提前停止仍然是一件很棒的事。
 
-我们需要再明确一下什么叫做分类准确率不再提升，这样方可实现提前停止。正如
-我们已经看到的，分类准确率在整体趋势下降的时候仍旧会抖动或者震荡。如果我们在准确
-度刚开始下降的时候就停止，那么肯定会错过更好的选择。一种不错的解决方案是如果分类
-准确率在一段时间内不再提升的时候终止。例如，我们要解决 MNIST 问题。如果分类准确
-度在近 $10$ 个回合都没有提升的时候，我们将其终止。这样不仅可以确保我们不会终止得
-过快，也能够使我们不要一直干等直到出现提升。
+我们需要再明确一下什么叫做分类准确率不再提升，这样方可实现提前停止。正如我们已经
+看到的，分类准确率在整体趋势下降的时候仍旧会抖动或者震荡。如果我们在准确度刚开始
+下降的时候就停止，那么肯定会错过更好的选择。一种不错的解决方案是如果分类准确率在
+一段时间内不再提升的时候终止。例如，我们要解决 MNIST 问题。如果分类准确度在近
+$10$ 个回合都没有提升的时候，我们将其终止。这样不仅可以确保我们不会终止得过快，
+也能够使我们不要一直干等直到出现提升。
 
 这种 $10$ 回合不提升就终止的规则很适合 MNIST 问题的一开始的探索。然而，网络有时
 候会在很长时间内于一个特定的分类准确率附近形成平缓的局面，然后才会有提升。如果你
-尝试获得相当好的性能，这个规则可能就会太过激进了~——~停止得太草率。所以，我建议在你
-更加深入地理解网络训练的方式时，仅仅在初始阶段使用 $10$ 回合不提升规则，然后逐步
-地选择更久的回合，比如说：$20$ 回合不提升就终止，$50$ 回合不提升就终止，以此类推。
-当然，这就引入了一种新的需要优化的超参数！实践中，其实比较容易设置这个超参数来获
-得相当好的结果。类似地，对不同于 MNIST 的问题，$10$ 回合不提升就终止的规则会太过
-激进或者太过保守，这都取决于问题本身的特质。然而，进行一些小的实验，发现好的提前
-终止的策略还是非常简单的。
+尝试获得相当好的性能，这个规则可能就会太过激进了~——~停止得太草率。所以，我建议在
+你更加深入地理解网络训练的方式时，仅仅在初始阶段使用 $10$ 回合不提升规则，然后逐
+步地选择更久的回合，比如说：$20$ 回合不提升就终止，$50$ 回合不提升就终止，以此类
+推。当然，这就引入了一种新的需要优化的超参数！实践中，其实比较容易设置这个超参数
+来获得相当好的结果。类似地，对不同于 MNIST 的问题，$10$ 回合不提升就终止的规则会
+太过激进或者太过保守，这都取决于问题本身的特质。然而，进行一些小的实验，发现好的
+提前终止的策略还是非常简单的。
 
 我们还没有在我们的 MNIST 实验中使用提前终止。原因是我们已经比较了不同的学习观点。
 这样的比较其实比较适合使用同样的训练回合。但是，在 \lstinline!network2.py! 中实
@@ -2055,31 +2054,31 @@ minibatch 大小，和层数及隐藏元个数这些网络参数，等等。为�
   证准确率和训练的回合数。
 \end{itemize}
 
-\textbf{\gls*{learning-rate}调整：} 我们一直都将\gls*{learning-rate}设置为常量。但是，通常
-采用可变的\gls*{learning-rate}更加有效。在学习的前期，\gls*{weight}可能非常糟糕。所以最好是使
-用一个较大的\gls*{learning-rate}让\gls*{weight}变化得更快。越往后，我们可以降低\gls*{learning-rate}，
-这样可以作出更加精良的调整。
+\textbf{\gls*{learning-rate}调整：} 我们一直都将\gls*{learning-rate}设置为常量。
+但是，通常采用可变的\gls*{learning-rate}更加有效。在学习的前期，\gls*{weight}可
+能非常糟糕。所以最好是使用一个较大的\gls*{learning-rate}让\gls*{weight}变化得更
+快。越往后，我们可以降低\gls*{learning-rate}，这样可以作出更加精良的调整。
 
 我们要如何设置\gls*{learning-rate}呢？其实有很多方法。一种自然的观点是使用提前终止的
 想法。就是保持\gls*{learning-rate}为一个常量直到验证准确率开始变差。然后按照某个量下
 降\gls*{learning-rate}，比如说按照$10$ 或者 $2$。我们重复此过程若干次，直到%
 \gls*{learning-rate}是初始值的 $1/1024$（或者$1/1000$）。那时就终止。
 
-可变\gls*{learning-rate}可以提升性能，但是也会产生大量可能的选择。这些选择会让人头疼
-~——~你可能需要花费很多精力才能优化学习规则。对刚开始实验，我建议使用单一的常量作
-为\gls*{learning-rate}的选择。这会给你一个比较好的近似。后面，如果你想获得更好的性能，
-值得按照某种规则进行实验，根据我已经给出的资料。
+可变\gls*{learning-rate}可以提升性能，但是也会产生大量可能的选择。这些选择会让人
+头疼~——~你可能需要花费很多精力才能优化学习规则。对刚开始实验，我建议使用单一的常
+量作为\gls*{learning-rate}的选择。这会给你一个比较好的近似。后面，如果你想获得更
+好的性能，值得按照某种规则进行实验，根据我已经给出的资料。
 
 \subsection*{练习}
 
 \begin{itemize}
-\item 更改 \lstinline!network2.py! 实现学习规则：每次验证准确率满足$10$ 回合
-  不提升终止策略时改变\gls*{learning-rate}；当\gls*{learning-rate}降到初始值的 $1/128$ 时
-  终止。
+\item 更改 \lstinline!network2.py! 实现学习规则：每次验证准确率满足 $10$ 回合不
+  提升终止策略时改变\gls*{learning-rate}；当\gls*{learning-rate}降到初始值的
+  $1/128$ 时终止。
 \end{itemize}
 
-\textbf{规范化参数：} 我建议，开始时不包含规范化（$\lambda=0.0$），确定 $\eta$
-的值。使用确定出来的 $\eta$，我们可以使用验证数据来选择好的 $\lambda$。从尝试
+\textbf{\gls*{regularization}参数：} 我建议，开始时不包含\gls*{regularization}（$\lambda=0.0$），确定 $\eta$的
+值。使用确定出来的 $\eta$，我们可以使用验证数据来选择好的 $\lambda$。从尝试
 $\lambda=1.0$ 开始，然后根据验证集上的性能按照因子 $10$增加或减少其值。一旦我已
 经找到一个好的量级，你可以改进 $\lambda$ 的值。这里搞定后，你就可以返回再重新优
 化 $\eta$。
@@ -2092,12 +2091,12 @@ $\lambda=1.0$ 开始，然后根据验证集上的性能按照因子 $10$增加�
 \end{itemize}
 
 \textbf{在本书前面，我是如何选择超参数的：} 如果你使用本节给出的推荐策略，你会发
-现你自己找到的 $\eta$ 和 $\lambda$ 不总是和我给出的一致。原因在于书本由于叙事篇幅的
-限制，有时候会使得优化超参数变得不现实。想想我们已经做过的使用不同观点学习的对比，
-比如说，比较二次代价函数和交叉熵代价函数，比较\gls*{weight}初始化的新旧方法，使不使用规范
-化，等等。为了使这些比较有意义，我通常会将参数在这些方法上保持不变（或者进行合适
-  的尺度调整）。当然，同样超参数对不同的学习观点都是最优的也没有理论保证，所以我
-用的那些超参数常常是折衷的选择。
+现你自己找到的 $\eta$ 和 $\lambda$ 不总是和我给出的一致。原因在于书本由于叙事篇
+幅的限制，有时候会使得优化超参数变得不现实。想想我们已经做过的使用不同观点学习的
+对比，比如说，比较二次\gls*{cost-func}和交叉熵\gls*{cost-func}，比较\gls*{weight}初始化的新旧方
+法，使不使用\gls*{regularization}，等等。为了使这些比较有意义，我通常会将参数在这些方法上保持不
+变（或者进行合适的尺度调整）。当然，同样超参数对不同的学习观点都是最优的也没有理
+论保证，所以我用的那些超参数常常是折衷的选择。
 
 相较于这样的折衷，其实我本可以尝试优化每个单一的观点的超参数选择。理论上，这可能
 是更好更公平的方式，因为那样的话我们可以看到每个观点的最优性能。但是，我们现在依
@@ -2105,19 +2104,21 @@ $\lambda=1.0$ 开始，然后根据验证集上的性能按照因子 $10$增加�
 使用折衷方式来采用尽可能好（却不一定最优）的超参数选择。\\
 
 \label{mini_batch_size}
-\textbf{\gls*{mini-batch}大小：} 我们应该如何设置\gls*{mini-batch}的大小？为了回答这个问题，
-让我们先假设正在进行在线学习，也就是说使用大小为 $1$ 的\gls*{mini-batch}。
+\textbf{\gls*{mini-batch}大小：} 我们应该如何设置\gls*{mini-batch}的大小？为了回
+答这个问题，让我们先假设正在进行在线学习，也就是说使用大小为 $1$ 的%
+\gls*{mini-batch}。
 
-一个关于在线学习的担忧是使用只有一个样本的\gls*{mini-batch}会带来关于梯度的错误估计。
-实际上，误差并不会真的产生这个问题。原因在于单一的梯度估计不需要绝对精确。我们需
-要的是确保代价函数保持下降的足够精确的估计。就像你现在要去北极点，但是只有一个不
-大精确的（差个 $10-20$ 度）指南针。如果你不断频繁地检查指南针，指南针会在平均状
-况下给出正确的方向，所以最后你也能抵达北极点。
+一个关于在线学习的担忧是使用只有一个样本的\gls*{mini-batch}会带来关于梯度的错误
+估计。实际上，误差并不会真的产生这个问题。原因在于单一的梯度估计不需要绝对精确。
+我们需要的是确保\gls*{cost-func}保持下降的足够精确的估计。就像你现在要去北极点，但是只有
+一个不大精确的（差个 $10-20$ 度）指南针。如果你不断频繁地检查指南针，指南针会在
+平均状况下给出正确的方向，所以最后你也能抵达北极点。
 
-基于这个观点，这看起来好像我们需要使用在线学习。实际上，情况会变得更加复杂。在
-\hyperref[ch:]{上一章的问题中} 我指出我们可以使用矩阵技术来对所有在\gls*{mini-batch}中
-的样本同时计算梯度更新，而不是进行循环。所以，取决于硬件和线性代数库的实现细节，
-这会比循环方式进行梯度更新快好多。也许是 $50$ 和 $100$ 倍的差别。
+基于这个观点，这看起来好像我们需要使用在线学习。实际上，情况会变得更加复杂。在%
+\hyperref[ch:]{上一章的问题中} 我指出我们可以使用矩阵技术来对所有在
+\gls*{mini-batch}中的样本同时计算梯度更新，而不是进行循环。所以，取决于硬件和线
+性代数库的实现细节，这会比循环方式进行梯度更新快好多。也许是 $50$ 和 $100$ 倍的
+差别。
 
 现在，看起来这对我们帮助不大。我们使用 $100$ 的\gls*{mini-batch}的学习规则如下;
 \begin{equation}
@@ -2130,36 +2131,38 @@ $\lambda=1.0$ 开始，然后根据验证集上的性能按照因子 $10$增加�
   \label{eq:101}\tag{101}
 \end{equation}
 即使它仅仅是 $50$ 倍的时间，结果仍然比直接在线学习更好，因为我们在线学习更新得太
-过频繁了。假设，在\gls*{mini-batch}下，我们将\gls*{learning-rate}扩大了 $100$ 倍，更新规则就是
+过频繁了。假设，在\gls*{mini-batch}下，我们将\gls*{learning-rate}扩大了 $100$ 倍，
+更新规则就是
 \begin{equation}
   w \rightarrow w' = w-\eta \sum_x \nabla C_x
   \label{eq:102}\tag{102}
 \end{equation}
 
-这看起来像做了 $100$ 次独立的在线学习。但是仅仅花费了 $50$ 次在线学习的时间。
-当然，其实不是同样的 100 次在线学习，因为\gls*{mini-batch}中 $\nabla C_x$ 是都对同样的
-\gls*{weight}进行衡量的，而在线学习中是累加的学习。使用更大的\gls*{mini-batch}看起来还是显著地
-能够进行训练加速的。
+这看起来像做了 $100$ 次独立的在线学习。但是仅仅花费了 $50$ 次在线学习的时间。当
+然，其实不是同样的 100 次在线学习，因为\gls*{mini-batch}中 $\nabla C_x$ 是都对同
+样的\gls*{weight}进行衡量的，而在线学习中是累加的学习。使用更大的%
+\gls*{mini-batch}看起来还是显著地能够进行训练加速的。
 
-所以，选择最好的\gls*{mini-batch}大小也是一种折衷。太小了，你不会用上很好的矩阵库的快
-速计算。太大，你是不能够足够频繁地更新\gls*{weight}的。你所需要的是选择一个折衷的值，可以
-最大化学习的速度。幸运的是，\gls*{mini-batch}大小的选择其实是相对独立的一个超参数（网络
-  整体架构外的参数），所以你不需要优化那些参数来寻找好的\gls*{mini-batch}大小。因此，
-可以选择的方式就是使用某些可以接受的值（不需要是最优的）作为其他参数的选择，然后
-进行不同\gls*{mini-batch}大小的尝试，像上面那样调整 $\eta$。画出验证准确率的值随时间
-（非回合）变化的图，选择哪个得到最快性能的提升的\gls*{mini-batch}大小。得到了
-\gls*{mini-batch}大小，也就可以对其他的超参数进行优化了。
+所以，选择最好的\gls*{mini-batch}大小也是一种折衷。太小了，你不会用上很好的矩阵
+库的快速计算。太大，你是不能够足够频繁地更新\gls*{weight}的。你所需要的是选择一
+个折衷的值，可以最大化学习的速度。幸运的是，\gls*{mini-batch}大小的选择其实是相
+对独立的一个超参数（网络整体架构外的参数），所以你不需要优化那些参数来寻找好的%
+\gls*{mini-batch}大小。因此，可以选择的方式就是使用某些可以接受的值（不需要是最
+  优的）作为其他参数的选择，然后进行不同\gls*{mini-batch}大小的尝试，像上面那样
+调整 $\eta$。画出验证准确率的值随时间（非回合）变化的图，选择哪个得到最快性能的
+提升的\gls*{mini-batch}大小。得到了\gls*{mini-batch}大小，也就可以对其他的超参数
+进行优化了。
 
-当然，你也发现了，我这里并没有做到这么多。实际上，我们的实现并没有使用到
-\gls*{mini-batch}更新快速方法。就是简单使用了\gls*{mini-batch}大小为 $10$。所以，我们其实可以
-通过降低\gls*{mini-batch}大小来进行提速。我也没有这样做，因为我希望展示\gls*{mini-batch}大于
-$1$ 的使用，也因为我实践经验表示提升效果其实不明显。在实践中，我们大多数情况肯定
-是要实现更快的\gls*{mini-batch}更新策略，然后花费时间精力来优化\gls*{mini-batch}大小，来达到
-总体的速度提升。\\
+当然，你也发现了，我这里并没有做到这么多。实际上，我们的实现并没有使用到%
+\gls*{mini-batch}更新快速方法。就是简单使用了\gls*{mini-batch}大小为 $10$。所以，
+我们其实可以通过降低\gls*{mini-batch}大小来进行提速。我也没有这样做，因为我希望
+展示\gls*{mini-batch}大于$1$ 的使用，也因为我实践经验表示提升效果其实不明显。在
+实践中，我们大多数情况肯定是要实现更快的\gls*{mini-batch}更新策略，然后花费时间
+精力来优化\gls*{mini-batch}大小，来达到总体的速度提升。\\
 
 \textbf{自动技术：} 我已经给出很多在手动进行超参数优化时的启发式规则。手动选择当
 然是种理解网络行为的方法。不过，现实是，很多工作已经使用自动化过程进行。通常的技
-术就是\emph{网格搜索}（\emph{grid search}），可以系统化地对超参数的参数空间的网
+术就是\textbf{网格搜索}（\textbf{grid search}），可以系统化地对超参数的参数空间的网
 格进行搜索。网格搜索的成就和限制（易于实现的变体）在 James Bergstra 和 Yoshua
 Bengio $2012$年的论
 文\footnote{\href{http://dl.acm.org/citation.cfm?id=2188395}{Random search for
@@ -2175,7 +2178,7 @@ Bengio $2012$年的论
 \textbf{总结：} 跟随上面的经验并不能帮助你的网络给出绝对最优的结果。但是很可能给
 你一个好的开始和一个改进的基础。特别地，我已经非常独立地讨论了超参数的选择。实践
 中，超参数之间存在着很多关系。你可能使用 $\eta$ 进行试验，发现效果不错，然后去优
-化$\lambda$，发现这里又和 $\eta$ 混在一起了。在实践中，一般是来回往复进行的，最
+化 $\lambda$，发现这里又和 $\eta$ 混在一起了。在实践中，一般是来回往复进行的，最
 终逐步地选择到好的值。总之，启发式规则其实都是经验，不是金规玉律。你应该注意那些
 没有效果的尝试的信号，然后乐于尝试更多试验。特别地，这意味着需要更加细致地监控神
 经网络的行为，特别是验证集上的准确率。
@@ -2208,11 +2211,11 @@ Bottou、Genevieve Orr 和 Klaus-Robert Müller 所著
 设定超参数的挑战让一些人抱怨神经网络相比较其他的机器学习算法需要大量的工作进行参
 数选择。我也听到很多不同的版本：“的确，参数完美的神经网络可能会在这问题上获得最
 优的性能。但是，我可以尝试一下随机森林（或者 SVM 或者……这里脑补自己偏爱的技术）
-也能够工作的。我没有时间搞清楚那个最好的神经网络。” 当然，从一个实践者角度，肯
-定是应用更加容易的技术。这在你刚开始处理某个问题时尤其如此，因为那时候，你都不确
-定一个机器学习算法能够解决那个问题。但是，如果获得最优的性能是最重要的目标的话，
-你就可能需要尝试更加复杂精妙的知识的方法了。如果机器学习总是简单的话那是太好不过
-了，但也没有什么理由说机器学习非得这么简单。
+也能够工作的。我没有时间搞清楚那个最好的神经网络。” 当然，从一个实践者角度，肯定
+是应用更加容易的技术。这在你刚开始处理某个问题时尤其如此，因为那时候，你都不确定
+一个机器学习算法能够解决那个问题。但是，如果获得最优的性能是最重要的目标的话，你
+就可能需要尝试更加复杂精妙的知识的方法了。如果机器学习总是简单的话那是太好不过了，
+但也没有什么理由说机器学习非得这么简单。
 
 \section{其它技术}
 \label{sec:other_techniques}
@@ -2224,15 +2227,14 @@ Bottou、Genevieve Orr 和 Klaus-Robert Müller 所著
 
 \subsection{随机梯度下降的变化形式}
 
-通过\gls*{bp}进行的随机梯度下降已经在 MNIST 数字分类问题上有了很好的表现。然而，
-还有很多其他的观点来优化代价函数，有时候，这些方法能够带来比在小批量的随机梯度
-下降更好的效果。本节，我会介绍两种观点，Hessian 和 momentum 技术。
-\\
+通过\gls*{bp}进行的\gls*{sgd}已经在 MNIST 数字分类问题上有了很好的表现。然而，
+还有很多其他的观点来优化\gls*{cost-func}，有时候，这些方法能够带来比在小批量的随机梯度下
+降更好的效果。本节，我会介绍两种观点，Hessian 和 momentum 技术。\\
 
 \textbf{Hessian 技术：} 为了更好地讨论这个技术，我们先把神经网络放在一边。相反，
-我直接思考最小化代价函数 $C$ 的抽象问题，其中 $C$ 是多个参数的函
-数，$w=w_1,w_2,...$，所以 $C=C(w)$。借助于泰勒展开式，代价函数可以在点 $w$ 处被近
-似为：
+我直接思考最小化\gls*{cost-func} $C$ 的抽象问题，其中 $C$ 是多个参数的函数，
+$w=w_1,w_2,\ldots$，所以 $C=C(w)$。借助于泰勒展开式，\gls*{cost-func}可以在点 $w$ 处被近似
+为：
 \begin{align}
   C(w+\Delta w) &= C(w) + \sum_j \frac{\partial C}{\partial w_j} \Delta w_j \nonumber \\
      & \quad + \frac{1}{2} \sum_{jk} \Delta w_j \frac{\partial^2 C}{\partial w_j \partial w_k} \Delta w_k + \ldots \label{eq:103}\tag{103}
@@ -2244,9 +2246,9 @@ Bottou、Genevieve Orr 和 Klaus-Robert Müller 所著
   \frac{1}{2} \Delta w^T H \Delta w + \ldots
   \label{eq:104}\tag{104}
 \end{equation}
-其中 $\nabla C$ 是通常的梯度向量，$H$ 就是矩阵形式的 \emph{Hessian 矩阵}，其中
-第 $jk$ 项就是 $\partial^2 C/\partial w_j\partial w_k$。假设我们通过丢弃更高阶的
-项来近似 $C$，
+其中 $\nabla C$ 是通常的梯度向量，$H$ 就是矩阵形式的 \textbf{Hessian 矩阵}，其中第
+$jk$ 项就是 $\partial^2 C/\partial w_j\partial w_k$。假设我们通过丢弃更高阶的项
+来近似 $C$，
 \begin{equation} 
   C(w+\Delta w) \approx C(w) + \nabla C \cdot \Delta w +
   \frac{1}{2} \Delta w^T H \Delta w
@@ -2254,16 +2256,16 @@ Bottou、Genevieve Orr 和 Klaus-Robert Müller 所著
 \end{equation}
 
 使用微积分，我们可证明右式表达式可以进行最小化\footnote{严格地说，对此是一个最小
-  值，而不仅仅是一个极值，我们需要假设 Hessian 矩阵是正定的。直观地说，这意味着函
-  数 $C$ 看起来局部像一个山谷，而不是一座山或一个马鞍。}，选择：
+  值，而不仅仅是一个极值，我们需要假设 Hessian 矩阵是正定的。直观地说，这意味着
+  函数 $C$ 看起来局部像一个山谷，而不是一座山或一个马鞍。}，选择：
 \begin{equation}
   \Delta w = -H^{-1} \nabla C
   \label{eq:106}\tag{106}
 \end{equation}
 
-根据 \eqref{eq:105} 是代价函数的比较好的近似表达式，我们期望从点 $w$ 移动
-到 $w+\Delta w = w - H^{-1}\nabla C$ 可以显著地降低代价函数的值。这就给出了一种优
-化代价函数的可能的算法：
+根据~\eqref{eq:105} 是\gls*{cost-func}的比较好的近似表达式，我们期望从点 $w$ 移动到
+$w+\Delta w = w - H^{-1}\nabla C$ 可以显著地降低\gls*{cost-func}的值。这就给出了一种优化
+\gls*{cost-func}的可能的算法：
 \begin{itemize}
 \item 选择开始点，$w$
 \item 更新 $w$ 到新点 $w' = w - H_{-1}\nabla C$，其中 Hessian $H$ 和 $\nabla C$
@@ -2277,18 +2279,18 @@ Bottou、Genevieve Orr 和 Klaus-Robert Müller 所著
 地使用改变量 $\Delta w = -\eta H^{-1} \nabla C$ 来 改变 $w$，其中 $\eta$ 就是
 \gls*{learning-rate}。
 
-这个最小化代价函数的方法常常被称为 \emph{Hessian 技术}或者 \emph{Hessian 优化}。在理
-论上和实践中的结果都表明 Hessian 方法比标准的梯度下降方法收敛速度更快。特别地，
-通过引入代价函数的二阶变化信息，可以让 Hessian 方法避免在梯度下降中常碰到的多路
-径（pathologies）问题。而且，\gls*{bp}算法的有些版本也可以用于计算 Hessian。
+这个最小化\gls*{cost-func}的方法常常被称为 \textbf{Hessian 技术}或者 \textbf{Hessian 优化}。
+在理论上和实践中的结果都表明 Hessian 方法比标准的梯度下降方法收敛速度更快。特别
+地，通过引入\gls*{cost-func}的二阶变化信息，可以让 Hessian 方法避免在梯度下降中常碰到的
+多路径（pathologies）问题。而且，\gls*{bp}算法的有些版本也可以用于计算 Hessian。
 
 如果 Hessian 优化这么厉害，为何我们这里不使用它呢？不幸的是，尽管 Hessian 优化有
 很多可取的特性，它其实还有一个不好的地方：在实践中很难应用。这个问题的部分原因在
-于 Hessian 矩阵的太大了。假设你有一个 $10^7$ 个\gls*{weight}和\gls*{bias}的网络。那么对应的
-Hessian 矩阵会有 $10^7 \times 10^7=10^{14}$ 个元素。这真的是太大了！所以在实践中，
-计算 $H^{-1}\nabla C$ 就极其困难。不过，这并不表示学习理解它没有用了。实际上，有
-很多受到 Hessian 优化启发的梯度下降的变种，能避免产生太大矩阵的问题。让我们看看
-其中一个称为基于 momentum 梯度下降的方法。\\
+于 Hessian 矩阵的太大了。假设你有一个 $10^7$ 个\gls*{weight}和\gls*{bias}的网络。
+那么对应的Hessian 矩阵会有 $10^7 \times 10^7=10^{14}$ 个元素。这真的是太大了！所
+以在实践中，计算 $H^{-1}\nabla C$ 就极其困难。不过，这并不表示学习理解它没有用了。
+实际上，有很多受到 Hessian 优化启发的梯度下降的变种，能避免产生太大矩阵的问题。
+让我们看看其中一个称为基于 momentum 梯度下降的方法。\\
 
 \textbf{基于 momentum 的梯度下降：} 直觉上看，Hessian 优化的优点是它不仅仅考虑了
 梯度，而且还包含梯度如何变化的信息。基于 momentum 的梯度下降就基于这个直觉，但是
@@ -2318,24 +2320,24 @@ C$ 改变了速度，$v$，速度随后再控制 $w$ 变化率。直觉上看，
 每一步速度都不断增大，所以我们会越来越快地达到谷底。这样就能够确保 momentum 技术
 比标准的梯度下降运行得更快。当然，这里也会有问题，一旦达到谷底，我们就会跨越过去。
 或者，如果梯度本该快速改变而没有改变，那么我们会发现自己在错误的方向上移动太多了。
-这就是在 \eqref{eq:107} 中使用 $\mu$ 这个超参数的原因了。前面提到，$\mu$ 可以控
-制系统中的摩擦力大小；更加准确地说，你应该将 $1-\mu$ 看成是摩擦力的量。当
-$\mu=1$ 时，没有摩擦，速度完全由梯度 $\nabla C$ 决定。相反，若是 $\mu=0$，就存在
-很大的摩擦，速度无法叠加，公式 \eqref{eq:107} \eqref{eq:108} 就变成了通常的梯度
-下降，$w\rightarrow w'=w-\eta \nabla C$。在实践中，使用 $0$ 和 $1$ 之间的 $\mu$
-值可以给我们避免过量而又能够叠加速度的好处。我们可以使用 hold out 验证数据集来选
-择合适的 $\mu$ 值，就像我们之前选择$\eta$ 和 $\lambda$ 那样。
+这就是在~\eqref{eq:107} 中使用 $\mu$ 这个超参数的原因了。前面提到，$\mu$ 可以控
+制系统中的摩擦力大小；更加准确地说，你应该将 $1-\mu$ 看成是摩擦力的量。当$\mu=1$
+时，没有摩擦，速度完全由梯度 $\nabla C$ 决定。相反，若是 $\mu=0$，就存在很大的摩
+擦，速度无法叠加，公式~\eqref{eq:107}~\eqref{eq:108} 就变成了通常的梯度下降，
+$w\rightarrow w'=w-\eta \nabla C$。在实践中，使用 $0$ 和 $1$ 之间的 $\mu$值可以
+给我们避免过量而又能够叠加速度的好处。我们可以使用 hold out 验证数据集来选择合适
+的 $\mu$ 值，就像我们之前选择$\eta$ 和 $\lambda$ 那样。
 
 我到现在也没有把 $\mu$ 看成是超参数。原因在于 $\mu$ 的标准命名不大好：它叫做
-\emph{moment co-efficient}。这其实很让人困惑，因为 $\mu$ 并不是物理学那个叫做动
+\textbf{moment co-efficient}。这其实很让人困惑，因为 $\mu$ 并不是物理学那个叫做动
 量（momentum）的东西。并且，它更像摩擦力的概念。然而，现在这个术语已经被大家广泛
 使用了，所以我们继续使用它。
 
 关于 momentum 技术的一个很好的特点是它基本上不需要改变太多梯度下降的代码就可以实
 现。我们可以继续使用\gls*{bp}来计算梯度，就和前面那样，使用随机选择的 minibatch
-的方法。这样的话，我们还是能够从 Hessian 技术中学到的优点的~——~使用梯度如何改变的
-信息。也仅仅需要进行微小的调整。实践中，momentum 技术很常见，也能够带来学习速度
-的提升。
+的方法。这样的话，我们还是能够从 Hessian 技术中学到的优点的~——~使用梯度如何改变
+的信息。也仅仅需要进行微小的调整。实践中，momentum 技术很常见，也能够带来学习速
+度的提升。
 
 \subsection*{练习}
 
@@ -2347,41 +2349,40 @@ $\mu=1$ 时，没有摩擦，速度完全由梯度 $\nabla C$ 决定。相反，
 \subsection*{问题}
 
 \begin{itemize}
-\item 增加基于 momentum 的随机梯度下降到 \lstinline!network2.py! 中。
+\item 增加基于 momentum 的\gls*{sgd}到 \lstinline!network2.py! 中。
 \end{itemize}
 
-\textbf{其他优化代价函数的方法：} 很多其他的优化代价函数的方法也被提出来了，并没
+\textbf{其他优化\gls*{cost-func}的方法：} 很多其他的优化\gls*{cost-func}的方法也被提出来了，并没
 有关于哪种最好的统一意见。当你越来越深入了解神经网络时，值得去尝试其他的优化技术，
 理解他们工作的原理，优势劣势，以及在实践中如何应用。前面我提到的一篇论
 文\footnote{\href{http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf}{Efficient
     BackProp}，作者为 Yann LeCun， Léon Bottou， Genevieve Orr and Klaus-Robert
   Müller （1998）。}，介绍并对比了这些技术，包含共轭梯度下降和 BFGS 方法（也可以
-看看 limited memory
-BFGS，\href{http://en.wikipedia.org/wiki/Limited-memory_BFGS}{L-BFGS}。另一种近期
-效果很不错技术\footnote{例如，看看 \href{http://www.cs.toronto.edu/~hinton/absps/momentum.pdf}{On the
-    importance of initialization and momentum in deep learning}，作者为 Ilya
-  Sutskever， James Martens， George Dahl 和 Geoffrey
-  Hinton （2012）。}是Nesterov 的加速梯度技术，这个技术对 momentum 技术进行了改进。
-然而，对很多问题，标准的随机梯度下降算法，特别当 momentum 用起来后就可以工作得很
-好了，所以我们会继续在本书后面使用随机梯度下算法。
+  看看 limited memory BFGS，
+  \href{http://en.wikipedia.org/wiki/Limited-memory_BFGS}{L-BFGS}。另一种近期效
+  果很不错技术\footnote{例如，看看
+    \href{http://www.cs.toronto.edu/~hinton/absps/momentum.pdf}{On the
+      importance of initialization and momentum in deep learning}，作者为 Ilya
+    Sutskever， James Martens， George Dahl 和 Geoffrey Hinton （2012）。}是
+  Nesterov 的加速梯度技术，这个技术对 momentum 技术进行了改进。然而，对很多问题，
+  标准的\gls*{sgd}算法，特别当 momentum 用起来后就可以工作得很好了，所以我们会
+  继续在本书后面使用随机梯度下算法。
 
 \subsection{人工神经元的其他模型}
 \label{subsec:other_models_of_artificial_neuron}
 
-到现在，我们使用的神经元都是 S 型神经元。理论上讲，从这样类型的神经元构建起
-来的神经网络可以计算任何函数。实践中，使用其他模型的神经元有时候会超过 S 型
-网络。取决于不同的应用，基于其他类型的神经元的网络可能会学习得更快，更好地泛化到
-测试集上，或者可能两者都有。让我们给出一些其他的模型选择，便于了解常用的模型上的
-变化。
+到现在，我们使用的神经元都是 \gls*{sigmoid-neuron}。理论上讲，从这样类型的神经元构建起来的
+神经网络可以计算任何函数。实践中，使用其他模型的神经元有时候会超过 S 型网络。取
+决于不同的应用，基于其他类型的神经元的网络可能会学习得更快，更好地泛化到测试集上，
+或者可能两者都有。让我们给出一些其他的模型选择，便于了解常用的模型上的变化。
 
-可能最简单的变种就是 tanh（发音为 “tanch”）神经元\index{tanh 神经元}，使用双曲
-正切（hyperbolic tangent）函数\index{双曲正切函数}替换了 S 型函数。输入为 $x$，权
-重向量为 $w$，\gls*{bias}为 $b$ 的tanh 神经元的输出是
+可能最简单的变种就是\gls{tanh-neuron}，使用\gls{hyperbolic-tangent}函数替换了 \gls*{sigmoid-func}。输入为 $x$，权
+重向量为 $w$，\gls*{bias}为 $b$ 的\gls*{tanh-neuron}的输出是
 \begin{equation}
   \tanh(w \cdot x+b)
   \label{eq:109}\tag{109}
 \end{equation}
-这其实和 S 型神经元关系相当密切。回想一下 $\tanh$ 函数的定义：
+这其实和 \gls*{sigmoid-neuron}关系相当密切。回想一下 $\tanh$ 函数的定义：
 \begin{equation}
   \tanh(z) \equiv \frac{e^z-e^{-z}}{e^z+e^{-z}}
   \label{eq:110}\tag{110}
@@ -2391,7 +2392,7 @@ BFGS，\href{http://en.wikipedia.org/wiki/Limited-memory_BFGS}{L-BFGS}。另一�
   \sigma(z) = \frac{1+\tanh(z/2)}{2}
   \label{eq:111}\tag{111}
 \end{equation}
-也就是说，$\tanh$ 仅仅是 S 型函数的按比例变化版本。我们同样也能用图像看看
+也就是说，$\tanh$ 仅仅是 \gls*{sigmoid-func}的按比例变化版本。我们同样也能用图像看看
 $\tanh$ 的形状：
 \begin{center}
   \includegraphics{tanh_function}
@@ -2399,13 +2400,13 @@ $\tanh$ 的形状：
 
 这两个函数之间的一个差异就是 $\tanh$ 神经元的输出的值域是 $(-1, 1)$ 而非 $(0,
 1)$。这意味着如果你构建基于 $\tanh$ 神经元，你可能需要正规化最终的输出（取决于应
-用的细节，还有你的输入），跟 sigmoid 网络略微不同。
+  用的细节，还有你的输入），跟 sigmoid 网络略微不同。
 
-类似于 S 型神经元，基于 tanh 神经元的网络可以在理论上，计算任何将输入映射
-到 $(-1, 1)$ 的函数\footnote{对于 tanh 和 S 型神经元，以及下面要讨论的修正线性神
-  经元，这个说法有一些技术上的预先声明。然而，非正式地，通常可以把神经网络看做可
-  以以任意精度近似任何函数。}。而且，诸如\gls*{bp}和随机梯度下降这样的想法也能够轻
-松地用在tanh 神经元构成的网络上的。
+类似于 \gls*{sigmoid-neuron}，基于\gls*{tanh-neuron}的网络可以在理论上，计算任何将输入映射到
+$(-1, 1)$ 的函数\footnote{对于 tanh 和 \gls*{sigmoid-neuron}，以及下面要讨论的修正线性神经
+  元，这个说法有一些技术上的预先声明。然而，非正式地，通常可以把神经网络看做可以
+  以任意精度近似任何函数。}。而且，诸如\gls*{bp}和\gls*{sgd}这样的想法也能够轻
+松地用在\gls*{tanh-neuron}构成的网络上的。
 
 \subsection*{练习}
 
@@ -2413,15 +2414,15 @@ $\tanh$ 的形状：
 \item 证明公式~\eqref{eq:111}。
 \end{itemize}
 
-那么你应该在网络中使用什么类型的神经元呢，tanh 还是 sigmoid？实话讲，确实并没有
-先验的答案！然而，存在一些理论论点和实践证据表明 tanh 有时候表现更好\footnote{例
+那么你应该在网络中使用什么类型的神经元呢，\gls*{tanh}还是 S 型？实话讲，确实并没有
+先验的答案！然而，存在一些理论论点和实践证据表明\gls*{tanh}有时候表现更好\footnote{例
   如，看看 \href{http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf}{Efficient
     BackProp}，作者为 Yann LeCun， Léon Bottou， Genevieve Orr 和 Klaus-Robert
   Müller （1998），以及
   \href{http://jmlr.org/proceedings/papers/v9/glorot10a/glorot10a.pdf}{Understanding
     the difficulty of training deep feedforward networks}，作者为 Xavier Glorot
-  和 Yoshua Bengio （2010）。}。让我简要介绍一下其中关于 tanh 的一个理论观点。假
-设我们使用 S 型神经元，所有激活值都是正数。让我们考虑一下\gls*{weight}
+  和 Yoshua Bengio （2010）。}。让我简要介绍一下其中关于\gls*{tanh}的一个理论观点。假
+设我们使用 \gls*{sigmoid-neuron}，所有激活值都是正数。让我们考虑一下\gls*{weight}
 $w_{jk}^{l+1}$ 输入到第 $l+1$ 层的第 $j$ 个神经元上。\gls*{bp}的规则（看%
   \hyperref[eq:bp4]{这里}）告诉我们相关的梯度是 $a_k^l\delta_j^{l+1}$。因为所有
 的激活值都是正数，所以梯度的符号就和 $\delta_j^{l+1}$ 一致。这意味着如果
@@ -2429,14 +2430,14 @@ $\delta_j^{l+1}$ 为正，那么所有的权重 $w_{jk}^{l+1}$ 都会在梯度�
 果 $\delta_j^{l+1}$ 为负，那么所有的\gls*{weight} $w_{jk}^{l+1}$ 都会在梯度下降
 时增加。换言之，针对同一的神经元的所有\gls*{weight}都会或者一起增加或者一起减少。
 这就有问题了，因为某些\gls*{weight}可能需要有相反的变化。这样的话，只能是某些输
-入激活值有相反的符号才可能出现。所以，我们用 tanh 替换就能够达到这个目的。因此，
-因为 tanh 是关于 $0$ 对称的，$\tanh(-z) = -\tanh(z)$，我们甚至期望，大概地，隐藏
+入激活值有相反的符号才可能出现。所以，我们用\gls*{tanh}替换就能够达到这个目的。因此，
+因为\gls*{tanh}是关于 $0$ 对称的，$\tanh(-z) = -\tanh(z)$，我们甚至期望，大概地，隐藏
 层的激活值能够在正负间保持平衡。这样其实可以保证对\gls*{weight}更新没有系统化的
 单方面的\gls*{bias}。
 
 我们应当如何看待这个论点？尽管论点是建设性的，但它还只是一个启发式的规则，而非严
-格证明说 tanh 就一定超过 sigmoid 函数。可能 sigmoid 神经元还有其他的特性能够补偿
-这个问题？实际上，对很多任务，tanh 在实践中给出了微小的甚至没有性能提升。不幸的
+格证明说\gls*{tanh}就一定超过 \gls*{sigmoid-func}。可能 \gls*{sigmoid-neuron}还有其他的特性能够补偿
+这个问题？实际上，对很多任务，\gls*{tanh}在实践中给出了微小的甚至没有性能提升。不幸的
 是，我们还没有快速准确的规则说哪种类型的神经元对某种特定的应用学习得更快，或者泛
 化能力最强。
 
@@ -2452,33 +2453,32 @@ $\delta_j^{l+1}$ 为正，那么所有的权重 $w_{jk}^{l+1}$ 都会在梯度�
 \end{center}
 
 显然，这样的神经元和 sigmoid 和 tanh 都不一样。然而，ReLU 也是能够用来计算任何函
-数的，也可以使用\gls*{bp}算法和随机梯度下降进行训练。
+数的，也可以使用\gls*{bp}算法和\gls*{sgd}进行训练。
 
-什么时候应该使用 ReLU 而非其他神经元呢？一些近期的图像识别上的研究工
-作\footnote{例如，看
-  看 \href{http://yann.lecun.com/exdb/publis/pdf/jarrett-iccv-09.pdf}{What is
-    the Best Multi-Stage Architecture for Object Recognition?}，作者为 Kevin
-  Jarrett， Koray Kavukcuoglu， Marc'Aurelio Ranzato和 Yann
-  LeCun （2009），
+什么时候应该使用 ReLU 而非其他神经元呢？一些近期的图像识别上的研究工作
+\footnote{例如，看看
+  \href{http://yann.lecun.com/exdb/publis/pdf/jarrett-iccv-09.pdf}{What is the
+    Best Multi-Stage Architecture for Object Recognition?}，作者为 Kevin Jarrett，
+  Koray Kavukcuoglu， Marc'Aurelio Ranzato和 Yann LeCun （2009），
   \href{http://www.jmlr.org/proceedings/papers/v15/glorot11a.html}{Deep Sparse
     Rectiﬁer Neural Networks}，作者为 Xavier Glorot，Antoine Bordes， 和 Yoshua
   Bengio （2011）， 以及
   \href{https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf}{ImageNet
     Classification with Deep Convolutional Neural Networks}，作者为 Alex
-  Krizhevsky， Ilya Sutskever， 和Geoffrey Hinton （2012）。 注意这些论文提供了关
-  于如何设置输出层、代价函数、用修正线性单元规范化网络的重要细节。我在这简短的描
-  述中敷衍地带过了这些细节。这些论文也详细讨论了使用修正线性单元的好处和缺点。另
-  一篇提供有用信息的论文
-  是 \href{https://www.cs.toronto.edu/~hinton/absps/reluICML.pdf}{Rectified
-    Linear Units Improve Restricted Boltzmann Machines}，作者为 Vinod
-  Nair 和Geoffrey Hinton （2010），其中演示了以不同于神经网络的方法使用修正线性单
-  元的好处。}找到了使用 ReLU 所带来的好处。然而，就像 tanh 神经元那样，我们还没有
-一个关于什么时候 什么原因 ReLU 表现更好的深度的理解。为了让你感受一下这个问题，回
-想起 sigmoid 神经元在饱和时停止学习的问题，也就是输出接近 $0$ 或者 $1$ 的时候。在
-这章我们也反复看到了问题就是 $\sigma'$ 降低了梯度，减缓了学习。Tanh 神经元也有类
-似的问题。对比一下，提高 ReLU 的带权输入并不会导致其饱和，所以就不存在前面那样的
-学习速度下降。另外，当带权输入是负数的时候，梯度就消失了，所以神经元就完全停止了
-学习。这就是很多有关理解 ReLU 何时何故更优的问题中的两个。
+  Krizhevsky， Ilya Sutskever， 和Geoffrey Hinton （2012）。 注意这些论文提供了
+  关于如何设置输出层、\gls*{cost-func}、用修正线性单元\gls*{regularization}网络的重要细节。我在这简短的
+  描述中敷衍地带过了这些细节。这些论文也详细讨论了使用修正线性单元的好处和缺点。
+  另一篇提供有用信息的论文是
+  \href{https://www.cs.toronto.edu/~hinton/absps/reluICML.pdf}{Rectified Linear
+    Units Improve Restricted Boltzmann Machines}，作者为 Vinod Nair 和Geoffrey
+  Hinton （2010），其中演示了以不同于神经网络的方法使用修正线性单元的好处。}找到
+了使用 ReLU 所带来的好处。然而，就像\gls*{tanh-neuron}那样，我们还没有一个关于什么时候
+什么原因 ReLU 表现更好的深度的理解。为了让你感受一下这个问题，回想起 sigmoid 神
+经元在饱和时停止学习的问题，也就是输出接近 $0$ 或者 $1$ 的时候。在这章我们也反复
+看到了问题就是 $\sigma'$ 降低了梯度，减缓了学习。Tanh 神经元也有类似的问题。对比
+一下，提高 ReLU 的带权输入并不会导致其饱和，所以就不存在前面那样的学习速度下降。
+另外，当带权输入是负数的时候，梯度就消失了，所以神经元就完全停止了学习。这就是很
+多有关理解 ReLU 何时何故更优的问题中的两个。
 
 我已经给出了一些不确定性的描述，指出我们现在还没有一个坚实的理论来解释如何选择激
 活函数。实际上，这个问题比我已经讲过的还要困难，因为其实是有无穷多的可能的激活函
@@ -2486,7 +2486,7 @@ $\delta_j^{l+1}$ 为正，那么所有的权重 $w_{jk}^{l+1}$ 都会在梯度�
 高的测试准确率？其实现在并没有太多真正深刻而系统的研究工作。理想中，我们会有一个
 理论告诉人们，准确细致地，如何选择我们的激活函数。另外，我们不应该让这种缺失阻碍
 我们学习和应用神经网络！我们已经有了一些强大的工作，可以使用它们完成很多的研究工
-作。本书剩下的部分中，我会继续使用 S 型神经元作为首选，因为他们其实是强大的也给
+作。本书剩下的部分中，我会继续使用 \gls*{sigmoid-neuron}作为首选，因为他们其实是强大的也给
 出了具体关于神经网络核心思想的示例。但是你需要记住的是，这些同样的想法也都可以用
 在其他类型的神经元上，有时候的确会有一些性能的提升。
 
@@ -2513,11 +2513,11 @@ $\delta_j^{l+1}$ 为正，那么所有的权重 $w_{jk}^{l+1}$ 都会在梯度�
 所遇到的一些最难的问题。进展当然会非常缓慢！但是，听听人们目前正在思考的方式也是
 非常有价值的，即使这些尝试不一定会有无可置疑的新进展。
 
-你可能会注意到类似于“我对你的观点很赞同，但是...”的话语。为了解释我们已经看到
-的情况，我通常会使用“启发式地，...”或者“粗略地讲，...”，然后接上解释某个现象
-或者其他问题的故事。这些故事是可信的，但是实验性的证据常常是不够充分的。如果你通
-读研究文献，你会发现在神经网络研究中很多类似的表达，基本上都是没有太过充分的支撑
-证据的。所以我们应该怎样看待这样的故事呢？
+你可能会注意到类似于“我对你的观点很赞同，但是...”的话语。为了解释我们已经看到的
+情况，我通常会使用“启发式地，...”或者“粗略地讲，...”，然后接上解释某个现象或者其
+他问题的故事。这些故事是可信的，但是实验性的证据常常是不够充分的。如果你通读研究
+文献，你会发现在神经网络研究中很多类似的表达，基本上都是没有太过充分的支撑证据的。
+所以我们应该怎样看待这样的故事呢？
 
 在科学的很多分支~——~尤其是那些解决相当简单现象的领域~——~很容易会得到一些关于很一
 般的假说的非常扎实非常可靠的证据。但是在神经网络中，存在大量的参数和超参数及其间
@@ -2527,7 +2527,7 @@ $\delta_j^{l+1}$ 为正，那么所有的权重 $w_{jk}^{l+1}$ 都会在梯度�
 理论在有新的证据出现时，也需要进行调整甚至丢弃。
 
 对这种情况的一种观点是~——~任何启发式的关于神经网络的论点会带来一个挑战。例如，考
-虑我\hyperref[dropout_explanation]{之前引用}的语句，解释 dropout 工作的原
+虑我\hyperref[dropout_explanation]{前文引用}的语句，解释\gls*{dropout}工作的原
 因\footnote{源自
   \href{https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf}{ImageNet
     Classification with Deep Convolutional Neural Networks}，作者为 Alex

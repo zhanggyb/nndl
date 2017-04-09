@@ -47,7 +47,7 @@
 
 当然，如果仅仅为了编写一个计算机程序来识别手写数字，本章的内容可以简短很多！但前
 进的道路上，我们将扩展出很多关于神经网络的关键的思想，其中包括两个重要的人工神经
-元（\gls*{perceptron}和\gls*{sigmoid-neuron}），以及标准的神经网络学习算法，即%
+元（\gls*{perceptron}和 \gls*{sigmoid-neuron}），以及标准的神经网络学习算法，即%
 \gls*{sgd}算法。自始至终，我专注于解释事情的原委，并构筑你对神经网络的直观感受。
 这需要一个漫长的讨论，而不是仅仅介绍些基本的技巧，但这对于更深入的理解是值得的。
 作为收益，在本章的最后，我们会准备好了解什么是深度学习，以及它为什么很重要。
@@ -63,8 +63,8 @@
   McCulloch} 和 \href{http://en.wikipedia.org/wiki/Walter_Pitts}{Walter Pitts}
 早期\href{http://scholar.google.ca/scholar?cluster=4035975255085082870}{著作}的
 影响。今天，使用其它人工神经元模型更为普遍~——~在这本书中，以及更多现代的神经网络
-著作中，主要使用的是一种叫做\textbf{\gls{sigmoid-neuron}}的神经元模型。我们很快
-会讲到\gls*{sigmoid-neuron}。但是要理解为什么\gls*{sigmoid-neuron}被定义为那样的
+著作中，主要使用的是一种叫做 \textbf{\gls{sigmoid-neuron}}的神经元模型。我们很快
+会讲到 \gls*{sigmoid-neuron}。但是要理解为什么 \gls*{sigmoid-neuron}被定义为那样的
 方式，值得花点时间先来理解下\gls*{perceptron}。
 
 \gls*{perceptron}是如何工作的呢？一个\gls*{perceptron}接受几个二进制输入，
@@ -256,19 +256,19 @@ $3$，标记的单个\gls*{weight}为 $-4$：
 决这个问题。但是目前为止，我们还没发现有什么办法能让\gls*{perceptron}网络进行学
 习。
 
-我们可以引入一种称为\gls*{sigmoid-neuron}的新的人工神经元来克服这个问题。%
+我们可以引入一种称为 \gls*{sigmoid-neuron}的新的人工神经元来克服这个问题。
 \gls*{sigmoid-neuron}和\gls*{perceptron}类似，但是经过修改后，\gls*{weight}和%
 \gls*{bias}的微小改动只引起输出的微小变化。这对于让神经元网络学习起来是很关键的。
 
-好了, 让我来描述下\gls*{sigmoid-neuron}。我们用描绘\gls*{perceptron}的相同方式来
-描绘\gls*{sigmoid-neuron}\index{\gls*{sigmoid-neuron}}：
+好了, 让我来描述下 \gls*{sigmoid-neuron}。我们用描绘\gls*{perceptron}的相同方式来
+描绘 \gls*{sigmoid-neuron}：
 \begin{center}
   \includegraphics{tikz9}
 \end{center}
 
 正如一个\gls*{perceptron}，\gls*{sigmoid-neuron}有多个输入，$x_1,x_2,\ldots$。但
 是这些输入可以取 $0$ 和$1$ 中的任意值，而不仅仅是 $0$ 或 $1$。例如，
-$0.638\ldots$ 是一个\gls*{sigmoid-neuron}的有效输入。同样，\gls*{sigmoid-neuron}
+$0.638\ldots$ 是一个 \gls*{sigmoid-neuron}的有效输入。同样，\gls*{sigmoid-neuron}
 对每个输入有\gls*{weight}，$w_1,w_2,\ldots$，和一个总的\gls*{bias}，$b$。但是输
 出不是 $0$ 或 $1$。相反，它现在是 $\sigma(w \cdot x+b)$，这里 $\sigma$ 被称为 S
 型函数\footnote{顺便提一下，$\sigma$ 有时被称为\textbf{逻辑函数}，而这种新的神经
@@ -280,15 +280,15 @@ $0.638\ldots$ 是一个\gls*{sigmoid-neuron}的有效输入。同样，\gls*{sig
 \end{equation}
 
 把它们放在一起来更清楚地说明，一个具有输入 $x_1,x_2,\ldots$，\gls*{weight}
-$w_1,w_2,\ldots$，和\gls*{bias} $b$ 的\gls*{sigmoid-neuron}的输出是：
+$w_1,w_2,\ldots$，和\gls*{bias} $b$ 的 \gls*{sigmoid-neuron}的输出是：
 \begin{equation}
   \frac{1}{1+\exp(-\sum_j w_j x_j-b)}
   \label{eq:4}\tag{4}
 \end{equation}
 
 初看上去，\gls*{sigmoid-neuron}和\gls*{perceptron}有很大的差别。如果你不熟悉 S
-型函数的代数形式，它看上去晦涩难懂又令人生畏。实际上，\gls*{perceptron}和%
-\gls*{sigmoid-neuron}之间有很多相似的地方，跨过理解上的障碍，S 型函数的代数形式
+型函数的代数形式，它看上去晦涩难懂又令人生畏。实际上，\gls*{perceptron}和
+\gls*{sigmoid-neuron}之间有很多相似的地方，跨过理解上的障碍，\gls*{sigmoid-func}的代数形式
 具有很多技术细节。
 
 为了理解和\gls*{perceptron}模型的相似性，假设 $z \equiv w \cdot x + b$ 是一个很
@@ -345,8 +345,8 @@ $\Delta b$~——~的线性函数。利用这个线性特性，我们比较容�
 无论如何，$\sigma$ 在神经网络的工作中被普遍使用，并且是这本书中我们最常使用的激
 活函数。
 
-我们应该如何解释一个\gls*{sigmoid-neuron}的输出呢？很明显，\gls*{perceptron}和%
-\gls*{sigmoid-neuron}之间一个很大的不同是\gls*{sigmoid-neuron}不仅仅输出 $0$ 或
+我们应该如何解释一个 \gls*{sigmoid-neuron}的输出呢？很明显，\gls*{perceptron}和
+\gls*{sigmoid-neuron}之间一个很大的不同是 \gls*{sigmoid-neuron}不仅仅输出 $0$ 或
 $1$。它可以输出 $0$ 到 $1$ 之间的任何实数，所以诸如 $0.173\ldots$ 和
 $0.689\ldots$ 的值是合理的输出。这是非常有用的，例如，当我们想要输出来表示一个神
 经网络的图像像素输入的平均强度。但有时候这会是个麻烦。假设我们希望网络的输出表示
@@ -366,7 +366,7 @@ $0.689\ldots$ 的值是合理的输出。这是非常有用的，例如，当我
   上题中相同的设置~——~一个\gls*{perceptron}网络。同样假设所有输入被选中。我们不
   需要实际的输入值，仅仅需要固定这些输入。假设对于网络中任何特定%
   \gls*{perceptron}的输入 $x$， \gls*{weight}和\gls*{bias}遵循 $w \cdot x + b
-  \neq 0$。现在用\gls*{sigmoid-neuron}替换所有网络中的\gls*{perceptron}，并且把%
+  \neq 0$。现在用 \gls*{sigmoid-neuron}替换所有网络中的\gls*{perceptron}，并且把%
   \gls*{weight}和\gls*{bias}乘以一个正的常量$c>0$。证明在$c \rightarrow \infty$
   的极限情况下，\gls*{sigmoid-neuron}网络的行为和\gls*{perceptron}网络的完全一致。
   当一个\gls*{perceptron}的 $w \cdot x + b = 0$ 时又为什么会不同？
@@ -381,8 +381,8 @@ $0.689\ldots$ 的值是合理的输出。这是非常有用的，例如，当我
 \end{center}
 
 前面提过，这个网络中最左边的称为输入层，其中的神经元称为\textbf{输入神经
-  元}\index{输入神经元}。最右边的，即\textbf{输出}层包含有\textbf{输出神经
-  元}\index{输出神经元}，在本例中，输出层只有一个神经元。中间层，既然这层中的神
+  元}。最右边的，即\textbf{输出}层包含有\textbf{输出神经
+  元}，在本例中，输出层只有一个神经元。中间层，既然这层中的神
 经元既不是输入也不是输出，则被称为\textbf{\gls{hidden-layer}}。“隐藏”这一术语
 也许听上去有些神秘~——~我第一次听到这个词，以为它必然有一些深层的哲学或数学涵
 意~——~但它实际上仅仅意味着“既非输入也非输出”。上面的网络仅有一个隐藏层，但有些
@@ -391,7 +391,7 @@ $0.689\ldots$ 的值是合理的输出。这是非常有用的，例如，当我
   \includegraphics{tikz11}
 \end{center}
 
-有些令人困惑的是，由于历史的原因，尽管是由\gls*{sigmoid-neuron}而不是%
+有些令人困惑的是，由于历史的原因，尽管是由 \gls*{sigmoid-neuron}而不是%
 \gls*{perceptron}构成，这种多层网络有时被称为\textbf{\gls{mlp}}或者\textbf{MLP}。
 在这本书中我不会使用 MLP 这个术语，因为我认为这会引起混淆，但这里想提醒你它的存
 在。
@@ -415,13 +415,13 @@ $0.689\ldots$ 的值是合理的输出。这是非常有用的，例如，当我
 将难于理解，所以我们不允许这样的环路。
 
 然而，也有一些人工神经网络的模型，其中反馈环路是可行的。这些模型被称为%
-\href{http://en.wikipedia.org/wiki/Recurrent_neural_network}{递归神经网络}\index{递归神经网络}。这种
+\href{http://en.wikipedia.org/wiki/Recurrent_neural_network}{\gls{rnn}}。这种
 模型的设计思想，是具有休眠前会在一段有限的时间内保持激活状态的神经元。这种激活状
 态可以刺激其它神经元，使其随后被激活并同样保持一段有限的时间。这样会导致更多的神
 经元被激活，随着时间的推移，我们得到一个级联的神经元激活系统。因为一个神经元的输
 出只在一段时间后而不是即刻影响它的输入，在这个模型中回路并不会引起问题。
 
-递归神经网络比前馈网络影响力小得多，部分原因是递归网络的学习算法（至少目前为止）
+\gls*{rnn}比前馈网络影响力小得多，部分原因是递归网络的学习算法（至少目前为止）
 不够强大。但是递归网络仍然很有吸引力。它们原理上比前馈网络更接近我们大脑的实际工
 作。并且递归网络能解决一些重要的问题，这些问题如果仅仅用前馈网络来解决，则更加困
 难。然而为了篇幅，本书将专注于使用更广泛的前馈网络。
@@ -567,7 +567,7 @@ $28 \times 28$ 的灰度图像。我们将用这些测试数据来评估我们�
 网络的期望输出。注意这里 $T$ 是转置操作，把一个行向量转换成一个列向量。
 
 我们希望有一个算法，能让我们找到\gls*{weight}和\gls*{bias}，以至于网络的输出
-$y(x)$ 能够拟合所有的训练输入$x$。为了量化我们如何实现这个目标，我们定义一个
+$y(x)$ 能够拟合所有的训练输入$x$。为了量化我们如何实现这个目标，我们定义一个%
 \textbf{\gls{cost-func}}\footnote{有时被称为\textbf{损失}或\textbf{目标}函数。我
   们在这本书中使用了代价函数这个术语，但是你应该注意其他的术语，因为它经常被用于
   研究论文和其他神经网络的讨论中。}：
@@ -580,8 +580,8 @@ $y(x)$ 能够拟合所有的训练输入$x$。为了量化我们如何实现这�
 练输入数据的个数，$a$ 是表示当输入为 $x$ 时输出的向量，求和则是在总的训练输入
 $x$ 上进行的。当然，输出 $a$ 取决于 $x$, $w$ 和 $b$，但是为了保持符号的简洁性，
 我没有明确地指出这种依赖关系。符号 $\|v\|$ 是指向量 $v$ 的模。我们把 $C$ 称为%
-\textbf{二次}\gls*{cost-func}\index{二次代价函数}；有时也被称为\textbf{均方误
-  差}\index{均方误差}或者\textbf{MSE}\index{MSE}。观察二次代价函数的形式我们可以
+\textbf{二次}\gls*{cost-func}；有时也被称为\textbf{均方误
+  差}或者\textbf{MSE}。观察二次代价函数的形式我们可以
 看到 $C(w,b)$ 是非负的，因为求和公式中的每一项都是非负的。此外，代价函数
 $C(w,b)$ 的值相当小，即 $C(w,b) \approx 0$，精确地说，是当对于所有的训练输入 $x$，
 $y(x)$ 接近于输出 $a$ 时。因此如果我们的学习算法能找到合适的\gls*{weight}和%
@@ -589,7 +589,7 @@ $y(x)$ 接近于输出 $a$ 时。因此如果我们的学习算法能找到合�
 就不怎么好了，那意味着对于大量地输入， $y(x)$ 与输出 $a$ 相差很大。因此我们的训
 练算法的目的，是最小化\gls*{weight}和\gls*{bias}的代价函数 $C(w,b)$。换句话说，
 我们想要找到一系列能让代价尽可能小的\gls*{weight}和\gls*{bias}。我们将采用称为%
-\textbf{梯度下降}\index{梯度下降}的算法来达到这个目的。
+\textbf{梯度下降}的算法来达到这个目的。
 
 为什么要介绍二次代价呢？毕竟我们最初感兴趣的内容不是能正确分类的图像数量吗？为什
 么不试着直接最大化这个数量，而是去最小化一个类似二次代价的间接评量呢？这么做是因
@@ -916,7 +916,7 @@ git clone https://github.com/mnielsen/neural-networks-and-deep-learning.git
 分。我们将测试集保持原样，但是将 60,000 个图像的 MNIST 训练集分成两个部分：一部
 分 50,000 个图像，我们将用来训练我们的神经网络，和一个单独的 10,000 个图像的%
 \textbf{验证集}。在本章中我们不使用验证数据，但是在本书的后面我们将会发现它对于
-解决如何去设置某些神经网络中的\textbf{超参数}\index{超参数}是很有用的~——~例如%
+解决如何去设置某些神经网络中的\textbf{\gls{hyper-params}}是很有用的~——~例如%
 \gls*{learning-rate}等，这些参数不被我们的学习算法直接选择。尽管验证数据不是原始
 MNIST 规范的一部分，然而许多人以这种方式使用 MNIST，并且在神经网络中使用验证数据
 是很普遍的。从现在起当我提到“MNIST 训练数据”时，我指的是我们的 50,000 个图像数
@@ -1042,13 +1042,13 @@ def SGD(self, training_data, epochs, mini_batch_size, eta,
 
 \lstinline!training_data! 是一个 \lstinline!(x, y)! 元组的列表，表示训练输入和其
 对应的期望输出。变量 \lstinline!epochs! 和 \lstinline!mini_batch_size! 正如你预
-料的~——~\gls*{epoch}数量，和采样时的\minibatch{}的大小。\lstinline!eta! 是%
+料的~——~\gls*{epoch}数量，和采样时的\gls*{mini-batch}{}的大小。\lstinline!eta! 是%
 \gls*{learning-rate}，$\eta$。如果给出了可选参数 \lstinline!test_data!，那么程序
 会在每个训练器后评估网络，并打印出部分进展。这对于追踪进度很有用，但相当拖慢执行
 速度。
 
 代码如下工作。在每个\gls*{epoch}，它首先随机地将训练数据打乱，然后将它分成多个适
-当大小的\minibatch{}。这是一个简单的从训练数据的随机采样方法。然后对于每一个
+当大小的\gls*{mini-batch}{}。这是一个简单的从训练数据的随机采样方法。然后对于每一个
 \lstinline!mini_batch! 我们应用一次梯度下降。这是通过代码
 \lstinline!self.update_mini_batch(mini_batch, eta)! 完成的，它仅仅使用
 \lstinline!mini_batch! 中的训练数据，根据单次梯度下降的迭代更新网络的%
@@ -1171,8 +1171,8 @@ Epoch 29: 9534 / 10000
 
 当然，为了获得这些准确性，我不得不对训练的\gls*{epoch}数量，\gls*{mini-batch}大
 小和\gls*{learning-rate} $\eta$ 做特别的选择。正如我上面所提到的，这些在我们的神
-经网络中被称为超参数\index{超参数}，以区别于通过我们的学习算法所学到的参数
-（\gls*{weight}和\gls*{bias}）。如果我们选择了糟糕的超参数，我们会得到较差的结果。
+经网络中被称为\gls*{hyper-params}，以区别于通过我们的学习算法所学到的参数
+（\gls*{weight}和\gls*{bias}）。如果我们选择了糟糕的\gls*{hyper-params}，我们会得到较差的结果。
 假如我们选定\gls*{learning-rate}为 $\eta = 0.001$,
 
 \begin{lstlisting}[language=Python]
@@ -1197,9 +1197,9 @@ Epoch 29: 2142 / 10000
 这表明我们应该再次增加\gls*{learning-rate}。（如果改变能够改善一些事情，试着做更
   多！）如果我们这样做几次，我们最终会得到一个像 $\eta = 1.0$ 的%
 \gls*{learning-rate}（或者调整到$3.0$），这跟我们之前的实验很接近。因此即使我们
-最初选择了糟糕的超参数，我们至少获得了足够的信息来帮助我们改善对于超参数的选择。
+最初选择了糟糕的\gls*{hyper-params}，我们至少获得了足够的信息来帮助我们改善对于\gls*{hyper-params}的选择。
 
-通常，调试一个神经网络是具有挑战性的。尤其是当初始的超参数的选择产生的结果还不如
+通常，调试一个神经网络是具有挑战性的。尤其是当初始的\gls*{hyper-params}的选择产生的结果还不如
 随机噪点的时候。假如我们使用之前成功的具有 30 个隐藏神经元的网络结构，但是学习速
 率改为 $\eta = 100.0$：
 
@@ -1232,7 +1232,7 @@ Epoch 29: 982 / 10000
 
 从这得到的教训是调试一个神经网络不是琐碎的，就像常规编程那样，它是一门艺术。你需
 要学习调试的艺术来获得神经网络更好的结果。更普通的是，我们需要启发式方法来选择好
-的超参数和好的结构。我们将在整本书中讨论这些，包括上面我是怎么样选择超参数的。
+的\gls*{hyper-params}和好的结构。我们将在整本书中讨论这些，包括上面我是怎么样选择\gls*{hyper-params}的。
 
 \subsection*{练习}
 

@@ -45,7 +45,7 @@ $ ./bootstrap.sh
 This is a simple shell script to download the following free fonts into `fonts/` folder:
 
 - [Google Noto Sans CJK SC](https://noto-website-2.storage.googleapis.com/pkgs/NotoSansCJKsc-hinted.zip)
-- [Google Roboto](https://github.com/google/roboto/releases/download/v2.134/roboto-unhinted.zip)
+- [Google Noto Serif CJK SC](https://noto-website.storage.googleapis.com/pkgs/NotoSerifCJKsc-hinted.zip)
 - [Adobe Source Serif Pro](https://github.com/adobe-fonts/source-serif-pro/archive/1.017R.zip)
 - [Adobe Source Code Pro](https://github.com/adobe-fonts/source-code-pro/archive/2.030R-ro/1.050R-it.zip)
 
@@ -62,24 +62,13 @@ fonts/
 ├── NotoSansCJKsc-Thin.otf
 ├── NotoSansMonoCJKsc-Bold.otf
 ├── NotoSansMonoCJKsc-Regular.otf
-├── Roboto-Black.ttf
-├── Roboto-BlackItalic.ttf
-├── Roboto-Bold.ttf
-├── Roboto-BoldItalic.ttf
-├── Roboto-Italic.ttf
-├── Roboto-Light.ttf
-├── Roboto-LightItalic.ttf
-├── Roboto-Medium.ttf
-├── Roboto-MediumItalic.ttf
-├── Roboto-Regular.ttf
-├── Roboto-Thin.ttf
-├── Roboto-ThinItalic.ttf
-├── RobotoCondensed-Bold.ttf
-├── RobotoCondensed-BoldItalic.ttf
-├── RobotoCondensed-Italic.ttf
-├── RobotoCondensed-Light.ttf
-├── RobotoCondensed-LightItalic.ttf
-├── RobotoCondensed-Regular.ttf
+├── NotoSerifCJKsc-Black.otf
+├── NotoSerifCJKsc-Bold.otf
+├── NotoSerifCJKsc-DemiLight.otf
+├── NotoSerifCJKsc-Light.otf
+├── NotoSerifCJKsc-Medium.otf
+├── NotoSerifCJKsc-Regular.otf
+├── NotoSerifCJKsc-Thin.otf
 ├── SourceCodePro-Black.otf
 ├── SourceCodePro-BlackIt.otf
 ├── SourceCodePro-Bold.otf
@@ -115,3 +104,4 @@ $ make
 to typeset and generate the PDF document. Or use your favorite GUI TeX
 application, but choose `XeLaTeX` as the typeset engine to support the chinese
 fonts.
+
