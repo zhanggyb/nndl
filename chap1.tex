@@ -1042,13 +1042,13 @@ def SGD(self, training_data, epochs, mini_batch_size, eta,
 
 \lstinline!training_data! 是一个 \lstinline!(x, y)! 元组的列表，表示训练输入和其
 对应的期望输出。变量 \lstinline!epochs! 和 \lstinline!mini_batch_size! 正如你预
-料的~——~\gls*{epoch}数量，和采样时的\minibatch{}的大小。\lstinline!eta! 是%
+料的~——~\gls*{epoch}数量，和采样时的\gls*{mini-batch}{}的大小。\lstinline!eta! 是%
 \gls*{learning-rate}，$\eta$。如果给出了可选参数 \lstinline!test_data!，那么程序
 会在每个训练器后评估网络，并打印出部分进展。这对于追踪进度很有用，但相当拖慢执行
 速度。
 
 代码如下工作。在每个\gls*{epoch}，它首先随机地将训练数据打乱，然后将它分成多个适
-当大小的\minibatch{}。这是一个简单的从训练数据的随机采样方法。然后对于每一个
+当大小的\gls*{mini-batch}{}。这是一个简单的从训练数据的随机采样方法。然后对于每一个
 \lstinline!mini_batch! 我们应用一次梯度下降。这是通过代码
 \lstinline!self.update_mini_batch(mini_batch, eta)! 完成的，它仅仅使用
 \lstinline!mini_batch! 中的训练数据，根据单次梯度下降的迭代更新网络的%

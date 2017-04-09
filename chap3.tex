@@ -1280,7 +1280,7 @@ C/\partial w$ 未定义。原因在于函数 $|w|$ 在 $w=0$ 时有个“直角�
 \end{center}
 
 我们前向传播输入 $x$，通过修改后的网络，然后\gls*{bp}结果，同样通过这个修改后的网
-络。在一个\minibatch{小批量}的若干样本上进行这些步骤后，我们对有关的\gls*{weight}和\gls*{bias}进
+络。在一个\gls*{mini-batch}的若干样本上进行这些步骤后，我们对有关的\gls*{weight}和\gls*{bias}进
 行更新。然后重复这个过程，首先重置\gls*{dropout}的神经元，然后选择一个新的随机的隐藏神经元
 的子集进行删除，估计对一个不同的\gls*{mini-batch}的梯度，然后更新\gls*{weight}和\gls*{bias}。
 
@@ -1525,7 +1525,7 @@ $1$ 的高斯分布来对\gls*{bias}进行初始化。这其实是可行的，�
 们后面还会按照前面的方式来进行初始化。
 
 让我们在 MNIST 数字分类任务上比较一下新旧两种\gls*{weight}初始化方式。同样，还是使用 $30$
-个隐藏元，\minibatch 的大小为 $10$，\gls*{regularization}参数 $\lambda = 5.0$，然后是交叉熵代价
+个隐藏元，\gls*{mini-batch} 的大小为 $10$，\gls*{regularization}参数 $\lambda = 5.0$，然后是交叉熵代价
 函数。我们将\gls*{learning-rate}从 $\eta=0.5$ 降到 $0.1$，因为这样会让结果在图像中表
 现得更加明显。我们先使用旧的\gls*{weight}初始化方法训练：
 
@@ -2406,7 +2406,7 @@ $\tanh$ 的形状：
 $(-1, 1)$ 的函数\footnote{对于 tanh 和 \gls*{sigmoid-neuron}，以及下面要讨论的修正线性神经
   元，这个说法有一些技术上的预先声明。然而，非正式地，通常可以把神经网络看做可以
   以任意精度近似任何函数。}。而且，诸如\gls*{bp}和\gls*{sgd}这样的想法也能够轻
-松地用在\gls*{tanh-neuron}tanh 神经元构成的网络上的。
+松地用在\gls*{tanh-neuron}构成的网络上的。
 
 \subsection*{练习}
 
@@ -2414,14 +2414,14 @@ $(-1, 1)$ 的函数\footnote{对于 tanh 和 \gls*{sigmoid-neuron}，以及下�
 \item 证明公式~\eqref{eq:111}。
 \end{itemize}
 
-那么你应该在网络中使用什么类型的神经元呢，tanh 还是 sigmoid？实话讲，确实并没有
-先验的答案！然而，存在一些理论论点和实践证据表明 tanh 有时候表现更好\footnote{例
+那么你应该在网络中使用什么类型的神经元呢，\gls*{tanh}还是 S 型？实话讲，确实并没有
+先验的答案！然而，存在一些理论论点和实践证据表明\gls*{tanh}有时候表现更好\footnote{例
   如，看看 \href{http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf}{Efficient
     BackProp}，作者为 Yann LeCun， Léon Bottou， Genevieve Orr 和 Klaus-Robert
   Müller （1998），以及
   \href{http://jmlr.org/proceedings/papers/v9/glorot10a/glorot10a.pdf}{Understanding
     the difficulty of training deep feedforward networks}，作者为 Xavier Glorot
-  和 Yoshua Bengio （2010）。}。让我简要介绍一下其中关于 tanh 的一个理论观点。假
+  和 Yoshua Bengio （2010）。}。让我简要介绍一下其中关于\gls*{tanh}的一个理论观点。假
 设我们使用 \gls*{sigmoid-neuron}，所有激活值都是正数。让我们考虑一下\gls*{weight}
 $w_{jk}^{l+1}$ 输入到第 $l+1$ 层的第 $j$ 个神经元上。\gls*{bp}的规则（看%
   \hyperref[eq:bp4]{这里}）告诉我们相关的梯度是 $a_k^l\delta_j^{l+1}$。因为所有
@@ -2430,14 +2430,14 @@ $\delta_j^{l+1}$ 为正，那么所有的权重 $w_{jk}^{l+1}$ 都会在梯度�
 果 $\delta_j^{l+1}$ 为负，那么所有的\gls*{weight} $w_{jk}^{l+1}$ 都会在梯度下降
 时增加。换言之，针对同一的神经元的所有\gls*{weight}都会或者一起增加或者一起减少。
 这就有问题了，因为某些\gls*{weight}可能需要有相反的变化。这样的话，只能是某些输
-入激活值有相反的符号才可能出现。所以，我们用 tanh 替换就能够达到这个目的。因此，
-因为 tanh 是关于 $0$ 对称的，$\tanh(-z) = -\tanh(z)$，我们甚至期望，大概地，隐藏
+入激活值有相反的符号才可能出现。所以，我们用\gls*{tanh}替换就能够达到这个目的。因此，
+因为\gls*{tanh}是关于 $0$ 对称的，$\tanh(-z) = -\tanh(z)$，我们甚至期望，大概地，隐藏
 层的激活值能够在正负间保持平衡。这样其实可以保证对\gls*{weight}更新没有系统化的
 单方面的\gls*{bias}。
 
 我们应当如何看待这个论点？尽管论点是建设性的，但它还只是一个启发式的规则，而非严
-格证明说 tanh 就一定超过 sigmoid 函数。可能 sigmoid 神经元还有其他的特性能够补偿
-这个问题？实际上，对很多任务，tanh 在实践中给出了微小的甚至没有性能提升。不幸的
+格证明说\gls*{tanh}就一定超过 \gls*{sigmoid-func}。可能 \gls*{sigmoid-neuron}还有其他的特性能够补偿
+这个问题？实际上，对很多任务，\gls*{tanh}在实践中给出了微小的甚至没有性能提升。不幸的
 是，我们还没有快速准确的规则说哪种类型的神经元对某种特定的应用学习得更快，或者泛
 化能力最强。
 
