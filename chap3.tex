@@ -667,7 +667,7 @@ $a_7^L$ 就变得很小，代价 $-\ln a_7^L$ 随之增大。所以对数似然\
   使用这个表达式，我们可以在使用柔性最大值层和对数似然代价的网络上应用\gls*{bp}。
 \end{itemize}
 
-\section{过度拟合和规范化}
+\section{过度拟合和正则化}
 \label{sec:overfitting_and_regularization}
 
 诺贝尔奖获得者，物理学家恩里科·费米有一次被问到他对一些同僚提出的一个数学模型的
@@ -843,7 +843,7 @@ $10,000$ 幅都不相同。我们会使用 \lstinline!validation_data! 而不是
 易\gls*{overfitting}。不幸的是，训练数据其实是很难或者很昂贵的资源，所以这不是一种太切实际的
 选择。
 
-\subsection{规范化}
+\subsection{正则化}
 
 增加训练样本的数量是一种减轻\gls*{overfitting}的方法。还有其他的方法能够减轻\gls*{overfitting}的程度
 吗？一种可行的方式就是降低网络的规模。然而，大的网络拥有一种比小网络更强的潜力，
@@ -1031,7 +1031,7 @@ $\eta=0.1$ 和$\lambda = 5.0$。我们就突破了 98\%，达到了98.04\% 的�
 仅会引起在那个方向发生微小的变化。我相信这个现象让我们的学习算法更难有效地探索权
 重空间，最终导致很难找到\gls*{cost-func}的最优值。
 
-\subsection{为何规范化可以帮助减轻过度拟合}
+\subsection{为何正则化可以帮助减轻过度拟合}
 
 % I produce the 3 graphs in MATLAB:
 %
@@ -1205,7 +1205,7 @@ $\eta=0.1$ 和$\lambda = 5.0$。我们就突破了 98\%，达到了98.04\% 的�
 络更加灵活~——~因为，大的\gls*{bias}让神经元更加容易饱和，这有时候是我们所要达到的效果。所
 以，我们通常不会对\gls*{bias}进行\gls*{regularization}。
 
-\subsection{规范化的其他技术}
+\subsection{正则化的其他技术}
 
 除了 L2 外还有很多\gls*{regularization}技术。实际上，正是由于数量众多，我这里也不会将所有的都列
 举出来。在本节，我简要地给出三种减轻\gls*{overfitting}的其他的方法：L1 \gls*{regularization}、\gls*{dropout}和人为
