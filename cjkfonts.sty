@@ -33,6 +33,12 @@
 \DeclareBoolOption[false]{default}
 \ProcessKeyvalOptions*
 
+%% Configuration for parindent
+%% ===========================
+\def\elegant@CJKChar@size{\hskip \f@size \p@}
+\newdimen\elegant@CJKChar@size@dimen
+\settowidth\elegant@CJKChar@size@dimen{\elegant@CJKChar@size\CJKglue}
+\setlength{\parindent}{2\elegant@CJKChar@size@dimen}
 
 %% Configuration for fonts
 %% =======================
