@@ -256,24 +256,25 @@ $3$，标记的单个\gls*{weight}为 $-4$：
 决这个问题。但是目前为止，我们还没发现有什么办法能让\gls*{perceptron}网络进行学
 习。
 
-我们可以引入一种称为 \gls*{sigmoid-neuron}的新的人工神经元来克服这个问题。
+我们可以引入一种称为 \gls*{sigmoid-neuron}的新的人工神经元来克服这个问题。%
 \gls*{sigmoid-neuron}和\gls*{perceptron}类似，但是经过修改后，\gls*{weight}和%
 \gls*{bias}的微小改动只引起输出的微小变化。这对于让神经元网络学习起来是很关键的。
 
-好了, 让我来描述下 \gls*{sigmoid-neuron}。我们用描绘\gls*{perceptron}的相同方式来
-描绘 \gls*{sigmoid-neuron}：
+好了, 让我来描述下 \gls*{sigmoid-neuron}。我们用描绘\gls*{perceptron}的相同方式
+来描绘 \gls*{sigmoid-neuron}：
 \begin{center}
   \includegraphics{tikz9}
 \end{center}
 
 正如一个\gls*{perceptron}，\gls*{sigmoid-neuron}有多个输入，$x_1,x_2,\ldots$。但
 是这些输入可以取 $0$ 和$1$ 中的任意值，而不仅仅是 $0$ 或 $1$。例如，
-$0.638\ldots$ 是一个 \gls*{sigmoid-neuron}的有效输入。同样，\gls*{sigmoid-neuron}
-对每个输入有\gls*{weight}，$w_1,w_2,\ldots$，和一个总的\gls*{bias}，$b$。但是输
-出不是 $0$ 或 $1$。相反，它现在是 $\sigma(w \cdot x+b)$，这里 $\sigma$ 被称为 S
-型函数\footnote{顺便提一下，$\sigma$ 有时被称为\textbf{逻辑函数}，而这种新的神经
-  元类型被称为\textbf{逻辑神经元}。既然这些术语被很多从事于神经元网络的人使用，
-  记住它是有用的。然而，我们将继续使用 S 型这个术语。}，定义为：
+$0.638\ldots$ 是一个 \gls*{sigmoid-neuron}的有效输入。同样，
+\gls*{sigmoid-neuron}对每个输入有\gls*{weight}，$w_1,w_2,\ldots$，和一个总的%
+\gls*{bias}，$b$。但是输出不是 $0$ 或 $1$。相反，它现在是 $\sigma(w \cdot x+b)$，
+这里 $\sigma$ 被称为 S型函数\footnote{顺便提一下，$\sigma$ 有时被称为\textbf{逻
+    辑函数}，而这种新的神经元类型被称为\textbf{逻辑神经元}。既然这些术语被很多从
+  事于神经元网络的人使用，记住它是有用的。然而，我们将继续使用 S 型这个术语。}，
+定义为：
 \begin{equation}
   \sigma(z) \equiv \frac{1}{1+e^{-z}}
   \label{eq:3}\tag{3}
@@ -286,10 +287,10 @@ $w_1,w_2,\ldots$，和\gls*{bias} $b$ 的 \gls*{sigmoid-neuron}的输出是：
   \label{eq:4}\tag{4}
 \end{equation}
 
-初看上去，\gls*{sigmoid-neuron}和\gls*{perceptron}有很大的差别。如果你不熟悉 S
-型函数的代数形式，它看上去晦涩难懂又令人生畏。实际上，\gls*{perceptron}和
-\gls*{sigmoid-neuron}之间有很多相似的地方，跨过理解上的障碍，\gls*{sigmoid-func}的代数形式
-具有很多技术细节。
+初看上去，\gls*{sigmoid-neuron}和\gls*{perceptron}有很大的差别。如果你不熟悉 S型
+函数的代数形式，它看上去晦涩难懂又令人生畏。实际上，\gls*{perceptron}和
+\gls*{sigmoid-neuron}之间有很多相似的地方，跨过理解上的障碍，\gls*{sigmoid-func}
+的代数形式具有很多技术细节。
 
 为了理解和\gls*{perceptron}模型的相似性，假设 $z \equiv w \cdot x + b$ 是一个很
 大的正数。那么 $e^{-z} \approx 0$ 而 $\sigma(z) \approx 1$。即，当 $z = w \cdot
@@ -367,7 +368,7 @@ $0.689\ldots$ 的值是合理的输出。这是非常有用的，例如，当我
   需要实际的输入值，仅仅需要固定这些输入。假设对于网络中任何特定%
   \gls*{perceptron}的输入 $x$， \gls*{weight}和\gls*{bias}遵循 $w \cdot x + b
   \neq 0$。现在用 \gls*{sigmoid-neuron}替换所有网络中的\gls*{perceptron}，并且把%
-  \gls*{weight}和\gls*{bias}乘以一个正的常量$c>0$。证明在$c \rightarrow \infty$
+  \gls*{weight}和\gls*{bias}乘以一个正的常量 $c>0$。证明在 $c \rightarrow \infty$
   的极限情况下，\gls*{sigmoid-neuron}网络的行为和\gls*{perceptron}网络的完全一致。
   当一个\gls*{perceptron}的 $w \cdot x + b = 0$ 时又为什么会不同？
 \end{itemize}
@@ -380,13 +381,13 @@ $0.689\ldots$ 的值是合理的输出。这是非常有用的，例如，当我
   \includegraphics{tikz10}
 \end{center}
 
-前面提过，这个网络中最左边的称为输入层，其中的神经元称为\textbf{输入神经
-  元}。最右边的，即\textbf{输出}层包含有\textbf{输出神经
-  元}，在本例中，输出层只有一个神经元。中间层，既然这层中的神
-经元既不是输入也不是输出，则被称为\textbf{\gls{hidden-layer}}。“隐藏”这一术语
-也许听上去有些神秘~——~我第一次听到这个词，以为它必然有一些深层的哲学或数学涵
-意~——~但它实际上仅仅意味着“既非输入也非输出”。上面的网络仅有一个隐藏层，但有些
-网络有多个隐藏层。例如，下面的四层网络有两个隐藏层：
+前面提过，这个网络中最左边的称为输入层，其中的神经元称为\textbf{输入神经元}。最
+右边的，即\textbf{输出}层包含有\textbf{输出神经元}，在本例中，输出层只有一个神经
+元。中间层，既然这层中的神经元既不是输入也不是输出，则被称为%
+\textbf{\gls{hidden-layer}}。“隐藏”这一术语也许听上去有些神秘~——~我第一次听到
+这个词，以为它必然有一些深层的哲学或数学涵意~——~但它实际上仅仅意味着“既非输入也
+非输出”。上面的网络仅有一个隐藏层，但有些网络有多个隐藏层。例如，下面的四层网络
+有两个隐藏层：
 \begin{center}
   \includegraphics{tikz11}
 \end{center}
@@ -409,7 +410,7 @@ $0.689\ldots$ 的值是合理的输出。这是非常有用的，例如，当我
 法则可以用于帮助权衡隐藏层数量和训练网络所需的时间开销。在本书后面我们会碰到几个
 这样的设计最优法则。
 
-目前为止，我们讨论的神经网络，都是以上一层的输出作为下一层的输入。这种网络被称为
+目前为止，我们讨论的神经网络，都是以上一层的输出作为下一层的输入。这种网络被称为%
 \textbf{前馈}神经网络。这意味着网络中是没有回路的~——~信息总是向前传播，从不反向
 回馈。如果确实有回路，我们最终会有这样的情况：$\sigma$ 函数的输入依赖于输出。这
 将难于理解，所以我们不允许这样的环路。
@@ -421,10 +422,10 @@ $0.689\ldots$ 的值是合理的输出。这是非常有用的，例如，当我
 经元被激活，随着时间的推移，我们得到一个级联的神经元激活系统。因为一个神经元的输
 出只在一段时间后而不是即刻影响它的输入，在这个模型中回路并不会引起问题。
 
-\gls*{rnn}比前馈网络影响力小得多，部分原因是递归网络的学习算法（至少目前为止）
-不够强大。但是递归网络仍然很有吸引力。它们原理上比前馈网络更接近我们大脑的实际工
-作。并且递归网络能解决一些重要的问题，这些问题如果仅仅用前馈网络来解决，则更加困
-难。然而为了篇幅，本书将专注于使用更广泛的前馈网络。
+\gls*{rnn}比前馈网络影响力小得多，部分原因是循环网络的学习算法（至少目前为止）不
+够强大。但是循环网络仍然很有吸引力。它们原理上比前馈网络更接近我们大脑的实际工作。
+并且循环网络能解决一些重要的问题，这些问题如果仅仅用前馈网络来解决，则更加困难。
+然而为了篇幅，本书将专注于使用更广泛的前馈网络。
 
 \section{一个简单的分类手写数字的网络}
 
@@ -710,8 +711,8 @@ $C$ 的变化，正如我们期望的用梯度来表示。但是这个方程真�
 然后我们用它再次更新规则来计算下一次移动。如果我们反复持续这样做，我们将持续减小
 $C$ 直到~——~正如我们希望的~——~获得一个全局的最小值。
 
-总结一下，梯度下降算法工作的方式就是重复计算梯度 $\nabla C$，然后沿着\textbf{相反}
-的方向移动，沿着山谷“滚落”。我们可以想象它像这样：
+总结一下，梯度下降算法工作的方式就是重复计算梯度 $\nabla C$，然后沿着\textbf{相
+  反}的方向移动，沿着山谷“滚落”。我们可以想象它像这样：
 \begin{center}
   \includegraphics{valley_with_ball}
 \end{center}
@@ -763,13 +764,13 @@ v_m)^T$，$\Delta C$ 将会变为：
 的方式去求代价函数的最小值，进而促进网络自身的学习。
 
 事实上，甚至有一种观点认为梯度下降法是求最小值的最优策略。假设我们正在努力去改变
-$\Delta v$ 来让 $C$ 尽可能地减小。这相当于最小化$\Delta C \approx \nabla C \cdot
-\Delta v$。我们首先限制步长为小的固定值，即$\| \Delta v \| = \epsilon$，
+$\Delta v$ 来让 $C$ 尽可能地减小。这相当于最小化 $\Delta C \approx \nabla C
+\cdot \Delta v$。我们首先限制步长为小的固定值，即 $\| \Delta v \| = \epsilon$，
 $\epsilon > 0$。当步长固定时，我们要找到使得 $C$ 减小最大的下降方向。可以证明，
 使得 $\nabla C \cdot \Delta v$ 取得最小值的 $\Delta v$ 为 $\Delta v = - \eta
 \nabla C$，这里 $\eta = \epsilon / \|\nabla C\|$ 是由步长限制 $\|\Delta v\| =
-\epsilon$ 所决定的。因此，梯度下降法可以被视为一种在 $C$下降最快的方向上做微小变
-化的方法。
+\epsilon$ 所决定的。因此，梯度下降法可以被视为一种在 $C$ 下降最快的方向上做微小
+变化的方法。
 
 \subsection*{练习}
 
@@ -899,9 +900,9 @@ $\frac{1}{n}$，直接取单个训练样本的代价总和，而不是取平均�
 \section{实现我们的网络来分类数字}
 \label{sec:implementing_our_network_to_classify_digits}
 
-好吧，现在让我们写一个学习如何识别手写数字的程序，使用随机梯度下降算法和 MNIST
-训练数据。我们需要做的第一件事情是获取 MNIST 数据。如果你是一个 \lstinline!git!
-用户，那么你能够通过克隆这本书的代码仓库获得数据，
+好吧，现在让我们写一个学习如何识别手写数字的程序，使用随机梯度下降算法和 MNIST训
+练数据。我们需要做的第一件事情是获取 MNIST 数据。如果你是一个 \lstinline!git! 用
+户，那么你能够通过克隆这本书的代码仓库获得数据，
 
 \begin{lstlisting}[language=sh]
 git clone https://github.com/mnielsen/neural-networks-and-deep-learning.git
