@@ -2,14 +2,7 @@
 %
 % A XeLaTeX package for typesetting CJK documents.
 %
-% Author: Freeman Zhang <zhanggyb@gmail.com>
-% Version: 0.1
-% Homepage: https://github.com/zhanggyb/cjkfonts
-%
 % Options:
-%	path: The path where can find cjkfonts font files.
-%	mdseries: choose one of Thin, Light, DemiLight, Regular, Medium, Bold, Black for text with medium weight.
-%	bfseries: choose one of Thin, Light, DemiLight, Regular, Medium, Bold, Black for text with bold face.
 % 	default: boolean option, cjkfonts is set as the default font family and as the sans serif family for CJK text.
 
 % Identification
@@ -27,9 +20,6 @@
 
 % Set key-value options
 \RequirePackage{kvoptions}
-\DeclareStringOption[fonts/]{path}[fonts/]
-\DeclareStringOption[Regular]{mdseries}[Regular]
-\DeclareStringOption[Bold]{bfseries}[Bold]
 \DeclareBoolOption[false]{default}
 \ProcessKeyvalOptions*
 
@@ -44,18 +34,14 @@
 %% =======================
 
 \newCJKfontfamily[NotoSansSC]\NotoSansSC[
-  Extension=.otf,
-  Path=\cjkfonts@path/,
-  UprightFont=NotoSansCJKsc-\cjkfonts@mdseries,
-  BoldFont=NotoSansCJKsc-\cjkfonts@bfseries,
-  ItalicFont=NotoSansCJKsc-\cjkfonts@mdseries,
-  BoldItalicFont=NotoSansCJKsc-\cjkfonts@bfseries,
+  UprightFont=NotoSansCJKsc-Light,
+  BoldFont=NotoSansCJKsc-Medium,
+  ItalicFont=NotoSansCJKsc-Light,
+  BoldItalicFont=NotoSansCJKsc-Medium,
   ItalicFeatures=FakeSlant,
   BoldItalicFeatures=FakeSlant]{NotoSansSC}
 
 \newCJKfontfamily[NotoSansMonoSC]\NotoSansMonoSC[
-  Extension=.otf,
-  Path=\cjkfonts@path/,
   UprightFont=NotoSansMonoCJKsc-Regular,
   BoldFont=NotoSansMonoCJKsc-Bold,
   ItalicFont=NotoSansMonoCJKsc-Regular,
@@ -64,145 +50,104 @@
   BoldItalicFeatures=FakeSlant]{NotoSansMonoSC}
 
 \newCJKfontfamily[NotoSansSCThin]\NotoSansSCThin[
-  Extension=.otf,
-  Path=\cjkfonts@path/,
   UprightFont=NotoSansCJKsc-Thin,
   AutoFakeSlant=true]{NotoSansSC}  
 
 \newCJKfontfamily[NotoSansSCLight]\NotoSansSCLight[
-  Extension=.otf,
-  Path=\cjkfonts@path/,
   UprightFont=NotoSansCJKsc-Light,
   AutoFakeSlant=true]{NotoSansSC}  
 
 \newCJKfontfamily[NotoSansSCDemiLight]\NotoSansSCDemiLight[
-  Extension=.otf,
-  Path=\cjkfonts@path/,
   UprightFont=NotoSansCJKsc-DemiLight,
   AutoFakeSlant=true]{NotoSansSC}  
 
 \newCJKfontfamily[NotoSansSCRegular]\NotoSansSCRegular[
-  Extension=.otf,
-  Path=\cjkfonts@path/,
   UprightFont=NotoSansCJKsc-Regular,
   AutoFakeSlant=true]{NotoSansSC}  
 
 \newCJKfontfamily[NotoSansSCMedium]\NotoSansSCMedium[
-  Extension=.otf,
-  Path=\cjkfonts@path/,
   UprightFont=NotoSansCJKsc-Medium,
   AutoFakeSlant=true]{NotoSansSC}  
 
 \newCJKfontfamily[NotoSansSCBold]\NotoSansSCBold[
-  Extension=.otf,
-  Path=\cjkfonts@path/,
   UprightFont=NotoSansCJKsc-Bold,
   AutoFakeSlant=true]{NotoSansSC}  
 
 \newCJKfontfamily[NotoSansSCBlack]\NotoSansSCBlack[
-  Extension=.otf,
-  Path=\cjkfonts@path/,
   UprightFont=NotoSansCJKsc-Black,
   AutoFakeSlant=true]{NotoSansSC}  
 
 \newCJKfontfamily[NotoSansMonoSCRegular]\NotoSansMonoSCRegular[
-  Extension=.otf,
-  Path=\cjkfonts@path/,
   UprightFont=NotoSansMonoCJKsc-Regular,
   AutoFakeSlant=true]{NotoSansMonoSCRegular}
 
 \newCJKfontfamily[NotoSansMonoSCBold]\NotoSansMonoSCBold[
-  Extension=.otf,
-  Path=\cjkfonts@path/,
   UprightFont=NotoSansMonoCJKsc-Bold,
   AutoFakeSlant=true]{NotoSansMonoSCBold}
 
 \newCJKfontfamily[NotoSerifSC]\NotoSerifSC[
-  Extension=.otf,
-  Path=\cjkfonts@path/,
-  UprightFont=NotoSerifCJKsc-\cjkfonts@mdseries,
-  BoldFont=NotoSerifCJKsc-\cjkfonts@bfseries,
-  ItalicFont=NotoSerifCJKsc-\cjkfonts@mdseries,
-  BoldItalicFont=NotoSerifCJKsc-\cjkfonts@bfseries,
+  UprightFont=NotoSerifCJKsc-Light,
+  BoldFont=NotoSerifCJKsc-SemiBold,
+  ItalicFont=NotoSerifCJKsc-Light,
+  BoldItalicFont=NotoSerifCJKsc-SemiBold,
   ItalicFeatures=FakeSlant,
   BoldItalicFeatures=FakeSlant]{NotoSerifSC}
 
 \newCJKfontfamily[NotoSerifSCThin]\NotoSerifSCThin[
-  Extension=.otf,
-  Path=\cjkfonts@path/,
   UprightFont=NotoSerifCJKsc-Thin,
   AutoFakeSlant=true]{NotoSerifSC}  
 
 \newCJKfontfamily[NotoSerifSCLight]\NotoSerifSCLight[
-  Extension=.otf,
-  Path=\cjkfonts@path/,
   UprightFont=NotoSerifCJKsc-Light,
   AutoFakeSlant=true]{NotoSerifSC}  
 
 \newCJKfontfamily[NotoSerifSCDemiLight]\NotoSerifSCDemiLight[
-  Extension=.otf,
-  Path=\cjkfonts@path/,
   UprightFont=NotoSerifCJKsc-DemiLight,
   AutoFakeSlant=true]{NotoSerifSC}  
 
 \newCJKfontfamily[NotoSerifSCRegular]\NotoSerifSCRegular[
-  Extension=.otf,
-  Path=\cjkfonts@path/,
   UprightFont=NotoSerifCJKsc-Regular,
   AutoFakeSlant=true]{NotoSerifSC}  
 
 \newCJKfontfamily[NotoSerifSCMedium]\NotoSerifSCMedium[
-  Extension=.otf,
-  Path=\cjkfonts@path/,
   UprightFont=NotoSerifCJKsc-Medium,
   AutoFakeSlant=true]{NotoSerifSC}  
 
 \newCJKfontfamily[NotoSerifSCBold]\NotoSerifSCBold[
-  Extension=.otf,
-  Path=\cjkfonts@path/,
   UprightFont=NotoSerifCJKsc-Bold,
   AutoFakeSlant=true]{NotoSerifSC}  
 
 \newCJKfontfamily[NotoSerifSCBlack]\NotoSerifSCBlack[
-  Extension=.otf,
-  Path=\cjkfonts@path/,
   UprightFont=NotoSerifCJKsc-Black,
   AutoFakeSlant=true]{NotoSerifSC}  
 
 \ifthenelse{\boolean{cjkfonts@default}}{
 
-  \setCJKmainfont[Extension=.otf,
-    Path=\cjkfonts@path/,
-    UprightFont=NotoSerifCJKsc-\cjkfonts@mdseries,
-    BoldFont=NotoSerifCJKsc-\cjkfonts@bfseries,
-    ItalicFont=NotoSerifCJKsc-\cjkfonts@mdseries,
-    BoldItalicFont=NotoSerifCJKsc-\cjkfonts@bfseries,
-    ItalicFeatures=FakeSlant,
-    BoldItalicFeatures=FakeSlant]{NotoSerifSC}
+  \setCJKmainfont[
+  	UprightFont={NotoSerifCJKsc-Light},
+  	BoldFont={NotoSerifCJKsc-SemiBold},
+  	ItalicFont={NotoSerifCJKsc-Light},
+  	BoldItalicFont={NotoSerifCJKsc-SemiBold},
+  	ItalicFeatures=FakeSlant,
+  	BoldItalicFeatures=FakeSlant]{NotoSerifSC}
   
   \setCJKsansfont[
-    Extension=.otf,
-    Path=\cjkfonts@path/,
-    UprightFont=NotoSansCJKsc-\cjkfonts@mdseries,
-    BoldFont=NotoSansCJKsc-\cjkfonts@bfseries,
-    ItalicFont=NotoSansCJKsc-\cjkfonts@mdseries,
-    BoldItalicFont=NotoSansCJKsc-\cjkfonts@bfseries,
+  	UprightFont={NotoSansCJKsc-Light},
+  	BoldFont={NotoSansCJKsc-Medium},
+  	ItalicFont={NotoSansCJKsc-Light},
+  	BoldItalicFont={NotoSansCJKsc-Medium},
     ItalicFeatures=FakeSlant,
     BoldItalicFeatures=FakeSlant]{NotoSansSC}
   
   \setCJKmonofont[
-    Extension=.otf,
-    Path=\cjkfonts@path/,
-    UprightFont=NotoSansMonoCJKsc-Regular,
-    BoldFont=NotoSansMonoCJKsc-Bold,
-    ItalicFont=NotoSansMonoCJKsc-Regular,
-    BoldItalicFont=NotoSansMonoCJKsc-Bold,
+  	UprightFont={NotoSansCJKsc-Light},
+  	BoldFont={NotoSansCJKsc-Medium},
+  	ItalicFont={NotoSansCJKsc-Light},
+  	BoldItalicFont={NotoSansCJKsc-Medium},
     ItalicFeatures=FakeSlant,
     BoldItalicFeatures=FakeSlant]{NotoSansMonoSC}
-
 
 }{}
 
 %% This must be the last command
 \endinput
-
