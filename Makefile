@@ -7,6 +7,7 @@ MKGLS = makeglossaries
 RM = rm -rf
 MAKE = make
 TARGET = nndl-ebook.pdf
+STYLES = $(wildcard *.sty)
 SOURCES := $(wildcard *.tex)
 
 IMAGEDEPS := $(wildcard images/*.tex)
@@ -17,7 +18,7 @@ IMAGEDEPS += $(wildcard images/*.jpeg)
 
 all: graphics $(TARGET)
 
-$(TARGET): $(SOURCES) $(IMAGEDEPS)
+$(TARGET): $(SOURCES) $(STYLES) $(IMAGEDEPS)
 	$(TEX) $(basename $@)
 	# $(MKIDX) $(basename $@)
 	$(MKGLS) $(basename $@)

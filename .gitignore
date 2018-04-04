@@ -18,3 +18,6 @@ auto
 *.gls
 *.glo
 *.glg
+*.fdb_latexmk
+*.fls
+*.synctex.gz
