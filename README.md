@@ -47,7 +47,7 @@ Mac user could install with [Homebrew](https://brew.sh/):
 
 ```shell
 $ brew tap caskroom/fonts
-$ brew cask install font-source-code-pro font-roboto font-noto-sans-cjk
+$ brew cask install font-noto-sans-cjk font-noto-serif-cjk font-source-code-pro font-source-serif-pro
 ```
 
 ### Generate PDF
