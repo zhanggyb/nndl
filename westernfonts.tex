@@ -1,35 +1,19 @@
 % file: westernfonts.tex
 
-\newcommand{\sourcecodeprodir}[0]{fonts/}
-\newcommand{\sourceserifprodir}[0]{fonts/}
-
-\newcommand{\codepromd}[0]{Light}
-\newcommand{\codeprobf}[0]{Medium}
-\newcommand{\codeproit}[0]{LightIt}
-\newcommand{\codeprobi}[0]{MediumIt}
-\newcommand{\serifpromd}[0]{Light}
-\newcommand{\serifprobf}[0]{Semibold}
-
 \newfontfamily\SourceCodePro{SourceCodePro}[
-  Extension=.otf,
-  Path=\sourcecodeprodir,
-  UprightFont=*-\codepromd,
-  BoldFont=*-\codeprobf,
-  ItalicFont=*-\codeproit,
-  BoldItalicFont=*-\codeprobi]
+  UprightFont=*-Light,
+  BoldFont=*-Medium,
+  ItalicFont=*-LightIt,
+  BoldItalicFont=*-MediumIt]
 
 \newfontfamily\SourceSerifPro{SourceSerifPro}[
-  Extension=.otf,
-  Path=\sourceserifprodir,
-  UprightFont=*-\serifpromd,
-  BoldFont=*-\serifprobf]
+  UprightFont=*-Light,
+  BoldFont=*-Semibold]
 
 \newcommand{\serif}[0]{\SourceSerifPro}
  
 \setmonofont{SourceCodePro}[
-  Extension=.otf,
-  Path=\sourcecodeprodir,
-  UprightFont=*-\codepromd,
-  BoldFont=*-\codeprobf,
-  ItalicFont=*-\codeproit,
-  BoldItalicFont=*-\codeprobi]
+  UprightFont=*-Light,
+  BoldFont=*-Medium,
+  ItalicFont=*-LightIt,
+  BoldItalicFont=*-MediumIt]
